@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PlanningMapComponent from '../components/map/PlanningMapComponent.vue'
+import PlanningMapComponent from '../components/map/planning/PlanningMapComponent.vue'
 import UiButton from '../components/ui/UiButton.vue'
 import { usePanelsStore } from '@/stores/panels'
 import TimelineController from '@/components/home/TimelineController.vue'
