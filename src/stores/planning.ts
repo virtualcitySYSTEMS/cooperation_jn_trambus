@@ -1,10 +1,12 @@
 import { ref } from 'vue'
 import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
+import type { LinePlanningStateTypes } from '@/model/line-planning-state.model'
 
 export const usePlanningStore = defineStore('planning', () => {
   const selectedYear: Ref<number> = ref(2029)
   const selectedSemester: Ref<number> = ref(1)
+  const selectedLineState: Ref<LinePlanningStateTypes | null> = ref(null)
   const selectedLine: Ref<number> = ref(0)
 
   function getSelectedDate() {
@@ -17,11 +19,39 @@ export const usePlanningStore = defineStore('planning', () => {
     selectedSemester.value = date.getUTCMonth() < 7 ? 1 : 2
   }
 
+  function setLinePlanningState(lineState: LinePlanningStateTypes) {
+    if (
+      selectedLineState.value &&
+      selectedLineState.value.id === lineState.id
+    ) {
+      selectedLineState.value = null
+    } else {
+      selectedLineState.value = lineState
+    }
+  }
+
+  function isLinePlanningStateHighlighted(
+    linePlanningState: LinePlanningStateTypes
+  ): boolean {
+    if (selectedLineState.value == null) {
+      return true
+    }
+    return selectedLineState.value?.id == linePlanningState.id
+  }
+
+  function getHighlightedId() {
+    return selectedLineState.value?.id
+  }
+
   return {
     getSelectedDate,
     selectedSemester,
     selectedYear,
     setDate,
     selectedLine,
+    selectedLineState,
+    setLinePlanningState,
+    isLinePlanningStateHighlighted,
+    getHighlightedId,
   }
 })

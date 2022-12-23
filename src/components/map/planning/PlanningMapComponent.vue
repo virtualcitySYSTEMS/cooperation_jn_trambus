@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, provide, ref } from 'vue'
 import Map from 'ol/Map'
-import UiOLMap from '../ui/UiOLMap.vue'
+import UiOLMap from '../../ui/UiOLMap.vue'
 import View from 'ol/View'
 import TileLayer from 'ol/layer/Tile'
 import WMTS from 'ol/source/WMTS'
@@ -15,11 +15,13 @@ import { Style, Stroke } from 'ol/style'
 import type { StyleFunction } from 'ol/style/Style'
 import type { FeatureLike } from 'ol/Feature'
 import { usePlanningStore } from '@/stores/planning'
+import UiPlanningLegend from '@/components/map/planning/PlanningLegend.vue'
 import { Overlay } from 'ol'
-import UiLineButton from './buttons/UiLineButton.vue'
-import OlNavigationButtons from './buttons/OlNavigationButtons.vue'
+import UiLineButton from '../buttons/UiLineButton.vue'
+import OlNavigationButtons from '../buttons/OlNavigationButtons.vue'
 import type { LineNumber } from '@/model/lines.model'
 import * as ol_color from 'ol/color'
+import { LinePlanningStateTypes } from '@/model/line-planning-state.model'
 
 const planningStore = usePlanningStore()
 
@@ -61,25 +63,27 @@ const rennesBaseMap = new TileLayer({
   }),
 })
 
-// Styles
-type LineStatus =
-  | 'unStarted'
-  | 'underConstruction'
-  | 'constructionFinished'
-  | 'commisioning'
+const innerWhiteStyle = new Style({
+  stroke: new Stroke({
+    color: '#FFFFFF',
+    width: 7,
+  }),
+  zIndex: 1,
+})
+
+const blackBorderStyle = new Style({
+  stroke: new Stroke({
+    color: '#0F172A', // slate-800
+    width: 9,
+  }),
+  zIndex: 0,
+})
 
 const lineColors: Record<LineNumber, ol_color.Color> = {
   1: ol_color.fromString('#4338CA'), // indigo-600
   2: ol_color.fromString('#DB2777'), // pink-600
   3: ol_color.fromString('#057857'), // emerald-600
   4: ol_color.fromString('#9333EA'), // purple-600
-}
-
-const lineStatusColors: Record<LineStatus, ol_color.Color> = {
-  unStarted: ol_color.fromString('#D1D5DB'), // gray-200
-  underConstruction: ol_color.fromString('#F43F5E'), // rose-500
-  constructionFinished: ol_color.fromString('#FACC15'), // amber-400
-  commisioning: ol_color.fromString('#65A30D'), // lime-600
 }
 
 function activeLineBorderStyle(line: LineNumber): Style {
@@ -92,15 +96,33 @@ function activeLineBorderStyle(line: LineNumber): Style {
   })
 }
 
-function lineStatusStyle(lineStatus: LineStatus): Style {
+function lineStatusStyle(lineState: LinePlanningStateTypes): Style {
   return new Style({
     stroke: new Stroke({
-      color: lineStatusColors[lineStatus],
+      color: lineState.color,
       width: 4,
     }),
     zIndex: 2,
   })
 }
+
+const inactiveLineStyle: Style[] = [
+  // Border
+  new Style({
+    stroke: new Stroke({
+      color: '#FFFFFF',
+      width: 2,
+    }),
+    zIndex: 1,
+  }),
+  new Style({
+    stroke: new Stroke({
+      color: '#525252', // neutral-600
+      width: 4,
+    }),
+    zIndex: 0,
+  }),
+]
 
 function convertAttributeToDate(attribute: string): Date {
   // The string format is "YYYY S1" or "YYYY S2"
@@ -109,7 +131,7 @@ function convertAttributeToDate(attribute: string): Date {
   return new Date(year, month)
 }
 
-function getStyleName(feature: FeatureLike): LineStatus {
+function getState(feature: FeatureLike): LinePlanningStateTypes {
   const inProgressDate = convertAttributeToDate(
     String(feature.get('phase_travaux'))
   )
@@ -122,15 +144,13 @@ function getStyleName(feature: FeatureLike): LineStatus {
   const selectedDate = planningStore.getSelectedDate()
 
   if (selectedDate >= commisionedDate) {
-    return 'commisioning'
+    return LinePlanningStateTypes.COMMISIONING
   } else if (selectedDate >= finishedDate && selectedDate < commisionedDate) {
-    return 'constructionFinished'
+    return LinePlanningStateTypes.CONSTRUCTION_FINISHED
   } else if (selectedDate >= inProgressDate && selectedDate < finishedDate) {
-    return 'underConstruction'
-  } else if (selectedDate < inProgressDate) {
-    return 'unStarted'
+    return LinePlanningStateTypes.UNDER_CONSTRUCTION
   } else {
-    return 'unStarted'
+    return LinePlanningStateTypes.UNSTARTED
   }
 }
 
@@ -143,64 +163,45 @@ function isLineSelected(feature: FeatureLike): boolean {
   return planningStore.selectedLine == getLineNumber(feature)
 }
 
+function isLinePlanningStateActivated(): boolean {
+  return planningStore.selectedLineState !== null
+}
+
+function isLinePlanningStateSelected(feature: FeatureLike): boolean {
+  return planningStore.isLinePlanningStateHighlighted(getState(feature))
+}
+
 const styleFunction: StyleFunction = function (feature: FeatureLike): Style[] {
+  // Inactive state
+  if (isLinePlanningStateActivated() && !isLinePlanningStateSelected(feature)) {
+    if (isLineSelected(feature)) {
+      return [
+        activeLineBorderStyle(getLineNumber(feature) as LineNumber),
+        innerWhiteStyle,
+      ]
+    }
+    return inactiveLineStyle
+  }
+
   // No active/selected line
   if ([1, 2, 3, 4].indexOf(planningStore.selectedLine) == -1)
     return [
-      lineStatusStyle(getStyleName(feature)),
+      lineStatusStyle(getState(feature)),
       // Border
-      new Style({
-        stroke: new Stroke({
-          color: '#FFFFFF',
-          width: 7,
-        }),
-        zIndex: 1,
-      }),
-      new Style({
-        stroke: new Stroke({
-          color: '#0F172A', // slate-800
-          width: 9,
-        }),
-        zIndex: 0,
-      }),
+      innerWhiteStyle,
+      blackBorderStyle,
     ]
 
   // Active line style
   if (isLineSelected(feature)) {
     return [
-      lineStatusStyle(getStyleName(feature)),
+      lineStatusStyle(getState(feature)),
       // Border
       activeLineBorderStyle(getLineNumber(feature) as LineNumber),
-      new Style({
-        stroke: new Stroke({
-          color: '#FFFFFF',
-          width: 7,
-        }),
-        zIndex: 1,
-      }),
+      innerWhiteStyle,
     ]
   }
-
-  // Inactive line style
-  else {
-    return [
-      // Border
-      new Style({
-        stroke: new Stroke({
-          color: '#FFFFFF',
-          width: 2,
-        }),
-        zIndex: 1,
-      }),
-      new Style({
-        stroke: new Stroke({
-          color: '#525252', // neutral-600
-          width: 4,
-        }),
-        zIndex: 0,
-      }),
-    ]
-  }
+  return inactiveLineStyle
 }
 
 const planningLayer = new VectorLayer({
@@ -297,4 +298,5 @@ function setSelectedLine(line: number) {
     >
     </UiLineButton>
   </div>
+  <UiPlanningLegend></UiPlanningLegend>
 </template>
