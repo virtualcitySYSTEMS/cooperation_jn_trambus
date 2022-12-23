@@ -10,17 +10,19 @@ const panelStore = usePanelsStore()
 
 <template>
   <main class="h-screen flex flex-col">
-    <div class="h-32 p-4 bg-white flex flex-row gap-2 items-center">
+    <div class="h-32 p-4 bg-white flex flex-row gap-2 items-center shadow-xl">
       <UiButton
-        class="shadow-md rounded-lg p-2 flex gap-2.5"
+        class="shadow-md rounded-lg p-2 flex gap-2.5 shrink-0 grow-0"
         @click="panelStore.isPlanningViewShown = false"
       >
         <img :src="ChevronArrowRight" />
       </UiButton>
-      <div class="font-poppins font-bold text-2xl w-80">
+      <div class="font-poppins font-bold text-2xl w-80 grow">
         Planning d’aménagement du réseau trambus
       </div>
-      <TimelineController> </TimelineController>
+      <div class="grow flex justify-end">
+        <TimelineController> </TimelineController>
+      </div>
     </div>
     <div class="flex grow relative">
       <PlanningMapComponent></PlanningMapComponent>
