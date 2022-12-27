@@ -2,7 +2,6 @@
 
 <template>
   <div>
-    <h2>Line View</h2>
-    <div>Line : {{ $route.params.id }}</div>
+    <h2>Travel Time View</h2>
   </div>
 </template>
