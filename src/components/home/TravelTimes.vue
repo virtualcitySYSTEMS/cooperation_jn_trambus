@@ -38,7 +38,7 @@ onMounted(async () => {
         </div>
       </UiOverflowContainer>
       <UiLinkPrimary
-        :url="'https://www.camptocamp.com/en'"
+        :url="'/traveltimes'"
         :arrowStrokeColor="'stroke-red-600'"
         :underlineColor="'bg-red-600'"
         :title="'Voir plus de futurs temps de parcours'"

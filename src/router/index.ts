@@ -28,8 +28,8 @@ const router = createRouter({
       component: () => import('../views/StationView.vue'),
     },
     {
-      path: '/traveltime',
-      name: 'traveltime',
+      path: '/traveltimes',
+      name: 'traveltimes',
       component: () => import('../views/TravelTimesView.vue'),
     },
     // TODO: Create 404 route?
