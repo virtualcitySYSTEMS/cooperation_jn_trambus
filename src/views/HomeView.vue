@@ -3,6 +3,15 @@ import LineDescriptions from '../components/home/LineDescriptions.vue'
 import TravelTimes from '../components/home/TravelTimes.vue'
 import UiTrambusTitle from '../components/ui/UiTrambusTitle.vue'
 import FooterArea from '@/components/home/FooterArea.vue'
+import { onMounted } from 'vue'
+
+import { useViewsStore } from '@/stores/views'
+
+const viewStore = useViewsStore()
+
+onMounted(() => {
+  viewStore.currentView = 'home'
+})
 </script>
 
 <template>
