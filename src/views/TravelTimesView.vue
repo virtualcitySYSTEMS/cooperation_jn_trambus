@@ -62,6 +62,7 @@ onMounted(() => {
       :lineNumber="travelTime.line"
       :startStation="travelTime.start"
       :endStation="travelTime.end"
+      :colored="false"
     >
     </UiTravelTime>
   </div>
