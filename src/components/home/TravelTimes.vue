@@ -12,7 +12,7 @@ const state = reactive({
 })
 
 onMounted(async () => {
-  state.travelTimes = await apiClientService.fetchTravelTime()
+  state.travelTimes = await apiClientService.fetchTravelTime(3)
 })
 </script>
 
