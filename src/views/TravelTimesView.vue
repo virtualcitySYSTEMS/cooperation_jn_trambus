@@ -1,11 +1,24 @@
 <script setup lang="ts">
-import { useViewsStore } from '@/stores/views'
-import { onMounted } from 'vue'
-import ChevronArrowRight from '@/assets/icons/chevron-left.svg'
-import UiButton from '../components/ui/UiButton.vue'
+import { reactive, onMounted } from 'vue'
+
 import router from '@/router/index'
+import { useViewsStore } from '@/stores/views'
+import { apiClientService } from '@/services/api.client'
+import type { TravelTimeModel } from '@/model/travel-time.model'
+
+import ChevronArrowRight from '@/assets/icons/chevron-left.svg'
+import UiButton from '@/components/ui/UiButton.vue'
+import UiTravelTime from '@/components/ui/UiTravelTime.vue'
 
 const viewStore = useViewsStore()
+
+const state = reactive({
+  travelTimes: null as null | TravelTimeModel[],
+})
+
+onMounted(async () => {
+  state.travelTimes = await apiClientService.fetchTravelTime()
+})
 
 onMounted(() => {
   viewStore.currentView = 'traveltimes'
@@ -39,5 +52,17 @@ onMounted(() => {
     </div>
   </div>
 
-  <div>Travel times list</div>
+  <div class="flex flex-col p-0 gap-3">
+    <UiTravelTime
+      class="grow"
+      v-for="travelTime in state.travelTimes"
+      :key="travelTime.line"
+      :newDuration="travelTime.new"
+      :oldDuration="travelTime.old"
+      :lineNumber="travelTime.line"
+      :startStation="travelTime.start"
+      :endStation="travelTime.end"
+    >
+    </UiTravelTime>
+  </div>
 </template>
