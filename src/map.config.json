@@ -95,10 +95,16 @@
       "activeOnStartup": false,
       "style": {
         "name": "metroStyle",
-        "type": "VectorStyleItem",
-        "stroke": {
-          "color": "#FF0000",
-          "width": 3
+        "type": "DeclarativeStyleItem",
+        "declarativeStyle": {
+          "strokeWidth": "4",
+          "color": {
+            "conditions": [
+              ["${ligne} === 'a'", "color('#E31A1C')"],
+              ["${ligne} === 'b'", "color('#33A02C')"],
+              ["true", "color('#000000')"]
+            ]
+          }
         }
       }
     },
@@ -109,10 +115,21 @@
       "activeOnStartup": false,
       "style": {
         "name": "busStyle",
-        "type": "VectorStyleItem",
-        "stroke": {
-          "color": "#00FF00",
-          "width": 3
+        "type": "DeclarativeStyleItem",
+        "declarativeStyle": {
+          "strokeWidth": "2",
+          "color": {
+            "conditions": [
+              ["${li_num} === 'C1'", "color('#b0d363')"],
+              ["${li_num} === 'C2'", "color('#e79575')"],
+              ["${li_num} === 'C3'", "color('#e79575')"],
+              ["${li_num} === 'C4'", "color('#cc25a0')"],
+              ["${li_num} === 'C5'", "color('#9b8eed')"],
+              ["${li_num} === 'C6'", "color('#84cc16')"],
+              ["${li_num} === 'C7'", "color('#d946ef')"],
+              ["true", "color('#000000')"]
+            ]
+          }
         }
       }
     },
@@ -125,8 +142,8 @@
         "name": "bikeStyle",
         "type": "VectorStyleItem",
         "stroke": {
-          "color": "#0000FF",
-          "width": 3
+          "color": "#06b6d4",
+          "width": 2
         }
       }
     },
