@@ -7,3 +7,9 @@ export const useViewsStore = defineStore('views', () => {
 
   return { currentView }
 })
+
+export const useTravelTimesStore = defineStore('traveltimes', () => {
+  const selectedIndex: Ref<number> = ref(-1)
+
+  return { selectedIndex }
+})

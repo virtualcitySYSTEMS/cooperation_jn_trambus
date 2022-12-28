@@ -21,6 +21,13 @@ class ApiClientService {
       resolve(lineFiguresFixtures())
     })
   }
+
+  async fetchTravelTimeByIndex(index: number) {
+    return new Promise<TravelTimeModel>((resolve) => {
+      resolve(travelTimeFixtures()[index])
+    })
+  }
+
   async fetchTravelTime(count: number | null = null) {
     return new Promise<TravelTimeModel[]>((resolve) => {
       if (count == null) {
