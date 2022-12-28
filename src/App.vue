@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed } from 'vue'
 
 import PhotoGallery from '@/components/home/PhotoGallery.vue'
 import MapComponent from '@/components/map/MapComponent.vue'
@@ -13,10 +13,14 @@ import { useViewsStore } from '@/stores/views'
 const panelStore = usePanelsStore()
 const viewStore = useViewsStore()
 
-const isPhotoGaleryVisible = ref(true)
-
-viewStore.$subscribe(() => {
-  isPhotoGaleryVisible.value = viewStore.currentView == 'home'
+const isPhotoGaleryVisible = computed(() => {
+  if (panelStore.isPlanningViewShown) {
+    return false
+  }
+  if (viewStore.currentView == 'home') {
+    return true
+  }
+  return false
 })
 </script>
 

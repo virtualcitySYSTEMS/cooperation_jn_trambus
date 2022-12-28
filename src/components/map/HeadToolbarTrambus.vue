@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed } from 'vue'
 
 import UiButton from '@/components/ui/UiButton.vue'
 import UiIconButton from '@/components/ui/UiIconButton.vue'
@@ -18,12 +18,12 @@ const panelStore = usePanelsStore()
 const layerStore = useLayersStore()
 const viewStore = useViewsStore()
 
-const isLayerButtonsVisible = ref(true)
-const isPlanningButtonVisible = ref(true)
+const isLayerButtonsVisible = computed(() => {
+  return viewStore.currentView == 'home'
+})
 
-viewStore.$subscribe(() => {
-  isLayerButtonsVisible.value = viewStore.currentView == 'home'
-  isPlanningButtonVisible.value = viewStore.currentView == 'home'
+const isPlanningButtonVisible = computed(() => {
+  return viewStore.currentView == 'home'
 })
 
 function onPlanningButtonClicked() {
