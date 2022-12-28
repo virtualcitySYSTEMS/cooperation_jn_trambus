@@ -49,10 +49,7 @@ function toggleLayer(name: Layers) {
         type="button"
         class="rounded-l-lg px-3 py-3 border border-gray-200 bg-white text-gray-900 inline-flex items-center"
       >
-        <IconMetro
-          class="w-5"
-          :active="layerStore.visibilities.metro"
-        ></IconMetro>
+        <IconMetro :active="layerStore.visibilities.metro"></IconMetro>
       </UiIconButton>
       <UiIconButton
         @click="() => toggleLayer('bus')"
