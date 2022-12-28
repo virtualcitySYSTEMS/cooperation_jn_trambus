@@ -1,14 +1,23 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
 import PhotoGallery from '@/components/home/PhotoGallery.vue'
 import MapComponent from '@/components/map/MapComponent.vue'
-
 import SidePanel from '@/components/home/SidePanel.vue'
+import HeadToolbarTrambus from '@/components/map/HeadToolbarTrambus.vue'
 import PlanningView from '@/views/PlanningView.vue'
 
 import { usePanelsStore } from '@/stores/panels'
-import HeadToolbarTrambus from '@/components/map/HeadToolbarTrambus.vue'
+import { useViewsStore } from '@/stores/views'
 
 const panelStore = usePanelsStore()
+const viewStore = useViewsStore()
+
+const isPhotoGaleryVisible = ref(true)
+
+viewStore.$subscribe(() => {
+  isPhotoGaleryVisible.value = viewStore.currentView == 'home'
+})
 </script>
 
 <template>
@@ -27,7 +36,10 @@ const panelStore = usePanelsStore()
       <MapComponent></MapComponent>
     </div>
 
-    <div class="z-10 absolute inset-x-0 bottom-0 max-w-max m-auto">
+    <div
+      class="z-10 absolute inset-x-0 bottom-0 max-w-max m-auto"
+      v-show="isPhotoGaleryVisible"
+    >
       <PhotoGallery></PhotoGallery>
     </div>
 
