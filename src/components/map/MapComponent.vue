@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { useLayersStore } from '@/stores/layers'
-import { CesiumMap, Context, VcsApp } from '@vcmap/core'
 import { onMounted, onUnmounted, provide, ref } from 'vue'
+import { CesiumMap, Context, VcsApp } from '@vcmap/core'
+
+import UiMap from '@/components/ui/UiMap.vue'
+import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
+
+import { useLayersStore } from '@/stores/layers'
+
 import mapConfig from '../../map.config.json'
-import UiMap from '../ui/UiMap.vue'
-import NavigationButtons from './buttons/NavigationButtons.vue'
 
 const app = new VcsApp()
 provide('vcsApp', app)
@@ -43,6 +46,10 @@ layerStore.$subscribe(() => {
   setLayerVisible('metro', layerStore.visibilities.metro)
   setLayerVisible('bus', layerStore.visibilities.bus)
   setLayerVisible('bike', layerStore.visibilities.bike)
+  setLayerVisible('trambusLines', layerStore.visibilities.trambusLines)
+  setLayerVisible('trambusStops', layerStore.visibilities.trambusStops)
+  setLayerVisible('parking', layerStore.visibilities.parking)
+  setLayerVisible('poi', layerStore.visibilities.poi)
 })
 </script>
 

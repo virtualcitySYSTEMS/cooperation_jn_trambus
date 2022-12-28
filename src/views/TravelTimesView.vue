@@ -3,6 +3,7 @@ import { reactive, onMounted } from 'vue'
 
 import router from '@/router/index'
 import { useViewsStore } from '@/stores/views'
+import { useLayersStore } from '@/stores/layers'
 import { apiClientService } from '@/services/api.client'
 import type { TravelTimeModel } from '@/model/travel-time.model'
 
@@ -11,6 +12,7 @@ import UiButton from '@/components/ui/UiButton.vue'
 import UiTravelTime from '@/components/ui/UiTravelTime.vue'
 
 const viewStore = useViewsStore()
+const layerStore = useLayersStore()
 
 const state = reactive({
   travelTimes: null as null | TravelTimeModel[],
@@ -22,6 +24,10 @@ onMounted(async () => {
 
 onMounted(() => {
   viewStore.currentView = 'traveltimes'
+  layerStore.visibilities.trambusLines = true
+  layerStore.visibilities.trambusStops = false // TODO: enable this but only for the selected one
+  layerStore.visibilities.parking = false
+  layerStore.visibilities.poi = false
 })
 </script>
 
