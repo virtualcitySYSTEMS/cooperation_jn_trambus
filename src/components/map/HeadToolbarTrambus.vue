@@ -1,18 +1,30 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
 import UiButton from '@/components/ui/UiButton.vue'
 import UiIconButton from '@/components/ui/UiIconButton.vue'
 import IconCalendar from '@/components/ui/icons/IconCalendar.vue'
 import IconVelo from '@/components/ui/icons/logo-transports-icons/IconVelo.vue'
 import IconBus from '@/components/ui/icons/logo-transports-icons/IconBus.vue'
 import IconMetro from '@/components/ui/icons/logo-transports-icons/IconMetro.vue'
+import LoginButtons from '@/components/map/buttons/LoginButtons.vue'
 
 import { usePanelsStore } from '@/stores/panels'
 import { useLayersStore } from '@/stores/layers'
+import { useViewsStore } from '@/stores/views'
 import type { TransportLayers } from '@/stores/layers'
-import LoginButtons from '@/components/map/buttons/LoginButtons.vue'
 
 const panelStore = usePanelsStore()
 const layerStore = useLayersStore()
+const viewStore = useViewsStore()
+
+const isLayerButtonsVisible = ref(true)
+const isPlanningButtonVisible = ref(true)
+
+viewStore.$subscribe(() => {
+  isLayerButtonsVisible.value = viewStore.currentView == 'home'
+  isPlanningButtonVisible.value = viewStore.currentView == 'home'
+})
 
 function onPlanningButtonClicked() {
   panelStore.isPlanningViewShown = true
@@ -26,7 +38,11 @@ function toggleLayer(name: TransportLayers) {
 
 <template>
   <div class="absolute right-2 top-2 z-10 flex [&>*]:m-1">
-    <div class="inline-flex shadow-sm rounded-md" role="group">
+    <div
+      class="inline-flex shadow-sm rounded-md"
+      role="group"
+      v-show="isLayerButtonsVisible"
+    >
       <UiIconButton
         @click="() => toggleLayer('metro')"
         :active="layerStore.visibilities.metro"
@@ -60,6 +76,7 @@ function toggleLayer(name: TransportLayers) {
       @click="onPlanningButtonClicked"
       :icon="IconCalendar"
       :disabled="false"
+      v-show="isPlanningButtonVisible"
     >
       Planning du projet
     </UiButton>
