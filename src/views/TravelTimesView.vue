@@ -29,6 +29,10 @@ onMounted(() => {
   layerStore.visibilities.parking = false
   layerStore.visibilities.poi = false
 })
+
+function onTravelTimesClicked(travelTime: TravelTimeModel) {
+  console.log(travelTime)
+}
 </script>
 
 <template>
@@ -61,7 +65,9 @@ onMounted(() => {
   <div class="flex flex-col p-0 gap-3">
     <UiTravelTime
       class="grow"
+      role="button"
       v-for="travelTime in state.travelTimes"
+      @click="onTravelTimesClicked(travelTime)"
       :key="travelTime.line"
       :newDuration="travelTime.new"
       :oldDuration="travelTime.old"
