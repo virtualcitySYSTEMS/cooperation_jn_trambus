@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, reactive } from 'vue'
+import { onBeforeMount, reactive, ref } from 'vue'
 import router from '@/router'
 
 import UiLineDescription from '@/components/ui/UiLineDescription.vue'
@@ -7,13 +7,19 @@ import ChevronArrowRight from '@/assets/icons/chevron-left.svg'
 import type { LineModel } from '@/model/lines.model'
 import { apiClientService } from '@/services/api.client'
 import UiButton from '@/components/ui/UiButton.vue'
+import { useRoute } from 'vue-router'
 
 const state = reactive({
   lineDescription: null as null | LineModel,
 })
 
 onBeforeMount(async () => {
-  state.lineDescription = await apiClientService.fetchLineDescription(1)
+  const { params } = useRoute()
+  const routeParams = ref(params)
+
+  state.lineDescription = await apiClientService.fetchLineDescription(
+    routeParams.value.id as unknown as number
+  )
 })
 </script>
 
@@ -26,6 +32,7 @@ onBeforeMount(async () => {
       >
         <img :src="ChevronArrowRight" />
       </UiButton>
+      <!-- TODO: Make it a title size (currently the component is smaller than the design) -->
       <UiLineDescription
         :line="state.lineDescription?.id!"
         :name="state.lineDescription?.name"
