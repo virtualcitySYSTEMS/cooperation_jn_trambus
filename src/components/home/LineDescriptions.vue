@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { reactive, onMounted } from 'vue'
+import router from '@/router'
 
 import { apiClientService } from '@/services/api.client'
 import type { LineModel } from '@/model/lines.model'
-import UiLineDescription from '../ui/UiLineDescription.vue'
+import UiLineDescription from '@/components/ui/UiLineDescription.vue'
 import { useLinesStore } from '@/stores/lines'
 
 const state = reactive({
@@ -19,6 +20,10 @@ const lineStore = useLinesStore()
 function selectLine(line: String) {
   lineStore.selectLine(line)
 }
+
+function goToLinePage(line: number) {
+  router.push(`/line/${line}`)
+}
 </script>
 
 <template>
@@ -29,6 +34,8 @@ function selectLine(line: String) {
     <div class="flex flex-col p-0 gap-2 grow">
       <UiLineDescription
         v-for="lineDescription in state.lineDescription"
+        role="button"
+        @click="goToLinePage(lineDescription.id)"
         :key="lineDescription.id"
         :line="lineDescription.id"
         :name="lineDescription.name"
