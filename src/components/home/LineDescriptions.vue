@@ -12,7 +12,7 @@ const state = reactive({
 })
 
 onMounted(async () => {
-  state.lineDescription = await apiClientService.fetchLineDescription()
+  state.lineDescription = await apiClientService.fetchLineDescriptions()
 })
 
 const lineStore = useLinesStore()

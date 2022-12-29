@@ -37,9 +37,16 @@ class ApiClientService {
       }
     })
   }
-  async fetchLineDescription() {
+
+  async fetchLineDescriptions() {
     return new Promise<LineModel[]>((resolve) => {
       resolve(linesFixtures())
+    })
+  }
+
+  async fetchLineDescription(lineNumber: number) {
+    return new Promise<LineModel>((resolve) => {
+      resolve(linesFixtures()[lineNumber - 1])
     })
   }
 
