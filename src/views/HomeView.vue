@@ -8,12 +8,23 @@ import UiTrambusTitle from '@/components/ui/UiTrambusTitle.vue'
 
 import { useLayersStore } from '@/stores/layers'
 import { useViewsStore } from '@/stores/views'
+import { useMapStore } from '@/stores/map'
 
 const layerStore = useLayersStore()
 const viewStore = useViewsStore()
+const mapStore = useMapStore()
 
 onMounted(() => {
   viewStore.currentView = 'home'
+
+  if (mapStore.is3D()) {
+    layerStore.visibilities.rennesBase = false
+    layerStore.visibilities.rennesOrtho = true
+  } else {
+    layerStore.visibilities.rennesBase = true
+    layerStore.visibilities.rennesOrtho = false
+  }
+
   layerStore.visibilities.trambusLines = true
   layerStore.visibilities.trambusStops = false
   layerStore.visibilities.parking = true
