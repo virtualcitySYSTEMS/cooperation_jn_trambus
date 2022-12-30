@@ -17,7 +17,7 @@ onMounted(async () => {
 
 const lineStore = useLinesStore()
 
-function selectLine(line: String) {
+function selectLine(line: number) {
   lineStore.selectLine(line)
 }
 
@@ -42,7 +42,7 @@ function goToLinePage(line: number) {
         :start="lineDescription.start"
         :end="lineDescription.end"
         :frequency="lineDescription.frequency"
-        v-on:click="selectLine(lineDescription.name)"
+        v-on:click="selectLine(lineDescription.id)"
       >
       </UiLineDescription>
     </div>

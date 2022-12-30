@@ -1,14 +1,23 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, provide, ref } from 'vue'
-import { CesiumMap, Context, VcsApp, Layer } from '@vcmap/core'
+import { CesiumMap, Context, VcsApp, Layer, FeatureLayer } from '@vcmap/core'
+
+import * as ol_color from 'ol/color'
 
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
 
 import { useLayersStore, RENNES_LAYERS } from '@/stores/layers'
 import { useMapStore } from '@/stores/map'
+import { useLinesStore } from '@/stores/lines'
 
 import mapConfig from '../../map.config.json'
+import type { StyleFunction } from 'ol/style/Style'
+import type { FeatureLike } from 'ol/Feature'
+import Style from 'ol/style/Style'
+import { Stroke } from 'ol/style'
+import type { LineNumber } from '@/model/lines.model'
+import { useViewsStore } from '@/stores/views'
 
 const vcsApp = new VcsApp()
 provide('vcsApp', vcsApp)
@@ -16,6 +25,8 @@ provide('vcsApp', vcsApp)
 const appLoaded = ref(false)
 const layerStore = useLayersStore()
 const mapStore = useMapStore()
+const lineStore = useLinesStore()
+const viewStore = useViewsStore()
 
 onMounted(async () => {
   const context = new Context(mapConfig)
@@ -64,6 +75,47 @@ async function updateViewPoint() {
   }
 }
 
+// TODO: some of the following code are copy paste from PlanningMapComponent, refactor it to utils module
+function getLineNumber(feature: FeatureLike): number {
+  let lineNumberString = feature.get('li_code') // e.g. T1
+  return Number(lineNumberString.substr(lineNumberString.length - 1))
+}
+
+const lineColors: Record<LineNumber, ol_color.Color> = {
+  1: ol_color.fromString('#4338CA'), // indigo-600
+  2: ol_color.fromString('#DB2777'), // pink-600
+  3: ol_color.fromString('#057857'), // emerald-600
+  4: ol_color.fromString('#9333EA'), // purple-600
+}
+
+const styleFunction: StyleFunction = function (feature: FeatureLike): Style[] {
+  if (getLineNumber(feature) == lineStore.selectedLine) {
+    const selectedLineStyle = new Style({
+      stroke: new Stroke({
+        color: lineColors[getLineNumber(feature) as LineNumber],
+        width: 4,
+      }),
+      zIndex: 0,
+    })
+    return [selectedLineStyle]
+  } else {
+    return []
+  }
+}
+
+// TODO: probably merge these two functions. i.e. updateTrambusStyle(currentView: home | line)
+async function updateLineViewStyle() {
+  const trambusLayer = vcsApp.layers.getByKey(RENNES_LAYERS[5]) as FeatureLayer
+  trambusLayer.setStyle(styleFunction)
+}
+
+async function updateHomeViewStyle() {
+  const trambusLayer = vcsApp.layers.getByKey(RENNES_LAYERS[5]) as FeatureLayer
+  const defaultTrambusLineStyle = vcsApp.styles.getByKey('trambusLineStyle')
+  trambusLayer.clearStyle()
+  trambusLayer.setStyle(defaultTrambusLineStyle!)
+}
+
 async function updateActiveMap() {
   await vcsApp.maps.setActiveMap(mapStore.activeMap)
 }
@@ -76,6 +128,11 @@ mapStore.$subscribe(async () => {
   // Update map
   await updateViewPoint()
   await updateActiveMap()
+})
+
+viewStore.$subscribe(async () => {
+  if (viewStore.currentView == 'home') updateHomeViewStyle()
+  if (viewStore.currentView == 'line') updateLineViewStyle()
 })
 </script>
 

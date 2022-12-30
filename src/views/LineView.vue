@@ -10,8 +10,10 @@ import UiButton from '@/components/ui/UiButton.vue'
 import { useRoute } from 'vue-router'
 
 import { useMapStore } from '@/stores/map'
+import { useViewsStore } from '@/stores/views'
 
 const mapStore = useMapStore()
+const viewStore = useViewsStore()
 
 const state = reactive({
   lineDescription: null as null | LineModel,
@@ -31,6 +33,7 @@ onMounted(async () => {
   const routeParams = ref(params)
 
   mapStore.viewPoint = `line${routeParams.value.id}`
+  viewStore.currentView = 'line'
 })
 
 function backButtonClicked() {
