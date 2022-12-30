@@ -10,8 +10,8 @@ import { useMapStore } from '@/stores/map'
 
 import mapConfig from '../../map.config.json'
 
-const app = new VcsApp()
-provide('vcsApp', app)
+const vcsApp = new VcsApp()
+provide('vcsApp', vcsApp)
 
 const appLoaded = ref(false)
 const layerStore = useLayersStore()
@@ -19,8 +19,8 @@ const mapStore = useMapStore()
 
 onMounted(async () => {
   const context = new Context(mapConfig)
-  await app.addContext(context)
-  const cesiumMap = app.maps.getByKey('cesium')
+  await vcsApp.addContext(context)
+  const cesiumMap = vcsApp.maps.getByKey('cesium')
   await cesiumMap?.initialize()
   if (cesiumMap && cesiumMap instanceof CesiumMap) {
     cesiumMap.getScene().globe.maximumScreenSpaceError = 1
@@ -34,11 +34,11 @@ onMounted(async () => {
 // (in this case, the vcsApp) once a component gets destroyed (unmounted).
 // Otherwise, we will keep on rendering the vcsApp in its container after a hot reload.
 onUnmounted(() => {
-  app.destroy()
+  vcsApp.destroy()
 })
 
 async function setLayerVisible(layerName: string, visible: boolean) {
-  const layer: Layer = app.maps.layerCollection.getByKey(layerName)
+  const layer: Layer = vcsApp.maps.layerCollection.getByKey(layerName)
   if (visible) {
     await layer?.activate()
   } else if (layer?.active) {
@@ -53,15 +53,19 @@ async function updateLayersVisibility() {
 }
 
 async function updateViewPoint() {
-  const activeMap = app.maps.activeMap
-  const selectedViewPoint = app.viewpoints.getByKey(mapStore.viewPoint)
+  const activeMap = vcsApp.maps.activeMap
+  const selectedViewPoint = vcsApp.viewpoints.getByKey(mapStore.viewPoint)
   if (selectedViewPoint) {
     activeMap.gotoViewpoint(selectedViewPoint)
   } else {
     // go to home
-    const homeViewPoint = app.viewpoints.getByKey('rennes')
+    const homeViewPoint = vcsApp.viewpoints.getByKey('rennes')
     activeMap.gotoViewpoint(homeViewPoint!)
   }
+}
+
+async function updateActiveMap() {
+  await vcsApp.maps.setActiveMap(mapStore.activeMap)
 }
 
 layerStore.$subscribe(async () => {
@@ -71,6 +75,7 @@ layerStore.$subscribe(async () => {
 mapStore.$subscribe(async () => {
   // Update map
   await updateViewPoint()
+  await updateActiveMap()
 })
 </script>
 

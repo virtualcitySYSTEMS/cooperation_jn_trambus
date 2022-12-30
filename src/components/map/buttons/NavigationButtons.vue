@@ -16,12 +16,11 @@ const vcsApp = inject('vcsApp') as VcsApp
 const mapStore = useMapStore()
 const layerStore = useLayersStore()
 
-async function toggleMap() {
+async function toggle3DMap() {
   mapStore.toggle3D()
+  // TODO: if the layer store is merged into map store, we can do the following
+  // line in pinia
   layerStore.update3DBaseLayer(mapStore.is3D())
-
-  // TODO: set via pinia store
-  await vcsApp.maps.setActiveMap(mapStore.is3D() ? 'cesium' : 'ol')
 }
 
 async function zoom(out = false, zoomFactor = 2): Promise<void> {
@@ -76,7 +75,7 @@ const shouldDisplayNavHelp = () => {
         >-</UiIconButton
       >
     </div>
-    <UiIconButton class="font-semibold rounded-lg" @click="toggleMap">{{
+    <UiIconButton class="font-semibold rounded-lg" @click="toggle3DMap">{{
       mapStore.is3D() ? '2D' : '3D'
     }}</UiIconButton>
     <CompassComponent v-if="mapStore.is3D()" />
