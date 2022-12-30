@@ -32,6 +32,14 @@ onMounted(async () => {
 
   mapStore.viewPoint = `line${routeParams.value.id}`
 })
+
+function backButtonClicked() {
+  router.go(-1)
+  // TODO: this should use the same starting viewpoint (rennes), but for
+  // some reason the starting view point (rennes) is rendered differently
+  // from the configuration.
+  mapStore.viewPoint = `home`
+}
 </script>
 
 <template>
@@ -39,7 +47,7 @@ onMounted(async () => {
     <div class="flex items-center p-0 gap-4">
       <UiButton
         class="shadow-md rounded-lg p-2 flex gap-2.5 shrink-0 grow-0"
-        @click="router.go(-1)"
+        @click="backButtonClicked"
       >
         <img :src="ChevronArrowRight" />
       </UiButton>
