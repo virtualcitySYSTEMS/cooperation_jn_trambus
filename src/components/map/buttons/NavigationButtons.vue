@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { VcsApp } from '@vcmap/core'
-import { Viewpoint } from '@vcmap/core'
 import { inject } from 'vue'
 
 import IconHome from '@/components/ui/icons/IconHome.vue'
@@ -43,13 +42,7 @@ async function zoom(out = false, zoomFactor = 2): Promise<void> {
 }
 
 async function returnToHome() {
-  const activeMap = vcsApp.maps?.activeMap
-  const homeViewPoint = new Viewpoint({
-    cameraPosition: [-1.7219, 48.09, 30000],
-    groundPosition: [-1.7219, 48.09, 30000],
-  })
-
-  await activeMap?.gotoViewpoint(homeViewPoint)
+  mapStore.viewPoint = 'home'
 }
 
 const shouldDisplayNavHelp = () => {
