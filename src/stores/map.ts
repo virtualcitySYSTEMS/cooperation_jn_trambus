@@ -6,6 +6,7 @@ export const useMapStore = defineStore('map', () => {
   // Map state
   const activeMap: Ref<string> = ref('ol') // Map: 'ol', 'cesium'
   const viewPoint: Ref<string> = ref('rennes') // See the map.config.json
+  // Layers are handled in layers.ts (TODO: probably merge it here?)
 
   const eventRandomId: Ref<number> = ref(0)
 

@@ -62,10 +62,10 @@ layerStore.$subscribe(async () => {
 
 mapStore.$subscribe(async () => {
   // Update map
-  await zoomTo()
+  await updateViewPoint()
 })
 
-async function zoomTo() {
+async function updateViewPoint() {
   const activeMap = app.maps.activeMap
   const selectedViewPoint = app.viewpoints.getByKey(mapStore.viewPoint)
   if (selectedViewPoint) {
