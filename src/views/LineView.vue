@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, reactive, ref } from 'vue'
+import { onBeforeMount, reactive, onMounted, ref } from 'vue'
 import router from '@/router'
 
 import UiLineDescription from '@/components/ui/UiLineDescription.vue'
@@ -8,6 +8,10 @@ import type { LineModel } from '@/model/lines.model'
 import { apiClientService } from '@/services/api.client'
 import UiButton from '@/components/ui/UiButton.vue'
 import { useRoute } from 'vue-router'
+
+import { useMapStore } from '@/stores/map'
+
+const mapStore = useMapStore()
 
 const state = reactive({
   lineDescription: null as null | LineModel,
@@ -20,6 +24,13 @@ onBeforeMount(async () => {
   state.lineDescription = await apiClientService.fetchLineDescription(
     routeParams.value.id as unknown as number
   )
+})
+
+onMounted(async () => {
+  const { params } = useRoute()
+  const routeParams = ref(params)
+
+  mapStore.viewPoint = `line${routeParams.value.id}`
 })
 </script>
 

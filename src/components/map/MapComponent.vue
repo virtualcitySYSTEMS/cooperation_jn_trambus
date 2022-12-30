@@ -6,6 +6,7 @@ import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
 
 import { useLayersStore } from '@/stores/layers'
+import { useMapStore } from '@/stores/map'
 
 import mapConfig from '../../map.config.json'
 
@@ -14,6 +15,7 @@ provide('vcsApp', app)
 
 const appLoaded = ref(false)
 const layerStore = useLayersStore()
+const mapStore = useMapStore()
 
 onMounted(async () => {
   const context = new Context(mapConfig)
@@ -24,6 +26,7 @@ onMounted(async () => {
     cesiumMap.getScene().globe.maximumScreenSpaceError = 1
   }
   appLoaded.value = true
+  // window.vcmap = app
   await updateLayersVisibility()
 })
 
@@ -56,6 +59,23 @@ async function updateLayersVisibility() {
 layerStore.$subscribe(async () => {
   await updateLayersVisibility()
 })
+
+mapStore.$subscribe(async () => {
+  // Update map
+  await zoomTo()
+})
+
+async function zoomTo() {
+  const activeMap = app.maps.activeMap
+  const selectedViewPoint = app.viewpoints.getByKey(mapStore.viewPoint)
+  if (selectedViewPoint) {
+    activeMap.gotoViewpoint(selectedViewPoint)
+  } else {
+    // go to home
+    const homeViewPoint = app.viewpoints.getByKey('rennes')
+    activeMap.gotoViewpoint(homeViewPoint!)
+  }
+}
 </script>
 
 <template>

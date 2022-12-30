@@ -230,12 +230,85 @@
       "distance": 16,
       "pitch": -10,
       "roll": 360,
-      "animate": false,
+      "animate": true,
       "type": "Viewpoint",
+      "duration": 0.5,
       "properties": {
         "title": {
           "en": "Rennes",
           "fr": "Rennes"
+        }
+      }
+    },
+    {
+      "name": "line1",
+      "cameraPosition": null,
+      "groundPosition": [-1.6836920667543744, 48.12714651441834, 30000],
+      "distance": 9652,
+      "pitch": -90,
+      "roll": 0,
+      "heading": 0,
+      "animate": true,
+      "type": "Viewpoint",
+      "duration": 0.5,
+      "properties": {
+        "title": {
+          "en": "Line 1",
+          "fr": "Ligne 1"
+        }
+      }
+    },
+    {
+      "name": "line2",
+      "cameraPosition": null,
+      "groundPosition": [-1.6902479380229805, 48.10739914218232, 30000],
+      "distance": 16046,
+      "pitch": -90,
+      "roll": 0,
+      "heading": 0,
+      "animate": true,
+      "type": "Viewpoint",
+      "duration": 0.5,
+      "properties": {
+        "title": {
+          "en": "Line 2",
+          "fr": "Ligne 2"
+        }
+      }
+    },
+    {
+      "name": "line3",
+      "cameraPosition": null,
+      "groundPosition": [-1.6832020074769098, 48.12109567778313, 30000],
+      "distance": 18810,
+      "pitch": -90,
+      "roll": 0,
+      "heading": 0,
+      "animate": true,
+      "type": "Viewpoint",
+      "duration": 0.5,
+      "properties": {
+        "title": {
+          "en": "Line 3",
+          "fr": "Ligne 3"
+        }
+      }
+    },
+    {
+      "name": "line4",
+      "cameraPosition": null,
+      "groundPosition": [-1.7383279234462135, 48.05845827060446, 30000],
+      "distance": 16000,
+      "pitch": -90,
+      "roll": 0,
+      "heading": 0,
+      "animate": true,
+      "type": "Viewpoint",
+      "duration": 0.5,
+      "properties": {
+        "title": {
+          "en": "Line 4",
+          "fr": "Ligne 4"
         }
       }
     }
