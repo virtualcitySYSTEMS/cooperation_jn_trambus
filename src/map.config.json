@@ -157,7 +157,13 @@
         "declarativeStyle": {
           "strokeWidth": "6",
           "color": {
-            "conditions": [["true", "color(${couleur})"]]
+            "conditions": [
+              ["${li_code} === 'T1'", "color('#4338ca')"],
+              ["${li_code} === 'T2'", "color('#db2777')"],
+              ["${li_code} === 'T3'", "color('#057857')"],
+              ["${li_code} === 'T4'", "color('#9333ea')"],
+              ["true", "color(${couleur})"]
+            ]
           }
         }
       },
