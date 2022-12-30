@@ -26,7 +26,7 @@ onMounted(async () => {
     cesiumMap.getScene().globe.maximumScreenSpaceError = 1
   }
   appLoaded.value = true
-  // window.vcmap = app
+  // window.vcmap = vcsApp
   await updateLayersVisibility()
 })
 

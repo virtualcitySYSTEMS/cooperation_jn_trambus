@@ -26,5 +26,20 @@ export const useMapStore = defineStore('map', () => {
     }
   }
 
-  return { triggerEvent, eventRandomId, viewPoint, activeMap, is3D, toggle3D }
+  function updateViewpoint(viewpoint: string, force: boolean = false) {
+    viewPoint.value = viewpoint
+    if (force) {
+      triggerEvent()
+    }
+  }
+
+  return {
+    triggerEvent,
+    eventRandomId,
+    viewPoint,
+    activeMap,
+    is3D,
+    toggle3D,
+    updateViewpoint,
+  }
 })

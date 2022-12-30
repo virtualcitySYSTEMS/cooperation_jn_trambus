@@ -42,7 +42,7 @@ async function zoom(out = false, zoomFactor = 2): Promise<void> {
 }
 
 async function returnToHome() {
-  mapStore.viewPoint = 'home'
+  mapStore.updateViewpoint('home', true)
 }
 
 const shouldDisplayNavHelp = () => {
