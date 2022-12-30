@@ -267,8 +267,8 @@
     },
     {
       "name": "line1",
-      "cameraPosition": null,
-      "groundPosition": [-1.6836920667543744, 48.12714651441834, 30000],
+      "cameraPosition": [-1.6836920667543744, 48.12714651441834, 9652],
+      "groundPosition": [-1.6836920667543744, 48.12714651441834, 0],
       "distance": 9652,
       "pitch": -90,
       "roll": 0,
@@ -285,8 +285,8 @@
     },
     {
       "name": "line2",
-      "cameraPosition": null,
-      "groundPosition": [-1.6902479380229805, 48.10739914218232, 30000],
+      "cameraPosition": [-1.6902479380229805, 48.10739914218232, 16046],
+      "groundPosition": [-1.6902479380229805, 48.10739914218232, 0],
       "distance": 16046,
       "pitch": -90,
       "roll": 0,
@@ -303,8 +303,8 @@
     },
     {
       "name": "line3",
-      "cameraPosition": null,
-      "groundPosition": [-1.6832020074769098, 48.12109567778313, 30000],
+      "cameraPosition": [-1.6832020074769098, 48.12109567778313, 18810],
+      "groundPosition": [-1.6832020074769098, 48.12109567778313, 0],
       "distance": 18810,
       "pitch": -90,
       "roll": 0,
@@ -321,8 +321,8 @@
     },
     {
       "name": "line4",
-      "cameraPosition": null,
-      "groundPosition": [-1.7383279234462135, 48.05845827060446, 30000],
+      "cameraPosition": [-1.7383279234462135, 48.05845827060446, 16000],
+      "groundPosition": [-1.7383279234462135, 48.05845827060446, 0],
       "distance": 16000,
       "pitch": -90,
       "roll": 0,
