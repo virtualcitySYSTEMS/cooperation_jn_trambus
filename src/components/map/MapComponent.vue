@@ -5,7 +5,7 @@ import { CesiumMap, Context, VcsApp, Layer } from '@vcmap/core'
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
 
-import { useLayersStore } from '@/stores/layers'
+import { useLayersStore, RENNES_LAYERS } from '@/stores/layers'
 import { useMapStore } from '@/stores/map'
 
 import mapConfig from '../../map.config.json'
@@ -47,23 +47,10 @@ async function setLayerVisible(layerName: string, visible: boolean) {
 }
 
 async function updateLayersVisibility() {
-  await setLayerVisible('metro', layerStore.visibilities.metro)
-  await setLayerVisible('bus', layerStore.visibilities.bus)
-  await setLayerVisible('bike', layerStore.visibilities.bike)
-  await setLayerVisible('trambusLines', layerStore.visibilities.trambusLines)
-  await setLayerVisible('trambusStops', layerStore.visibilities.trambusStops)
-  await setLayerVisible('parking', layerStore.visibilities.parking)
-  await setLayerVisible('poi', layerStore.visibilities.poi)
+  RENNES_LAYERS.forEach(async (layer) => {
+    await setLayerVisible(layer, layerStore.visibilities[layer])
+  })
 }
-
-layerStore.$subscribe(async () => {
-  await updateLayersVisibility()
-})
-
-mapStore.$subscribe(async () => {
-  // Update map
-  await updateViewPoint()
-})
 
 async function updateViewPoint() {
   const activeMap = app.maps.activeMap
@@ -76,6 +63,15 @@ async function updateViewPoint() {
     activeMap.gotoViewpoint(homeViewPoint!)
   }
 }
+
+layerStore.$subscribe(async () => {
+  await updateLayersVisibility()
+})
+
+mapStore.$subscribe(async () => {
+  // Update map
+  await updateViewPoint()
+})
 </script>
 
 <template>

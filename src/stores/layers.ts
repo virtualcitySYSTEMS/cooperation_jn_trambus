@@ -2,14 +2,17 @@ import { ref } from 'vue'
 import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
 
-export type Layers =
-  | 'metro'
-  | 'bus'
-  | 'bike'
-  | 'trambusLines'
-  | 'trambusStops'
-  | 'parking'
-  | 'poi'
+export const RENNES_LAYERS = [
+  'metro',
+  'bus',
+  'bike',
+  'trambusLines',
+  'trambusStops',
+  'parking',
+  'poi',
+] as const
+
+export type Layers = typeof RENNES_LAYERS[number]
 export type LayersVisibility = Record<Layers, boolean>
 
 export const useLayersStore = defineStore('layers', () => {
