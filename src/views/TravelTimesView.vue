@@ -7,7 +7,7 @@ import { useLayersStore } from '@/stores/layers'
 import { apiClientService } from '@/services/api.client'
 import type { TravelTimeModel } from '@/model/travel-time.model'
 
-import ChevronArrowRight from '@/assets/icons/chevron-left.svg'
+import ChevronArrowLeft from '@/assets/icons/chevron-left.svg'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiTravelTime from '@/components/ui/UiTravelTime.vue'
 
@@ -49,7 +49,7 @@ function onTravelTimesClicked(travelTime: TravelTimeModel, index: number) {
         class="shadow-md rounded-lg p-2 flex gap-2.5 shrink-0 grow-0"
         @click="router.go(-1)"
       >
-        <img :src="ChevronArrowRight" />
+        <img :src="ChevronArrowLeft" />
       </UiButton>
 
       <div class="flex flex-col items-start p-0 gap-2">

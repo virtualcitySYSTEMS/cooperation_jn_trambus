@@ -3,7 +3,7 @@ import { onBeforeMount, reactive, onMounted, ref } from 'vue'
 import router from '@/router'
 
 import UiLineDescription from '@/components/ui/UiLineDescription.vue'
-import ChevronArrowRight from '@/assets/icons/chevron-left.svg'
+import ChevronArrowLeft from '@/assets/icons/chevron-left.svg'
 import type { LineModel } from '@/model/lines.model'
 import { apiClientService } from '@/services/api.client'
 import UiButton from '@/components/ui/UiButton.vue'
@@ -49,7 +49,7 @@ function backButtonClicked() {
         class="shadow-md rounded-lg p-2 flex gap-2.5 shrink-0 grow-0"
         @click="backButtonClicked"
       >
-        <img :src="ChevronArrowRight" />
+        <img :src="ChevronArrowLeft" />
       </UiButton>
       <!-- TODO: Make it a title size (currently the component is smaller than the design) -->
       <UiLineDescription
