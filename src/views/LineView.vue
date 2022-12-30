@@ -53,6 +53,7 @@ function backButtonClicked() {
       </UiButton>
       <!-- TODO: Make it a title size (currently the component is smaller than the design) -->
       <UiLineDescription
+        v-if="state.lineDescription"
         :line="state.lineDescription?.id!"
         :name="state.lineDescription?.name"
         :start="state.lineDescription?.start"
