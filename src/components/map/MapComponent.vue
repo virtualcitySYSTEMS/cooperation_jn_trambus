@@ -18,6 +18,7 @@ import Style from 'ol/style/Style'
 import { Circle, Fill, Stroke } from 'ol/style'
 import type { LineNumber } from '@/model/lines.model'
 import { useViewsStore } from '@/stores/views'
+import { isStartOrEndStation } from '@/model/lines.fixtures'
 
 const vcsApp = new VcsApp()
 provide('vcsApp', vcsApp)
@@ -142,23 +143,28 @@ const trambusLineTravelTimesViewStyleFunction: StyleFunction = function (
 const trambusStopTravelTimesViewStyleFunction: StyleFunction = function (
   feature: FeatureLike
 ): Style[] {
-  const fill = new Fill({
-    color: '#FFFFFF',
-  })
-  const stroke = new Stroke({
-    color: lineColors[getTrambusLineNumber(feature) as LineNumber],
-    width: 3,
-  })
-  const selectedTrambusStopStyle = new Style({
-    image: new Circle({
+  const stationName = feature.get('nom')
+  if (isStartOrEndStation(stationName)) {
+    const fill = new Fill({
+      color: '#FFFFFF',
+    })
+    const stroke = new Stroke({
+      color: lineColors[getTrambusLineNumber(feature) as LineNumber],
+      width: 2,
+    })
+    const StartEndTrambusStopStyle = new Style({
+      image: new Circle({
+        fill: fill,
+        stroke: stroke,
+        radius: 6,
+      }),
       fill: fill,
       stroke: stroke,
-      radius: 5,
-    }),
-    fill: fill,
-    stroke: stroke,
-  })
-  return [selectedTrambusStopStyle]
+    })
+    return [StartEndTrambusStopStyle]
+  } else {
+    return []
+  }
 }
 
 // TODO: probably merge these two functions. i.e. updateTrambusStyle(currentView: home | line)

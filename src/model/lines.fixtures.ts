@@ -30,3 +30,17 @@ export const linesFixtures = (): LineModel[] => [
     frequency: 7,
   },
 ]
+
+function getAllStartEndStations(): string[] {
+  const startEndStations: string[] = []
+  linesFixtures().forEach((line) => {
+    startEndStations.push(line.start)
+    startEndStations.push(line.end)
+  })
+  return startEndStations
+}
+
+export function isStartOrEndStation(stationName: string): boolean {
+  const stations = getAllStartEndStations()
+  return stations.indexOf(stationName) > -1
+}
