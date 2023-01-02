@@ -15,7 +15,7 @@ import mapConfig from '../../map.config.json'
 import type { StyleFunction } from 'ol/style/Style'
 import type { FeatureLike } from 'ol/Feature'
 import Style from 'ol/style/Style'
-import { Stroke } from 'ol/style'
+import { Circle, Fill, Stroke } from 'ol/style'
 import type { LineNumber } from '@/model/lines.model'
 import { useViewsStore } from '@/stores/views'
 
@@ -88,7 +88,9 @@ const lineColors: Record<LineNumber, ol_color.Color> = {
   4: ol_color.fromString('#9333EA'), // purple-600
 }
 
-const styleFunction: StyleFunction = function (feature: FeatureLike): Style[] {
+const trambusLineViewStyleFunction: StyleFunction = function (
+  feature: FeatureLike
+): Style[] {
   if (getLineNumber(feature) == lineStore.selectedLine) {
     const selectedLineStyle = new Style({
       stroke: new Stroke({
@@ -103,11 +105,53 @@ const styleFunction: StyleFunction = function (feature: FeatureLike): Style[] {
   }
 }
 
+function isTrambusStopBelongsToLine(feature: FeatureLike, trambusLine: number) {
+  let lineNumbers: string = feature.get('li_code') // e.g. T1 T2, T1
+  console.log(`lineNumbers: ${lineNumbers}`)
+  if (lineNumbers.includes(trambusLine.toString())) {
+    return true
+  } else {
+    return false
+  }
+}
+
+const trambusStopLineViewStyleFunction: StyleFunction = function (
+  feature: FeatureLike
+): Style[] {
+  const selectedTrambusLine = Number(lineStore.selectedLine) as LineNumber
+  if (isTrambusStopBelongsToLine(feature, selectedTrambusLine)) {
+    const fill = new Fill({
+      color: '#FFFFFF',
+    })
+    const stroke = new Stroke({
+      color: lineColors[selectedTrambusLine],
+      width: 3,
+    })
+    const selectedTrambusStopStyle = new Style({
+      image: new Circle({
+        fill: fill,
+        stroke: stroke,
+        radius: 5,
+      }),
+      fill: fill,
+      stroke: stroke,
+    })
+    return [selectedTrambusStopStyle]
+  }
+  return []
+}
+
 // TODO: probably merge these two functions. i.e. updateTrambusStyle(currentView: home | line)
 async function updateLineViewStyle() {
   const trambusLayer = vcsApp.layers.getByKey(RENNES_LAYERS[5]) as FeatureLayer
   trambusLayer.clearStyle()
-  trambusLayer.setStyle(styleFunction)
+  trambusLayer.setStyle(trambusLineViewStyleFunction)
+
+  const trambusStopLayer = vcsApp.layers.getByKey(
+    RENNES_LAYERS[6]
+  ) as FeatureLayer
+  trambusStopLayer.clearStyle()
+  trambusStopLayer.setStyle(trambusStopLineViewStyleFunction)
 }
 
 function updateHomeViewStyle() {
@@ -130,6 +174,7 @@ layerStore.$subscribe(async () => {
 
 mapStore.$subscribe(async () => {
   // Update map
+  await updateLayersVisibility()
   await updateViewPoint()
   await updateActiveMap()
 })

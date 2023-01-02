@@ -11,9 +11,11 @@ import { useRoute } from 'vue-router'
 
 import { useMapStore } from '@/stores/map'
 import { useViewsStore } from '@/stores/views'
+import { useLayersStore } from '@/stores/layers'
 
 const mapStore = useMapStore()
 const viewStore = useViewsStore()
+const layerStore = useLayersStore()
 
 const state = reactive({
   lineDescription: null as null | LineModel,
@@ -31,6 +33,11 @@ onBeforeMount(async () => {
 onMounted(async () => {
   const { params } = useRoute()
   const routeParams = ref(params)
+
+  layerStore.visibilities.trambusLines = true
+  layerStore.visibilities.trambusStops = true // TODO: enable this but only for the selected one
+  layerStore.visibilities.parking = true
+  layerStore.visibilities.poi = false
 
   mapStore.viewPoint = `line${routeParams.value.id}`
   viewStore.currentView = 'line'
