@@ -31,7 +31,7 @@ export const linesFixtures = (): LineModel[] => [
   },
 ]
 
-function getAllStartEndStations(): string[] {
+export function getAllStartEndStations(): string[] {
   const startEndStations: string[] = []
   linesFixtures().forEach((line) => {
     startEndStations.push(line.start)

@@ -10,7 +10,7 @@ export const useViewsStore = defineStore('views', () => {
   return { currentView }
 })
 
-export const useTravelTimesStore = defineStore('traveltimes-views', () => {
+export const useTravelTimesViewStore = defineStore('traveltimes-views', () => {
   const selectedTravelTime: Ref<TravelTimeModel | null> = ref(null)
 
   return { selectedTravelTime }

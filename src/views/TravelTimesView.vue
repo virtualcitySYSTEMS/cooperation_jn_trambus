@@ -2,7 +2,7 @@
 import { reactive, onMounted } from 'vue'
 
 import router from '@/router/index'
-import { useViewsStore, useTravelTimesStore } from '@/stores/views'
+import { useViewsStore, useTravelTimesViewStore } from '@/stores/views'
 import { useLayersStore } from '@/stores/layers'
 import { apiClientService } from '@/services/api.client'
 import type { TravelTimeModel } from '@/model/travel-time.model'
@@ -14,7 +14,7 @@ import { useMapStore } from '@/stores/map'
 
 const viewStore = useViewsStore()
 const layerStore = useLayersStore()
-const travelTimeStore = useTravelTimesStore()
+const travelTimeStore = useTravelTimesViewStore()
 const mapStore = useMapStore()
 
 const state = reactive({
@@ -43,7 +43,6 @@ function onTravelTimesClicked(travelTime: TravelTimeModel) {
     travelTimeStore.selectedTravelTime = null
   } else {
     travelTimeStore.selectedTravelTime = travelTime
-    console.log(travelTimeStore.selectedTravelTime)
   }
 }
 </script>

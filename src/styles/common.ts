@@ -13,3 +13,11 @@ export const lineColors: Record<LineNumber, ol_color.Color> = {
   3: ol_color.fromString('#057857'), // emerald-600
   4: ol_color.fromString('#9333EA'), // purple-600
 }
+
+// TODO: it seems the dimmed color is not so dimmed
+export const lineDimmedColors: Record<LineNumber, ol_color.Color> = {
+  1: ol_color.fromString('#6366f1'), // indigo-500
+  2: ol_color.fromString('#EC4899'), // pink-500
+  3: ol_color.fromString('#10B981'), // emerald-500
+  4: ol_color.fromString('#A855F7'), // purple-500
+}
