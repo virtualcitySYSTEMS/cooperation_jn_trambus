@@ -131,40 +131,84 @@ const trambusStopLineViewStyleFunction: StyleFunction = function (
 const trambusLineTravelTimesViewStyleFunction: StyleFunction = function (
   feature: FeatureLike
 ): Style[] {
-  const lineStyle = new Style({
-    stroke: new Stroke({
-      color: lineColors[getTrambusLineNumber(feature) as LineNumber],
-      width: 3,
-    }),
-    zIndex: 0,
-  })
-  return [lineStyle]
+  if (!mapStore.is3D()) {
+    const lineStyle = new Style({
+      stroke: new Stroke({
+        color: lineColors[getTrambusLineNumber(feature) as LineNumber],
+        width: 3,
+      }),
+      zIndex: 0,
+    })
+    return [lineStyle]
+  } else {
+    const lineStyle = new Style({
+      stroke: new Stroke({
+        color: lineColors[getTrambusLineNumber(feature) as LineNumber],
+        width: 3,
+      }),
+      zIndex: 1,
+    })
+    const lineBorderStyle = new Style({
+      stroke: new Stroke({
+        color: '#FFFFFF',
+        width: 5,
+      }),
+      zIndex: 0,
+    })
+    return [lineBorderStyle, lineStyle]
+  }
 }
 
 const trambusStopTravelTimesViewStyleFunction: StyleFunction = function (
   feature: FeatureLike
 ): Style[] {
-  const stationName = feature.get('nom')
-  if (isStartOrEndStation(stationName)) {
-    const fill = new Fill({
-      color: '#FFFFFF',
-    })
-    const stroke = new Stroke({
-      color: lineColors[getTrambusLineNumber(feature) as LineNumber],
-      width: 2,
-    })
-    const StartEndTrambusStopStyle = new Style({
-      image: new Circle({
+  if (!mapStore.is3D()) {
+    const stationName = feature.get('nom')
+    if (isStartOrEndStation(stationName)) {
+      const fill = new Fill({
+        color: '#FFFFFF',
+      })
+      const stroke = new Stroke({
+        color: lineColors[getTrambusLineNumber(feature) as LineNumber],
+        width: 2,
+      })
+      const StartEndTrambusStopStyle = new Style({
+        image: new Circle({
+          fill: fill,
+          stroke: stroke,
+          radius: 6,
+        }),
         fill: fill,
         stroke: stroke,
-        radius: 6,
-      }),
-      fill: fill,
-      stroke: stroke,
-    })
-    return [StartEndTrambusStopStyle]
+      })
+      return [StartEndTrambusStopStyle]
+    } else {
+      return []
+    }
   } else {
-    return []
+    // TODO: Change it with disk style
+    const stationName = feature.get('nom')
+    if (isStartOrEndStation(stationName)) {
+      const fill = new Fill({
+        color: lineColors[getTrambusLineNumber(feature) as LineNumber],
+      })
+      const stroke = new Stroke({
+        color: '#FFFFFF',
+        width: 2,
+      })
+      const StartEndTrambusStopStyle = new Style({
+        image: new Circle({
+          fill: fill,
+          stroke: stroke,
+          radius: 6,
+        }),
+        fill: fill,
+        stroke: stroke,
+      })
+      return [StartEndTrambusStopStyle]
+    } else {
+      return []
+    }
   }
 }
 
