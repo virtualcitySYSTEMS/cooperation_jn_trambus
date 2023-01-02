@@ -54,7 +54,7 @@ async function setLayerVisible(layerName: string, visible: boolean) {
   const layer: Layer = vcsApp.maps.layerCollection.getByKey(layerName)
   if (visible) {
     await layer?.activate()
-  } else if (layer?.active) {
+  } else {
     layer.deactivate()
   }
 }
