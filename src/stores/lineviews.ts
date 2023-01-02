@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
 
-export const useLinesStore = defineStore('lines', () => {
+export const useLineViewsStore = defineStore('lineviews', () => {
   const selectedLine: Ref<number> = ref(0)
 
   function selectLine(line: number) {

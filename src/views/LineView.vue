@@ -12,10 +12,12 @@ import { useRoute } from 'vue-router'
 import { useMapStore } from '@/stores/map'
 import { useViewsStore } from '@/stores/views'
 import { useLayersStore } from '@/stores/layers'
+import { useLineViewsStore } from '@/stores/lineviews'
 
 const mapStore = useMapStore()
 const viewStore = useViewsStore()
 const layerStore = useLayersStore()
+const lineStore = useLineViewsStore()
 
 const state = reactive({
   lineDescription: null as null | LineModel,
@@ -25,22 +27,24 @@ onBeforeMount(async () => {
   const { params } = useRoute()
   const routeParams = ref(params)
 
+  lineStore.selectLine(Number(routeParams.value.id))
+
   state.lineDescription = await apiClientService.fetchLineDescription(
-    routeParams.value.id as unknown as number
+    lineStore.selectedLine
   )
 })
 
 onMounted(async () => {
-  const { params } = useRoute()
-  const routeParams = ref(params)
+  viewStore.currentView = 'line'
 
+  // Set visibilities
   layerStore.visibilities.trambusLines = true
-  layerStore.visibilities.trambusStops = true // TODO: enable this but only for the selected one
+  layerStore.visibilities.trambusStops = true
   layerStore.visibilities.parking = true
   layerStore.visibilities.poi = false
 
-  mapStore.viewPoint = `line${routeParams.value.id}`
-  viewStore.currentView = 'line'
+  // Set vcs app view point
+  mapStore.viewPoint = `line${lineStore.selectedLine}`
 })
 
 function backButtonClicked() {

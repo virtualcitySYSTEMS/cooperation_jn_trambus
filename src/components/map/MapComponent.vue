@@ -9,7 +9,7 @@ import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
 
 import { useLayersStore, RENNES_LAYERS } from '@/stores/layers'
 import { useMapStore } from '@/stores/map'
-import { useLinesStore } from '@/stores/lines'
+import { useLineViewsStore } from '@/stores/lineviews'
 
 import mapConfig from '../../map.config.json'
 import type { StyleFunction } from 'ol/style/Style'
@@ -25,7 +25,7 @@ provide('vcsApp', vcsApp)
 const appLoaded = ref(false)
 const layerStore = useLayersStore()
 const mapStore = useMapStore()
-const lineStore = useLinesStore()
+const lineStore = useLineViewsStore()
 const viewStore = useViewsStore()
 
 onMounted(async () => {
@@ -107,7 +107,6 @@ const trambusLineViewStyleFunction: StyleFunction = function (
 
 function isTrambusStopBelongsToLine(feature: FeatureLike, trambusLine: number) {
   let lineNumbers: string = feature.get('li_code') // e.g. T1 T2, T1
-  console.log(`lineNumbers: ${lineNumbers}`)
   if (lineNumbers.includes(trambusLine.toString())) {
     return true
   } else {

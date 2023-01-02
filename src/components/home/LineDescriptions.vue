@@ -5,7 +5,6 @@ import router from '@/router'
 import { apiClientService } from '@/services/api.client'
 import type { LineModel } from '@/model/lines.model'
 import UiLineDescription from '@/components/ui/UiLineDescription.vue'
-import { useLinesStore } from '@/stores/lines'
 
 const state = reactive({
   lineDescription: null as null | LineModel[],
@@ -14,12 +13,6 @@ const state = reactive({
 onMounted(async () => {
   state.lineDescription = await apiClientService.fetchLineDescriptions()
 })
-
-const lineStore = useLinesStore()
-
-function selectLine(line: number) {
-  lineStore.selectLine(line)
-}
 
 function goToLinePage(line: number) {
   router.push(`/line/${line}`)
@@ -42,7 +35,6 @@ function goToLinePage(line: number) {
         :start="lineDescription.start"
         :end="lineDescription.end"
         :frequency="lineDescription.frequency"
-        v-on:click="selectLine(lineDescription.id)"
       >
       </UiLineDescription>
     </div>
