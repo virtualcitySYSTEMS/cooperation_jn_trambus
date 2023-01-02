@@ -40,6 +40,7 @@ onMounted(async () => {
   appLoaded.value = true
   // window.vcmap = vcsApp
   await updateLayersVisibility()
+  updateMapStyle()
 })
 
 // The following code is needed to cleanup resources we created
@@ -181,7 +182,6 @@ async function updateLineViewStyle() {
 }
 
 async function updateTravelTimesViewStyle() {
-  console.log('updateTravelTimesViewStyle')
   // 2D
   // TrambusLine style
   const trambusLayer = vcsApp.layers.getByKey(RENNES_LAYERS[5]) as FeatureLayer
@@ -212,21 +212,25 @@ async function updateActiveMap() {
   await vcsApp.maps.setActiveMap(mapStore.activeMap)
 }
 
+function updateMapStyle() {
+  if (viewStore.currentView == 'home') updateHomeViewStyle()
+  if (viewStore.currentView == 'line') updateLineViewStyle()
+  if (viewStore.currentView == 'traveltimes') updateTravelTimesViewStyle()
+}
+
 layerStore.$subscribe(async () => {
   await updateLayersVisibility()
 })
 
 mapStore.$subscribe(async () => {
   // Update map
+  await updateActiveMap()
   await updateLayersVisibility()
   await updateViewPoint()
-  await updateActiveMap()
 })
 
 viewStore.$subscribe(async () => {
-  if (viewStore.currentView == 'home') updateHomeViewStyle()
-  if (viewStore.currentView == 'line') updateLineViewStyle()
-  if (viewStore.currentView == 'traveltimes') updateTravelTimesViewStyle()
+  updateMapStyle()
 })
 </script>
 
