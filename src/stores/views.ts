@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
+import type { TravelTimeModel } from '@/model/travel-time.model'
 
 export const useViewsStore = defineStore('views', () => {
   const currentView: Ref<String> = ref('')
@@ -9,7 +10,7 @@ export const useViewsStore = defineStore('views', () => {
 })
 
 export const useTravelTimesStore = defineStore('traveltimes', () => {
-  const selectedIndex: Ref<number> = ref(-1)
+  const selectedTravelTime: Ref<TravelTimeModel | null> = ref(null)
 
-  return { selectedIndex }
+  return { selectedTravelTime }
 })

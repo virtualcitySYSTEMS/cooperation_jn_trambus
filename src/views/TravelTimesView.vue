@@ -10,34 +10,40 @@ import type { TravelTimeModel } from '@/model/travel-time.model'
 import ChevronArrowLeft from '@/assets/icons/chevron-left.svg'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiTravelTime from '@/components/ui/UiTravelTime.vue'
+import { useMapStore } from '@/stores/map'
 
 const viewStore = useViewsStore()
 const layerStore = useLayersStore()
 const travelTimeStore = useTravelTimesStore()
+const mapStore = useMapStore()
 
 const state = reactive({
   travelTimes: null as null | TravelTimeModel[],
 })
 
 onMounted(async () => {
+  viewStore.currentView = 'traveltimes'
+  if (mapStore.is3D()) {
+    layerStore.visibilities.rennesBase = false
+    layerStore.visibilities.rennesOrtho = true
+  } else {
+    layerStore.visibilities.rennesBase = true
+    layerStore.visibilities.rennesOrtho = false
+  }
+  layerStore.visibilities.trambusLines = true
+  layerStore.visibilities.trambusStops = true
+  layerStore.visibilities.parking = false
+  layerStore.visibilities.poi = false
+
   state.travelTimes = await apiClientService.fetchTravelTime()
 })
 
-onMounted(() => {
-  viewStore.currentView = 'traveltimes'
-
-  layerStore.visibilities.trambusLines = true
-  layerStore.visibilities.trambusStops = false // TODO: enable this but only for the selected one
-  layerStore.visibilities.parking = false
-  layerStore.visibilities.poi = false
-})
-
-function onTravelTimesClicked(travelTime: TravelTimeModel, index: number) {
-  if (index == travelTimeStore.selectedIndex) {
-    travelTimeStore.selectedIndex = -1
+function onTravelTimesClicked(travelTime: TravelTimeModel) {
+  if (travelTime == travelTimeStore.selectedTravelTime) {
+    travelTimeStore.selectedTravelTime = null
   } else {
-    travelTimeStore.selectedIndex = index
-    console.log(travelTime)
+    travelTimeStore.selectedTravelTime = travelTime
+    console.log(travelTimeStore.selectedTravelTime)
   }
 }
 </script>
@@ -74,14 +80,14 @@ function onTravelTimesClicked(travelTime: TravelTimeModel, index: number) {
       class="grow"
       role="button"
       v-for="(travelTime, index) in state.travelTimes"
-      @click="onTravelTimesClicked(travelTime, index)"
+      @click="onTravelTimesClicked(travelTime)"
       :key="index"
       :newDuration="travelTime.new"
       :oldDuration="travelTime.old"
       :lineNumber="travelTime.line"
       :startStation="travelTime.start"
       :endStation="travelTime.end"
-      :colored="index == travelTimeStore.selectedIndex"
+      :colored="travelTime == travelTimeStore.selectedTravelTime"
     >
     </UiTravelTime>
   </div>
