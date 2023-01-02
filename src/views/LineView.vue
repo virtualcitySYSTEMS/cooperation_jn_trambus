@@ -12,7 +12,7 @@ import { useRoute } from 'vue-router'
 import { useMapStore } from '@/stores/map'
 import { useViewsStore } from '@/stores/views'
 import { useLayersStore } from '@/stores/layers'
-import { useLineViewsStore } from '@/stores/lineviews'
+import { useLineViewsStore } from '@/stores/views'
 
 const mapStore = useMapStore()
 const viewStore = useViewsStore()

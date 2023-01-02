@@ -9,7 +9,7 @@ import { getTrambusLineNumber, lineColors } from '@/styles/common'
 
 import { useLayersStore, RENNES_LAYERS } from '@/stores/layers'
 import { useMapStore } from '@/stores/map'
-import { useLineViewsStore } from '@/stores/lineviews'
+import { useLineViewsStore } from '@/stores/views'
 
 import mapConfig from '../../map.config.json'
 import type { StyleFunction } from 'ol/style/Style'

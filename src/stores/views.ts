@@ -9,8 +9,18 @@ export const useViewsStore = defineStore('views', () => {
   return { currentView }
 })
 
-export const useTravelTimesStore = defineStore('traveltimes', () => {
+export const useTravelTimesStore = defineStore('traveltimes-views', () => {
   const selectedTravelTime: Ref<TravelTimeModel | null> = ref(null)
 
   return { selectedTravelTime }
+})
+
+export const useLineViewsStore = defineStore('line-views', () => {
+  const selectedLine: Ref<number> = ref(0)
+
+  function selectLine(line: number) {
+    selectedLine.value = line
+  }
+
+  return { selectLine, selectedLine }
 })
