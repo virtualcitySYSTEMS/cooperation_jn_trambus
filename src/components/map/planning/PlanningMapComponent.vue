@@ -14,13 +14,15 @@ import { Vector as VectorLayer } from 'ol/layer'
 import { Style, Stroke } from 'ol/style'
 import type { StyleFunction } from 'ol/style/Style'
 import type { FeatureLike } from 'ol/Feature'
+
+import { getTrambusLineNumber, lineColors } from '@/styles/common'
+
 import { usePlanningStore } from '@/stores/planning'
 import UiPlanningLegend from '@/components/map/planning/PlanningLegend.vue'
 import { Overlay } from 'ol'
 import UiLineButton from '@/components/map/buttons/UiLineButton.vue'
 import OlNavigationButtons from '@/components/map/buttons/OlNavigationButtons.vue'
 import type { LineNumber } from '@/model/lines.model'
-import * as ol_color from 'ol/color'
 import { LinePlanningStateTypes } from '@/model/line-planning-state.model'
 
 const planningStore = usePlanningStore()
@@ -78,13 +80,6 @@ const blackBorderStyle = new Style({
   }),
   zIndex: 0,
 })
-
-const lineColors: Record<LineNumber, ol_color.Color> = {
-  1: ol_color.fromString('#4338CA'), // indigo-600
-  2: ol_color.fromString('#DB2777'), // pink-600
-  3: ol_color.fromString('#057857'), // emerald-600
-  4: ol_color.fromString('#9333EA'), // purple-600
-}
 
 function activeLineBorderStyle(line: LineNumber): Style {
   return new Style({
@@ -154,13 +149,8 @@ function getState(feature: FeatureLike): LinePlanningStateTypes {
   }
 }
 
-function getLineNumber(feature: FeatureLike): number {
-  let lineNumberString = feature.get('li_code') // e.g. T1
-  return Number(lineNumberString.substr(lineNumberString.length - 1))
-}
-
 function isLineSelected(feature: FeatureLike): boolean {
-  return planningStore.selectedLine == getLineNumber(feature)
+  return planningStore.selectedLine == getTrambusLineNumber(feature)
 }
 
 function isLinePlanningStateActivated(): boolean {
@@ -176,7 +166,7 @@ const styleFunction: StyleFunction = function (feature: FeatureLike): Style[] {
   if (isLinePlanningStateActivated() && !isLinePlanningStateSelected(feature)) {
     if (isLineSelected(feature)) {
       return [
-        activeLineBorderStyle(getLineNumber(feature) as LineNumber),
+        activeLineBorderStyle(getTrambusLineNumber(feature) as LineNumber),
         innerWhiteStyle,
       ]
     }
@@ -197,7 +187,7 @@ const styleFunction: StyleFunction = function (feature: FeatureLike): Style[] {
     return [
       lineStatusStyle(getState(feature)),
       // Border
-      activeLineBorderStyle(getLineNumber(feature) as LineNumber),
+      activeLineBorderStyle(getTrambusLineNumber(feature) as LineNumber),
       innerWhiteStyle,
     ]
   }

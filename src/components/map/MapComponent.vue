@@ -2,10 +2,10 @@
 import { onMounted, onUnmounted, provide, ref } from 'vue'
 import { CesiumMap, Context, VcsApp, Layer, FeatureLayer } from '@vcmap/core'
 
-import * as ol_color from 'ol/color'
-
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
+
+import { getTrambusLineNumber, lineColors } from '@/styles/common'
 
 import { useLayersStore, RENNES_LAYERS } from '@/stores/layers'
 import { useMapStore } from '@/stores/map'
@@ -74,27 +74,13 @@ async function updateViewPoint() {
     activeMap.gotoViewpoint(homeViewPoint!)
   }
 }
-
-// TODO: some of the following code are copy paste from PlanningMapComponent, refactor it to utils module
-function getLineNumber(feature: FeatureLike): number {
-  let lineNumberString = feature.get('li_code') // e.g. T1
-  return Number(lineNumberString.substr(lineNumberString.length - 1))
-}
-
-const lineColors: Record<LineNumber, ol_color.Color> = {
-  1: ol_color.fromString('#4338CA'), // indigo-600
-  2: ol_color.fromString('#DB2777'), // pink-600
-  3: ol_color.fromString('#057857'), // emerald-600
-  4: ol_color.fromString('#9333EA'), // purple-600
-}
-
 const trambusLineViewStyleFunction: StyleFunction = function (
   feature: FeatureLike
 ): Style[] {
-  if (getLineNumber(feature) == lineStore.selectedLine) {
+  if (getTrambusLineNumber(feature) == lineStore.selectedLine) {
     const selectedLineStyle = new Style({
       stroke: new Stroke({
-        color: lineColors[getLineNumber(feature) as LineNumber],
+        color: lineColors[getTrambusLineNumber(feature) as LineNumber],
         width: 4,
       }),
       zIndex: 0,
