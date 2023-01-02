@@ -4,6 +4,7 @@ import { defineStore } from 'pinia'
 import type { TravelTimeModel } from '@/model/travel-time.model'
 
 export const useViewsStore = defineStore('views', () => {
+  // TODO: use union string for list of view
   const currentView: Ref<String> = ref('')
 
   return { currentView }

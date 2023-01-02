@@ -126,6 +126,41 @@ const trambusStopLineViewStyleFunction: StyleFunction = function (
   return []
 }
 
+const trambusLineTravelTimesViewStyleFunction: StyleFunction = function (
+  feature: FeatureLike
+): Style[] {
+  const lineStyle = new Style({
+    stroke: new Stroke({
+      color: lineColors[getTrambusLineNumber(feature) as LineNumber],
+      width: 3,
+    }),
+    zIndex: 0,
+  })
+  return [lineStyle]
+}
+
+const trambusStopTravelTimesViewStyleFunction: StyleFunction = function (
+  feature: FeatureLike
+): Style[] {
+  const fill = new Fill({
+    color: '#FFFFFF',
+  })
+  const stroke = new Stroke({
+    color: lineColors[getTrambusLineNumber(feature) as LineNumber],
+    width: 3,
+  })
+  const selectedTrambusStopStyle = new Style({
+    image: new Circle({
+      fill: fill,
+      stroke: stroke,
+      radius: 5,
+    }),
+    fill: fill,
+    stroke: stroke,
+  })
+  return [selectedTrambusStopStyle]
+}
+
 // TODO: probably merge these two functions. i.e. updateTrambusStyle(currentView: home | line)
 async function updateLineViewStyle() {
   const trambusLayer = vcsApp.layers.getByKey(RENNES_LAYERS[5]) as FeatureLayer
@@ -137,6 +172,24 @@ async function updateLineViewStyle() {
   ) as FeatureLayer
   trambusStopLayer.clearStyle()
   trambusStopLayer.setStyle(trambusStopLineViewStyleFunction)
+}
+
+async function updateTravelTimesViewStyle() {
+  console.log('updateTravelTimesViewStyle')
+  // 2D
+  // TrambusLine style
+  const trambusLayer = vcsApp.layers.getByKey(RENNES_LAYERS[5]) as FeatureLayer
+  trambusLayer.clearStyle()
+  trambusLayer.setStyle(trambusLineTravelTimesViewStyleFunction)
+
+  // Trambus Stop (only start and end)
+  const trambusStopLayer = vcsApp.layers.getByKey(
+    RENNES_LAYERS[6]
+  ) as FeatureLayer
+  trambusStopLayer.clearStyle()
+  trambusStopLayer.setStyle(trambusStopTravelTimesViewStyleFunction)
+
+  // 3D
 }
 
 function updateHomeViewStyle() {
@@ -167,6 +220,7 @@ mapStore.$subscribe(async () => {
 viewStore.$subscribe(async () => {
   if (viewStore.currentView == 'home') updateHomeViewStyle()
   if (viewStore.currentView == 'line') updateLineViewStyle()
+  if (viewStore.currentView == 'traveltimes') updateTravelTimesViewStyle()
 })
 </script>
 
