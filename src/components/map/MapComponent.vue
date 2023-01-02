@@ -106,14 +106,18 @@ const styleFunction: StyleFunction = function (feature: FeatureLike): Style[] {
 // TODO: probably merge these two functions. i.e. updateTrambusStyle(currentView: home | line)
 async function updateLineViewStyle() {
   const trambusLayer = vcsApp.layers.getByKey(RENNES_LAYERS[5]) as FeatureLayer
+  trambusLayer.clearStyle()
   trambusLayer.setStyle(styleFunction)
 }
 
-async function updateHomeViewStyle() {
+function updateHomeViewStyle() {
   const trambusLayer = vcsApp.layers.getByKey(RENNES_LAYERS[5]) as FeatureLayer
-  const defaultTrambusLineStyle = vcsApp.styles.getByKey('trambusLineStyle')
+  // const defaultTrambusLineStyle = vcsApp.styles.getByKey(
+  //   'trambusLineStyle'
+  // ) as StyleItem
   trambusLayer.clearStyle()
-  trambusLayer.setStyle(defaultTrambusLineStyle!)
+  // TODO: it throws an error, but it works without this one
+  // trambusLayer.setStyle(defaultTrambusLineStyle, true)
 }
 
 async function updateActiveMap() {
