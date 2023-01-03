@@ -5,9 +5,11 @@ import router from '@/router'
 import UiLineDescription from '@/components/ui/UiLineDescription.vue'
 import ChevronArrowLeft from '@/assets/icons/chevron-left.svg'
 import type { LineModel } from '@/model/lines.model'
+import type { TravelTimeModel } from '@/model/travel-time.model'
 import { apiClientService } from '@/services/api.client'
 import UiButton from '@/components/ui/UiButton.vue'
 import LineFigures from '@/components/line/LineFigures.vue'
+import UiTravelTime from '@/components/ui/UiTravelTime.vue'
 import { useRoute } from 'vue-router'
 
 import { useMapStore } from '@/stores/map'
@@ -22,6 +24,7 @@ const lineStore = useLineViewsStore()
 
 const state = reactive({
   lineDescription: null as null | LineModel,
+  travelTimes: null as null | TravelTimeModel[],
 })
 
 onBeforeMount(async () => {
@@ -31,6 +34,9 @@ onBeforeMount(async () => {
   lineStore.selectLine(Number(routeParams.value.id))
 
   state.lineDescription = await apiClientService.fetchLineDescription(
+    lineStore.selectedLine
+  )
+  state.travelTimes = await apiClientService.fetchTravelTimeByLine(
     lineStore.selectedLine
   )
 })
@@ -80,5 +86,19 @@ function backButtonClicked() {
     </div>
   </div>
 
-  <LineFigures v-if="state.lineDescription" :line="state.lineDescription?.id" />
+  <LineFigures :line="lineStore.selectedLine" />
+
+  <h2 class="font-dm-sans font-bold text-lg leading-6">
+    Nouveaux temps de parcours
+  </h2>
+  <UiTravelTime
+    v-for="travelTime in state.travelTimes"
+    :key="travelTime.line"
+    :newDuration="travelTime.new"
+    :oldDuration="travelTime.old"
+    :lineNumber="travelTime.line"
+    :startStation="travelTime.start"
+    :endStation="travelTime.end"
+  >
+  </UiTravelTime>
 </template>

@@ -24,6 +24,14 @@ class ApiClientService {
     })
   }
 
+  async fetchTravelTimeByLine(lineNumber: number) {
+    return new Promise<TravelTimeModel[]>((resolve) => {
+      resolve(
+        travelTimeFixtures().filter((travel) => travel.line == lineNumber)
+      )
+    })
+  }
+
   async fetchTravelTimeByIndex(index: number) {
     return new Promise<TravelTimeModel>((resolve) => {
       resolve(travelTimeFixtures()[index])
