@@ -13,7 +13,7 @@ import { useViewsStore } from '@/stores/views'
 const panelStore = usePanelsStore()
 const viewStore = useViewsStore()
 
-const isPhotoGaleryVisible = computed(() => {
+const isPhotoGalleryVisible = computed(() => {
   if (panelStore.isPlanningViewShown) {
     return false
   }
@@ -42,7 +42,7 @@ const isPhotoGaleryVisible = computed(() => {
 
     <div
       class="z-10 absolute inset-x-0 bottom-0 max-w-max m-auto"
-      v-show="isPhotoGaleryVisible"
+      v-show="isPhotoGalleryVisible"
     >
       <PhotoGallery></PhotoGallery>
     </div>
