@@ -7,6 +7,7 @@ import ChevronArrowLeft from '@/assets/icons/chevron-left.svg'
 import type { LineModel } from '@/model/lines.model'
 import { apiClientService } from '@/services/api.client'
 import UiButton from '@/components/ui/UiButton.vue'
+import LineFigures from '@/components/line/LineFigures.vue'
 import { useRoute } from 'vue-router'
 
 import { useMapStore } from '@/stores/map'
@@ -79,7 +80,5 @@ function backButtonClicked() {
     </div>
   </div>
 
-  <h2>Line View</h2>
-
-  <div>Line : {{ $route.params.id }}</div>
+  <LineFigures v-if="state.lineDescription" :line="state.lineDescription?.id" />
 </template>

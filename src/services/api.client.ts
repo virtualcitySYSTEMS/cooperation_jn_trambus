@@ -15,10 +15,12 @@ class ApiClientService {
       resolve(networkFiguresFixtures())
     })
   }
-  // TODO: Add line number as a parameter
-  async fetchLineFigure() {
+
+  async fetchLineFigure(lineNumber: number) {
     return new Promise<LineFigureModel[]>((resolve) => {
-      resolve(lineFiguresFixtures())
+      resolve(
+        lineFiguresFixtures().filter((figure) => figure.idLine == lineNumber)
+      )
     })
   }
 
