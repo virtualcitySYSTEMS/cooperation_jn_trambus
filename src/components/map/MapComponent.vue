@@ -99,12 +99,8 @@ const trambusLineViewStyleFunction: StyleFunction = function (
 }
 
 function isTrambusStopBelongsToLine(feature: FeatureLike, trambusLine: number) {
-  let lineNumbers: string = feature.get('li_code') // e.g. T1 T2, T1
-  if (lineNumbers.includes(trambusLine.toString())) {
-    return true
-  } else {
-    return false
-  }
+  const lineNumbers: string = feature.get('li_code') // e.g. T1 T2, T1
+  return lineNumbers.includes(trambusLine.toString())
 }
 
 const trambusStopLineViewStyleFunction: StyleFunction = function (
