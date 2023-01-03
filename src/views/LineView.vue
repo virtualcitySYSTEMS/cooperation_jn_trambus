@@ -53,12 +53,21 @@ onMounted(async () => {
   layerStore.visibilities.parking = true
   layerStore.visibilities.poi = false
 
+  if (mapStore.is3D()) {
+    layerStore.visibilities.rennesBase = false
+    layerStore.visibilities.rennesOrtho = true
+  } else {
+    layerStore.visibilities.rennesBase = true
+    layerStore.visibilities.rennesOrtho = false
+  }
   // Set vcs app view point
-  mapStore.viewPoint = `line${lineStore.selectedLine}`
+  setTimeout(() => {
+    mapStore.updateViewpoint(`line${lineStore.selectedLine}`, true)
+  }, 500)
 })
 
 function backButtonClicked() {
-  router.go(-1)
+  router.push('/home')
   // TODO: this should use the same starting viewpoint (rennes), but for
   // some reason the starting view point (rennes) is rendered differently
   // from the configuration.

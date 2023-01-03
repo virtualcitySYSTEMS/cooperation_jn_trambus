@@ -73,12 +73,13 @@ async function updateLayersVisibility() {
 async function updateViewPoint() {
   const activeMap = vcsApp.maps.activeMap
   const selectedViewPoint = vcsApp.viewpoints.getByKey(mapStore.viewPoint)
+
   if (selectedViewPoint) {
-    activeMap.gotoViewpoint(selectedViewPoint)
+    await activeMap.gotoViewpoint(selectedViewPoint)
   } else {
     // go to home
     const homeViewPoint = vcsApp.viewpoints.getByKey('rennes')
-    activeMap.gotoViewpoint(homeViewPoint!)
+    await activeMap.gotoViewpoint(homeViewPoint!)
   }
 }
 const trambusLineViewStyleFunction: StyleFunction = function (
