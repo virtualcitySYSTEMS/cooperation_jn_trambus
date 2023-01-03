@@ -22,10 +22,7 @@ import Style from 'ol/style/Style'
 import { Circle, Fill, Stroke } from 'ol/style'
 import type { LineNumber } from '@/model/lines.model'
 import { useViewsStore } from '@/stores/views'
-import {
-  isStartOrEndStation,
-  getAllStartEndStations,
-} from '@/model/lines.fixtures'
+import { getAllStartEndStations } from '@/model/lines.fixtures'
 
 const vcsApp = new VcsApp()
 provide('vcsApp', vcsApp)
@@ -214,6 +211,8 @@ const trambusStopTravelTimesViewStyleFunction: StyleFunction = function (
   let shownStations = getAllStartEndStations()
   let lineColor = lineColors[getTrambusLineNumber(feature) as LineNumber]
 
+  // There is a travel time selected, show only the selected station from
+  // the selected travel time
   if (travelTimesViewStore.selectedTravelTime != null) {
     shownStations = [
       travelTimesViewStore.selectedTravelTime.start,
@@ -221,9 +220,9 @@ const trambusStopTravelTimesViewStyleFunction: StyleFunction = function (
     ]
     lineColor = lineColors[travelTimesViewStore.selectedTravelTime.line]
   }
+  const stationName = feature.get('nom')
 
   if (!mapStore.is3D()) {
-    const stationName = feature.get('nom')
     if (shownStations.indexOf(stationName) > -1) {
       const fill = new Fill({
         color: '#FFFFFF',
@@ -232,7 +231,7 @@ const trambusStopTravelTimesViewStyleFunction: StyleFunction = function (
         color: lineColor,
         width: 2,
       })
-      const StartEndTrambusStopStyle = new Style({
+      const ShownTrambusStopStyle = new Style({
         image: new Circle({
           fill: fill,
           stroke: stroke,
@@ -241,14 +240,13 @@ const trambusStopTravelTimesViewStyleFunction: StyleFunction = function (
         fill: fill,
         stroke: stroke,
       })
-      return [StartEndTrambusStopStyle]
+      return [ShownTrambusStopStyle]
     } else {
       return []
     }
   } else {
     // TODO: Change it with disk style
-    const stationName = feature.get('nom')
-    if (isStartOrEndStation(stationName)) {
+    if (shownStations.indexOf(stationName) > -1) {
       const fill = new Fill({
         color: lineColor,
       })
@@ -256,7 +254,7 @@ const trambusStopTravelTimesViewStyleFunction: StyleFunction = function (
         color: '#FFFFFF',
         width: 2,
       })
-      const StartEndTrambusStopStyle = new Style({
+      const ShownTrambusStopStyle = new Style({
         image: new Circle({
           fill: fill,
           stroke: stroke,
@@ -265,7 +263,7 @@ const trambusStopTravelTimesViewStyleFunction: StyleFunction = function (
         fill: fill,
         stroke: stroke,
       })
-      return [StartEndTrambusStopStyle]
+      return [ShownTrambusStopStyle]
     } else {
       return []
     }

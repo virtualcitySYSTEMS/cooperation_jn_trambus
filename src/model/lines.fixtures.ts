@@ -39,8 +39,3 @@ export function getAllStartEndStations(): string[] {
   })
   return startEndStations
 }
-
-export function isStartOrEndStation(stationName: string): boolean {
-  const stations = getAllStartEndStations()
-  return stations.indexOf(stationName) > -1
-}
