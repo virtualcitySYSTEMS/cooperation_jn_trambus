@@ -9,11 +9,13 @@ import NavigationHelp from '@/components/map/NavigationHelp.vue'
 
 import { useMapStore } from '@/stores/map'
 import { useLayersStore } from '@/stores/layers'
+import { useViewsStore } from '@/stores/views'
 
 const vcsApp = inject('vcsApp') as VcsApp
 
 const mapStore = useMapStore()
 const layerStore = useLayersStore()
+const viewStore = useViewsStore()
 
 async function toggle3DMap() {
   mapStore.toggle3D()
@@ -57,7 +59,10 @@ const shouldDisplayNavHelp = () => {
     v-bind:class="{ 'h-[23rem]': mapStore.is3D() }"
     class="h-90 transition-[height] absolute right-2 bottom-10 flex flex-col [&>*]:m-2 text-gray-dark items-center overflow-hidden w-32 select-none"
   >
-    <UiIconButton class="rounded-lg px-3 py-3" @click="returnToHome"
+    <UiIconButton
+      class="rounded-lg px-3 py-3"
+      @click="returnToHome"
+      v-show="viewStore.currentView != 'traveltimes'"
       ><IconHome
     /></UiIconButton>
     <div class="flex flex-col zoom-buttons text-2xl [&>*]:p-2" role="group">
