@@ -6,6 +6,7 @@ import UiLineDescription from '@/components/ui/UiLineDescription.vue'
 import ChevronArrowLeft from '@/assets/icons/chevron-left.svg'
 import type { LineModel } from '@/model/lines.model'
 import type { TravelTimeModel } from '@/model/travel-time.model'
+import type { PhotoModel } from '@/model/photos.model'
 import { apiClientService } from '@/services/api.client'
 import UiButton from '@/components/ui/UiButton.vue'
 import LineFigures from '@/components/line/LineFigures.vue'
@@ -25,6 +26,7 @@ const lineStore = useLineViewsStore()
 const state = reactive({
   lineDescription: null as null | LineModel,
   travelTimes: null as null | TravelTimeModel[],
+  photo: null as null | PhotoModel,
 })
 
 onBeforeMount(async () => {
@@ -39,6 +41,7 @@ onBeforeMount(async () => {
   state.travelTimes = await apiClientService.fetchTravelTimeByLine(
     lineStore.selectedLine
   )
+  state.photo = await apiClientService.fetchPhotoByLine(lineStore.selectedLine)
 })
 
 onMounted(async () => {
@@ -85,6 +88,13 @@ function backButtonClicked() {
       </UiLineDescription>
     </div>
   </div>
+
+  <img
+    v-if="state.photo !== null && state.photo.url"
+    :key="state.photo.url"
+    :src="state.photo.url"
+    class="h-[184px] -mx-6 max-w-7xl mb-2"
+  />
 
   <LineFigures :line="lineStore.selectedLine" />
 
