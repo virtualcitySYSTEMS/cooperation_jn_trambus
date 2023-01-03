@@ -97,7 +97,7 @@ function backButtonClicked() {
     />
   </template>
 
-  <LineFigures :line="lineStore.selectedLine" />
+  <LineFigures v-if="state.lineDescription" :line="state.lineDescription?.id" />
 
   <h2 class="font-dm-sans font-bold text-lg leading-6">
     Nouveaux temps de parcours

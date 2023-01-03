@@ -1,5 +1,10 @@
 <script lang="ts" setup>
 import LineFigures from './LineFigures.vue'
+function initState() {
+  return {
+    id: 1,
+  }
+}
 </script>
 
 <template>
@@ -10,11 +15,10 @@ import LineFigures from './LineFigures.vue'
       width: 450,
     }"
     group="homepage"
+    :init-state="initState"
   >
-    <Variant title="Default">
-      <template #default>
-        <LineFigures></LineFigures>
-      </template>
-    </Variant>
+    <template #default="{ state }">
+      <LineFigures :line="state.id"></LineFigures>
+    </template>
   </Story>
 </template>
