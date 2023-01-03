@@ -3,28 +3,6 @@ import type { TravelTimeModel } from './travel-time.model'
 export const travelTimeFixtures = (): TravelTimeModel[] => [
   {
     line: 1,
-    new: 15,
-    old: 40,
-    start: 'JF Kennedy',
-    end: 'Brécé',
-  },
-  {
-    line: 1,
-    new: 8,
-    old: 32,
-    start: 'JF Kennedy',
-    end: 'Brécé',
-  },
-  {
-    line: 2,
-    new: 5,
-    old: 15,
-    start: 'JF Kennedy',
-    end: 'Brécé',
-  },
-  // More items, the data is probably fake
-  {
-    line: 1,
     new: 23,
     old: 31,
     start: 'Grand Quartier',
@@ -40,7 +18,7 @@ export const travelTimeFixtures = (): TravelTimeModel[] => [
   {
     line: 2,
     new: 15,
-    old: 20,
+    old: 15,
     start: 'Trois Marches',
     end: 'République',
   },
@@ -60,37 +38,38 @@ export const travelTimeFixtures = (): TravelTimeModel[] => [
   },
   {
     line: 3,
-    new: 15,
-    old: 40,
+    new: 20,
+    old: 25,
     start: 'Uttenreuth',
     end: 'République',
   },
   {
     line: 3,
-    new: 15,
-    old: 40,
-    start: 'Rosa Park',
+    new: 22,
+    old: 36,
+    start: 'Rosa Parks',
     end: 'République',
   },
   {
     line: 3,
-    new: 15,
-    old: 40,
-    start: 'Mairie Chantepie',
+    new: 17,
+    old: 25,
+    start: 'Chantepie Mairie',
     end: 'République',
   },
   {
     line: 4,
-    new: 15,
-    old: 40,
-    start: 'Aire Libre',
-    end: 'Gare',
+    new: 20,
+    old: 31,
+    start: 'Aire Libre', // No station with this name
+    end: 'Aéroport',
   },
+
   {
     line: 4,
-    new: 15,
-    old: 40,
-    start: 'Aéroport',
-    end: 'Gare',
+    new: 31,
+    old: 33,
+    start: 'Coeur de Campus',
+    end: 'Saint-Germain', // No station with this name
   },
 ]
