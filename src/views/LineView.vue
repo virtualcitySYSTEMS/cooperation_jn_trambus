@@ -89,12 +89,13 @@ function backButtonClicked() {
     </div>
   </div>
 
-  <img
-    v-if="state.photo !== null && state.photo.url"
-    :key="state.photo.url"
-    :src="state.photo.url"
-    class="h-[184px] -mx-6 max-w-7xl mb-2"
-  />
+  <template v-if="state.photo !== null && state.photo !== undefined">
+    <img
+      :key="state.photo.url"
+      :src="state.photo.url"
+      class="h-[184px] -mx-6 max-w-7xl mb-2"
+    />
+  </template>
 
   <LineFigures :line="lineStore.selectedLine" />
 
