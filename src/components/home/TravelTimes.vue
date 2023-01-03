@@ -25,7 +25,7 @@ onMounted(async () => {
       <UiOverflowContainer class="w-[402px]">
         <div class="flex flex-row items-start gap-2">
           <UiTravelTime
-            class="w-72 flex-none"
+            class="w-80 flex-none"
             v-for="travelTime in state.travelTimes"
             :key="travelTime.line"
             :newDuration="travelTime.new"
