@@ -1,23 +1,25 @@
 import type { LineFigureModel } from './line-figures.model'
+import stationIcon from '../assets/icons/station.svg'
 
 export const lineFiguresFixtures = (): LineFigureModel[] => [
   //line 1
   {
     id: 'station',
     idLine: 1,
-    figure: 23,
+    figure: 30,
     description: 'Stations',
+    icon: stationIcon,
   },
   {
     id: 'parking',
     idLine: 1,
-    figure: 2,
+    figure: 1,
     description: 'Parking relais',
   },
   {
     id: 'frequency',
     idLine: 1,
-    figure: 8,
+    figure: 7,
     description: 'Fréquence',
     unit: 'min',
     moreInformation: 'Fréquence théorique en Heure de Pointe du matin',
@@ -26,19 +28,20 @@ export const lineFiguresFixtures = (): LineFigureModel[] => [
   {
     id: 'station',
     idLine: 2,
-    figure: 18,
+    figure: 32,
     description: 'Stations',
+    icon: stationIcon,
   },
   {
     id: 'parking',
     idLine: 2,
-    figure: 5,
+    figure: 3,
     description: 'Parking relais',
   },
   {
     id: 'frequency',
     idLine: 2,
-    figure: 10,
+    figure: 5,
     description: 'Fréquence',
     unit: 'min',
     moreInformation: 'Fréquence théorique en Heure de Pointe du matin',
@@ -47,13 +50,14 @@ export const lineFiguresFixtures = (): LineFigureModel[] => [
   {
     id: 'station',
     idLine: 3,
-    figure: 10,
+    figure: 39,
     description: 'Stations',
+    icon: stationIcon,
   },
   {
     id: 'parking',
     idLine: 3,
-    figure: 1,
+    figure: 3,
     description: 'Parking relais',
   },
   {
@@ -68,19 +72,20 @@ export const lineFiguresFixtures = (): LineFigureModel[] => [
   {
     id: 'station',
     idLine: 4,
-    figure: 14,
+    figure: 21,
     description: 'Stations',
+    icon: stationIcon,
   },
   {
     id: 'parking',
     idLine: 4,
-    figure: 4,
+    figure: 1,
     description: 'Parking relais',
   },
   {
     id: 'frequency',
     idLine: 4,
-    figure: 11,
+    figure: 7,
     description: 'Fréquence',
     unit: 'min',
     moreInformation: 'Fréquence théorique en Heure de Pointe du matin',
