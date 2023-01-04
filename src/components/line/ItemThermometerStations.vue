@@ -13,6 +13,10 @@ const props = defineProps({
     type: Number as PropType<LineNumber>,
     required: true,
   },
+  name: {
+    type: String,
+    required: true,
+  },
 })
 
 const stationActive = ref(false)
@@ -20,7 +24,7 @@ const stationActive = ref(false)
 const classCircle = computed(() => {
   //Style for circle
   var classObject = {
-    'border-2': true,
+    'border-[2px]': true,
     'rounded-[50%]': true,
     'mr-2': true,
     'mb-3': true,
@@ -77,11 +81,22 @@ const classCircle = computed(() => {
     @mouseleave="stationActive = false"
   >
     <div :class="classCircle" />
-    <p class="mb-1 text-[16px]">Station {{ index }}</p>
+    <p class="mb-1 station-title">{{ name }}</p>
     <div class="ml-auto mr-[15px]">
       <IconLine :line="props.line" :size="'s'" class="mb-1"></IconLine>
     </div>
   </li>
 </template>
 
-<style scoped></style>
+<style scoped>
+.station-title {
+  width: 318px;
+  height: 24px;
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+}
+</style>

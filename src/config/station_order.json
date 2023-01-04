@@ -1,0 +1,947 @@
+[
+  {
+    "id": 315,
+    "li_code": "T1 T2 T3",
+    "nom": "Musée Beaux Arts",
+    "ordre_t1": 17,
+    "ordre_t2": 12,
+    "ordre_t3": 23,
+    "ordre_t4": null
+  },
+  {
+    "id": 314,
+    "li_code": "T1 T2 T3",
+    "nom": "Pont de Bretagne",
+    "ordre_t1": 15,
+    "ordre_t2": 10,
+    "ordre_t3": 21,
+    "ordre_t4": null
+  },
+  {
+    "id": 313,
+    "li_code": "T1 T2 T3",
+    "nom": "République",
+    "ordre_t1": 16,
+    "ordre_t2": 11,
+    "ordre_t3": 22,
+    "ordre_t4": null
+  },
+  {
+    "id": 312,
+    "li_code": "T1 T2",
+    "nom": "Chèques Postaux",
+    "ordre_t1": 13,
+    "ordre_t2": 8,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 311,
+    "li_code": "T1 T2",
+    "nom": "François Château",
+    "ordre_t1": 22,
+    "ordre_t2": 17,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 310,
+    "li_code": "T1 T2",
+    "nom": "Le Mail",
+    "ordre_t1": 14,
+    "ordre_t2": 9,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 309,
+    "li_code": "T1 T2",
+    "nom": "Les Préales",
+    "ordre_t1": 24,
+    "ordre_t2": 19,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 308,
+    "li_code": "T1 T2",
+    "nom": "Paul Bert",
+    "ordre_t1": 18,
+    "ordre_t2": 13,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 307,
+    "li_code": "T1 T2",
+    "nom": "Plaine de Baud",
+    "ordre_t1": 23,
+    "ordre_t2": 18,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 306,
+    "li_code": "T1 T2",
+    "nom": "Pont de Châteaudun",
+    "ordre_t1": 19,
+    "ordre_t2": 14,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 305,
+    "li_code": "T1 T2",
+    "nom": "Pont de Strasbourg",
+    "ordre_t1": 21,
+    "ordre_t2": 16,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 304,
+    "li_code": "T1 T2",
+    "nom": "Robidou",
+    "ordre_t1": 20,
+    "ordre_t2": 15,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 303,
+    "li_code": "T1 T2",
+    "nom": "Tournebride",
+    "ordre_t1": 25,
+    "ordre_t2": 20,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 302,
+    "li_code": "T1 T3",
+    "nom": "La Plesse",
+    "ordre_t1": 1,
+    "ordre_t2": null,
+    "ordre_t3": 11,
+    "ordre_t4": null
+  },
+  {
+    "id": 301,
+    "li_code": "T1",
+    "nom": "Beaulieu Atalante",
+    "ordre_t1": 28,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 300,
+    "li_code": "T1",
+    "nom": "Beaulieu Chimie",
+    "ordre_t1": 26,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 299,
+    "li_code": "T1",
+    "nom": "Berger",
+    "ordre_t1": 10,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 298,
+    "li_code": "T1",
+    "nom": "Cerisaie",
+    "ordre_t1": 2,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 297,
+    "li_code": "T1",
+    "nom": "Cucillé - Frac",
+    "ordre_t1": 7,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 296,
+    "li_code": "T1",
+    "nom": "Dulac",
+    "ordre_t1": 4,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 295,
+    "li_code": "T1",
+    "nom": "Grand Quartier",
+    "ordre_t1": 3,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 294,
+    "li_code": "T1",
+    "nom": "Guilloux",
+    "ordre_t1": 12,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 293,
+    "li_code": "T1",
+    "nom": "La Salle",
+    "ordre_t1": 11,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 292,
+    "li_code": "T1",
+    "nom": "Léonard",
+    "ordre_t1": 5,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 291,
+    "li_code": "T1",
+    "nom": "Longs Champs Est",
+    "ordre_t1": 29,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 290,
+    "li_code": "T1",
+    "nom": "Préfecture",
+    "ordre_t1": 6,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 289,
+    "li_code": "T1",
+    "nom": "Villejean-Université",
+    "ordre_t1": 9,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 288,
+    "li_code": "T1",
+    "nom": "ZA Saint-Sulpice",
+    "ordre_t1": 30,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 287,
+    "li_code": "T1",
+    "nom": "IUT",
+    "ordre_t1": 27,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 286,
+    "li_code": "T1",
+    "nom": "Parc Administratif",
+    "ordre_t1": 8,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 285,
+    "li_code": "T2",
+    "nom": "Berthault",
+    "ordre_t1": null,
+    "ordre_t2": 2,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 284,
+    "li_code": "T2",
+    "nom": "Bordage",
+    "ordre_t1": null,
+    "ordre_t2": 31,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 283,
+    "li_code": "T2",
+    "nom": "Bourgchevreuil",
+    "ordre_t1": null,
+    "ordre_t2": 28,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 282,
+    "li_code": "T2",
+    "nom": "Cesson Collège",
+    "ordre_t1": null,
+    "ordre_t2": 29,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 281,
+    "li_code": "T2",
+    "nom": "Chalotais",
+    "ordre_t1": null,
+    "ordre_t2": 30,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 280,
+    "li_code": "T2",
+    "nom": "Champs Péans",
+    "ordre_t1": null,
+    "ordre_t2": 21,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 279,
+    "li_code": "T2",
+    "nom": "Géniaux",
+    "ordre_t1": null,
+    "ordre_t2": 5,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 278,
+    "li_code": "T2",
+    "nom": "Guilloux Lorient",
+    "ordre_t1": null,
+    "ordre_t2": 7,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 277,
+    "li_code": "T2",
+    "nom": "Hublais",
+    "ordre_t1": null,
+    "ordre_t2": 23,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 276,
+    "li_code": "T2",
+    "nom": "Lemaistre",
+    "ordre_t1": null,
+    "ordre_t2": 3,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 275,
+    "li_code": "T2",
+    "nom": "Mare Pavée",
+    "ordre_t1": null,
+    "ordre_t2": 26,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 274,
+    "li_code": "T2",
+    "nom": "Muguet",
+    "ordre_t1": null,
+    "ordre_t2": 25,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 273,
+    "li_code": "T2",
+    "nom": "Kerviler Papeteries",
+    "ordre_t1": null,
+    "ordre_t2": 6,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 272,
+    "li_code": "T2",
+    "nom": "Rigourdière",
+    "ordre_t1": null,
+    "ordre_t2": 32,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 271,
+    "li_code": "T2",
+    "nom": "Roazhon Park",
+    "ordre_t1": null,
+    "ordre_t2": 4,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 270,
+    "li_code": "T2",
+    "nom": "Sports et Nature",
+    "ordre_t1": null,
+    "ordre_t2": 24,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 269,
+    "li_code": "T2",
+    "nom": "Taillis",
+    "ordre_t1": null,
+    "ordre_t2": 22,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 268,
+    "li_code": "T2",
+    "nom": "Trois Marches",
+    "ordre_t1": null,
+    "ordre_t2": 1,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 267,
+    "li_code": "T2",
+    "nom": "Grande Pierre",
+    "ordre_t1": null,
+    "ordre_t2": 27,
+    "ordre_t3": null,
+    "ordre_t4": null
+  },
+  {
+    "id": 266,
+    "li_code": "T3",
+    "nom": "Anatole France",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 16,
+    "ordre_t4": null
+  },
+  {
+    "id": 265,
+    "li_code": "T3",
+    "nom": "Brest Verdun",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 18,
+    "ordre_t4": null
+  },
+  {
+    "id": 264,
+    "li_code": "T3",
+    "nom": "Camus",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 5,
+    "ordre_t4": null
+  },
+  {
+    "id": 263,
+    "li_code": "T3",
+    "nom": "CARSAT",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 31,
+    "ordre_t4": null
+  },
+  {
+    "id": 262,
+    "li_code": "T3",
+    "nom": "Champ Daguet",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 1,
+    "ordre_t4": null
+  },
+  {
+    "id": 261,
+    "li_code": "T3",
+    "nom": "CHP Saint-Grégoire",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 10,
+    "ordre_t4": null
+  },
+  {
+    "id": 260,
+    "li_code": "T3",
+    "nom": "Cimetière Nord",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 14,
+    "ordre_t4": null
+  },
+  {
+    "id": 259,
+    "li_code": "T3",
+    "nom": "Croix Saint-Hélier",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 27,
+    "ordre_t4": null
+  },
+  {
+    "id": 258,
+    "li_code": "T3",
+    "nom": "Deux Ruisseaux",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 35,
+    "ordre_t4": null
+  },
+  {
+    "id": 257,
+    "li_code": "T3",
+    "nom": "Discalceat",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 7,
+    "ordre_t4": null
+  },
+  {
+    "id": 256,
+    "li_code": "T3",
+    "nom": "Domaine",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 30,
+    "ordre_t4": null
+  },
+  {
+    "id": 255,
+    "li_code": "T3",
+    "nom": "Forge",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 8,
+    "ordre_t4": null
+  },
+  {
+    "id": 254,
+    "li_code": "T3",
+    "nom": "Gares",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 25,
+    "ordre_t4": null
+  },
+  {
+    "id": 253,
+    "li_code": "T3",
+    "nom": "Gériatrie",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 36,
+    "ordre_t4": null
+  },
+  {
+    "id": 252,
+    "li_code": "T3",
+    "nom": "Haut Trait",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 9,
+    "ordre_t4": null
+  },
+  {
+    "id": 251,
+    "li_code": "T3",
+    "nom": "Horizons",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 19,
+    "ordre_t4": null
+  },
+  {
+    "id": 250,
+    "li_code": "T3",
+    "nom": "Laënnec",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 26,
+    "ordre_t4": null
+  },
+  {
+    "id": 249,
+    "li_code": "T3",
+    "nom": "La Touche",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 17,
+    "ordre_t4": null
+  },
+  {
+    "id": 248,
+    "li_code": "T3",
+    "nom": "Les Lices",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 20,
+    "ordre_t4": null
+  },
+  {
+    "id": 247,
+    "li_code": "T3",
+    "nom": "Lycée Mendès France",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 12,
+    "ordre_t4": null
+  },
+  {
+    "id": 246,
+    "li_code": "T3",
+    "nom": "Mouézy",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 28,
+    "ordre_t4": null
+  },
+  {
+    "id": 245,
+    "li_code": "T3",
+    "nom": "Nobel",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 3,
+    "ordre_t4": null
+  },
+  {
+    "id": 244,
+    "li_code": "T4",
+    "nom": "Saint-Jacques - Gaîté",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": 1
+  },
+  {
+    "id": 243,
+    "li_code": "T3",
+    "nom": "Pierre Legrand",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 15,
+    "ordre_t4": null
+  },
+  {
+    "id": 242,
+    "li_code": "T3",
+    "nom": "Ricoquais",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 4,
+    "ordre_t4": null
+  },
+  {
+    "id": 241,
+    "li_code": "T3",
+    "nom": "Rosa Parks",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 37,
+    "ordre_t4": null
+  },
+  {
+    "id": 240,
+    "li_code": "T3",
+    "nom": "TNB",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 24,
+    "ordre_t4": null
+  },
+  {
+    "id": 239,
+    "li_code": "T3",
+    "nom": "Trois Croix",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 13,
+    "ordre_t4": null
+  },
+  {
+    "id": 238,
+    "li_code": "T3",
+    "nom": "Uttenreuth",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 6,
+    "ordre_t4": null
+  },
+  {
+    "id": 237,
+    "li_code": "T3",
+    "nom": "Villebois-Mareuil",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 29,
+    "ordre_t4": null
+  },
+  {
+    "id": 236,
+    "li_code": "T3",
+    "nom": "Bout du Monde",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 2,
+    "ordre_t4": null
+  },
+  {
+    "id": 235,
+    "li_code": "T3",
+    "nom": "Pont Boeuf",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 38,
+    "ordre_t4": null
+  },
+  {
+    "id": 234,
+    "li_code": "T3",
+    "nom": "Bocage Citadin",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 39,
+    "ordre_t4": null
+  },
+  {
+    "id": 233,
+    "li_code": "T3",
+    "nom": "La Poterie TER",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 32,
+    "ordre_t4": null
+  },
+  {
+    "id": 232,
+    "li_code": "T4",
+    "nom": "Bruz Centre",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": 21
+  },
+  {
+    "id": 231,
+    "li_code": "T4",
+    "nom": "Bruz Gare",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": 17
+  },
+  {
+    "id": 230,
+    "li_code": "T4",
+    "nom": "Centre Météo",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": 8
+  },
+  {
+    "id": 229,
+    "li_code": "T4",
+    "nom": "Châteliers",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": 20
+  },
+  {
+    "id": 228,
+    "li_code": "T4",
+    "nom": "Coeur de Campus",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": 13
+  },
+  {
+    "id": 227,
+    "li_code": "T4",
+    "nom": "Corbières",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": 16
+  },
+  {
+    "id": 226,
+    "li_code": "T4",
+    "nom": "Croix Madame",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": 15
+  },
+  {
+    "id": 225,
+    "li_code": "T4",
+    "nom": "Etangs",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": 12
+  },
+  {
+    "id": 224,
+    "li_code": "T4",
+    "nom": "Haut Bois",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": 4
+  },
+  {
+    "id": 223,
+    "li_code": "T4",
+    "nom": "Ker Lann",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": 14
+  },
+  {
+    "id": 222,
+    "li_code": "T4",
+    "nom": "St-Jacques Mairie",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": 3
+  },
+  {
+    "id": 221,
+    "li_code": "T4",
+    "nom": "Vert Buisson",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": 18
+  },
+  {
+    "id": 220,
+    "li_code": "T4",
+    "nom": "La Martinière",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": 5
+  },
+  {
+    "id": 219,
+    "li_code": "T4",
+    "nom": "Halte Saint-Jacques",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": 6
+  },
+  {
+    "id": 218,
+    "li_code": "T4",
+    "nom": "Aéroport",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": 7
+  },
+  {
+    "id": 217,
+    "li_code": "T4",
+    "nom": "Parc Expo",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": 9
+  },
+  {
+    "id": 216,
+    "li_code": "T4",
+    "nom": "Gaudrais",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": 10
+  },
+  {
+    "id": 215,
+    "li_code": "T4",
+    "nom": "Parc Relais",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": 11
+  },
+  {
+    "id": 214,
+    "li_code": "T4",
+    "nom": "Europe",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": 19
+  },
+  {
+    "id": 213,
+    "li_code": "T3",
+    "nom": "Chantepie Mairie",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 34,
+    "ordre_t4": null
+  },
+  {
+    "id": 212,
+    "li_code": "T3",
+    "nom": "Loges",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": 33,
+    "ordre_t4": null
+  },
+  {
+    "id": 211,
+    "li_code": "T4",
+    "nom": "Maltière",
+    "ordre_t1": null,
+    "ordre_t2": null,
+    "ordre_t3": null,
+    "ordre_t4": 2
+  }
+]
