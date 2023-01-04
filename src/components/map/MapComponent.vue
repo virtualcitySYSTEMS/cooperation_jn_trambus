@@ -19,7 +19,7 @@ import { Circle, Fill, Stroke } from 'ol/style'
 import type { LineNumber } from '@/model/lines.model'
 import { useViewsStore } from '@/stores/views'
 import { getAllStartEndStations } from '@/model/lines.fixtures'
-import { trambusLineStyle, type MapType, type LineState } from '@/styles/line'
+import { trambusLineStyle, type LineState } from '@/styles/line'
 
 const vcsApp = new VcsApp()
 provide('vcsApp', vcsApp)
@@ -82,18 +82,18 @@ const trambusLineViewStyleFunction: StyleFunction = function (
   feature: FeatureLike
 ): Style[] {
   const lineNumber = getTrambusLineNumber(feature) as LineNumber
-  const mapType: MapType = mapStore.is3D() ? '2D' : '3D'
+  const selectedLine = lineViewStore.selectedLine
   let lineState: LineState = 'normal'
 
   if (lineViewStore.selectedLine == null) {
     lineState = 'normal'
-  } else if (getTrambusLineNumber(feature) == lineViewStore.selectedLine) {
+  } else if (getTrambusLineNumber(feature) == selectedLine) {
     lineState = 'selected'
   } else {
-    lineState = 'unselected'
+    lineState = 'hidden'
   }
 
-  return trambusLineStyle(lineNumber, lineState, mapType)
+  return trambusLineStyle(lineNumber, lineState, mapStore.is3D())
 }
 
 function isTrambusStopBelongsToLine(
@@ -134,10 +134,6 @@ const trambusLineTravelTimesViewStyleFunction: StyleFunction = function (
   feature: FeatureLike
 ): Style[] {
   const lineNumber = getTrambusLineNumber(feature) as LineNumber
-  let mapType: MapType = '2D'
-  if (mapStore.is3D()) {
-    mapType = '3D'
-  }
   const selectedTravelTime = travelTimesViewStore.selectedTravelTime
   let lineState: LineState = 'normal'
 
@@ -148,7 +144,7 @@ const trambusLineTravelTimesViewStyleFunction: StyleFunction = function (
   } else {
     lineState = 'unselected'
   }
-  return trambusLineStyle(lineNumber, lineState, mapType)
+  return trambusLineStyle(lineNumber, lineState, mapStore.is3D())
 }
 
 const trambusStopTravelTimesViewStyleFunction: StyleFunction = function (

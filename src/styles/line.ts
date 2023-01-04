@@ -3,12 +3,11 @@ import { Stroke, Style } from 'ol/style'
 import { lineColors, lineDimmedColors } from './common'
 
 export type LineState = 'selected' | 'normal' | 'unselected' | 'hidden'
-export type MapType = '2D' | '3D'
 
 export function trambusLineStyle(
   lineNumber: LineNumber,
   lineState: LineState,
-  mapType: MapType
+  is3DStyle: boolean
 ): Style[] {
   const lineStyles = []
 
@@ -34,7 +33,11 @@ export function trambusLineStyle(
     zIndex: 0,
   })
 
-  if (mapType == '3D') {
+  if (lineState == 'hidden') {
+    return []
+  }
+
+  if (is3DStyle) {
     lineStyles.push(lineBorderStyle)
   }
 
