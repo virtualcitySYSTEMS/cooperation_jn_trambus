@@ -68,7 +68,7 @@ class ApiClientService {
 
   async fetchPhotoByLine(lineNumber: number) {
     return new Promise<PhotoModel>((resolve) => {
-      resolve(photoFixtures().filter((photo) => photo.line == lineNumber)[0])
+      resolve(photoFixtures().find((photo) => photo.line == lineNumber))
     })
   }
 }
