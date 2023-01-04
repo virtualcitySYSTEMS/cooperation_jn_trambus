@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import type { LineNumber } from '@/model/lines.model'
 import ItemThermometerStations from '@/components/line/ItemThermometerStations.vue'
-import { apiStationService } from '@/services/api.station'
+import { apiClientService } from '@/services/api.client'
 import { reactive, onBeforeMount } from 'vue'
 
 const props = defineProps({
@@ -17,7 +17,7 @@ const state = reactive({
 })
 
 onBeforeMount(async () => {
-  state.stations = await apiStationService.fetchStationsByLine(props.line)
+  state.stations = await apiClientService.fetchStationsByLine(props.line)
 })
 </script>
 

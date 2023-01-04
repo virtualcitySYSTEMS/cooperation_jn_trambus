@@ -19,10 +19,57 @@ const props = defineProps({
   },
 })
 
-const stationActive = ref(false)
+const stationActive = ref<Boolean>(false)
+
+function getClassCircle() {
+  if (stationActive.value) {
+    return {
+      'w-[16px]': true,
+      'h-[16px]': true,
+      'border-black': true,
+      '-ml-1': true,
+    }
+  }
+  return {
+    'w-[8px]': true,
+    'h-[8px]': true,
+    'border-green-400': true,
+  }
+}
+
+function getClassBeforeCircle() {
+  if (props.index == 1) {
+    return {}
+  }
+
+  var classBefore = {
+    'before:absolute': true,
+    "before:content-['']": true,
+    'before:border-l-[2px]': true,
+    'before:border-green-400': true,
+    'before:ml-[1px]': true,
+  }
+  if (stationActive.value) {
+    return {
+      ...classBefore,
+      ...{
+        'before:ml-[5px]': true,
+        'before:bottom-[75%]': true,
+        'before:h-[70%]': true,
+      },
+    }
+  }
+  return {
+    ...classBefore,
+    ...{
+      'before:ml-[1px]': true,
+      'before:bottom-[65%]': true,
+      'before:h-[95%]': true,
+    },
+  }
+}
 
 const classCircle = computed(() => {
-  //Style for circle
   var classObject = {
     'border-[2px]': true,
     'rounded-[50%]': true,
@@ -30,45 +77,8 @@ const classCircle = computed(() => {
     'mb-3': true,
     'mt-2': true,
   }
-
-  let classCircle = {}
-  if (stationActive.value) {
-    classCircle = {
-      'w-[16px]': true,
-      'h-[16px]': true,
-      'border-black': true,
-      '-ml-1': true,
-    }
-  } else {
-    classCircle = {
-      'w-[8px]': true,
-      'h-[8px]': true,
-      'border-green-400': true,
-    }
-  }
-  classObject = { ...classObject, ...classCircle }
-
-  //Style for the line before circle
-  if (props.index > 1) {
-    let classBefore = {
-      'before:absolute': true,
-      "before:content-['']": true,
-      'before:border-l-[2px]': true,
-      'before:border-green-400': true,
-      'before:ml-[1px]': true,
-    }
-    if (stationActive.value) {
-      classBefore['before:ml-[5px]'] = true
-      classBefore['before:bottom-[75%]'] = true
-      classBefore['before:h-[70%]'] = true
-    } else {
-      classBefore['before:ml-[1px]'] = true
-      classBefore['before:bottom-[65%]'] = true
-      classBefore['before:h-[95%]'] = true
-    }
-    classObject = { ...classObject, ...classBefore }
-  }
-
+  classObject = { ...classObject, ...getClassCircle() }
+  classObject = { ...classObject, ...getClassBeforeCircle() }
   return classObject
 })
 </script>

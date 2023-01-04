@@ -1,5 +1,7 @@
 import { linesFixtures } from '@/model/lines.fixtures'
 import type { LineModel } from '@/model/lines.model'
+import { stationsFixtures } from '@/model/stations.fixtures'
+import type { StationModel } from '@/model/stations.model'
 import { networkFiguresFixtures } from '@/model/network-figures.fixtures'
 import { lineFiguresFixtures } from '@/model/line-figures.fixtures'
 import { photoFixtures } from '@/model/photos.fixtures'
@@ -69,6 +71,21 @@ class ApiClientService {
   async fetchPhotoByLine(lineNumber: number) {
     return new Promise<PhotoModel>((resolve) => {
       resolve(photoFixtures().find((photo) => photo.line == lineNumber)!)
+    })
+  }
+
+  async fetchStationsByLine(lineNumber: number) {
+    return new Promise<StationModel[]>((resolve) => {
+      resolve(stationsFixtures())
+    }).then((val) => {
+      const num_line: string = 'T' + lineNumber
+      //Get only the station on line
+      val = val.filter((station) => station.li_code.includes(num_line))
+      //Sort the stations in ascending order according to the value of 'ordre_t'+lineNumber
+      // val = val.sort(
+      //   (s1, s2) => s1['ordre_t' + lineNumber] - s2['ordre_t' + lineNumber]
+      // )
+      return val
     })
   }
 }
