@@ -61,15 +61,15 @@ export const travelTimeFixtures = (): TravelTimeModel[] => [
     line: 4,
     new: 20,
     old: 31,
-    start: 'Aire Libre', // No station with this name
-    end: 'Aéroport',
+    start: 'Aéroport',
+    end: 'Gares',
   },
 
   {
     line: 4,
-    new: 31,
+    new: 26,
     old: 33,
     start: 'Coeur de Campus',
-    end: 'Saint-Germain', // No station with this name
+    end: 'République',
   },
 ]
