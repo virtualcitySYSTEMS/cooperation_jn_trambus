@@ -13,6 +13,10 @@ const props = defineProps({
   start: String,
   end: String,
   frequency: Number,
+  duration: {
+    type: Boolean,
+    default: true,
+  },
 })
 </script>
 <template>
@@ -34,6 +38,7 @@ const props = defineProps({
     </div>
     <div
       class="flex flex-col items-start p-0 px-3 py-2 border border-slate-200 rounded"
+      v-show="props.duration"
     >
       <div class="text-xs text-neutral-700 font-normal">Toutes les</div>
       <div class="font-bold text-sm text-neutral-800">

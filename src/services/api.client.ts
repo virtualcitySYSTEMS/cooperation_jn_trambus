@@ -21,14 +21,32 @@ class ApiClientService {
       resolve(lineFiguresFixtures())
     })
   }
-  async fetchTravelTime() {
-    return new Promise<TravelTimeModel[]>((resolve) => {
-      resolve(travelTimeFixtures())
+
+  async fetchTravelTimeByIndex(index: number) {
+    return new Promise<TravelTimeModel>((resolve) => {
+      resolve(travelTimeFixtures()[index])
     })
   }
-  async fetchLineDescription() {
+
+  async fetchTravelTime(count: number | null = null) {
+    return new Promise<TravelTimeModel[]>((resolve) => {
+      if (count == null) {
+        resolve(travelTimeFixtures())
+      } else {
+        resolve(travelTimeFixtures().slice(0, count))
+      }
+    })
+  }
+
+  async fetchLineDescriptions() {
     return new Promise<LineModel[]>((resolve) => {
       resolve(linesFixtures())
+    })
+  }
+
+  async fetchLineDescription(lineNumber: number) {
+    return new Promise<LineModel>((resolve) => {
+      resolve(linesFixtures()[lineNumber - 1])
     })
   }
 

@@ -12,7 +12,7 @@ const state = reactive({
 })
 
 onMounted(async () => {
-  state.travelTimes = await apiClientService.fetchTravelTime()
+  state.travelTimes = await apiClientService.fetchTravelTime(3)
 })
 </script>
 
@@ -25,7 +25,7 @@ onMounted(async () => {
       <UiOverflowContainer class="w-[402px]">
         <div class="flex flex-row items-start gap-2">
           <UiTravelTime
-            class="w-72 flex-none"
+            class="w-80 flex-none"
             v-for="travelTime in state.travelTimes"
             :key="travelTime.line"
             :newDuration="travelTime.new"
@@ -38,7 +38,7 @@ onMounted(async () => {
         </div>
       </UiOverflowContainer>
       <UiLinkPrimary
-        :url="'https://www.camptocamp.com/en'"
+        :url="'/traveltimes'"
         :arrowStrokeColor="'stroke-red-600'"
         :underlineColor="'bg-red-600'"
         :title="'Voir plus de futurs temps de parcours'"

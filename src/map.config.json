@@ -95,10 +95,16 @@
       "activeOnStartup": false,
       "style": {
         "name": "metroStyle",
-        "type": "VectorStyleItem",
-        "stroke": {
-          "color": "#FF0000",
-          "width": 3
+        "type": "DeclarativeStyleItem",
+        "declarativeStyle": {
+          "strokeWidth": "4",
+          "color": {
+            "conditions": [
+              ["${ligne} === 'a'", "color('#E31A1C')"],
+              ["${ligne} === 'b'", "color('#33A02C')"],
+              ["true", "color('#000000')"]
+            ]
+          }
         }
       }
     },
@@ -109,10 +115,21 @@
       "activeOnStartup": false,
       "style": {
         "name": "busStyle",
-        "type": "VectorStyleItem",
-        "stroke": {
-          "color": "#00FF00",
-          "width": 3
+        "type": "DeclarativeStyleItem",
+        "declarativeStyle": {
+          "strokeWidth": "2",
+          "color": {
+            "conditions": [
+              ["${li_num} === 'C1'", "color('#b0d363')"],
+              ["${li_num} === 'C2'", "color('#e79575')"],
+              ["${li_num} === 'C3'", "color('#e79575')"],
+              ["${li_num} === 'C4'", "color('#cc25a0')"],
+              ["${li_num} === 'C5'", "color('#9b8eed')"],
+              ["${li_num} === 'C6'", "color('#84cc16')"],
+              ["${li_num} === 'C7'", "color('#d946ef')"],
+              ["true", "color('#000000')"]
+            ]
+          }
         }
       }
     },
@@ -125,8 +142,8 @@
         "name": "bikeStyle",
         "type": "VectorStyleItem",
         "stroke": {
-          "color": "#0000FF",
-          "width": 3
+          "color": "#06b6d4",
+          "width": 2
         }
       }
     },
@@ -140,7 +157,13 @@
         "declarativeStyle": {
           "strokeWidth": "6",
           "color": {
-            "conditions": [["true", "color(${couleur})"]]
+            "conditions": [
+              ["${li_code} === 'T1'", "color('#4338ca')"],
+              ["${li_code} === 'T2'", "color('#db2777')"],
+              ["${li_code} === 'T3'", "color('#057857')"],
+              ["${li_code} === 'T4'", "color('#9333ea')"],
+              ["true", "color(${couleur})"]
+            ]
           }
         }
       },
@@ -208,17 +231,109 @@
   "viewpoints": [
     {
       "name": "rennes",
-      "cameraPosition": [-1.7219, 48.09, 20],
-      "groundPosition": [-1.7219, 48.09, 20],
-      "distance": 16,
-      "pitch": -10,
-      "roll": 360,
-      "animate": false,
+      "cameraPosition": [-1.7219, 48.09, 30000],
+      "groundPosition": [-1.7219, 48.09, 30000],
+      "distance": 20,
+      "pitch": -90,
+      "roll": 0,
+      "heading": 0,
+      "animate": true,
       "type": "Viewpoint",
+      "duration": 0.5,
       "properties": {
         "title": {
           "en": "Rennes",
           "fr": "Rennes"
+        }
+      }
+    },
+    {
+      "name": "home",
+      "cameraPosition": [-1.7219, 48.09, 30000],
+      "groundPosition": [-1.7219, 48.09, 30000],
+      "distance": 37039,
+      "pitch": -90,
+      "roll": 0,
+      "heading": 0,
+      "animate": true,
+      "type": "Viewpoint",
+      "duration": 0.5,
+      "properties": {
+        "title": {
+          "en": "Rennes",
+          "fr": "Rennes"
+        }
+      }
+    },
+    {
+      "name": "line1",
+      "cameraPosition": [-1.6836920667543744, 48.12714651441834, 9652],
+      "groundPosition": [-1.6836920667543744, 48.12714651441834, 0],
+      "distance": 9652,
+      "pitch": -90,
+      "roll": 0,
+      "heading": 0,
+      "animate": true,
+      "type": "Viewpoint",
+      "duration": 0.5,
+      "properties": {
+        "title": {
+          "en": "Line 1",
+          "fr": "Ligne 1"
+        }
+      }
+    },
+    {
+      "name": "line2",
+      "cameraPosition": [-1.6902479380229805, 48.10739914218232, 16046],
+      "groundPosition": [-1.6902479380229805, 48.10739914218232, 0],
+      "distance": 16046,
+      "pitch": -90,
+      "roll": 0,
+      "heading": 0,
+      "animate": true,
+      "type": "Viewpoint",
+      "duration": 0.5,
+      "properties": {
+        "title": {
+          "en": "Line 2",
+          "fr": "Ligne 2"
+        }
+      }
+    },
+    {
+      "name": "line3",
+      "cameraPosition": [-1.6832020074769098, 48.12109567778313, 18810],
+      "groundPosition": [-1.6832020074769098, 48.12109567778313, 0],
+      "distance": 18810,
+      "pitch": -90,
+      "roll": 0,
+      "heading": 0,
+      "animate": true,
+      "type": "Viewpoint",
+      "duration": 0.5,
+      "properties": {
+        "title": {
+          "en": "Line 3",
+          "fr": "Ligne 3"
+        }
+      }
+    },
+    {
+      "name": "line4",
+      "cameraPosition": [-1.7383279234462135, 48.05845827060446, 16000],
+      "groundPosition": [-1.7383279234462135, 48.05845827060446, 0],
+      "distance": 16000,
+      "pitch": -90,
+      "roll": 0,
+      "heading": 0,
+      "animate": true,
+      "type": "Viewpoint",
+      "duration": 0.5,
+      "properties": {
+        "title": {
+          "en": "Line 4",
+          "fr": "Ligne 4"
         }
       }
     }

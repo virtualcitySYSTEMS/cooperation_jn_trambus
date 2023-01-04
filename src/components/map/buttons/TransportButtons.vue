@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { useLayersStore } from '../../../stores/layers'
-import type { TransportLayers } from '../../../stores/layers'
 import UiIconButton from '@/components/ui/UiIconButton.vue'
+
+import type { Layers } from '@/stores/layers'
+import { useLayersStore } from '@/stores/layers'
 
 const layerStore = useLayersStore()
 
-function toggleLayer(name: TransportLayers) {
+function toggleLayer(name: Layers) {
   layerStore.toggleLayer(name)
 }
 </script>

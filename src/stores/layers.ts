@@ -2,21 +2,45 @@ import { ref } from 'vue'
 import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
 
-export type TransportLayers = 'metro' | 'bus' | 'bike'
-export type TransportLayersVisibility = Record<TransportLayers, boolean>
+export const RENNES_LAYERS = [
+  'rennesOrtho',
+  'rennesBase',
+  'metro',
+  'bus',
+  'bike',
+  'trambusLines',
+  'trambusStops',
+  'parking',
+  'poi',
+] as const
+
+export type Layers = typeof RENNES_LAYERS[number]
+export type LayersVisibility = Record<Layers, boolean>
 
 export const useLayersStore = defineStore('layers', () => {
-  const visibilities: Ref<TransportLayersVisibility> = ref({
+  const visibilities: Ref<LayersVisibility> = ref({
+    rennesOrtho: false,
+    rennesBase: false,
     metro: false,
     bus: false,
     bike: false,
+    trambusLines: false,
+    trambusStops: false,
+    parking: false,
+    poi: false,
   })
 
-  function toggleLayer(name: TransportLayers) {
+  function toggleLayer(name: Layers) {
     visibilities.value = {
       ...visibilities.value,
       [name]: !visibilities.value[name],
     }
   }
-  return { visibilities, toggleLayer }
+
+  function update3DBaseLayer(is3D: boolean) {
+    visibilities.value.rennesBase = !is3D
+    visibilities.value.rennesOrtho = is3D
+  }
+
+  return { visibilities, toggleLayer, update3DBaseLayer }
 })

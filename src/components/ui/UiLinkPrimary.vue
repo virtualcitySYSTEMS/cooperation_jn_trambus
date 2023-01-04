@@ -25,10 +25,9 @@ const styleClass = computed(() => {
 </script>
 
 <template>
-  <a
+  <router-link
+    :to="props.url"
     class="flex pt-0 pr-0 pb-1 pl-0 gap-1 items-center grow-0 relative"
-    :href="props.url"
-    target="_blank"
     :title="props.title"
   >
     <div
@@ -41,5 +40,5 @@ const styleClass = computed(() => {
       class="w-5 h-5"
       :strokeColor="props.arrowStrokeColor"
     ></IconArrow>
-  </a>
+  </router-link>
 </template>

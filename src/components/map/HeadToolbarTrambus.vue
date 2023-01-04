@@ -1,42 +1,55 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+
 import UiButton from '@/components/ui/UiButton.vue'
 import UiIconButton from '@/components/ui/UiIconButton.vue'
 import IconCalendar from '@/components/ui/icons/IconCalendar.vue'
 import IconVelo from '@/components/ui/icons/logo-transports-icons/IconVelo.vue'
 import IconBus from '@/components/ui/icons/logo-transports-icons/IconBus.vue'
 import IconMetro from '@/components/ui/icons/logo-transports-icons/IconMetro.vue'
+import LoginButtons from '@/components/map/buttons/LoginButtons.vue'
 
 import { usePanelsStore } from '@/stores/panels'
 import { useLayersStore } from '@/stores/layers'
-import type { TransportLayers } from '@/stores/layers'
-import LoginButtons from '@/components/map/buttons/LoginButtons.vue'
+import { useViewsStore } from '@/stores/views'
+import type { Layers } from '@/stores/layers'
 
 const panelStore = usePanelsStore()
 const layerStore = useLayersStore()
+const viewStore = useViewsStore()
+
+const isLayerButtonsVisible = computed(() => {
+  return viewStore.currentView == 'home'
+})
+
+const isPlanningButtonVisible = computed(() => {
+  return viewStore.currentView == 'home'
+})
 
 function onPlanningButtonClicked() {
   panelStore.isPlanningViewShown = true
   panelStore.hasPlanningViewRendered = true
 }
 
-function toggleLayer(name: TransportLayers) {
+function toggleLayer(name: Layers) {
   layerStore.toggleLayer(name)
 }
 </script>
 
 <template>
   <div class="absolute right-2 top-2 z-10 flex [&>*]:m-1">
-    <div class="inline-flex shadow-sm rounded-md" role="group">
+    <div
+      class="inline-flex shadow-sm rounded-md"
+      role="group"
+      v-show="isLayerButtonsVisible"
+    >
       <UiIconButton
         @click="() => toggleLayer('metro')"
         :active="layerStore.visibilities.metro"
         type="button"
         class="rounded-l-lg px-3 py-3 border border-gray-200 bg-white text-gray-900 inline-flex items-center"
       >
-        <IconMetro
-          class="w-5"
-          :active="layerStore.visibilities.metro"
-        ></IconMetro>
+        <IconMetro :active="layerStore.visibilities.metro"></IconMetro>
       </UiIconButton>
       <UiIconButton
         @click="() => toggleLayer('bus')"
@@ -60,6 +73,7 @@ function toggleLayer(name: TransportLayers) {
       @click="onPlanningButtonClicked"
       :icon="IconCalendar"
       :disabled="false"
+      v-show="isPlanningButtonVisible"
     >
       Planning du projet
     </UiButton>
