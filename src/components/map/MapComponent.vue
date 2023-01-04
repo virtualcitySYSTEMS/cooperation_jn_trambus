@@ -18,8 +18,12 @@ import Style from 'ol/style/Style'
 import { Circle, Fill, Stroke } from 'ol/style'
 import type { LineNumber } from '@/model/lines.model'
 import { useViewsStore } from '@/stores/views'
-import { getAllStartEndStations } from '@/model/lines.fixtures'
+import {
+  getAllStartEndStations,
+  isStartEndStation,
+} from '@/model/lines.fixtures'
 import { trambusLineStyle, type LineState } from '@/styles/line'
+import { trambusStopStyle } from '@/styles/trambusStop'
 
 const vcsApp = new VcsApp()
 provide('vcsApp', vcsApp)
@@ -150,10 +154,10 @@ const trambusLineTravelTimesViewStyleFunction: StyleFunction = function (
 const trambusStopTravelTimesViewStyleFunction: StyleFunction = function (
   feature: FeatureLike
 ): Style[] {
+  const lineNumber = getTrambusLineNumber(feature) as LineNumber
+
   // no travel time selected, only show the start and end stations
   let shownStations = getAllStartEndStations()
-  let lineColor = lineColors[getTrambusLineNumber(feature) as LineNumber]
-
   // There is a travel time selected, show only the selected station from
   // the selected travel time
   if (travelTimesViewStore.selectedTravelTime != null) {
@@ -161,56 +165,11 @@ const trambusStopTravelTimesViewStyleFunction: StyleFunction = function (
       travelTimesViewStore.selectedTravelTime.start,
       travelTimesViewStore.selectedTravelTime.end,
     ]
-    lineColor = lineColors[travelTimesViewStore.selectedTravelTime.line]
   }
   const stationName = feature.get('nom')
+  const isHidden = shownStations.indexOf(stationName) == -1
 
-  if (!mapStore.is3D()) {
-    if (shownStations.indexOf(stationName) > -1) {
-      const fill = new Fill({
-        color: '#FFFFFF',
-      })
-      const stroke = new Stroke({
-        color: lineColor,
-        width: 2,
-      })
-      const ShownTrambusStopStyle = new Style({
-        image: new Circle({
-          fill: fill,
-          stroke: stroke,
-          radius: 6,
-        }),
-        fill: fill,
-        stroke: stroke,
-      })
-      return [ShownTrambusStopStyle]
-    } else {
-      return []
-    }
-  } else {
-    // TODO: Change it with disk style
-    if (shownStations.indexOf(stationName) > -1) {
-      const fill = new Fill({
-        color: lineColor,
-      })
-      const stroke = new Stroke({
-        color: '#FFFFFF',
-        width: 2,
-      })
-      const ShownTrambusStopStyle = new Style({
-        image: new Circle({
-          fill: fill,
-          stroke: stroke,
-          radius: 6,
-        }),
-        fill: fill,
-        stroke: stroke,
-      })
-      return [ShownTrambusStopStyle]
-    } else {
-      return []
-    }
-  }
+  return trambusStopStyle(lineNumber, isStartEndStation(stationName), isHidden)
 }
 
 // TODO: probably merge these two functions. i.e. updateTrambusStyle(currentView: home | line)
