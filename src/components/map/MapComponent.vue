@@ -5,11 +5,7 @@ import { CesiumMap, Context, VcsApp, Layer, FeatureLayer } from '@vcmap/core'
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
 
-import {
-  getTrambusLineNumber,
-  lineColors,
-  lineDimmedColors,
-} from '@/styles/common'
+import { getTrambusLineNumber, lineColors } from '@/styles/common'
 
 import { useLayersStore, RENNES_LAYERS } from '@/stores/layers'
 import { useMapStore } from '@/stores/map'
@@ -23,6 +19,7 @@ import { Circle, Fill, Stroke } from 'ol/style'
 import type { LineNumber } from '@/model/lines.model'
 import { useViewsStore } from '@/stores/views'
 import { getAllStartEndStations } from '@/model/lines.fixtures'
+import { trambusLineStyle, type MapType, type LineState } from '@/styles/line'
 
 const vcsApp = new VcsApp()
 provide('vcsApp', vcsApp)
@@ -84,22 +81,26 @@ async function updateViewPoint() {
 const trambusLineViewStyleFunction: StyleFunction = function (
   feature: FeatureLike
 ): Style[] {
-  if (getTrambusLineNumber(feature) == lineViewStore.selectedLine) {
-    const selectedLineStyle = new Style({
-      stroke: new Stroke({
-        color: lineColors[getTrambusLineNumber(feature) as LineNumber],
-        width: 4,
-      }),
-      zIndex: 0,
-    })
-    return [selectedLineStyle]
+  const lineNumber = getTrambusLineNumber(feature) as LineNumber
+  const mapType: MapType = mapStore.is3D() ? '2D' : '3D'
+  let lineState: LineState = 'normal'
+
+  if (lineViewStore.selectedLine == null) {
+    lineState = 'normal'
+  } else if (getTrambusLineNumber(feature) == lineViewStore.selectedLine) {
+    lineState = 'selected'
   } else {
-    return []
+    lineState = 'unselected'
   }
+
+  return trambusLineStyle(lineNumber, lineState, mapType)
 }
 
-function isTrambusStopBelongsToLine(feature: FeatureLike, trambusLine: number) {
-  const lineNumbers: string = feature.get('li_code') // e.g. T1 T2, T1
+function isTrambusStopBelongsToLine(
+  trambusStopFeature: FeatureLike,
+  trambusLine: number
+): boolean {
+  const lineNumbers: string = trambusStopFeature.get('li_code') // e.g. T1 T2, T1
   return lineNumbers.includes(trambusLine.toString())
 }
 
@@ -132,73 +133,23 @@ const trambusStopLineViewStyleFunction: StyleFunction = function (
 const trambusLineTravelTimesViewStyleFunction: StyleFunction = function (
   feature: FeatureLike
 ): Style[] {
-  if (!mapStore.is3D()) {
-    const lineStyle = new Style({
-      stroke: new Stroke({
-        color: lineColors[getTrambusLineNumber(feature) as LineNumber],
-        width: 3,
-      }),
-      zIndex: 0,
-    })
-    return [lineStyle]
-  } else {
-    const lineStyle = new Style({
-      stroke: new Stroke({
-        color: lineColors[getTrambusLineNumber(feature) as LineNumber],
-        width: 3,
-      }),
-      zIndex: 1,
-    })
-    const lineBorderStyle = new Style({
-      stroke: new Stroke({
-        color: '#FFFFFF',
-        width: 5,
-      }),
-      zIndex: 0,
-    })
-    return [lineBorderStyle, lineStyle]
+  const lineNumber = getTrambusLineNumber(feature) as LineNumber
+  let mapType: MapType = '2D'
+  if (mapStore.is3D()) {
+    mapType = '3D'
   }
-}
+  const selectedTravelTime = travelTimesViewStore.selectedTravelTime
+  let lineState: LineState = 'normal'
 
-const trambusLineTravelTimesViewSelectedStyleFunction: StyleFunction =
-  function (feature: FeatureLike): Style[] {
-    if (!mapStore.is3D()) {
-      let lineColor = lineColors[getTrambusLineNumber(feature) as LineNumber]
-      let zIndex = 1
-      if (
-        (getTrambusLineNumber(feature) as LineNumber) !=
-        travelTimesViewStore.selectedTravelTime?.line
-      ) {
-        lineColor =
-          lineDimmedColors[getTrambusLineNumber(feature) as LineNumber]
-        zIndex = 0
-      }
-      const lineStyle = new Style({
-        stroke: new Stroke({
-          color: lineColor,
-          width: 3,
-        }),
-        zIndex: zIndex,
-      })
-      return [lineStyle]
-    } else {
-      const lineStyle = new Style({
-        stroke: new Stroke({
-          color: lineColors[getTrambusLineNumber(feature) as LineNumber],
-          width: 3,
-        }),
-        zIndex: 1,
-      })
-      const lineBorderStyle = new Style({
-        stroke: new Stroke({
-          color: '#FFFFFF',
-          width: 5,
-        }),
-        zIndex: 0,
-      })
-      return [lineBorderStyle, lineStyle]
-    }
+  if (selectedTravelTime == null) {
+    lineState = 'normal'
+  } else if (getTrambusLineNumber(feature) == selectedTravelTime.line) {
+    lineState = 'selected'
+  } else {
+    lineState = 'unselected'
   }
+  return trambusLineStyle(lineNumber, lineState, mapType)
+}
 
 const trambusStopTravelTimesViewStyleFunction: StyleFunction = function (
   feature: FeatureLike
@@ -276,30 +227,21 @@ async function updateLineViewStyle() {
     RENNES_LAYERS[6]
   ) as FeatureLayer
   trambusStopLayer.clearStyle()
+
   trambusStopLayer.setStyle(trambusStopLineViewStyleFunction)
 }
 
 async function updateTravelTimesViewStyle() {
   // No selection
   const trambusLayer = vcsApp.layers.getByKey(RENNES_LAYERS[5]) as FeatureLayer
+  trambusLayer.clearStyle()
+  trambusLayer.setStyle(trambusLineTravelTimesViewStyleFunction)
+
   const trambusStopLayer = vcsApp.layers.getByKey(
     RENNES_LAYERS[6]
   ) as FeatureLayer
-  trambusLayer.clearStyle()
   trambusStopLayer.clearStyle()
-
-  if (travelTimesViewStore.selectedTravelTime == null) {
-    // TrambusLine style
-    trambusLayer.setStyle(trambusLineTravelTimesViewStyleFunction)
-
-    // Trambus Stop (only start and end)
-    trambusStopLayer.setStyle(trambusStopTravelTimesViewStyleFunction)
-  } else {
-    // set selected line style
-    trambusLayer.setStyle(trambusLineTravelTimesViewSelectedStyleFunction)
-    // set selected station style
-    trambusStopLayer.setStyle(trambusStopTravelTimesViewStyleFunction)
-  }
+  trambusStopLayer.setStyle(trambusStopTravelTimesViewStyleFunction)
 }
 
 function updateHomeViewStyle() {
