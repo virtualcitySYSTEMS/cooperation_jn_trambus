@@ -5,12 +5,12 @@ import { lineColors } from './common'
 export function trambusStopStyle(
   lineNumber: LineNumber,
   isStartEndStation: boolean,
-  isHidden: boolean
+  isShown: boolean
 ): Style[] {
   const fill = new Fill({
     color: '#FFFFFF',
   })
-  if (isHidden) {
+  if (!isShown) {
     return []
   }
   const stroke = new Stroke({

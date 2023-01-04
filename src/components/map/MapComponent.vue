@@ -5,7 +5,7 @@ import { CesiumMap, Context, VcsApp, Layer, FeatureLayer } from '@vcmap/core'
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
 
-import { getTrambusLineNumber, lineColors } from '@/styles/common'
+import { getTrambusLineNumber } from '@/styles/common'
 
 import { useLayersStore, RENNES_LAYERS } from '@/stores/layers'
 import { useMapStore } from '@/stores/map'
@@ -15,7 +15,6 @@ import mapConfig from '../../map.config.json'
 import type { StyleFunction } from 'ol/style/Style'
 import type { FeatureLike } from 'ol/Feature'
 import Style from 'ol/style/Style'
-import { Circle, Fill, Stroke } from 'ol/style'
 import type { LineNumber } from '@/model/lines.model'
 import { useViewsStore } from '@/stores/views'
 import {
@@ -112,26 +111,14 @@ const trambusStopLineViewStyleFunction: StyleFunction = function (
   feature: FeatureLike
 ): Style[] {
   const selectedTrambusLine = Number(lineViewStore.selectedLine) as LineNumber
-  if (isTrambusStopBelongsToLine(feature, selectedTrambusLine)) {
-    const fill = new Fill({
-      color: '#FFFFFF',
-    })
-    const stroke = new Stroke({
-      color: lineColors[selectedTrambusLine],
-      width: 3,
-    })
-    const selectedTrambusStopStyle = new Style({
-      image: new Circle({
-        fill: fill,
-        stroke: stroke,
-        radius: 5,
-      }),
-      fill: fill,
-      stroke: stroke,
-    })
-    return [selectedTrambusStopStyle]
-  }
-  return []
+  const isShown = isTrambusStopBelongsToLine(feature, selectedTrambusLine)
+  const stationName = feature.get('nom')
+
+  return trambusStopStyle(
+    selectedTrambusLine,
+    isStartEndStation(stationName),
+    isShown
+  )
 }
 
 const trambusLineTravelTimesViewStyleFunction: StyleFunction = function (
@@ -167,9 +154,9 @@ const trambusStopTravelTimesViewStyleFunction: StyleFunction = function (
     ]
   }
   const stationName = feature.get('nom')
-  const isHidden = shownStations.indexOf(stationName) == -1
+  const isShown = shownStations.indexOf(stationName) > -1
 
-  return trambusStopStyle(lineNumber, isStartEndStation(stationName), isHidden)
+  return trambusStopStyle(lineNumber, isStartEndStation(stationName), isShown)
 }
 
 // TODO: probably merge these two functions. i.e. updateTrambusStyle(currentView: home | line)
