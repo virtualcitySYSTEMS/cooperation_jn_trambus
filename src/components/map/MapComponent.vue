@@ -14,7 +14,7 @@ import { useLineViewsStore, useTravelTimesViewStore } from '@/stores/views'
 import mapConfig from '../../map.config.json'
 import type { StyleFunction } from 'ol/style/Style'
 import type { FeatureLike } from 'ol/Feature'
-import Style from 'ol/style/Style'
+import type Style from 'ol/style/Style'
 import type { LineNumber } from '@/model/lines.model'
 import { useViewsStore } from '@/stores/views'
 import {
