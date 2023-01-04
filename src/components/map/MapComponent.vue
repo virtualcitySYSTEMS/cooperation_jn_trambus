@@ -117,7 +117,8 @@ const trambusStopLineViewStyleFunction: StyleFunction = function (
   return trambusStopStyle(
     selectedTrambusLine,
     isStartEndStation(stationName),
-    isShown
+    isShown,
+    mapStore.is3D()
   )
 }
 
@@ -141,7 +142,7 @@ const trambusLineTravelTimesViewStyleFunction: StyleFunction = function (
 const trambusStopTravelTimesViewStyleFunction: StyleFunction = function (
   feature: FeatureLike
 ): Style[] {
-  const lineNumber = getTrambusLineNumber(feature) as LineNumber
+  let lineNumber = getTrambusLineNumber(feature) as LineNumber
 
   // no travel time selected, only show the start and end stations
   let shownStations = getAllStartEndStations()
@@ -152,11 +153,17 @@ const trambusStopTravelTimesViewStyleFunction: StyleFunction = function (
       travelTimesViewStore.selectedTravelTime.start,
       travelTimesViewStore.selectedTravelTime.end,
     ]
+    lineNumber = travelTimesViewStore.selectedTravelTime?.line
   }
   const stationName = feature.get('nom')
   const isShown = shownStations.indexOf(stationName) > -1
 
-  return trambusStopStyle(lineNumber, isStartEndStation(stationName), isShown)
+  return trambusStopStyle(
+    lineNumber,
+    isStartEndStation(stationName),
+    isShown,
+    mapStore.is3D()
+  )
 }
 
 // TODO: probably merge these two functions. i.e. updateTrambusStyle(currentView: home | line)
