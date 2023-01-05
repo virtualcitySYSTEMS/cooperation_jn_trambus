@@ -6,6 +6,7 @@ import IconBus from '@/components/ui/icons/IconBus.vue'
 import IconParking from '@/components/ui/icons/IconParking.vue'
 import type { LineNumber } from '@/model/lines.model'
 import { getColorLine } from '@/services/color'
+import type { BusNumber } from '@/model/bus.model'
 
 const props = defineProps({
   index: {
@@ -41,6 +42,25 @@ const props = defineProps({
 })
 const stationActive = ref<Boolean>(false)
 const borderColor = ref(getColorLine('border', props.line, 600))
+
+let desserteSplit = props.desserte
+  .split(' ')
+  .filter((bus) => bus !== undefined && bus != '')
+const desserteTab = ref<BusNumber[]>(
+  desserteSplit.map((bus) => {
+    let new_bus: BusNumber = bus as BusNumber
+    return new_bus
+  })
+)
+
+var lineTab = ref<LineNumber[]>([])
+if (props.li_code != '') {
+  let li_code_split = props.li_code.split(' ')
+  lineTab.value = li_code_split.map((line) => {
+    let new_line: LineNumber = parseInt(line) as LineNumber
+    return new_line
+  })
+}
 
 function getClassCircle() {
   let marginLeftNegative = '-ml-1'
@@ -111,24 +131,11 @@ const classCircle = computed(() => {
     <p class="mb-1 station-title">{{ name }}</p>
     <div class="ml-auto mr-[5px]">
       <div class="flex">
-        <template
-          v-for="(line_connected, index) in li_code.split(' ')"
-          :key="index"
-        >
-          <IconLine
-            v-if="line_connected !== ''"
-            :line="parseInt(line_connected)"
-            :size="'m'"
-            class="mb-1 ml-[1px]"
-          />
+        <template v-for="(line_connected, index) in lineTab" :key="index">
+          <IconLine :line="line_connected" :size="'m'" class="mb-1 ml-[1px]" />
         </template>
-        <template v-for="(bus, index) in desserte.split(' ')" :key="index">
-          <IconBus
-            v-if="bus !== ''"
-            :bus="bus"
-            :size="'m'"
-            class="mb-1 ml-[1px]"
-          />
+        <template v-for="(bus, index) in desserteTab" :key="index">
+          <IconBus :bus="bus" :size="'m'" class="mb-1 ml-[1px]" />
         </template>
         <template v-if="parking !== undefined && parking">
           <IconParking :size="'m'" class="mb-1 ml-[1px]" />

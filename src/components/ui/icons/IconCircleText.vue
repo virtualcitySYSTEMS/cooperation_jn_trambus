@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, type PropType } from 'vue'
-import { IconSize } from '@/services/icon'
+import type { IconSize } from '@/services/icon'
 
 const props = defineProps({
   text: {

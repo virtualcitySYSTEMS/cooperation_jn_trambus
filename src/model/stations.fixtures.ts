@@ -375,6 +375,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t2: null,
     ordre_t3: null,
     ordre_t4: null,
+    desserte: '',
   },
   {
     id: 286,
@@ -384,6 +385,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t2: null,
     ordre_t3: null,
     ordre_t4: null,
+    desserte: '',
   },
   {
     id: 285,
@@ -629,6 +631,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t2: 27,
     ordre_t3: null,
     ordre_t4: null,
+    desserte: '',
   },
   {
     id: 266,
@@ -1003,6 +1006,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t3: 6,
     ordre_t4: null,
     parking: true,
+    desserte: '',
   },
   {
     id: 237,
@@ -1025,6 +1029,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t2: null,
     ordre_t3: 2,
     ordre_t4: null,
+    desserte: '',
   },
   {
     id: 235,
@@ -1034,6 +1039,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t2: null,
     ordre_t3: 38,
     ordre_t4: null,
+    desserte: '',
   },
   {
     id: 234,
@@ -1044,6 +1050,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t3: 39,
     ordre_t4: null,
     parking: true,
+    desserte: '',
   },
   {
     id: 233,
@@ -1053,6 +1060,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t2: null,
     ordre_t3: 32,
     ordre_t4: null,
+    desserte: '',
   },
   {
     id: 232,
@@ -1101,6 +1109,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t2: null,
     ordre_t3: null,
     ordre_t4: 20,
+    desserte: '',
   },
   {
     id: 228,
@@ -1136,6 +1145,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t2: null,
     ordre_t3: null,
     ordre_t4: 15,
+    desserte: '',
   },
   {
     id: 225,
@@ -1210,6 +1220,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t2: null,
     ordre_t3: null,
     ordre_t4: 5,
+    desserte: '',
   },
   {
     id: 219,
@@ -1219,6 +1230,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t2: null,
     ordre_t3: null,
     ordre_t4: 6,
+    desserte: '',
   },
   {
     id: 218,
@@ -1241,6 +1253,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t2: null,
     ordre_t3: null,
     ordre_t4: 9,
+    desserte: '',
   },
   {
     id: 216,
@@ -1250,6 +1263,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t2: null,
     ordre_t3: null,
     ordre_t4: 10,
+    desserte: '',
   },
   {
     id: 215,
@@ -1260,6 +1274,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t3: null,
     ordre_t4: 11,
     parking: true,
+    desserte: '',
   },
   {
     id: 214,
@@ -1269,6 +1284,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t2: null,
     ordre_t3: null,
     ordre_t4: 19,
+    desserte: '',
   },
   {
     id: 213,
@@ -1292,6 +1308,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t3: 33,
     ordre_t4: null,
     parking: true,
+    desserte: '',
   },
   {
     id: 211,

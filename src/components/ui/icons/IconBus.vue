@@ -3,7 +3,7 @@ import { ref, type PropType } from 'vue'
 import type { BusNumber } from '@/model/bus.model'
 import { getColorBus } from '@/services/color'
 import IconCircleText from '@/components/ui/icons/IconCircleText.vue'
-import { IconSize } from '@/services/icon'
+import type { IconSize } from '@/services/icon'
 
 const props = defineProps({
   bus: {

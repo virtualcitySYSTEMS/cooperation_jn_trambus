@@ -7,7 +7,7 @@ export interface StationModel {
   ordre_t3: number | null
   ordre_t4: number | null
   parking?: boolean
-  desserte?: string
+  desserte: string
   desserte_scolaire?: string
   desserte_soirs_we?: string
   desserte_dimanche?: string

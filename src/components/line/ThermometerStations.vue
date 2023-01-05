@@ -4,6 +4,7 @@ import type { LineNumber } from '@/model/lines.model'
 import ItemThermometerStations from '@/components/line/ItemThermometerStations.vue'
 import { apiClientService } from '@/services/api.client'
 import { reactive, onBeforeMount } from 'vue'
+import type { StationModel } from '@/model/stations.model'
 
 const props = defineProps({
   line: {
@@ -13,7 +14,7 @@ const props = defineProps({
 })
 
 const state = reactive({
-  stations: null as null | [],
+  stations: null as null | StationModel[],
 })
 
 onBeforeMount(async () => {
