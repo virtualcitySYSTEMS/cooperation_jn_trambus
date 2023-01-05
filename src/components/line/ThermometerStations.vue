@@ -42,6 +42,7 @@ onBeforeMount(async () => {
         :parking="station.parking"
         :desserte="station.desserte"
         :li_code="station.li_code"
+        :is_last_elem="index + 1 === state.stations.length ? true : false"
       />
     </ul>
   </div>

@@ -5,6 +5,7 @@ import IconLine from '@/components/ui/icons/IconLine.vue'
 import IconBus from '@/components/ui/icons/IconBus.vue'
 import IconParking from '@/components/ui/icons/IconParking.vue'
 import type { LineNumber } from '@/model/lines.model'
+import { getColorLine } from '@/services/color'
 
 const props = defineProps({
   index: {
@@ -32,15 +33,48 @@ const props = defineProps({
     required: false,
     default: false,
   },
+  is_last_elem: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 })
-
 const stationActive = ref<Boolean>(false)
+const borderColor = ref(getColorLine('border', props.line, 600))
 
 function getClassCircle() {
+  let marginLeftNegative = '-ml-1'
+  let border2px = 'border-[2px]'
+  let width = '8px'
   if (stationActive.value) {
-    return ['w-[16px]', 'h-[16px]', 'border-black', '-ml-1']
+    width = '16px'
+    return [
+      'min-w-[' + width + ']',
+      'w-[' + width + ']',
+      'h-[16px]',
+      'border-black',
+      marginLeftNegative,
+      border2px,
+    ]
   }
-  return ['w-[8px]', 'h-[8px]', 'border-green-400']
+  if (props.index == 1 || props.is_last_elem) {
+    width = '15px'
+    return [
+      'min-w-[' + width + ']',
+      'w-[' + width + ']',
+      'h-[15px]',
+      marginLeftNegative,
+      borderColor.value,
+      'border-[4px]',
+    ]
+  }
+  return [
+    'min-w-[' + width + ']',
+    'w-[' + width + ']',
+    'h-[8px]',
+    borderColor.value,
+    border2px,
+  ]
 }
 
 function getClassBeforeCircle() {
@@ -51,25 +85,24 @@ function getClassBeforeCircle() {
     'before:absolute',
     "before:content-['']",
     'before:border-l-[2px]',
-    'before:border-green-400',
-    'before:ml-[1px]',
+    'before:' + borderColor.value,
   ]
+  let ml = 'before:ml-[1px]'
+  let bottom = 'before:bottom-[65%]'
+  let height = 'before:h-[95%]'
   if (stationActive.value) {
-    return classBefore.concat([
-      'before:ml-[5px]',
-      'before:bottom-[75%]',
-      'before:h-[70%]',
-    ])
+    ml = 'before:ml-[5px]'
+    bottom = 'before:bottom-[75%]'
+    height = 'before:h-[70%]'
+  } else if (props.is_last_elem) {
+    ml = 'before:ml-[3px]'
+    height = 'before:h-[85%]'
   }
-  return classBefore.concat([
-    'before:ml-[1px]',
-    'before:bottom-[65%]',
-    'before:h-[95%]',
-  ])
+  return classBefore.concat([ml, bottom, height])
 }
 
 const classCircle = computed(() => {
-  var classObject = ['border-[2px]', 'rounded-[50%]', 'mr-2', 'mb-3', 'mt-2']
+  var classObject = ['rounded-[50%]', 'mr-2', 'mb-3', 'mt-2']
   classObject = classObject.concat(getClassCircle())
   classObject = classObject.concat(getClassBeforeCircle())
   return classObject
@@ -85,7 +118,7 @@ const classCircle = computed(() => {
   >
     <div :class="classCircle" />
     <p class="mb-1 station-title">{{ name }}</p>
-    <div class="ml-auto mr-[15px]">
+    <div class="ml-auto mr-[5px]">
       <div class="flex">
         <template
           v-for="(line_connected, index) in li_code.split(' ')"
@@ -99,7 +132,12 @@ const classCircle = computed(() => {
           />
         </template>
         <template v-for="(bus, index) in desserte.split(' ')" :key="index">
-          <IconBus v-if="bus !== ''" :bus="bus" :size="'m'" class="mb-1 ml-1" />
+          <IconBus
+            v-if="bus !== ''"
+            :bus="bus"
+            :size="'m'"
+            class="mb-1 ml-[1px]"
+          />
         </template>
         <template v-if="parking !== undefined && parking">
           <IconParking :size="'m'" class="mb-1 ml-1" />

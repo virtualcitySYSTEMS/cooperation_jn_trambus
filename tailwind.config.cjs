@@ -53,6 +53,15 @@ module.exports = {
 
     'before:bg-red-600',
     'stroke-red-600',
+
+    'before:border-indigo-500',
+    'before:border-indigo-600',
+    'before:border-pink-500',
+    'before:border-pink-600',
+    'before:border-emerald-500',
+    'before:border-emerald-600',
+    'before:border-purple-500',
+    'before:border-purple-600',
   ],
   theme: {
     extend: {
