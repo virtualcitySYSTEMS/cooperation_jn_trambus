@@ -3,8 +3,7 @@ import { ref, type PropType } from 'vue'
 import type { LineNumber } from '@/model/lines.model'
 import { getColorLine } from '@/services/color'
 import IconCircleText from '@/components/ui/icons/IconCircleText.vue'
-
-type IconSize = 's' | 'm' | 'l' | 'xl'
+import { IconSize } from '@/services/icon'
 
 const props = defineProps({
   line: {

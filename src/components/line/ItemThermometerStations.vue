@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import type { PropType } from 'vue'
 import IconLine from '@/components/ui/icons/IconLine.vue'
 import IconBus from '@/components/ui/icons/IconBus.vue'
+import IconParking from '@/components/ui/icons/IconParking.vue'
 import type { LineNumber } from '@/model/lines.model'
 
 const props = defineProps({
@@ -29,6 +30,7 @@ const props = defineProps({
   parking: {
     type: Boolean,
     required: false,
+    default: false,
   },
 })
 
@@ -99,10 +101,10 @@ const classCircle = computed(() => {
         <template v-for="(bus, index) in desserte.split(' ')" :key="index">
           <IconBus v-if="bus !== ''" :bus="bus" :size="'m'" class="mb-1 ml-1" />
         </template>
+        <template v-if="parking !== undefined && parking">
+          <IconParking :size="'m'" class="mb-1 ml-1" />
+        </template>
       </div>
-      <!-- {{desserte}}
-      {{li_code}}
-      {{parking}} -->
     </div>
   </li>
 </template>

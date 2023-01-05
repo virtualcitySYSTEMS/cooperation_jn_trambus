@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, type PropType } from 'vue'
-
-type IconSize = 's' | 'm' | 'l' | 'xl'
+import { IconSize } from '@/services/icon'
 
 const props = defineProps({
   text: {
