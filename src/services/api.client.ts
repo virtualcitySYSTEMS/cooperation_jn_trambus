@@ -15,10 +15,20 @@ class ApiClientService {
       resolve(networkFiguresFixtures())
     })
   }
-  // TODO: Add line number as a parameter
-  async fetchLineFigure() {
+
+  async fetchLineFigure(lineNumber: number) {
     return new Promise<LineFigureModel[]>((resolve) => {
-      resolve(lineFiguresFixtures())
+      resolve(
+        lineFiguresFixtures().filter((figure) => figure.idLine == lineNumber)
+      )
+    })
+  }
+
+  async fetchTravelTimeByLine(lineNumber: number) {
+    return new Promise<TravelTimeModel[]>((resolve) => {
+      resolve(
+        travelTimeFixtures().filter((travel) => travel.line == lineNumber)
+      )
     })
   }
 
@@ -53,6 +63,12 @@ class ApiClientService {
   async fetchPhotos() {
     return new Promise<PhotoModel[]>((resolve) => {
       resolve(photoFixtures())
+    })
+  }
+
+  async fetchPhotoByLine(lineNumber: number) {
+    return new Promise<PhotoModel>((resolve) => {
+      resolve(photoFixtures().find((photo) => photo.line == lineNumber)!)
     })
   }
 }

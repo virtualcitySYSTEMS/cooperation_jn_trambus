@@ -5,8 +5,12 @@ import router from '@/router'
 import UiLineDescription from '@/components/ui/UiLineDescription.vue'
 import ChevronArrowLeft from '@/assets/icons/chevron-left.svg'
 import type { LineModel } from '@/model/lines.model'
+import type { TravelTimeModel } from '@/model/travel-time.model'
+import type { PhotoModel } from '@/model/photos.model'
 import { apiClientService } from '@/services/api.client'
 import UiButton from '@/components/ui/UiButton.vue'
+import LineFigures from '@/components/line/LineFigures.vue'
+import UiTravelTime from '@/components/ui/UiTravelTime.vue'
 import { useRoute } from 'vue-router'
 
 import { useMapStore } from '@/stores/map'
@@ -21,6 +25,8 @@ const lineStore = useLineViewsStore()
 
 const state = reactive({
   lineDescription: null as null | LineModel,
+  travelTimes: null as null | TravelTimeModel[],
+  photo: null as null | PhotoModel,
 })
 
 onBeforeMount(async () => {
@@ -32,6 +38,10 @@ onBeforeMount(async () => {
   state.lineDescription = await apiClientService.fetchLineDescription(
     lineStore.selectedLine
   )
+  state.travelTimes = await apiClientService.fetchTravelTimeByLine(
+    lineStore.selectedLine
+  )
+  state.photo = await apiClientService.fetchPhotoByLine(lineStore.selectedLine)
 })
 
 onMounted(async () => {
@@ -79,7 +89,27 @@ function backButtonClicked() {
     </div>
   </div>
 
-  <h2>Line View</h2>
+  <template v-if="state.photo !== null && state.photo !== undefined">
+    <img
+      :key="state.photo.url"
+      :src="state.photo.url"
+      class="h-[184px] -mx-6 max-w-7xl mb-2"
+    />
+  </template>
 
-  <div>Line : {{ $route.params.id }}</div>
+  <LineFigures v-if="state.lineDescription" :line="state.lineDescription?.id" />
+
+  <h2 class="font-dm-sans font-bold text-lg leading-6">
+    Nouveaux temps de parcours
+  </h2>
+  <UiTravelTime
+    v-for="travelTime in state.travelTimes"
+    :key="travelTime.line"
+    :newDuration="travelTime.new"
+    :oldDuration="travelTime.old"
+    :lineNumber="travelTime.line"
+    :startStation="travelTime.start"
+    :endStation="travelTime.end"
+  >
+  </UiTravelTime>
 </template>

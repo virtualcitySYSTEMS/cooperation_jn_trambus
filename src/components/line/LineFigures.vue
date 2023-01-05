@@ -2,16 +2,25 @@
 import { reactive, onMounted } from 'vue'
 
 import { apiClientService } from '@/services/api.client'
+import type { PropType } from 'vue'
+import type { LineNumber } from '@/model/lines.model'
 import UiNetworkFigure from '../ui/UiNetworkFigure.vue'
 import UiVerticalSeparator from '../ui/UiVerticalSeparator.vue'
 import type { LineFigureModel } from '../../model/line-figures.model'
+
+const props = defineProps({
+  line: {
+    type: Number as PropType<LineNumber>,
+    required: true,
+  },
+})
 
 const state = reactive({
   lineFigures: null as null | LineFigureModel[],
 })
 
 onMounted(async () => {
-  state.lineFigures = await apiClientService.fetchLineFigure()
+  state.lineFigures = await apiClientService.fetchLineFigure(props.line)
 })
 
 function getLength(networkFigures: null | LineFigureModel[]): Number {
