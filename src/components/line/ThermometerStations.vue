@@ -39,6 +39,9 @@ onBeforeMount(async () => {
         :index="index + 1"
         :line="props.line"
         :name="station.nom"
+        :parking="station.parking"
+        :desserte="station.desserte"
+        :li_code="station.li_code"
       />
     </ul>
   </div>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, type PropType } from 'vue'
 import type { LineNumber } from '@/model/lines.model'
-import { getColor } from '@/services/color'
+import { getColorLine } from '@/services/color'
 
 type LineIconSize = 's' | 'm' | 'l' | 'xl'
 
@@ -21,7 +21,7 @@ const lineText = computed(() =>
 )
 
 const circleStyle = computed(() => {
-  const bgColor = getColor('bg', props.line, 600)
+  const bgColor = getColorLine('bg', props.line, 600)
   const iconSizes: Record<LineIconSize, string> = {
     s: 'w-4 h-4',
     m: 'w-6 h-6',
@@ -46,10 +46,7 @@ const textStyle = computed(() => {
     class="flex items-center rounded-full justify-center"
     :class="circleStyle"
   >
-    <div
-      class="font-dm-sans font-bold text-white text-xl items-end"
-      :class="textStyle"
-    >
+    <div class="font-dm-sans font-bold text-white items-end" :class="textStyle">
       {{ lineText }}
     </div>
   </div>

@@ -17,6 +17,18 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  desserte: {
+    type: String,
+    required: true,
+  },
+  li_code: {
+    type: String,
+    required: true,
+  },
+  parking: {
+    type: Boolean,
+    required: true,
+  },
 })
 
 const stationActive = ref<Boolean>(false)
@@ -71,7 +83,18 @@ const classCircle = computed(() => {
     <div :class="classCircle" />
     <p class="mb-1 station-title">{{ name }}</p>
     <div class="ml-auto mr-[15px]">
-      <IconLine :line="props.line" :size="'s'" class="mb-1"></IconLine>
+      <div class="flex">
+        <IconLine
+          v-for="(line_connected, index) in li_code.split(' ')"
+          :key="index"
+          :line="line_connected"
+          :size="'m'"
+          class="mb-1 ml-1"
+        />
+      </div>
+      <!-- {{desserte}}
+      {{li_code}}
+      {{parking}} -->
     </div>
   </li>
 </template>

@@ -1,6 +1,6 @@
 import type { LineNumber } from '@/model/lines.model'
 import type { StationModel } from '@/model/stations.model'
-import { STATION_DESSERTES_USEFUL } from '@/model/stations.model'
+import { LIST_BUS } from '@/model/bus.model'
 
 export function sortStationsByOrder(
   stations: StationModel[],
@@ -47,7 +47,7 @@ export function keepOnlyUsefulDessertes(
     let new_desserte: string = ''
     if (station.desserte !== undefined && station.desserte !== null) {
       station.desserte.split(' ').map((desserte) => {
-        if (STATION_DESSERTES_USEFUL.includes(desserte)) {
+        if (LIST_BUS.includes(desserte)) {
           new_desserte += new_desserte == '' ? desserte : ' ' + desserte
         }
       })
@@ -57,24 +57,21 @@ export function keepOnlyUsefulDessertes(
   })
 }
 
-export function deleteLineNumberFromLiCode(
+export function formatLiCode(
   stations: StationModel[],
   num_line: string
 ): StationModel[] {
-  // console.log(stations)
-  // return stations.map((station) => {
-  //     let new_li_code = ''
-  //     station.li_code.split(" ").map(li_line => {
-  //         if(li_line != num_line){
-  //             new_li_code += new_li_code == '' ? li_line : ' ' + li_line
-  //         }
-  //     })
-  //     station.li_code = new_li_code
-  //     return station
-  // });
-
   return stations.map((station) => {
-    station.li_code = station.li_code.replace(num_line, '')
+    let new_li_code = ''
+    station.li_code.split(' ').map((li_line) => {
+      //Do not keep the li_code of the current line
+      if (li_line != num_line) {
+        //Remove the 'T' to keep only the line number
+        li_line = li_line.replace('T', '')
+        new_li_code += new_li_code == '' ? li_line : ' ' + li_line
+      }
+    })
+    station.li_code = new_li_code
     return station
   })
 }

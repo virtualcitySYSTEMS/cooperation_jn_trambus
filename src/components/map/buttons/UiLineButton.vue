@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { LineNumber } from '@/model/lines.model'
 import { computed, type PropType } from 'vue'
-import { getColor } from '@/services/color'
+import { getColorLine } from '@/services/color'
 import ChevronArrowRight from '@/components/ui/icons/ChevronArrowRight.vue'
 
 export type Corner = 'tl' | 'tr' | 'br' | 'bl'
@@ -26,7 +26,7 @@ const props = defineProps({
 })
 
 const buttonStyle = computed(() => {
-  let bgColor = getColor('bg', props.line, 600)
+  let bgColor = getColorLine('bg', props.line, 600)
   if (!props.active) {
     bgColor = 'bg-white'
   }
@@ -44,7 +44,7 @@ const textStyle = computed(() => {
   if (props.active) {
     return 'text-white'
   }
-  const textColor = getColor('text', props.line, 600)
+  const textColor = getColorLine('text', props.line, 600)
   return [textColor]
 })
 
@@ -52,7 +52,7 @@ const arrowStrokeColor = computed(() => {
   if (props.active) {
     return 'stroke-white'
   }
-  const strokeColor = getColor('stroke', props.line, 600)
+  const strokeColor = getColorLine('stroke', props.line, 600)
   return strokeColor
 })
 </script>

@@ -14,7 +14,7 @@ import {
   sortStationsByOrder,
   filterStationsByLineNumber,
   keepOnlyUsefulDessertes,
-  deleteLineNumberFromLiCode,
+  formatLiCode,
 } from '@/services/station'
 
 class ApiClientService {
@@ -88,7 +88,7 @@ class ApiClientService {
       val = filterStationsByLineNumber(val, num_line)
       val = sortStationsByOrder(val, lineNumber)
       val = keepOnlyUsefulDessertes(val)
-      val = deleteLineNumberFromLiCode(val, num_line)
+      val = formatLiCode(val, num_line)
       return val
     })
   }
