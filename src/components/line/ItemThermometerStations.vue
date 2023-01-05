@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import type { PropType } from 'vue'
 import IconLine from '@/components/ui/icons/IconLine.vue'
+import IconBus from '@/components/ui/icons/IconBus.vue'
 import type { LineNumber } from '@/model/lines.model'
 
 const props = defineProps({
@@ -27,7 +28,7 @@ const props = defineProps({
   },
   parking: {
     type: Boolean,
-    required: true,
+    required: false,
   },
 })
 
@@ -84,13 +85,20 @@ const classCircle = computed(() => {
     <p class="mb-1 station-title">{{ name }}</p>
     <div class="ml-auto mr-[15px]">
       <div class="flex">
-        <IconLine
+        <template
           v-for="(line_connected, index) in li_code.split(' ')"
           :key="index"
-          :line="line_connected"
-          :size="'m'"
-          class="mb-1 ml-1"
-        />
+        >
+          <IconLine
+            v-if="line_connected !== ''"
+            :line="parseInt(line_connected)"
+            :size="'m'"
+            class="mb-1 ml-1"
+          />
+        </template>
+        <template v-for="(bus, index) in desserte.split(' ')" :key="index">
+          <IconBus v-if="bus !== ''" :bus="bus" :size="'m'" class="mb-1 ml-1" />
+        </template>
       </div>
       <!-- {{desserte}}
       {{li_code}}
