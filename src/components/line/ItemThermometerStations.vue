@@ -45,12 +45,10 @@ const borderColor = ref(getColorLine('border', props.line, 600))
 function getClassCircle() {
   let marginLeftNegative = '-ml-1'
   let border2px = 'border-[2px]'
-  let width = '8px'
   if (stationActive.value) {
-    width = '16px'
     return [
-      'min-w-[' + width + ']',
-      'w-[' + width + ']',
+      'min-w-[16px]',
+      'w-[16px]',
       'h-[16px]',
       'border-black',
       marginLeftNegative,
@@ -58,23 +56,16 @@ function getClassCircle() {
     ]
   }
   if (props.index == 1 || props.is_last_elem) {
-    width = '15px'
     return [
-      'min-w-[' + width + ']',
-      'w-[' + width + ']',
+      'min-w-[15px]',
+      'w-[15px]',
       'h-[15px]',
       marginLeftNegative,
       borderColor.value,
       'border-[4px]',
     ]
   }
-  return [
-    'min-w-[' + width + ']',
-    'w-[' + width + ']',
-    'h-[8px]',
-    borderColor.value,
-    border2px,
-  ]
+  return ['min-w-[8px]', 'w-[8px]', 'h-[8px]', borderColor.value, border2px]
 }
 
 function getClassBeforeCircle() {
@@ -128,7 +119,7 @@ const classCircle = computed(() => {
             v-if="line_connected !== ''"
             :line="parseInt(line_connected)"
             :size="'m'"
-            class="mb-1 ml-1"
+            class="mb-1 ml-[1px]"
           />
         </template>
         <template v-for="(bus, index) in desserte.split(' ')" :key="index">
@@ -140,7 +131,7 @@ const classCircle = computed(() => {
           />
         </template>
         <template v-if="parking !== undefined && parking">
-          <IconParking :size="'m'" class="mb-1 ml-1" />
+          <IconParking :size="'m'" class="mb-1 ml-[1px]" />
         </template>
       </div>
     </div>
