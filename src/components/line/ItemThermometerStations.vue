@@ -23,62 +23,40 @@ const stationActive = ref<Boolean>(false)
 
 function getClassCircle() {
   if (stationActive.value) {
-    return {
-      'w-[16px]': true,
-      'h-[16px]': true,
-      'border-black': true,
-      '-ml-1': true,
-    }
+    return ['w-[16px]', 'h-[16px]', 'border-black', '-ml-1']
   }
-  return {
-    'w-[8px]': true,
-    'h-[8px]': true,
-    'border-green-400': true,
-  }
+  return ['w-[8px]', 'h-[8px]', 'border-green-400']
 }
 
 function getClassBeforeCircle() {
   if (props.index == 1) {
-    return {}
+    return []
   }
-
-  var classBefore = {
-    'before:absolute': true,
-    "before:content-['']": true,
-    'before:border-l-[2px]': true,
-    'before:border-green-400': true,
-    'before:ml-[1px]': true,
-  }
+  var classBefore = [
+    'before:absolute',
+    "before:content-['']",
+    'before:border-l-[2px]',
+    'before:border-green-400',
+    'before:ml-[1px]',
+  ]
   if (stationActive.value) {
-    return {
-      ...classBefore,
-      ...{
-        'before:ml-[5px]': true,
-        'before:bottom-[75%]': true,
-        'before:h-[70%]': true,
-      },
-    }
+    return classBefore.concat([
+      'before:ml-[5px]',
+      'before:bottom-[75%]',
+      'before:h-[70%]',
+    ])
   }
-  return {
-    ...classBefore,
-    ...{
-      'before:ml-[1px]': true,
-      'before:bottom-[65%]': true,
-      'before:h-[95%]': true,
-    },
-  }
+  return classBefore.concat([
+    'before:ml-[1px]',
+    'before:bottom-[65%]',
+    'before:h-[95%]',
+  ])
 }
 
 const classCircle = computed(() => {
-  var classObject = {
-    'border-[2px]': true,
-    'rounded-[50%]': true,
-    'mr-2': true,
-    'mb-3': true,
-    'mt-2': true,
-  }
-  classObject = { ...classObject, ...getClassCircle() }
-  classObject = { ...classObject, ...getClassBeforeCircle() }
+  var classObject = ['border-[2px]', 'rounded-[50%]', 'mr-2', 'mb-3', 'mt-2']
+  classObject = classObject.concat(getClassCircle())
+  classObject = classObject.concat(getClassBeforeCircle())
   return classObject
 })
 </script>

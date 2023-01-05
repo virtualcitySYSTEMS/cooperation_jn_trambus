@@ -10,6 +10,12 @@ import { travelTimeFixtures } from '@/model/travel-time.fixtures'
 import type { TravelTimeModel } from '@/model/travel-time.model'
 import type { NetworkFigureModel } from '../model/network-figures.model'
 import type { LineFigureModel } from '../model/line-figures.model'
+import {
+  sortStationsByOrder,
+  filterStationsByLineNumber,
+  keepOnlyUsefulDessertes,
+  deleteLineNumberFromLiCode,
+} from '@/services/station'
 
 class ApiClientService {
   async fetchNetworkFigure() {
@@ -78,13 +84,11 @@ class ApiClientService {
     return new Promise<StationModel[]>((resolve) => {
       resolve(stationsFixtures())
     }).then((val) => {
-      const num_line: string = 'T' + lineNumber
-      //Get only the station on line
-      val = val.filter((station) => station.li_code.includes(num_line))
-      //Sort the stations in ascending order according to the value of 'ordre_t'+lineNumber
-      // val = val.sort(
-      //   (s1, s2) => s1['ordre_t' + lineNumber] - s2['ordre_t' + lineNumber]
-      // )
+      const num_line = 'T' + lineNumber.toString()
+      val = filterStationsByLineNumber(val, num_line)
+      val = sortStationsByOrder(val, lineNumber)
+      val = keepOnlyUsefulDessertes(val)
+      val = deleteLineNumberFromLiCode(val, num_line)
       return val
     })
   }

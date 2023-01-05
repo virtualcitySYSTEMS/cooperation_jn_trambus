@@ -33,7 +33,6 @@ onBeforeMount(async () => {
       class="list-stations"
       v-if="state.stations !== null && state.stations.length > 0"
     >
-      <!-- <template v-for="index in 15" :key="index"> -->
       <ItemThermometerStations
         v-for="(station, index) in state.stations"
         :key="index"
@@ -41,7 +40,6 @@ onBeforeMount(async () => {
         :line="props.line"
         :name="station.nom"
       />
-      <!-- </template> -->
     </ul>
   </div>
 </template>

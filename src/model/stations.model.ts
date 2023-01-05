@@ -1,3 +1,14 @@
+export const STATION_DESSERTES_USEFUL = [
+  'C1',
+  'C2',
+  'C3',
+  'C4',
+  'C5',
+  'C6',
+  'C7',
+  'C7ex',
+]
+
 export interface StationModel {
   id: number
   nom: string
@@ -7,8 +18,8 @@ export interface StationModel {
   ordre_t3: number | null
   ordre_t4: number | null
   parking?: boolean
-  desserte?: string | number
-  desserte_scolaire?: string | number
-  desserte_soirs_we?: string | number
-  desserte_dimanche?: string | number
+  desserte?: string
+  desserte_scolaire?: string
+  desserte_soirs_we?: string
+  desserte_dimanche?: string
 }
