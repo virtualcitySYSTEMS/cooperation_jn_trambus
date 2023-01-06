@@ -67,9 +67,9 @@ export const travelTimeFixtures = (): TravelTimeModel[] => [
 
   {
     line: 4,
-    new: 26,
-    old: 33,
+    new: 30,
+    old: 32,
     start: 'Coeur de Campus',
-    end: 'République',
+    end: 'Gares',
   },
 ]
