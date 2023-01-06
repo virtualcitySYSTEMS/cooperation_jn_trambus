@@ -45,6 +45,7 @@ const textStyle = computed(() => {
   <div
     class="flex items-center rounded-full justify-center"
     :class="circleStyle"
+    :title="'Tramway ' + $props.line"
   >
     <div
       class="font-dm-sans font-bold text-white text-xl items-end"
