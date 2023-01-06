@@ -61,9 +61,7 @@ onMounted(async () => {
     layerStore.visibilities.rennesOrtho = false
   }
   // Set vcs app view point
-  setTimeout(() => {
-    mapStore.updateViewpoint(`line${lineStore.selectedLine}`, true)
-  }, 500)
+  mapStore.updateViewpoint(`line${lineStore.selectedLine}`, true)
 })
 
 function backButtonClicked() {

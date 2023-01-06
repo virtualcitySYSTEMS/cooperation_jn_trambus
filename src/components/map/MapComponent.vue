@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, provide, ref } from 'vue'
+import { onMounted, onUnmounted, provide } from 'vue'
 import { CesiumMap, Context, VcsApp, Layer, FeatureLayer } from '@vcmap/core'
 
 import UiMap from '@/components/ui/UiMap.vue'
@@ -27,7 +27,6 @@ import { trambusStopStyle } from '@/styles/trambusStop'
 const vcsApp = new VcsApp()
 provide('vcsApp', vcsApp)
 
-const appLoaded = ref(false)
 const layerStore = useLayersStore()
 const mapStore = useMapStore()
 const lineViewStore = useLineViewsStore()
@@ -42,8 +41,8 @@ onMounted(async () => {
   if (cesiumMap && cesiumMap instanceof CesiumMap) {
     cesiumMap.getScene().globe.maximumScreenSpaceError = 1
   }
-  appLoaded.value = true
   // window.vcmap = vcsApp
+  mapStore.updateViewpoint(`home`, true)
   await updateLayersVisibility()
   updateMapStyle()
 })
@@ -235,6 +234,6 @@ travelTimesViewStore.$subscribe(async () => {
 </script>
 
 <template>
-  <UiMap v-if="appLoaded"></UiMap>
+  <UiMap></UiMap>
   <NavigationButtons />
 </template>
