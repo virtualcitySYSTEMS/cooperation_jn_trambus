@@ -1,5 +1,7 @@
 import { linesFixtures } from '@/model/lines.fixtures'
 import type { LineModel } from '@/model/lines.model'
+import { stationsFixtures } from '@/model/stations.fixtures'
+import type { StationModel } from '@/model/stations.model'
 import { networkFiguresFixtures } from '@/model/network-figures.fixtures'
 import { lineFiguresFixtures } from '@/model/line-figures.fixtures'
 import { photoFixtures } from '@/model/photos.fixtures'
@@ -8,6 +10,12 @@ import { travelTimeFixtures } from '@/model/travel-time.fixtures'
 import type { TravelTimeModel } from '@/model/travel-time.model'
 import type { NetworkFigureModel } from '../model/network-figures.model'
 import type { LineFigureModel } from '../model/line-figures.model'
+import {
+  sortStationsByOrder,
+  filterStationsByLineNumber,
+  keepOnlyUsefulDessertes,
+  formatLiCode,
+} from '@/services/station'
 
 class ApiClientService {
   async fetchNetworkFigure() {
@@ -69,6 +77,19 @@ class ApiClientService {
   async fetchPhotoByLine(lineNumber: number) {
     return new Promise<PhotoModel>((resolve) => {
       resolve(photoFixtures().find((photo) => photo.line == lineNumber)!)
+    })
+  }
+
+  async fetchStationsByLine(lineNumber: number) {
+    return new Promise<StationModel[]>((resolve) => {
+      resolve(stationsFixtures())
+    }).then((val) => {
+      const num_line = 'T' + lineNumber.toString()
+      val = filterStationsByLineNumber(val, num_line)
+      val = sortStationsByOrder(val, lineNumber)
+      val = keepOnlyUsefulDessertes(val)
+      val = formatLiCode(val, num_line)
+      return val
     })
   }
 }

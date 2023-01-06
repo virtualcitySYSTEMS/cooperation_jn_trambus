@@ -3,7 +3,7 @@ import type { LineNumber } from '@/model/lines.model'
 import { type PropType, computed } from 'vue'
 import IconLine from '../ui/icons/IconLine.vue'
 import IconLineArrow from './icons/IconLineArrow.vue'
-import { getColor } from '@/services/color'
+import { getColorLine } from '@/services/color'
 import informationIcon from '@/assets/icons/informationIcon.svg'
 
 const props = defineProps({
@@ -25,8 +25,8 @@ const containerStyle = computed(() => {
   let bgColor = 'bg-slate-100'
   let borderColor = 'border-slate-50'
   if (props.colored) {
-    bgColor = getColor('bg', props.lineNumber, 100)
-    borderColor = getColor('border', props.lineNumber, 50)
+    bgColor = getColorLine('bg', props.lineNumber, 100)
+    borderColor = getColorLine('border', props.lineNumber, 50)
   }
 
   return [bgColor, borderColor]
