@@ -64,12 +64,12 @@ if (props.li_code != '') {
 
 function getClassCircle() {
   let marginLeftNegative = '-ml-1'
-  let border2px = 'border-[2px]'
+  let border2px = 'border-2'
   if (stationActive.value) {
     return [
       'min-w-[16px]',
-      'w-[16px]',
-      'h-[16px]',
+      'w-4',
+      'h-4',
       'border-black',
       marginLeftNegative,
       border2px,
@@ -77,15 +77,15 @@ function getClassCircle() {
   }
   if (props.index == 1 || props.is_last_elem) {
     return [
-      'min-w-[15px]',
-      'w-[15px]',
-      'h-[15px]',
+      'min-w-[16px]',
+      'w-4',
+      'h-4',
       marginLeftNegative,
       borderColor.value,
-      'border-[4px]',
+      'border-4',
     ]
   }
-  return ['min-w-[8px]', 'w-[8px]', 'h-[8px]', borderColor.value, border2px]
+  return ['min-w-[8px]', 'w-2', 'h-2', borderColor.value, border2px]
 }
 
 function getClassBeforeCircle() {
@@ -95,25 +95,25 @@ function getClassBeforeCircle() {
   var classBefore = [
     'before:absolute',
     "before:content-['']",
-    'before:border-l-[2px]',
+    'before:border-l-2',
     'before:' + borderColor.value,
   ]
-  let ml = 'before:ml-[1px]'
+  let ml = 'before:ml-px'
   let bottom = 'before:bottom-[65%]'
   let height = 'before:h-[95%]'
   if (stationActive.value) {
-    ml = 'before:ml-[5px]'
+    ml = 'before:ml-1.5'
     bottom = 'before:bottom-[75%]'
     height = 'before:h-[70%]'
   } else if (props.is_last_elem) {
-    ml = 'before:ml-[3px]'
+    ml = 'before:ml-1'
     height = 'before:h-[85%]'
   }
   return classBefore.concat([ml, bottom, height])
 }
 
 const classCircle = computed(() => {
-  var classObject = ['rounded-[50%]', 'mr-2', 'mb-3', 'mt-2']
+  var classObject = ['rounded-full', 'mr-2', 'mb-3', 'mt-2']
   classObject = classObject.concat(getClassCircle())
   classObject = classObject.concat(getClassBeforeCircle())
   return classObject
@@ -123,37 +123,26 @@ const classCircle = computed(() => {
 <template>
   <li
     class="flex items-center mb-1 cursor-pointer"
-    :class="stationActive ? 'bg-[#F1F5F9]' : ''"
+    :class="stationActive ? 'bg-slate-100' : ''"
     @mouseover="stationActive = true"
     @mouseleave="stationActive = false"
   >
     <div :class="classCircle" />
-    <p class="mb-1 station-title">{{ name }}</p>
-    <div class="ml-auto mr-[5px]">
+    <p class="font-dm-sans font-bold text-base -tracking-[1%] w-80 h-6 mb-1">
+      {{ name }}
+    </p>
+    <div class="ml-auto mr-1">
       <div class="flex">
         <template v-for="(line_connected, index) in lineTab" :key="index">
-          <IconLine :line="line_connected" :size="'m'" class="mb-1 ml-[1px]" />
+          <IconLine :line="line_connected" :size="'m'" class="mb-1 ml-px" />
         </template>
         <template v-for="(bus, index) in desserteTab" :key="index">
-          <IconBus :bus="bus" :size="'m'" class="mb-1 ml-[1px]" />
+          <IconBus :bus="bus" :size="'m'" class="mb-1 ml-px" />
         </template>
         <template v-if="parking !== undefined && parking">
-          <IconParking :size="'m'" class="mb-1 ml-[1px]" />
+          <IconParking :size="'m'" class="mb-1 ml-px" />
         </template>
       </div>
     </div>
   </li>
 </template>
-
-<style scoped>
-.station-title {
-  width: 318px;
-  height: 24px;
-  font-family: 'DM Sans';
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: -0.01em;
-}
-</style>
