@@ -10,6 +10,7 @@ import { apiClientService } from '@/services/api.client'
 import UiButton from '@/components/ui/UiButton.vue'
 import LineFigures from '@/components/line/LineFigures.vue'
 import UiTravelTime from '@/components/ui/UiTravelTime.vue'
+import ThermometerStations from '@/components/line/ThermometerStations.vue'
 import { useRoute } from 'vue-router'
 
 import { useMapStore } from '@/stores/map'
@@ -109,4 +110,9 @@ function backButtonClicked() {
     :endStation="travelTime.end"
   >
   </UiTravelTime>
+
+  <ThermometerStations
+    v-if="state.lineDescription"
+    :line="state.lineDescription?.id"
+  />
 </template>

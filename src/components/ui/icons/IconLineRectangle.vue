@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { LineNumber } from '@/model/lines.model'
 import { computed, type PropType } from 'vue'
-import { getColor } from '@/services/color'
+import { getColorLine } from '@/services/color'
 
 const props = defineProps({
   lineNumber: {
@@ -11,7 +11,7 @@ const props = defineProps({
 })
 
 const colorClass = computed(() => {
-  const bgColor = getColor('bg', props.lineNumber, 300)
+  const bgColor = getColorLine('bg', props.lineNumber, 300)
 
   return [bgColor]
 })

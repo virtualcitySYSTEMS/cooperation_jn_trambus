@@ -17,6 +17,11 @@ module.exports = {
     'bg-emerald-600',
     'bg-purple-600',
 
+    'bg-lime-500',
+    'bg-sky-600',
+    { pattern: /bg-./ },
+    { pattern: /border-./ },
+
     'border-indigo-50',
     'border-pink-50',
     'border-emerald-50',
@@ -48,6 +53,15 @@ module.exports = {
 
     'before:bg-red-600',
     'stroke-red-600',
+
+    'before:border-indigo-500',
+    'before:border-indigo-600',
+    'before:border-pink-500',
+    'before:border-pink-600',
+    'before:border-emerald-500',
+    'before:border-emerald-600',
+    'before:border-purple-500',
+    'before:border-purple-600',
   ],
   theme: {
     extend: {
