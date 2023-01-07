@@ -2,7 +2,6 @@
 import { onBeforeMount, reactive, onMounted, ref } from 'vue'
 import router from '@/router'
 
-import UiLineDescription from '@/components/ui/UiLineDescription.vue'
 import ChevronArrowLeft from '@/assets/icons/chevron-left.svg'
 import type { LineModel } from '@/model/lines.model'
 import type { TravelTimeModel } from '@/model/travel-time.model'
@@ -18,6 +17,7 @@ import { useMapStore } from '@/stores/map'
 import { useViewsStore } from '@/stores/views'
 import { useLayersStore } from '@/stores/layers'
 import { useLineViewsStore } from '@/stores/views'
+import UiLineHeader from '@/components/ui/UiLineHeader.vue'
 
 const mapStore = useMapStore()
 const viewStore = useViewsStore()
@@ -76,17 +76,14 @@ function backButtonClicked() {
       >
         <img :src="ChevronArrowLeft" />
       </UiButton>
-      <!-- TODO: Make it a title size (currently the component is smaller than the design) -->
-      <UiLineDescription
+      <UiLineHeader
         v-if="state.lineDescription"
         :line="state.lineDescription?.id!"
         :name="state.lineDescription?.name"
         :start="state.lineDescription?.start"
         :end="state.lineDescription?.end"
-        :frequency="state.lineDescription?.frequency"
-        :duration="false"
       >
-      </UiLineDescription>
+      </UiLineHeader>
     </div>
   </div>
 
