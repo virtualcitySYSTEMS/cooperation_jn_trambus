@@ -1,6 +1,13 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, provide } from 'vue'
-import { CesiumMap, Context, VcsApp, Layer, FeatureLayer } from '@vcmap/core'
+import { onMounted, onUnmounted, provide, ref } from 'vue'
+import {
+  CesiumMap,
+  Context,
+  VcsApp,
+  Layer,
+  FeatureLayer,
+  GeoJSONLayer,
+} from '@vcmap/core'
 
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
@@ -14,7 +21,6 @@ import { useLineViewsStore, useTravelTimesViewStore } from '@/stores/views'
 import mapConfig from '../../map.config.json'
 import type { StyleFunction } from 'ol/style/Style'
 import type { FeatureLike } from 'ol/Feature'
-import type Style from 'ol/style/Style'
 import type { LineNumber } from '@/model/lines.model'
 import { useViewsStore } from '@/stores/views'
 import {
@@ -23,6 +29,12 @@ import {
 } from '@/model/lines.fixtures'
 import { trambusLineStyle, type LineState } from '@/styles/line'
 import { trambusStopStyle } from '@/styles/trambusStop'
+import { isStationOnLine } from '@/services/station'
+import { stationsFixtures } from '@/model/stations.fixtures'
+import { Point } from 'ol/geom'
+import { transform } from 'ol/proj'
+import type { Feature } from 'ol'
+import { Icon, Style } from 'ol/style'
 
 const vcsApp = new VcsApp()
 provide('vcsApp', vcsApp)
@@ -54,6 +66,58 @@ onUnmounted(() => {
   vcsApp.destroy()
 })
 
+function removeFilterOnLayers(featureKey: string) {
+  vcsApp.layers.getByKey(featureKey)?.reload()
+}
+
+function removeAllFilters() {
+  removeFilterOnLayers('parking')
+  removeFilterOnLayers('poi')
+  fixGeometryOfPoi()
+}
+
+function filterFeatureByParkingAndLine(line: number) {
+  filterFeatureByKeyAndValue('parking', 'li_code', `T${line}`)
+}
+
+function filterFeatureByPoiAndLine(line: number) {
+  let layers: GeoJSONLayer = vcsApp.layers.getByKey('poi') as GeoJSONLayer
+  let featuresToDelete = layers
+    .getFeatures()
+    .filter(
+      (f) =>
+        !isStationOnLine(
+          stationsFixtures(),
+          f.getProperties()['station_nom'],
+          line as LineNumber
+        )
+    )
+    .map((f) => f.getId()!)
+  layers.removeFeaturesById(featuresToDelete)
+}
+
+function fixGeometryOfPoi() {
+  let layers: GeoJSONLayer = vcsApp.layers.getByKey('poi') as GeoJSONLayer
+  layers.getFeatures().forEach((f) => {
+    let coordinates = [f.getProperties()['site_x'], f.getProperties()['site_y']]
+    f.setGeometry(new Point(transform(coordinates, 'EPSG:4326', 'EPSG:3857')))
+  })
+}
+
+function filterFeatureByKeyAndValue(
+  layerName: string,
+  featureKey: string,
+  featureValue: string
+) {
+  let layers: GeoJSONLayer = vcsApp.layers.getByKey(layerName) as GeoJSONLayer
+  let featuresToDelete = layers
+    .getFeatures()
+    .filter((feature: Feature) => {
+      return feature.getProperties()[featureKey] !== featureValue
+    })
+    .map((f) => f.getId()!)
+  layers.removeFeaturesById(featuresToDelete)
+}
 async function setLayerVisible(layerName: string, visible: boolean) {
   const layer: Layer = vcsApp.maps.layerCollection.getByKey(layerName)
   if (visible) {
@@ -176,8 +240,30 @@ async function updateLineViewStyle() {
     RENNES_LAYERS[6]
   ) as FeatureLayer
   trambusStopLayer.clearStyle()
-
   trambusStopLayer.setStyle(trambusStopLineViewStyleFunction)
+
+  const poiLayer = vcsApp.layers.getByKey('poi') as FeatureLayer
+
+  let style = new Style({
+    image: new Icon({
+      opacity: 1,
+      src: '/src/assets/icons/mapPin.png',
+      scale: 0.1,
+    }),
+  })
+  poiLayer.clearStyle()
+  poiLayer.setStyle(style)
+
+  const parkingLayer = vcsApp.layers.getByKey('parking') as FeatureLayer
+  style = new Style({
+    image: new Icon({
+      opacity: 1,
+      src: '/src/assets/icons/parkingLocation.svg',
+      scale: 1,
+    }),
+  })
+  parkingLayer.clearStyle()
+  parkingLayer.setStyle(style)
 }
 
 async function updateTravelTimesViewStyle() {
@@ -230,6 +316,16 @@ viewStore.$subscribe(async () => {
 
 travelTimesViewStore.$subscribe(async () => {
   updateTravelTimesViewStyle()
+})
+
+lineViewStore.$subscribe(() => {
+  if (lineViewStore.selectedLine !== 0) {
+    fixGeometryOfPoi()
+    filterFeatureByParkingAndLine(lineViewStore.selectedLine)
+    filterFeatureByPoiAndLine(lineViewStore.selectedLine)
+  } else {
+    removeAllFilters()
+  }
 })
 </script>
 

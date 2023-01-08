@@ -40,6 +40,17 @@ export function filterStationsByLineNumber(
   return stations.filter((station) => station.li_code.includes(num_line))
 }
 
+export function isStationOnLine(
+  stations: StationModel[],
+  name_station: string,
+  num_line: LineNumber
+): boolean {
+  const station: StationModel = stations.find(
+    (station) => station.nom === name_station
+  )!
+  return station.li_code.includes(`T${num_line}`)
+}
+
 export function keepOnlyUsefulDessertes(
   stations: StationModel[]
 ): StationModel[] {

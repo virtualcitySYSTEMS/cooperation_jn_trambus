@@ -16,6 +16,15 @@
           ]
         }
       }
+    },
+    {
+      "type": "VectorStyleItem",
+      "name": "Pin",
+      "title": "Point Circle",
+      "image": {
+        "src": "./src/assets/icons/mapPin.svg",
+        "scale": 1
+      }
     }
   ],
   "maps": [
@@ -205,25 +214,15 @@
     },
     {
       "name": "poi",
-      "url": "https://gist.githubusercontent.com/ismailsunni/561f39f97f8e1a36491207a61224270c/raw/bb7ddd1c233760fb3cf8ce562f8a3302846ade57/POI.geojson",
+      "url": "https://public.sig.rennesmetropole.fr/geoserver/ows?service=WFS&request=getFeature&typename=trp_coll:trambus_station_to_site&outputFormat=application/json&srsName=EPSG:4326",
       "type": "GeoJSONLayer",
-      "activeOnStartup": false,
+      "activeOnStartup": true,
       "style": {
-        "name": "poiStyle",
-        "type": "DeclarativeStyleItem",
-        "declarativeStyle": {
-          "pointOutlineColor": "color('#6B23C9')",
-          "pointOutlineWidth": "2",
-          "labelText": {
-            "conditions": [
-              ["${ordre}===1", "'${nom_site}'"],
-              ["true", "''"]
-            ]
-          },
-          "labelOutlineColor": "color('#ffffff')",
-          "labelColor": "color('#6B23C9')",
-          "labelOutlineWidth": "2",
-          "font": "'13px sans-serif'"
+        "type": "VectorStyleItem",
+        "title": "Point Circle",
+        "image": {
+          "src": "./src/assets/icons/parkingLocation.svg",
+          "scale": 1
         }
       }
     }

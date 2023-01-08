@@ -54,7 +54,15 @@ onMounted(async () => {
   layerStore.visibilities.trambusLines = true
   layerStore.visibilities.trambusStops = true
   layerStore.visibilities.parking = true
-  layerStore.visibilities.poi = false
+  layerStore.visibilities.poi = true
+
+  if (mapStore.is3D()) {
+    layerStore.visibilities.rennesBase = false
+    layerStore.visibilities.rennesOrtho = true
+  } else {
+    layerStore.visibilities.rennesBase = true
+    layerStore.visibilities.rennesOrtho = false
+  }
 
   if (mapStore.is3D()) {
     layerStore.visibilities.rennesBase = false

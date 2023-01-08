@@ -7,12 +7,13 @@ import TravelTimes from '@/components/home/TravelTimes.vue'
 import UiTrambusTitle from '@/components/ui/UiTrambusTitle.vue'
 
 import { useLayersStore } from '@/stores/layers'
-import { useViewsStore } from '@/stores/views'
+import { useLineViewsStore, useViewsStore } from '@/stores/views'
 import { useMapStore } from '@/stores/map'
 
 const layerStore = useLayersStore()
 const viewStore = useViewsStore()
 const mapStore = useMapStore()
+const lineViewsStore = useLineViewsStore()
 
 onMounted(() => {
   viewStore.currentView = 'home'
@@ -24,7 +25,7 @@ onMounted(() => {
     layerStore.visibilities.rennesBase = true
     layerStore.visibilities.rennesOrtho = false
   }
-
+  lineViewsStore.selectedLine = 0
   layerStore.visibilities.trambusLines = true
   layerStore.visibilities.trambusStops = false
   layerStore.visibilities.parking = true
