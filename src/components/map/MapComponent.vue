@@ -12,7 +12,7 @@ import {
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
 
-import { getTrambusLineNumber, parkingStyle, poiStyle } from '@/styles/common'
+import { parkingStyle, poiStyle } from '@/styles/common'
 
 import { useLayersStore, RENNES_LAYERS } from '@/stores/layers'
 import { useMapStore } from '@/stores/map'
@@ -20,16 +20,15 @@ import { useLineViewsStore, useTravelTimesViewStore } from '@/stores/views'
 
 import mapConfig from '../../map.config.json'
 import type { StyleFunction } from 'ol/style/Style'
-import type { FeatureLike } from 'ol/Feature'
 import type { LineNumber } from '@/model/lines.model'
 import { useViewsStore } from '@/stores/views'
 import {
-  getAllStartEndStations,
-  isStartEndStation,
-} from '@/model/lines.fixtures'
-import { trambusLineStyle, type LineState } from '@/styles/line'
-import { trambusStopStyle } from '@/styles/trambusStop'
-import { isStationOnLine } from '@/services/station'
+  trambusLineTravelTimesViewStyleFunction,
+  trambusLineViewStyleFunction,
+  trambusStopLineViewStyleFunction,
+  trambusStopTravelTimesViewStyleFunction,
+} from '@/styles/trambusStop'
+import { isStationOnLine, isTrambusStopBelongsToLine } from '@/services/station'
 import { stationsFixtures } from '@/model/stations.fixtures'
 import { Point } from 'ol/geom'
 import { transform } from 'ol/proj'
@@ -118,6 +117,7 @@ function filterFeatureByLayerAndKeyAndValue(
     .map((f) => f.getId()!)
   layers.removeFeaturesById(featuresToDelete)
 }
+
 async function setLayerVisible(layerName: string, visible: boolean) {
   const layer: Layer = vcsApp.maps.layerCollection.getByKey(layerName)
   if (visible) {
@@ -145,90 +145,6 @@ async function updateViewPoint() {
     await activeMap.gotoViewpoint(homeViewPoint!)
   }
 }
-const trambusLineViewStyleFunction: StyleFunction = function (
-  feature: FeatureLike
-): Style[] {
-  const lineNumber = getTrambusLineNumber(feature) as LineNumber
-  const selectedLine = lineViewStore.selectedLine
-  let lineState: LineState = 'normal'
-
-  if (lineViewStore.selectedLine == null) {
-    lineState = 'normal'
-  } else if (getTrambusLineNumber(feature) == selectedLine) {
-    lineState = 'selected'
-  } else {
-    lineState = 'hidden'
-  }
-
-  return trambusLineStyle(lineNumber, lineState, mapStore.is3D())
-}
-
-function isTrambusStopBelongsToLine(
-  trambusStopFeature: FeatureLike,
-  trambusLine: number
-): boolean {
-  const lineNumbers: string = trambusStopFeature.get('li_code') // e.g. T1 T2, T1
-  return lineNumbers.includes(trambusLine.toString())
-}
-
-const trambusStopLineViewStyleFunction: StyleFunction = function (
-  feature: FeatureLike
-): Style[] {
-  const selectedTrambusLine = Number(lineViewStore.selectedLine) as LineNumber
-  const isShown = isTrambusStopBelongsToLine(feature, selectedTrambusLine)
-  const stationName = feature.get('nom')
-
-  return trambusStopStyle(
-    selectedTrambusLine,
-    isStartEndStation(stationName),
-    isShown,
-    mapStore.is3D()
-  )
-}
-
-const trambusLineTravelTimesViewStyleFunction: StyleFunction = function (
-  feature: FeatureLike
-): Style[] {
-  const lineNumber = getTrambusLineNumber(feature) as LineNumber
-  const selectedTravelTime = travelTimesViewStore.selectedTravelTime
-  let lineState: LineState = 'normal'
-
-  if (selectedTravelTime == null) {
-    lineState = 'normal'
-  } else if (getTrambusLineNumber(feature) == selectedTravelTime.line) {
-    lineState = 'selected'
-  } else {
-    lineState = 'unselected'
-  }
-  return trambusLineStyle(lineNumber, lineState, mapStore.is3D())
-}
-
-const trambusStopTravelTimesViewStyleFunction: StyleFunction = function (
-  feature: FeatureLike
-): Style[] {
-  let lineNumber = getTrambusLineNumber(feature) as LineNumber
-
-  // no travel time selected, only show the start and end stations
-  let shownStations = getAllStartEndStations()
-  // There is a travel time selected, show only the selected station from
-  // the selected travel time
-  if (travelTimesViewStore.selectedTravelTime != null) {
-    shownStations = [
-      travelTimesViewStore.selectedTravelTime.start,
-      travelTimesViewStore.selectedTravelTime.end,
-    ]
-    lineNumber = travelTimesViewStore.selectedTravelTime?.line
-  }
-  const stationName = feature.get('nom')
-  const isShown = shownStations.indexOf(stationName) > -1
-
-  return trambusStopStyle(
-    lineNumber,
-    isStartEndStation(stationName),
-    isShown,
-    mapStore.is3D()
-  )
-}
 
 function clearLayerAndApplyStyle(
   layerName: string,
@@ -240,20 +156,39 @@ function clearLayerAndApplyStyle(
 }
 
 async function updateLineViewStyle() {
-  clearLayerAndApplyStyle(RENNES_LAYERS[5], trambusLineViewStyleFunction)
-  clearLayerAndApplyStyle(RENNES_LAYERS[6], trambusStopLineViewStyleFunction)
+  clearLayerAndApplyStyle(RENNES_LAYERS[5], (feature) =>
+    trambusLineViewStyleFunction(
+      feature,
+      lineViewStore.selectedLine,
+      mapStore.is3D()
+    )
+  )
+  clearLayerAndApplyStyle(RENNES_LAYERS[6], (feature) =>
+    trambusStopLineViewStyleFunction(
+      feature,
+      lineViewStore.selectedLine,
+      isTrambusStopBelongsToLine(feature, lineViewStore.selectedLine),
+      mapStore.is3D()
+    )
+  )
   clearLayerAndApplyStyle('poi', poiStyle)
   clearLayerAndApplyStyle('parking', parkingStyle)
 }
 
 async function updateTravelTimesViewStyle() {
-  clearLayerAndApplyStyle(
-    RENNES_LAYERS[5],
-    trambusLineTravelTimesViewStyleFunction
+  clearLayerAndApplyStyle(RENNES_LAYERS[5], (feature) =>
+    trambusLineTravelTimesViewStyleFunction(
+      feature,
+      travelTimesViewStore.selectedTravelTime!,
+      mapStore.is3D()
+    )
   )
-  clearLayerAndApplyStyle(
-    RENNES_LAYERS[6],
-    trambusStopTravelTimesViewStyleFunction
+  clearLayerAndApplyStyle(RENNES_LAYERS[6], (feature) =>
+    trambusStopTravelTimesViewStyleFunction(
+      feature,
+      travelTimesViewStore.selectedTravelTime!,
+      mapStore.is3D()
+    )
   )
 }
 

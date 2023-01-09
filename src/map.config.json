@@ -16,15 +16,6 @@
           ]
         }
       }
-    },
-    {
-      "type": "VectorStyleItem",
-      "name": "Pin",
-      "title": "Point Circle",
-      "image": {
-        "src": "./src/assets/icons/mapPin.svg",
-        "scale": 1
-      }
     }
   ],
   "maps": [
