@@ -57,7 +57,7 @@ export const lineFiguresFixtures = (): LineFigureModel[] => [
   {
     id: 'parking',
     idLine: 3,
-    figure: 3,
+    figure: 4,
     description: 'Parking relais',
   },
   {

@@ -9,7 +9,7 @@ const props = defineProps({
 <template>
   <div class="flex flex-row items-center gap-4 h-20">
     <img :src="ParkingIcon" />
-    <div class="flex flex-col items-start p-0 h-16">
+    <div class="flex flex-col items-start justify-center p-0 h-16">
       <div class="font-dm-sans font-bold text-base leading-6">
         Parking {{ props.name }}
       </div>

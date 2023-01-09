@@ -116,12 +116,12 @@ function backButtonClicked() {
   >
   </UiTravelTime>
 
-  <div class="border-b border-neutral-300 my-3"></div>
+  <div class="border-b border-neutral-300 mt-2"></div>
   <ParkingsInformations
     v-if="state.lineDescription"
     :line="state.lineDescription?.id"
   />
-  <div class="border-b border-neutral-300 my-3"></div>
+  <div class="border-b border-neutral-300 mb-3"></div>
   <ThermometerStations
     v-if="state.lineDescription"
     :line="state.lineDescription?.id"
