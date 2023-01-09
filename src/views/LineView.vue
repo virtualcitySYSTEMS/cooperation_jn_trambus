@@ -12,6 +12,8 @@ import UiButton from '@/components/ui/UiButton.vue'
 import LineFigures from '@/components/line/LineFigures.vue'
 import UiTravelTime from '@/components/ui/UiTravelTime.vue'
 import ThermometerStations from '@/components/line/ThermometerStations.vue'
+import ParkingsInformations from '@/components/line/ParkingsInformations.vue'
+import FooterArea from '@/components/home/FooterArea.vue'
 import { useRoute } from 'vue-router'
 
 import { useMapStore } from '@/stores/map'
@@ -114,8 +116,16 @@ function backButtonClicked() {
   >
   </UiTravelTime>
 
+  <div class="border-b border-neutral-300 my-3"></div>
+  <ParkingsInformations
+    v-if="state.lineDescription"
+    :line="state.lineDescription?.id"
+  />
+  <div class="border-b border-neutral-300 my-3"></div>
   <ThermometerStations
     v-if="state.lineDescription"
     :line="state.lineDescription?.id"
   />
+  <div class="border-b border-neutral-300 my-3"></div>
+  <FooterArea />
 </template>
