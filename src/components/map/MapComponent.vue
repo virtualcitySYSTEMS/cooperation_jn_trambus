@@ -12,7 +12,7 @@ import {
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
 
-import { getTrambusLineNumber } from '@/styles/common'
+import { getTrambusLineNumber, parkingStyle, poiStyle } from '@/styles/common'
 
 import { useLayersStore, RENNES_LAYERS } from '@/stores/layers'
 import { useMapStore } from '@/stores/map'
@@ -34,7 +34,7 @@ import { stationsFixtures } from '@/model/stations.fixtures'
 import { Point } from 'ol/geom'
 import { transform } from 'ol/proj'
 import type { Feature } from 'ol'
-import { Icon, Style } from 'ol/style'
+import type { Style } from 'ol/style'
 
 const vcsApp = new VcsApp()
 provide('vcsApp', vcsApp)
@@ -77,7 +77,7 @@ function removeAllFilters() {
 }
 
 function filterFeatureByParkingAndLine(line: number) {
-  filterFeatureByKeyAndValue('parking', 'li_code', `T${line}`)
+  filterFeatureByLayerAndKeyAndValue('parking', 'li_code', `T${line}`)
 }
 
 function filterFeatureByPoiAndLine(line: number) {
@@ -104,7 +104,7 @@ function fixGeometryOfPoi() {
   })
 }
 
-function filterFeatureByKeyAndValue(
+function filterFeatureByLayerAndKeyAndValue(
   layerName: string,
   featureKey: string,
   featureValue: string
@@ -230,63 +230,36 @@ const trambusStopTravelTimesViewStyleFunction: StyleFunction = function (
   )
 }
 
-// TODO: probably merge these two functions. i.e. updateTrambusStyle(currentView: home | line)
-async function updateLineViewStyle() {
-  const trambusLayer = vcsApp.layers.getByKey(RENNES_LAYERS[5]) as FeatureLayer
-  trambusLayer.clearStyle()
-  trambusLayer.setStyle(trambusLineViewStyleFunction)
-
-  const trambusStopLayer = vcsApp.layers.getByKey(
-    RENNES_LAYERS[6]
-  ) as FeatureLayer
-  trambusStopLayer.clearStyle()
-  trambusStopLayer.setStyle(trambusStopLineViewStyleFunction)
-
-  const poiLayer = vcsApp.layers.getByKey('poi') as FeatureLayer
-
-  let style = new Style({
-    image: new Icon({
-      opacity: 1,
-      src: '/src/assets/icons/mapPin.png',
-      scale: 0.1,
-    }),
-  })
+function clearLayerAndApplyStyle(
+  layerName: string,
+  style: Style | StyleFunction | undefined
+) {
+  const poiLayer = vcsApp.layers.getByKey(layerName) as FeatureLayer
   poiLayer.clearStyle()
-  poiLayer.setStyle(style)
+  if (style) poiLayer.setStyle(style)
+}
 
-  const parkingLayer = vcsApp.layers.getByKey('parking') as FeatureLayer
-  style = new Style({
-    image: new Icon({
-      opacity: 1,
-      src: '/src/assets/icons/parkingLocation.svg',
-      scale: 1,
-    }),
-  })
-  parkingLayer.clearStyle()
-  parkingLayer.setStyle(style)
+async function updateLineViewStyle() {
+  clearLayerAndApplyStyle(RENNES_LAYERS[5], trambusLineViewStyleFunction)
+  clearLayerAndApplyStyle(RENNES_LAYERS[6], trambusStopLineViewStyleFunction)
+  clearLayerAndApplyStyle('poi', poiStyle)
+  clearLayerAndApplyStyle('parking', parkingStyle)
 }
 
 async function updateTravelTimesViewStyle() {
-  // No selection
-  const trambusLayer = vcsApp.layers.getByKey(RENNES_LAYERS[5]) as FeatureLayer
-  trambusLayer.clearStyle()
-  trambusLayer.setStyle(trambusLineTravelTimesViewStyleFunction)
-
-  const trambusStopLayer = vcsApp.layers.getByKey(
-    RENNES_LAYERS[6]
-  ) as FeatureLayer
-  trambusStopLayer.clearStyle()
-  trambusStopLayer.setStyle(trambusStopTravelTimesViewStyleFunction)
+  clearLayerAndApplyStyle(
+    RENNES_LAYERS[5],
+    trambusLineTravelTimesViewStyleFunction
+  )
+  clearLayerAndApplyStyle(
+    RENNES_LAYERS[6],
+    trambusStopTravelTimesViewStyleFunction
+  )
 }
 
 function updateHomeViewStyle() {
-  const trambusLayer = vcsApp.layers.getByKey(RENNES_LAYERS[5]) as FeatureLayer
-  // const defaultTrambusLineStyle = vcsApp.styles.getByKey(
-  //   'trambusLineStyle'
-  // ) as StyleItem
-  trambusLayer.clearStyle()
-  // TODO: it throws an error, but it works without this one
-  // trambusLayer.setStyle(defaultTrambusLineStyle, true)
+  clearLayerAndApplyStyle(RENNES_LAYERS[5], undefined)
+  clearLayerAndApplyStyle('parking', parkingStyle)
 }
 
 async function updateActiveMap() {
