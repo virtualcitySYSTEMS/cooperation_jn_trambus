@@ -4,7 +4,6 @@ function initState() {
   return {
     name: 'Parking Lorem',
     station: 'Station Champs-Daguet',
-    address: '3 avenue Hambourg - 35000 Rennes',
     place: 300,
   }
 }
@@ -24,7 +23,6 @@ function initState() {
       <UiParkingInformation
         :name="state.name"
         :station="state.station"
-        :address="state.address"
         :place="state.place"
       >
       </UiParkingInformation>
