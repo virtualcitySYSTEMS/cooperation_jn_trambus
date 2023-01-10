@@ -6,12 +6,16 @@ import { apiClientService } from '@/services/api.client'
 import { reactive, onBeforeMount } from 'vue'
 import type { StationModel } from '@/model/stations.model'
 
+import { useLineViewsStore } from '@/stores/views'
+
 const props = defineProps({
   line: {
     type: Number as PropType<LineNumber>,
     required: true,
   },
 })
+
+const lineStore = useLineViewsStore()
 
 const state = reactive({
   stations: null as null | StationModel[],
@@ -20,6 +24,14 @@ const state = reactive({
 onBeforeMount(async () => {
   state.stations = await apiClientService.fetchStationsByLine(props.line)
 })
+
+function mouseOverAndLeaveItem(action: string, stationName: string) {
+  if (action == 'leave' && stationName == lineStore.selectedStation) {
+    lineStore.selectedStation = null
+  } else if (action == 'over' && stationName != lineStore.selectedStation) {
+    lineStore.selectedStation = stationName
+  }
+}
 </script>
 
 <template>
@@ -37,6 +49,8 @@ onBeforeMount(async () => {
       <ItemThermometerStations
         v-for="(station, index) in state.stations"
         :key="index"
+        @mouseover="mouseOverAndLeaveItem('over', station.nom)"
+        @mouseleave="mouseOverAndLeaveItem('leave', station.nom)"
         :index="index + 1"
         :line="props.line"
         :name="station.nom"

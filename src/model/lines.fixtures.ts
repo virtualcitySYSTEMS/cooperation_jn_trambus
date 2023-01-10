@@ -1,4 +1,5 @@
 import type { LineModel } from './lines.model'
+import type { LineNumber } from '@/model/lines.model'
 
 export const linesFixtures = (): LineModel[] => [
   {
@@ -40,6 +41,24 @@ export function getAllStartEndStations(): string[] {
   return startEndStations
 }
 
+export function getStartEndStationsOfLine(lineNumber: LineNumber): string[] {
+  const startEndStations: string[] = []
+  linesFixtures().forEach((line) => {
+    if (line.id == lineNumber) {
+      startEndStations.push(line.start)
+      startEndStations.push(line.end)
+    }
+  })
+  return startEndStations
+}
+
 export function isStartEndStation(stationName: string): boolean {
   return getAllStartEndStations().indexOf(stationName) > -1
+}
+
+export function isStartEndStationOfLine(
+  lineNumber: LineNumber,
+  stationName: string
+): boolean {
+  return getStartEndStationsOfLine(lineNumber).indexOf(stationName) > -1
 }

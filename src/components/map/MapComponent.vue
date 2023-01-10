@@ -20,6 +20,8 @@ import { useViewsStore } from '@/stores/views'
 import {
   getAllStartEndStations,
   isStartEndStation,
+  getStartEndStationsOfLine,
+  isStartEndStationOfLine,
 } from '@/model/lines.fixtures'
 import { trambusLineStyle, type LineState } from '@/styles/line'
 import { trambusStopStyle } from '@/styles/trambusStop'
@@ -107,18 +109,30 @@ function isTrambusStopBelongsToLine(
   return lineNumbers.includes(trambusLine.toString())
 }
 
+function showTextStation(stationName: string, lineNumber: LineNumber): boolean {
+  if (lineViewStore.selectedStation == stationName) {
+    return true
+  }
+  let shownStations = getStartEndStationsOfLine(lineNumber)
+
+  return shownStations.indexOf(stationName) > -1
+}
+
 const trambusStopLineViewStyleFunction: StyleFunction = function (
   feature: FeatureLike
 ): Style[] {
   const selectedTrambusLine = Number(lineViewStore.selectedLine) as LineNumber
   const isShown = isTrambusStopBelongsToLine(feature, selectedTrambusLine)
   const stationName = feature.get('nom')
+  const isShowTextStation = showTextStation(stationName, selectedTrambusLine)
 
   return trambusStopStyle(
     selectedTrambusLine,
-    isStartEndStation(stationName),
+    isStartEndStationOfLine(selectedTrambusLine, stationName),
     isShown,
-    mapStore.is3D()
+    isShowTextStation,
+    mapStore.is3D(),
+    stationName
   )
 }
 
@@ -162,7 +176,9 @@ const trambusStopTravelTimesViewStyleFunction: StyleFunction = function (
     lineNumber,
     isStartEndStation(stationName),
     isShown,
-    mapStore.is3D()
+    isShown, //always shown text when tranmbusStop is shown
+    mapStore.is3D(),
+    stationName
   )
 }
 
@@ -176,7 +192,6 @@ async function updateLineViewStyle() {
     RENNES_LAYERS[6]
   ) as FeatureLayer
   trambusStopLayer.clearStyle()
-
   trambusStopLayer.setStyle(trambusStopLineViewStyleFunction)
 }
 
@@ -190,6 +205,7 @@ async function updateTravelTimesViewStyle() {
     RENNES_LAYERS[6]
   ) as FeatureLayer
   trambusStopLayer.clearStyle()
+
   trambusStopLayer.setStyle(trambusStopTravelTimesViewStyleFunction)
 }
 
@@ -230,6 +246,10 @@ viewStore.$subscribe(async () => {
 
 travelTimesViewStore.$subscribe(async () => {
   updateTravelTimesViewStyle()
+})
+
+lineViewStore.$subscribe(async () => {
+  updateLineViewStyle()
 })
 </script>
 
