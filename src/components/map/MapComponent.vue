@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, provide, ref } from 'vue'
+import { onMounted, onUnmounted, provide } from 'vue'
 import {
   CesiumMap,
   Context,
@@ -24,7 +24,6 @@ import type { LineNumber } from '@/model/lines.model'
 import { useViewsStore } from '@/stores/views'
 import {
   trambusLineTravelTimesViewStyleFunction,
-  trambusLineViewStyleFunction,
   trambusStopLineViewStyleFunction,
   trambusStopTravelTimesViewStyleFunction,
 } from '@/styles/trambusStop'
@@ -34,6 +33,7 @@ import { Point } from 'ol/geom'
 import { transform } from 'ol/proj'
 import type { Feature } from 'ol'
 import type { Style } from 'ol/style'
+import { trambusLineViewStyleFunction } from '@/styles/line'
 
 const vcsApp = new VcsApp()
 provide('vcsApp', vcsApp)
@@ -53,7 +53,6 @@ onMounted(async () => {
     cesiumMap.getScene().globe.maximumScreenSpaceError = 1
   }
   // window.vcmap = vcsApp
-  mapStore.updateViewpoint(`home`, true)
   await updateLayersVisibility()
   updateMapStyle()
 })
@@ -65,8 +64,8 @@ onUnmounted(() => {
   vcsApp.destroy()
 })
 
-function removeFilterOnLayers(featureKey: string) {
-  vcsApp.layers.getByKey(featureKey)?.reload()
+function removeFilterOnLayers(layerName: string) {
+  vcsApp.layers.getByKey(layerName)?.reload()
 }
 
 function removeAllFilters() {
@@ -80,8 +79,8 @@ function filterFeatureByParkingAndLine(line: number) {
 }
 
 function filterFeatureByPoiAndLine(line: number) {
-  let layers: GeoJSONLayer = vcsApp.layers.getByKey('poi') as GeoJSONLayer
-  let featuresToDelete = layers
+  let layer: GeoJSONLayer = vcsApp.layers.getByKey('poi') as GeoJSONLayer
+  let featuresToDelete = layer
     .getFeatures()
     .filter(
       (f) =>
@@ -92,12 +91,12 @@ function filterFeatureByPoiAndLine(line: number) {
         )
     )
     .map((f) => f.getId()!)
-  layers.removeFeaturesById(featuresToDelete)
+  layer.removeFeaturesById(featuresToDelete)
 }
 
 function fixGeometryOfPoi() {
-  let layers: GeoJSONLayer = vcsApp.layers.getByKey('poi') as GeoJSONLayer
-  layers.getFeatures().forEach((f) => {
+  let layer: GeoJSONLayer = vcsApp.layers.getByKey('poi') as GeoJSONLayer
+  layer.getFeatures().forEach((f) => {
     let coordinates = [f.getProperties()['site_x'], f.getProperties()['site_y']]
     f.setGeometry(new Point(transform(coordinates, 'EPSG:4326', 'EPSG:3857')))
   })
@@ -108,14 +107,14 @@ function filterFeatureByLayerAndKeyAndValue(
   featureKey: string,
   featureValue: string
 ) {
-  let layers: GeoJSONLayer = vcsApp.layers.getByKey(layerName) as GeoJSONLayer
-  let featuresToDelete = layers
+  let layer: GeoJSONLayer = vcsApp.layers.getByKey(layerName) as GeoJSONLayer
+  let featuresToDelete = layer
     .getFeatures()
     .filter((feature: Feature) => {
       return feature.getProperties()[featureKey] !== featureValue
     })
     .map((f) => f.getId()!)
-  layers.removeFeaturesById(featuresToDelete)
+  layer.removeFeaturesById(featuresToDelete)
 }
 
 async function setLayerVisible(layerName: string, visible: boolean) {
@@ -150,9 +149,9 @@ function clearLayerAndApplyStyle(
   layerName: string,
   style: Style | StyleFunction | undefined
 ) {
-  const poiLayer = vcsApp.layers.getByKey(layerName) as FeatureLayer
-  poiLayer.clearStyle()
-  if (style) poiLayer.setStyle(style)
+  const layer = vcsApp.layers.getByKey(layerName) as FeatureLayer
+  layer.clearStyle()
+  if (style) layer.setStyle(style)
 }
 
 async function updateLineViewStyle() {

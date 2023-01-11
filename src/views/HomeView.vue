@@ -17,6 +17,7 @@ const lineViewsStore = useLineViewsStore()
 
 onMounted(() => {
   viewStore.currentView = 'home'
+  mapStore.updateViewpoint(`home`, true)
 
   if (mapStore.is3D()) {
     layerStore.visibilities.rennesBase = false

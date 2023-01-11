@@ -104,24 +104,6 @@ export function trambusStopTravelTimesViewStyleFunction(
   )
 }
 
-export function trambusLineViewStyleFunction(
-  feature: FeatureLike,
-  selectedLine: number,
-  is3D: boolean
-): Style[] {
-  const lineNumber = getTrambusLineNumber(feature) as LineNumber
-  let lineState: LineState = 'normal'
-
-  if (selectedLine == null) {
-    lineState = 'normal'
-  } else if (getTrambusLineNumber(feature) == selectedLine) {
-    lineState = 'selected'
-  } else {
-    lineState = 'hidden'
-  }
-  return trambusLineStyle(lineNumber, lineState, is3D)
-}
-
 export function trambusStopLineViewStyleFunction(
   feature: FeatureLike,
   selectedLine: number,
