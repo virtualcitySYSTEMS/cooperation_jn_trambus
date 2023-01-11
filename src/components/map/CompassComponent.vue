@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import type { VcsApp, VcsMap } from '@vcmap/core'
+import {
+  Viewpoint,
+  type VcsApp,
+  type VcsMap,
+  type ViewpointOptions,
+} from '@vcmap/core'
 import { inject, onMounted, ref } from 'vue'
 import IconCompass from '../ui/icons/IconCompass.vue'
 
@@ -96,10 +101,12 @@ const headingMap = async (heading: number, animate = false) => {
 const tiltingMap = async (pitch: number) => {
   const vp = await vcsApp.maps?.activeMap.getViewpoint()
   if (vp) {
-    vp.pitch = pitch
+    const vpJson: ViewpointOptions = vp?.toJSON() as ViewpointOptions
     // Set the camera position to null to force its position recalculation
-    vp.cameraPosition = null
-    vcsApp.maps?.activeMap.gotoViewpoint(vp)
+    vpJson.cameraPosition = undefined
+    vpJson.pitch = pitch
+    const newVp = new Viewpoint(vpJson)
+    vcsApp.maps?.activeMap.gotoViewpoint(newVp)
   }
 }
 
