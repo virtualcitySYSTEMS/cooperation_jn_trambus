@@ -97,6 +97,8 @@ const tiltingMap = async (pitch: number) => {
   const vp = await vcsApp.maps?.activeMap.getViewpoint()
   if (vp) {
     vp.pitch = pitch
+    // Set the camera position to null to force its position recalculation
+    vp.cameraPosition = null
     vcsApp.maps?.activeMap.gotoViewpoint(vp)
   }
 }

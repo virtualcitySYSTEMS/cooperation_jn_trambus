@@ -37,7 +37,8 @@ async function zoom(out = false, zoomFactor = 2): Promise<void> {
 
     viewpoint.animate = true
     viewpoint.duration = 0.5
-    viewpoint.cameraPosition = [0, 0]
+    // Set the camera position to null to force its position recalculation
+    viewpoint.cameraPosition = null
 
     await activeMap.gotoViewpoint(viewpoint)
   }
