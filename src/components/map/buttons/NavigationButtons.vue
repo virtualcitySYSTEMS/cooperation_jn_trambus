@@ -32,16 +32,16 @@ async function zoom(out = false, zoomFactor = 2): Promise<void> {
     const vpJson: ViewpointOptions = viewpoint?.toJSON() as ViewpointOptions
     // Set the camera position to null to force its position recalculation
     vpJson.cameraPosition = undefined
+    vpJson.animate = true
+    vpJson.duration = 0.5
     if (out) {
-      vpJson.distance! *= zoomFactor
+      vpJson.distance = viewpoint.distance * zoomFactor
     } else {
-      vpJson.distance! /= zoomFactor
+      vpJson.distance = viewpoint.distance / zoomFactor
     }
 
     const newVp = new Viewpoint(vpJson)
     await vcsApp.maps?.activeMap.gotoViewpoint(newVp)
-
-    await activeMap.gotoViewpoint(viewpoint)
   }
 }
 
