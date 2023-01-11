@@ -2,6 +2,7 @@ import type { LineNumber } from '@/model/lines.model'
 import { Circle, Fill, Stroke, Style, Text, Icon } from 'ol/style'
 import { lineColors } from './common'
 import * as ol_color from 'ol/color'
+import type { IconAnchorUnits } from 'ol/style/Icon'
 
 function getCircleStyle(
   lineNumber: LineNumber,
@@ -49,17 +50,16 @@ function getCircleStyle(
 }
 
 function getScaleFromStationName(stationName: string): number[] {
-  console.log(stationName)
-  let width = 0.9
+  let width = 1
   const lengthStationName = stationName.length
-  if (lengthStationName >= 16) {
-    width += 0.3
+  if (lengthStationName >= 13) {
+    width += 0.5
   }
   return [width, 1]
 }
 
 function getTextOffsetXFromImgScale(scaleImg: number[]): number {
-  if (scaleImg[0] > 0.9) {
+  if (scaleImg[0] > 1) {
     return 30
   }
   return 20
@@ -71,6 +71,7 @@ function getTextStyle(
   stationName: string
 ): Style {
   const scaleImg = getScaleFromStationName(stationName)
+  const anchorXUnits: IconAnchorUnits = 'pixels'
   const style_text = new Style({
     image: new Icon({
       src:
@@ -78,7 +79,7 @@ function getTextStyle(
         lineNumber.toString() +
         '.png',
       scale: scaleImg,
-      anchorXUnits: 10,
+      anchorXUnits: anchorXUnits,
     }),
     text: new Text({
       textAlign: 'start',
