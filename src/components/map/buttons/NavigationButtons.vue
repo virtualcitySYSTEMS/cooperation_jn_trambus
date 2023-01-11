@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { VcsApp } from '@vcmap/core'
+import { Viewpoint, type VcsApp, type ViewpointOptions } from '@vcmap/core'
 import { inject } from 'vue'
 
 import IconHome from '@/components/ui/icons/IconHome.vue'
@@ -29,17 +29,19 @@ async function zoom(out = false, zoomFactor = 2): Promise<void> {
   const viewpoint = await activeMap?.getViewpoint()
 
   if (activeMap && viewpoint) {
+    const vpJson: ViewpointOptions = viewpoint?.toJSON() as ViewpointOptions
+    // Set the camera position to null to force its position recalculation
+    vpJson.cameraPosition = undefined
+    vpJson.animate = true
+    vpJson.duration = 0.5
     if (out) {
-      viewpoint.distance *= zoomFactor
+      vpJson.distance = viewpoint.distance * zoomFactor
     } else {
-      viewpoint.distance /= zoomFactor
+      vpJson.distance = viewpoint.distance / zoomFactor
     }
 
-    viewpoint.animate = true
-    viewpoint.duration = 0.5
-    viewpoint.cameraPosition = [0, 0]
-
-    await activeMap.gotoViewpoint(viewpoint)
+    const newVp = new Viewpoint(vpJson)
+    await vcsApp.maps?.activeMap.gotoViewpoint(newVp)
   }
 }
 

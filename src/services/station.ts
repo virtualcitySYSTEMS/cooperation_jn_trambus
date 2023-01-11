@@ -1,6 +1,7 @@
 import type { LineNumber } from '@/model/lines.model'
 import type { StationModel } from '@/model/stations.model'
 import { LIST_BUS } from '@/model/bus.model'
+import type { FeatureLike } from 'ol/Feature'
 
 export function sortStationsByOrder(
   stations: StationModel[],
@@ -40,6 +41,17 @@ export function filterStationsByLineNumber(
   return stations.filter((station) => station.li_code.includes(num_line))
 }
 
+export function isStationOnLine(
+  stations: StationModel[],
+  name_station: string,
+  num_line: LineNumber
+): boolean {
+  const station: StationModel = stations.find(
+    (station) => station.nom === name_station
+  )!
+  return station.li_code.includes(`T${num_line}`)
+}
+
 export function keepOnlyUsefulDessertes(
   stations: StationModel[]
 ): StationModel[] {
@@ -55,6 +67,14 @@ export function keepOnlyUsefulDessertes(
     station.desserte = new_desserte
     return station
   })
+}
+
+export function isTrambusStopBelongsToLine(
+  trambusStopFeature: FeatureLike,
+  trambusLine: number
+): boolean {
+  const lineNumbers: string = trambusStopFeature.get('li_code') // e.g. T1 T2, T1
+  return lineNumbers.includes(trambusLine.toString())
 }
 
 export function formatLiCode(

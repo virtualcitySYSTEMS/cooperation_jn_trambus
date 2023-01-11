@@ -11,6 +11,8 @@ import UiButton from '@/components/ui/UiButton.vue'
 import LineFigures from '@/components/line/LineFigures.vue'
 import UiTravelTime from '@/components/ui/UiTravelTime.vue'
 import ThermometerStations from '@/components/line/ThermometerStations.vue'
+import ParkingsInformations from '@/components/line/ParkingsInformations.vue'
+import FooterArea from '@/components/home/FooterArea.vue'
 import { useRoute } from 'vue-router'
 
 import { useMapStore } from '@/stores/map'
@@ -47,22 +49,25 @@ onBeforeMount(async () => {
 
 onMounted(async () => {
   viewStore.currentView = 'line'
+  mapStore.updateViewpoint(`line${lineStore.selectedLine}`, true)
 
   // Set visibilities
   layerStore.visibilities.trambusLines = true
   layerStore.visibilities.trambusStops = true
   layerStore.visibilities.parking = true
-  layerStore.visibilities.poi = false
+  layerStore.visibilities.poi = true
 
-  // Set vcs app view point
-  mapStore.viewPoint = `line${lineStore.selectedLine}`
+  if (mapStore.is3D()) {
+    layerStore.visibilities.rennesBase = false
+    layerStore.visibilities.rennesOrtho = true
+  } else {
+    layerStore.visibilities.rennesBase = true
+    layerStore.visibilities.rennesOrtho = false
+  }
 })
 
 function backButtonClicked() {
-  router.go(-1)
-  // TODO: this should use the same starting viewpoint (rennes), but for
-  // some reason the starting view point (rennes) is rendered differently
-  // from the configuration.
+  router.push('/home')
   mapStore.viewPoint = `home`
 }
 </script>
@@ -111,8 +116,16 @@ function backButtonClicked() {
   >
   </UiTravelTime>
 
+  <div class="border-b border-neutral-300 mt-2"></div>
+  <ParkingsInformations
+    v-if="state.lineDescription"
+    :line="state.lineDescription?.id"
+  />
+  <div class="border-b border-neutral-300 mb-3"></div>
   <ThermometerStations
     v-if="state.lineDescription"
     :line="state.lineDescription?.id"
   />
+  <div class="border-b border-neutral-300 my-3"></div>
+  <FooterArea />
 </template>

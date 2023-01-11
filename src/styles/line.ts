@@ -1,6 +1,7 @@
 import type { LineNumber } from '@/model/lines.model'
 import { Stroke, Style } from 'ol/style'
-import { lineColors, lineDimmedColors } from './common'
+import { getTrambusLineNumber, lineColors, lineDimmedColors } from './common'
+import type { FeatureLike } from 'ol/Feature'
 
 export type LineState = 'selected' | 'normal' | 'unselected' | 'hidden'
 
@@ -52,4 +53,22 @@ export function trambusLineStyle(
   }
 
   return lineStyles
+}
+
+export function trambusLineViewStyleFunction(
+  feature: FeatureLike,
+  selectedLine: number,
+  is3D: boolean
+): Style[] {
+  const lineNumber = getTrambusLineNumber(feature) as LineNumber
+  let lineState: LineState = 'normal'
+
+  if (selectedLine == null) {
+    lineState = 'normal'
+  } else if (getTrambusLineNumber(feature) == selectedLine) {
+    lineState = 'selected'
+  } else {
+    lineState = 'hidden'
+  }
+  return trambusLineStyle(lineNumber, lineState, is3D)
 }
