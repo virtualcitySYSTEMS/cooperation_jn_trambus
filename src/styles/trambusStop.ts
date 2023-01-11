@@ -48,30 +48,21 @@ function getCircleStyle(
   return style_circle
 }
 
-function formatStationName(stationName: string): string {
-  const max_size_line = 14
-  let stationNameFormatted = ''
-  const stationSplit = stationName.split(' ')
-  let nbChar = 0
-  stationSplit.forEach((word) => {
-    nbChar += word.length
-    if (nbChar > max_size_line) {
-      stationNameFormatted += '\n ' + word
-      nbChar = 0
-    } else {
-      stationNameFormatted += ' ' + word
-    }
-  })
-  return stationNameFormatted
+function getScaleFromStationName(stationName: string): number[] {
+  console.log(stationName)
+  let width = 0.9
+  const lengthStationName = stationName.length
+  if (lengthStationName >= 16) {
+    width += 0.3
+  }
+  return [width, 1]
 }
 
-function getScaleFromStationName(stationName: string): number[] {
-  const countCarriageReturn = (stationName.match(/\n/g) || []).length
-  let height = 1
-  if (countCarriageReturn > 0) {
-    height += countCarriageReturn / 2
+function getTextOffsetXFromImgScale(scaleImg: number[]): number {
+  if (scaleImg[0] > 0.9) {
+    return 30
   }
-  return [0.9, height]
+  return 20
 }
 
 function getTextStyle(
@@ -79,25 +70,25 @@ function getTextStyle(
   isStartEndStation: boolean,
   stationName: string
 ): Style {
-  const stationNameFormatted = formatStationName(stationName)
+  const scaleImg = getScaleFromStationName(stationName)
   const style_text = new Style({
     image: new Icon({
       src:
         './../src/assets/background-map/background-station-T' +
         lineNumber.toString() +
         '.png',
-      scale: getScaleFromStationName(stationNameFormatted),
-      anchorXUnits: 14,
+      scale: scaleImg,
+      anchorXUnits: 10,
     }),
     text: new Text({
       textAlign: 'start',
       textBaseline: 'middle',
       font: 'Normal 12px Arial',
-      text: stationNameFormatted,
+      text: stationName,
       fill: new Fill({
         color: ol_color.fromString('#FFFFFF'),
       }),
-      offsetX: 20,
+      offsetX: getTextOffsetXFromImgScale(scaleImg),
       offsetY: 0,
       rotation: 0,
     }),
