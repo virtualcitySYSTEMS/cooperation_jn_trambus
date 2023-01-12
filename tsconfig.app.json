@@ -7,6 +7,11 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    // we use skipLibCheck instead of isolatedModules because we need to access of const enums in map-core
+    // https://www.typescriptlang.org/tsconfig#skipLibCheck
+    // https://github.com/vitejs/vite/issues/5814
+    "skipLibCheck": true,
+    "isolatedModules": false
   }
 }

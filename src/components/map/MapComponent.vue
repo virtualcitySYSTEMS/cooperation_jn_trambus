@@ -7,6 +7,7 @@ import {
   Layer,
   FeatureLayer,
   GeoJSONLayer,
+  EventType,
 } from '@vcmap/core'
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
@@ -30,6 +31,7 @@ import { transform } from 'ol/proj'
 import type { Feature } from 'ol'
 import type { Style } from 'ol/style'
 import { trambusLineViewStyleFunction } from '@/styles/line'
+import SelectStationInteraction from '@/interactions/selectStation'
 
 const vcsApp = new VcsApp()
 provide('vcsApp', vcsApp)
@@ -51,6 +53,11 @@ onMounted(async () => {
   // window.vcmap = vcsApp
   await updateLayersVisibility()
   updateMapStyle()
+
+  vcsApp.maps.eventHandler.featureInteraction.setActive(EventType.CLICKMOVE)
+  vcsApp.maps.eventHandler.addPersistentInteraction(
+    new SelectStationInteraction('trambusStops')
+  )
 })
 
 // The following code is needed to cleanup resources we created

@@ -88,7 +88,7 @@ function getTextStyle(
         './../src/assets/background-map/background-station-T' +
         lineNumber.toString() +
         '.png',
-      scale: scaleImg,
+
       anchorXUnits: anchorXUnits,
     }),
     text: new Text({
