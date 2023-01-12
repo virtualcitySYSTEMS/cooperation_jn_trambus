@@ -42,23 +42,17 @@ export function getAllStartEndStations(): string[] {
 }
 
 export function getStartEndStationsOfLine(lineNumber: LineNumber): string[] {
-  const startEndStations: string[] = []
-  linesFixtures().forEach((line) => {
-    if (line.id == lineNumber) {
-      startEndStations.push(line.start)
-      startEndStations.push(line.end)
-    }
-  })
-  return startEndStations
+  const line = linesFixtures().find((line) => line.id == lineNumber)
+  return line ? [line.start, line.end] : []
 }
 
 export function isStartEndStation(stationName: string): boolean {
-  return getAllStartEndStations().indexOf(stationName) > -1
+  return getAllStartEndStations().includes(stationName)
 }
 
 export function isStartEndStationOfLine(
   lineNumber: LineNumber,
   stationName: string
 ): boolean {
-  return getStartEndStationsOfLine(lineNumber).indexOf(stationName) > -1
+  return getStartEndStationsOfLine(lineNumber).includes(stationName)
 }

@@ -26,8 +26,9 @@ class SelectStationInteraction extends AbstractInteraction {
   async pipe(event: InteractionEvent): Promise<InteractionEvent> {
     const isLayerFeature =
       event.feature?.[vcsLayerName] === this._stationsLayerName
+    const interactionMapStore = useInteractionMapStore()
+
     if (isLayerFeature) {
-      const interactionMapStore = useInteractionMapStore()
       document.body.style.cursor = 'pointer'
       let stationName: string = ''
       if (event.type & EventType.CLICK) {
@@ -38,8 +39,12 @@ class SelectStationInteraction extends AbstractInteraction {
         interactionMapStore.selectStation(stationName)
       }
     } else {
+      if (interactionMapStore.selectedStation !== null) {
+        interactionMapStore.selectStation(null)
+      }
       document.body.style.cursor = 'auto'
     }
+
     return event
   }
 }

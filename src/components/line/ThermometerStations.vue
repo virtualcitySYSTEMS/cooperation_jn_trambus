@@ -8,6 +8,8 @@ import type { StationModel } from '@/model/stations.model'
 
 import { useInteractionMapStore } from '@/stores/interactionMap'
 
+type actionItem = 'leave' | 'over'
+
 const props = defineProps({
   line: {
     type: Number as PropType<LineNumber>,
@@ -25,7 +27,7 @@ onBeforeMount(async () => {
   state.stations = await apiClientService.fetchStationsByLine(props.line)
 })
 
-function mouseOverAndLeaveItem(action: string, stationName: string) {
+function mouseOverAndLeaveItem(action: actionItem, stationName: string) {
   if (action == 'leave' && stationName == interactionMapStore.selectedStation) {
     interactionMapStore.selectStation(null)
   } else if (

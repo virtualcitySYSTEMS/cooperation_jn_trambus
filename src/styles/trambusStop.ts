@@ -137,7 +137,7 @@ function showTextStation(
   }
   const shownStations = getStartEndStationsOfLine(lineNumber)
 
-  return shownStations.indexOf(stationName) > -1
+  return shownStations.includes(stationName)
 }
 
 export function trambusLineTravelTimesViewStyleFunction(
