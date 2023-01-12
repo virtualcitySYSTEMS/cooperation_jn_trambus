@@ -12,7 +12,7 @@ import {
 } from '@vcmap/core'
 import type { Feature } from 'ol'
 import type { Point } from 'ol/geom'
-import { useLineViewsStore } from '@/stores/views'
+import { useInteractionMapStore } from '@/stores/interactionMap'
 
 class SelectStationInteraction extends AbstractInteraction {
   private readonly _stationsLayerName: string
@@ -27,7 +27,7 @@ class SelectStationInteraction extends AbstractInteraction {
     const isLayerFeature =
       event.feature?.[vcsLayerName] === this._stationsLayerName
     if (isLayerFeature) {
-      const lineStore = useLineViewsStore()
+      const interactionMapStore = useInteractionMapStore()
       document.body.style.cursor = 'pointer'
       let stationName: string = ''
       if (event.type & EventType.CLICK) {
@@ -35,7 +35,7 @@ class SelectStationInteraction extends AbstractInteraction {
       } else if (event.type & EventType.MOVE) {
         const feature: Feature<Point> = event.feature as Feature<Point>
         stationName = feature?.get('nom')
-        lineStore.selectedStation = stationName
+        interactionMapStore.selectStation(stationName)
       }
     } else {
       document.body.style.cursor = 'auto'

@@ -1,8 +1,7 @@
 import type { LineNumber } from '@/model/lines.model'
-import { Circle, Fill, Stroke, Style, Text, Icon } from 'ol/style'
+import { Circle, Fill, Stroke, Style, Text } from 'ol/style'
 import { getTrambusLineNumber, lineColors } from './common'
 import * as ol_color from 'ol/color'
-import type { IconAnchorUnits } from 'ol/style/Icon'
 import type { FeatureLike } from 'ol/Feature'
 import type { LineState } from '@/styles/line'
 import { trambusLineStyle } from '@/styles/line'
@@ -81,16 +80,8 @@ function getTextStyle(
   stationName: string
 ): Style {
   const scaleImg = getScaleFromStationName(stationName)
-  const anchorXUnits: IconAnchorUnits = 'pixels'
+  const backgroundFillColor = lineColors[lineNumber]
   const style_text = new Style({
-    image: new Icon({
-      src:
-        './../src/assets/background-map/background-station-T' +
-        lineNumber.toString() +
-        '.png',
-
-      anchorXUnits: anchorXUnits,
-    }),
     text: new Text({
       textAlign: 'start',
       textBaseline: 'middle',
@@ -99,9 +90,13 @@ function getTextStyle(
       fill: new Fill({
         color: ol_color.fromString('#FFFFFF'),
       }),
+      backgroundFill: new Fill({
+        color: backgroundFillColor,
+      }),
       offsetX: getTextOffsetXFromImgScale(scaleImg),
       offsetY: 0,
       rotation: 0,
+      padding: [5, 3, 5, 3],
     }),
     zIndex: 10,
   })

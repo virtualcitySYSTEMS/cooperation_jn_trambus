@@ -15,6 +15,8 @@ import { parkingStyle, poiStyle } from '@/styles/common'
 import { useLayersStore, RENNES_LAYERS } from '@/stores/layers'
 import { useMapStore } from '@/stores/map'
 import { useLineViewsStore, useTravelTimesViewStore } from '@/stores/views'
+import { useInteractionMapStore } from '@/stores/interactionMap'
+
 import mapConfig from '../../map.config.json'
 import type { StyleFunction } from 'ol/style/Style'
 import type { LineNumber } from '@/model/lines.model'
@@ -41,6 +43,7 @@ const mapStore = useMapStore()
 const lineViewStore = useLineViewsStore()
 const travelTimesViewStore = useTravelTimesViewStore()
 const viewStore = useViewsStore()
+const interactionMapStore = useInteractionMapStore()
 
 onMounted(async () => {
   const context = new Context(mapConfig)
@@ -171,7 +174,7 @@ async function updateLineViewStyle() {
       lineViewStore.selectedLine,
       isTrambusStopBelongsToLine(feature, lineViewStore.selectedLine),
       mapStore.is3D(),
-      lineViewStore.selectedStation
+      interactionMapStore.selectedStation
     )
   )
   clearLayerAndApplyStyle('poi', poiStyle)
@@ -238,6 +241,11 @@ lineViewStore.$subscribe(async () => {
   } else {
     removeAllFilters()
   }
+})
+
+interactionMapStore.$subscribe(async () => {
+  if (viewStore.currentView == 'line') updateLineViewStyle()
+  if (viewStore.currentView == 'traveltimes') updateTravelTimesViewStyle()
 })
 </script>
 

@@ -17,13 +17,11 @@ export const useTravelTimesViewStore = defineStore('traveltimes-views', () => {
 })
 
 export const useLineViewsStore = defineStore('line-views', () => {
-  const selectedStation: Ref<string | null> = ref(null)
-
   const selectedLine: Ref<number> = ref(0)
 
   function selectLine(line: number) {
     selectedLine.value = line
   }
 
-  return { selectLine, selectedLine, selectedStation }
+  return { selectLine, selectedLine }
 })
