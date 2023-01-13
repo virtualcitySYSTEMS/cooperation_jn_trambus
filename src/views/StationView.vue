@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import { onBeforeMount, onMounted, ref } from 'vue'
+import { onBeforeMount, onMounted, ref, reactive } from 'vue'
 import { useRoute } from 'vue-router'
-
 import { useMapStore } from '@/stores/map'
 import { useViewsStore } from '@/stores/views'
 import { useLayersStore } from '@/stores/layers'
 import { useLineViewsStore, useStationViewsStore } from '@/stores/views'
+import router from '@/router'
+import ChevronArrowLeft from '@/assets/icons/chevron-left.svg'
+import UiStationHeader from '@/components/ui/UiStationHeader.vue'
+import UiButton from '@/components/ui/UiButton.vue'
+import { apiClientService } from '@/services/api.client'
+import FooterArea from '@/components/home/FooterArea.vue'
 
 const mapStore = useMapStore()
 const viewStore = useViewsStore()
@@ -13,12 +18,20 @@ const layerStore = useLayersStore()
 const lineStore = useLineViewsStore()
 const stationStore = useStationViewsStore()
 
-onBeforeMount(async () => {
-  const { params } = useRoute()
-  const routeParams = ref(params)
+const { params } = useRoute()
+const routeParams = ref(params)
+const stationName = ref(String(routeParams.value.stationName))
+const lineNumber = ref(Number(routeParams.value.lineid))
 
-  stationStore.selectStation(String(routeParams.value.stationName))
-  lineStore.selectLine(Number(routeParams.value.lineid))
+const state = reactive({
+  frequency: null as null | number,
+})
+
+onBeforeMount(async () => {
+  stationStore.selectStation(stationName.value)
+  lineStore.selectLine(lineNumber.value)
+
+  state.frequency = await apiClientService.fetchLineFrequency(lineNumber.value)
 })
 
 onMounted(async () => {
@@ -33,14 +46,30 @@ onMounted(async () => {
     poi: true,
   })
 })
+
+function backButtonClicked() {
+  const line = lineNumber.value.toString()
+  router.push('/line/' + line)
+  mapStore.viewPoint = `line${line}`
+}
 </script>
 
 <template>
   <div class="flex flex-col items-start py-0 gap-2">
     <div class="flex items-center p-0 gap-4">
-      <h2>Station View</h2>
-      <div>Line : {{ $route.params.lineid }}</div>
-      <div>Station : {{ $route.params.stationName }}</div>
+      <UiButton
+        class="shadow-md rounded-lg p-2 flex gap-2.5 shrink-0 grow-0"
+        @click="backButtonClicked"
+      >
+        <img :src="ChevronArrowLeft" />
+      </UiButton>
+      <UiStationHeader
+        v-if="state.frequency"
+        :line="lineNumber"
+        :nameStation="stationName"
+        :frequency="state.frequency"
+      >
+      </UiStationHeader>
     </div>
   </div>
 

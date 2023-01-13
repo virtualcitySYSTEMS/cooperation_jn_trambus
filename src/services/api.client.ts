@@ -68,6 +68,12 @@ class ApiClientService {
     })
   }
 
+  async fetchLineFrequency(lineNumber: number) {
+    return new Promise<number>((resolve) => {
+      resolve(linesFixtures()[lineNumber - 1]['frequency'])
+    })
+  }
+
   async fetchPhotos() {
     return new Promise<PhotoModel[]>((resolve) => {
       resolve(photoFixtures())
