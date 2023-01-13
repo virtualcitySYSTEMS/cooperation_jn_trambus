@@ -201,8 +201,7 @@ async function updateLineViewStyle() {
       feature,
       lineViewStore.selectedLine,
       isTrambusStopBelongsToLine(feature, lineViewStore.selectedLine),
-      mapStore.is3D(),
-      stationInteractionStore.selectedStation
+      mapStore.is3D()
     )
   )
   clearLayerAndApplyStyle('poi', poiStyle)
@@ -303,9 +302,7 @@ lineViewStore.$subscribe(async () => {
 })
 
 stationInteractionStore.$subscribe(async () => {
-  if (viewStore.currentView == viewStore.viewsList.line) updateLineViewStyle()
-  if (viewStore.currentView == viewStore.viewsList.traveltimes)
-    updateTravelTimesViewStyle()
+  updateMapStyle()
 })
 </script>
 
