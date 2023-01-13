@@ -19,18 +19,13 @@ onMounted(() => {
   viewStore.currentView = 'home'
   mapStore.updateViewpoint(`home`, true)
 
-  if (mapStore.is3D()) {
-    layerStore.visibilities.rennesBase = false
-    layerStore.visibilities.rennesOrtho = true
-  } else {
-    layerStore.visibilities.rennesBase = true
-    layerStore.visibilities.rennesOrtho = false
-  }
   lineViewsStore.selectedLine = 0
-  layerStore.visibilities.trambusLines = true
-  layerStore.visibilities.trambusStops = false
-  layerStore.visibilities.parking = true
-  layerStore.visibilities.poi = false
+  layerStore.setVisibilities(mapStore.is3D(), {
+    trambusLines: true,
+    trambusStops: false,
+    parking: true,
+    poi: false,
+  })
 })
 </script>
 

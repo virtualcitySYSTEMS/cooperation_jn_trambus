@@ -23,18 +23,12 @@ const state = reactive({
 
 onMounted(async () => {
   viewStore.currentView = 'traveltimes'
-  if (mapStore.is3D()) {
-    layerStore.visibilities.rennesBase = false
-    layerStore.visibilities.rennesOrtho = true
-  } else {
-    layerStore.visibilities.rennesBase = true
-    layerStore.visibilities.rennesOrtho = false
-  }
-  layerStore.visibilities.trambusLines = true
-  layerStore.visibilities.trambusStops = true
-  layerStore.visibilities.parking = false
-  layerStore.visibilities.poi = false
-
+  layerStore.setVisibilities(mapStore.is3D(), {
+    trambusLines: true,
+    trambusStops: true,
+    parking: false,
+    poi: false,
+  })
   state.travelTimes = await apiClientService.fetchTravelTime()
 })
 

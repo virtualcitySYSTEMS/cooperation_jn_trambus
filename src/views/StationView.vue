@@ -26,19 +26,12 @@ onMounted(async () => {
   const viewPoint = `line ${lineStore.selectedLine} | station ${stationStore.selectedStation}`
   mapStore.updateViewpoint(viewPoint, true)
 
-  // Set visibilities
-  layerStore.visibilities.trambusLines = true
-  layerStore.visibilities.trambusStops = true
-  layerStore.visibilities.parking = true
-  layerStore.visibilities.poi = true
-
-  if (mapStore.is3D()) {
-    layerStore.visibilities.rennesBase = false
-    layerStore.visibilities.rennesOrtho = true
-  } else {
-    layerStore.visibilities.rennesBase = true
-    layerStore.visibilities.rennesOrtho = false
-  }
+  layerStore.setVisibilities(mapStore.is3D(), {
+    trambusLines: true,
+    trambusStops: true,
+    parking: true,
+    poi: true,
+  })
 })
 </script>
 
