@@ -6,12 +6,18 @@ import { apiClientService } from '@/services/api.client'
 import { reactive, onBeforeMount } from 'vue'
 import type { StationModel } from '@/model/stations.model'
 
+import { useInteractionMapStore } from '@/stores/interactionMap'
+
+type actionItem = 'leave' | 'over'
+
 const props = defineProps({
   line: {
     type: Number as PropType<LineNumber>,
     required: true,
   },
 })
+
+const interactionMapStore = useInteractionMapStore()
 
 const state = reactive({
   stations: null as null | StationModel[],
@@ -20,6 +26,17 @@ const state = reactive({
 onBeforeMount(async () => {
   state.stations = await apiClientService.fetchStationsByLine(props.line)
 })
+
+function mouseOverAndLeaveItem(action: actionItem, stationName: string) {
+  if (action == 'leave' && stationName == interactionMapStore.selectedStation) {
+    interactionMapStore.selectStation(null)
+  } else if (
+    action == 'over' &&
+    stationName != interactionMapStore.selectedStation
+  ) {
+    interactionMapStore.selectStation(stationName)
+  }
+}
 </script>
 
 <template>
@@ -37,6 +54,8 @@ onBeforeMount(async () => {
       <ItemThermometerStations
         v-for="(station, index) in state.stations"
         :key="index"
+        @mouseover="mouseOverAndLeaveItem('over', station.nom)"
+        @mouseleave="mouseOverAndLeaveItem('leave', station.nom)"
         :index="index + 1"
         :line="props.line"
         :name="station.nom"

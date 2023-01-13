@@ -7,16 +7,15 @@ import {
   Layer,
   FeatureLayer,
   GeoJSONLayer,
+  EventType,
 } from '@vcmap/core'
-
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
-
 import { parkingStyle, poiStyle } from '@/styles/common'
-
 import { useLayersStore, RENNES_LAYERS } from '@/stores/layers'
 import { useMapStore } from '@/stores/map'
 import { useLineViewsStore, useTravelTimesViewStore } from '@/stores/views'
+import { useInteractionMapStore } from '@/stores/interactionMap'
 
 import mapConfig from '../../map.config.json'
 import type { StyleFunction } from 'ol/style/Style'
@@ -34,6 +33,7 @@ import { transform } from 'ol/proj'
 import type { Feature } from 'ol'
 import type { Style } from 'ol/style'
 import { trambusLineViewStyleFunction } from '@/styles/line'
+import SelectStationInteraction from '@/interactions/selectStation'
 
 const vcsApp = new VcsApp()
 provide('vcsApp', vcsApp)
@@ -43,6 +43,7 @@ const mapStore = useMapStore()
 const lineViewStore = useLineViewsStore()
 const travelTimesViewStore = useTravelTimesViewStore()
 const viewStore = useViewsStore()
+const interactionMapStore = useInteractionMapStore()
 
 onMounted(async () => {
   const context = new Context(mapConfig)
@@ -55,6 +56,11 @@ onMounted(async () => {
   // window.vcmap = vcsApp
   await updateLayersVisibility()
   updateMapStyle()
+
+  vcsApp.maps.eventHandler.featureInteraction.setActive(EventType.CLICKMOVE)
+  vcsApp.maps.eventHandler.addPersistentInteraction(
+    new SelectStationInteraction('trambusStops')
+  )
 })
 
 // The following code is needed to cleanup resources we created
@@ -167,7 +173,8 @@ async function updateLineViewStyle() {
       feature,
       lineViewStore.selectedLine,
       isTrambusStopBelongsToLine(feature, lineViewStore.selectedLine),
-      mapStore.is3D()
+      mapStore.is3D(),
+      interactionMapStore.selectedStation
     )
   )
   clearLayerAndApplyStyle('poi', poiStyle)
@@ -225,7 +232,8 @@ travelTimesViewStore.$subscribe(async () => {
   updateTravelTimesViewStyle()
 })
 
-lineViewStore.$subscribe(() => {
+lineViewStore.$subscribe(async () => {
+  updateLineViewStyle()
   if (lineViewStore.selectedLine !== 0) {
     fixGeometryOfPoi()
     filterFeatureByParkingAndLine(lineViewStore.selectedLine)
@@ -233,6 +241,11 @@ lineViewStore.$subscribe(() => {
   } else {
     removeAllFilters()
   }
+})
+
+interactionMapStore.$subscribe(async () => {
+  if (viewStore.currentView == 'line') updateLineViewStyle()
+  if (viewStore.currentView == 'traveltimes') updateTravelTimesViewStyle()
 })
 </script>
 

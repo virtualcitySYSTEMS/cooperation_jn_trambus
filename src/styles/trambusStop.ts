@@ -1,5 +1,5 @@
 import type { LineNumber } from '@/model/lines.model'
-import { Circle, Fill, Stroke, Style } from 'ol/style'
+import { Circle, Fill, Stroke, Style, Text } from 'ol/style'
 import { getTrambusLineNumber, lineColors } from './common'
 import * as ol_color from 'ol/color'
 import type { FeatureLike } from 'ol/Feature'
@@ -8,19 +8,17 @@ import { trambusLineStyle } from '@/styles/line'
 import {
   getAllStartEndStations,
   isStartEndStation,
+  getStartEndStationsOfLine,
+  isStartEndStationOfLine,
 } from '@/model/lines.fixtures'
 import type { TravelTimeModel } from '@/model/travel-time.model'
 
-export function trambusStopStyle(
+function getCircleStyle(
   lineNumber: LineNumber,
   isStartEndStation: boolean,
-  isShown: boolean,
+  isShowTextStation: boolean,
   is3D: boolean
-): Style[] {
-  if (!isShown) {
-    return []
-  }
-
+): Style {
   let fillColor = ol_color.fromString('#FFFFFF')
   let strokeColor = lineColors[lineNumber]
 
@@ -37,7 +35,7 @@ export function trambusStopStyle(
   let circleRadius = 6
   let strokeWidth = 3
   // Make the circle bigger
-  if (isStartEndStation) {
+  if (isStartEndStation || isShowTextStation) {
     circleRadius = 8
     strokeWidth = 4
   }
@@ -47,7 +45,7 @@ export function trambusStopStyle(
     width: strokeWidth,
   })
 
-  const style = new Style({
+  const style_circle = new Style({
     image: new Circle({
       fill: fill,
       stroke: stroke,
@@ -55,9 +53,91 @@ export function trambusStopStyle(
     }),
     fill: fill,
     stroke: stroke,
+    zIndex: 5,
   })
+  return style_circle
+}
 
-  return [style]
+function getScaleFromStationName(stationName: string): number[] {
+  let width = 1
+  const lengthStationName = stationName.length
+  if (lengthStationName >= 13) {
+    width += 0.5
+  }
+  return [width, 1]
+}
+
+function getTextOffsetXFromImgScale(scaleImg: number[]): number {
+  if (scaleImg[0] > 1) {
+    return 30
+  }
+  return 20
+}
+
+function getTextStyle(
+  lineNumber: LineNumber,
+  isStartEndStation: boolean,
+  stationName: string
+): Style {
+  const scaleImg = getScaleFromStationName(stationName)
+  const backgroundFillColor = lineColors[lineNumber]
+  const style_text = new Style({
+    text: new Text({
+      textAlign: 'start',
+      textBaseline: 'middle',
+      font: 'Normal 12px Arial',
+      text: stationName,
+      fill: new Fill({
+        color: ol_color.fromString('#FFFFFF'),
+      }),
+      backgroundFill: new Fill({
+        color: backgroundFillColor,
+      }),
+      offsetX: getTextOffsetXFromImgScale(scaleImg),
+      offsetY: 0,
+      rotation: 0,
+      padding: [5, 3, 5, 3],
+    }),
+    zIndex: 10,
+  })
+  return style_text
+}
+
+export function trambusStopStyle(
+  lineNumber: LineNumber,
+  isStartEndStation: boolean,
+  isShown: boolean,
+  isShowTextStation: boolean,
+  is3D: boolean,
+  stationName: string
+): Style[] {
+  if (!isShown) {
+    return []
+  }
+  const circleStyle = getCircleStyle(
+    lineNumber,
+    isStartEndStation,
+    isShowTextStation,
+    is3D
+  )
+  const textStyle = getTextStyle(lineNumber, isStartEndStation, stationName)
+  if (!isShowTextStation) {
+    return [circleStyle]
+  }
+  return [circleStyle, textStyle]
+}
+
+function showTextStation(
+  selectedStation: string | null,
+  stationName: string,
+  lineNumber: LineNumber
+): boolean {
+  if (selectedStation == stationName) {
+    return true
+  }
+  const shownStations = getStartEndStationsOfLine(lineNumber)
+
+  return shownStations.includes(stationName)
 }
 
 export function trambusLineTravelTimesViewStyleFunction(
@@ -100,7 +180,9 @@ export function trambusStopTravelTimesViewStyleFunction(
     lineNumber,
     isStartEndStation(stationName),
     isShown,
-    is3D
+    isShown, //always shown text when tranmbusStop is shown
+    is3D,
+    stationName
   )
 }
 
@@ -108,15 +190,23 @@ export function trambusStopLineViewStyleFunction(
   feature: FeatureLike,
   selectedLine: number,
   isShown: boolean,
-  is3D: boolean
+  is3D: boolean,
+  selectedStation: string | null
 ): Style[] {
   const selectedTrambusLine = Number(selectedLine) as LineNumber
   const stationName = feature.get('nom')
+  const isShowTextStation = showTextStation(
+    selectedStation,
+    stationName,
+    selectedTrambusLine
+  )
 
   return trambusStopStyle(
     selectedTrambusLine,
-    isStartEndStation(stationName),
+    isStartEndStationOfLine(selectedTrambusLine, stationName),
     isShown,
-    is3D
+    isShowTextStation,
+    is3D,
+    stationName
   )
 }
