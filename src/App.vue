@@ -17,7 +17,7 @@ const isPhotoGalleryVisible = computed(() => {
   if (panelStore.isPlanningViewShown) {
     return false
   }
-  if (viewStore.currentView == 'home') {
+  if (viewStore.currentView == viewStore.viewsList.home) {
     return true
   }
   return false

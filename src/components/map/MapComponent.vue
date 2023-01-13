@@ -8,6 +8,7 @@ import {
   FeatureLayer,
   GeoJSONLayer,
   EventType,
+  Viewpoint,
 } from '@vcmap/core'
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
@@ -147,28 +148,22 @@ async function updateLayersVisibility() {
   })
 }
 
-function sleep(time) {
-  return new Promise((resolve) => setTimeout(resolve, time))
-}
-
 async function updateViewPoint() {
   const activeMap = vcsApp.maps.activeMap
-  if (viewStore.currentView == 'station') {
-    console.log('update view point current view')
+  if (viewStore.currentView == viewStore.viewsList.station) {
     const stationName = stationViewStore.selectedStation
-
-    sleep(500).then(() => {})
     let layer: GeoJSONLayer = vcsApp.layers.getByKey(
       RENNES_LAYERS[6]
     ) as GeoJSONLayer
+    let newVp: Viewpoint | null = null
     layer.getFeatures().forEach((f) => {
       const properties = f.getProperties()
       if (stationName == properties.nom) {
         const viewpoint = getViewpointFromFeature(f)
-        const newVp = cloneViewPointAndResetCameraPosition(viewpoint, null)
-        activeMap.gotoViewpoint(newVp)
+        newVp = cloneViewPointAndResetCameraPosition(viewpoint, null)
       }
     })
+    if (newVp !== null) await activeMap.gotoViewpoint(newVp)
   } else {
     const selectedViewPoint = vcsApp.viewpoints.getByKey(mapStore.viewPoint)
 
@@ -259,10 +254,12 @@ async function updateActiveMap() {
 }
 
 function updateMapStyle() {
-  if (viewStore.currentView == 'home') updateHomeViewStyle()
-  if (viewStore.currentView == 'line') updateLineViewStyle()
-  if (viewStore.currentView == 'traveltimes') updateTravelTimesViewStyle()
-  if (viewStore.currentView == 'station') updateStationViewStyle()
+  if (viewStore.currentView == viewStore.viewsList.home) updateHomeViewStyle()
+  if (viewStore.currentView == viewStore.viewsList.line) updateLineViewStyle()
+  if (viewStore.currentView == viewStore.viewsList.traveltimes)
+    updateTravelTimesViewStyle()
+  if (viewStore.currentView == viewStore.viewsList.station)
+    updateStationViewStyle()
 }
 
 layerStore.$subscribe(async () => {
@@ -296,8 +293,9 @@ lineViewStore.$subscribe(async () => {
 })
 
 stationInteractionStore.$subscribe(async () => {
-  if (viewStore.currentView == 'line') updateLineViewStyle()
-  if (viewStore.currentView == 'traveltimes') updateTravelTimesViewStyle()
+  if (viewStore.currentView == viewStore.viewsList.line) updateLineViewStyle()
+  if (viewStore.currentView == viewStore.viewsList.traveltimes)
+    updateTravelTimesViewStyle()
 })
 </script>
 

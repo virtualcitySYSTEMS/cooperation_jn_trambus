@@ -22,7 +22,7 @@ onBeforeMount(async () => {
 })
 
 onMounted(async () => {
-  viewStore.currentView = 'station'
+  viewStore.currentView = viewStore.viewsList.station
   const viewPoint = `line ${lineStore.selectedLine} | station ${stationStore.selectedStation}`
   mapStore.updateViewpoint(viewPoint, true)
 

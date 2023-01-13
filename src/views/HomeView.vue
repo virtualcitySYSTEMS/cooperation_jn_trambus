@@ -16,7 +16,7 @@ const mapStore = useMapStore()
 const lineViewsStore = useLineViewsStore()
 
 onMounted(() => {
-  viewStore.currentView = 'home'
+  viewStore.currentView = viewStore.viewsList.home
   mapStore.updateViewpoint(`home`, true)
 
   lineViewsStore.selectedLine = 0

@@ -48,7 +48,7 @@ onBeforeMount(async () => {
 })
 
 onMounted(async () => {
-  viewStore.currentView = 'line'
+  viewStore.currentView = viewStore.viewsList.line
   mapStore.updateViewpoint(`line${lineStore.selectedLine}`, true)
 
   layerStore.setVisibilities(mapStore.is3D(), {

@@ -7,7 +7,14 @@ export const useViewsStore = defineStore('views', () => {
   // TODO: use union string for list of view
   const currentView: Ref<String> = ref('')
 
-  return { currentView }
+  const viewsList = {
+    home: 'home',
+    station: 'station',
+    line: 'line',
+    traveltimes: 'traveltimes',
+  }
+
+  return { currentView, viewsList }
 })
 
 export const useTravelTimesViewStore = defineStore('traveltimes-views', () => {

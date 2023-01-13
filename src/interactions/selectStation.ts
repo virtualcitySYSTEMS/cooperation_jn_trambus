@@ -39,7 +39,7 @@ class SelectStationInteraction extends AbstractInteraction {
       const stationName = feature?.get('nom')
       if (event.type & EventType.CLICK) {
         const viewStore = useViewsStore()
-        if (viewStore.currentView == 'line') {
+        if (viewStore.currentView == viewStore.viewsList.line) {
           const lineViewStore = useLineViewsStore()
           const lineNumber = lineViewStore.selectedLine
           const stationEncode = encodeURI(stationName)

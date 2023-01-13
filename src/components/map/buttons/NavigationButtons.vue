@@ -59,7 +59,7 @@ const shouldDisplayNavHelp = () => {
     <UiIconButton
       class="rounded-lg px-3 py-3"
       @click="returnToHome"
-      v-show="viewStore.currentView != 'traveltimes'"
+      v-show="viewStore.currentView != viewStore.viewsList.traveltimes"
       ><IconHome
     /></UiIconButton>
     <div class="flex flex-col zoom-buttons text-2xl [&>*]:p-2" role="group">
