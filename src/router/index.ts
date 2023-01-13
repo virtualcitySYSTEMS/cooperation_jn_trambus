@@ -23,7 +23,7 @@ const router = createRouter({
       component: () => import('../views/LineView.vue'),
     },
     {
-      path: '/line/:lineid/station/:id',
+      path: '/line/:lineid/station/:stationName',
       name: 'station',
       component: () => import('../views/StationView.vue'),
     },

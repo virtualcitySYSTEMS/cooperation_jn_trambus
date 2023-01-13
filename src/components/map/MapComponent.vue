@@ -14,7 +14,11 @@ import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
 import { parkingStyle, poiStyle } from '@/styles/common'
 import { useLayersStore, RENNES_LAYERS } from '@/stores/layers'
 import { useMapStore } from '@/stores/map'
-import { useLineViewsStore, useTravelTimesViewStore } from '@/stores/views'
+import {
+  useLineViewsStore,
+  useTravelTimesViewStore,
+  useStationViewsStore,
+} from '@/stores/views'
 import { useStationInteractionStore } from '@/stores/interactionMap'
 
 import mapConfig from '../../map.config.json'
@@ -34,6 +38,10 @@ import type { Feature } from 'ol'
 import type { Style } from 'ol/style'
 import { trambusLineViewStyleFunction } from '@/styles/line'
 import SelectStationInteraction from '@/interactions/selectStation'
+import {
+  getViewpointFromFeature,
+  cloneViewPointAndResetCameraPosition,
+} from '@/helpers/viewPointHelper'
 
 const vcsApp = new VcsApp()
 provide('vcsApp', vcsApp)
@@ -41,6 +49,7 @@ provide('vcsApp', vcsApp)
 const layerStore = useLayersStore()
 const mapStore = useMapStore()
 const lineViewStore = useLineViewsStore()
+const stationViewStore = useStationViewsStore()
 const travelTimesViewStore = useTravelTimesViewStore()
 const viewStore = useViewsStore()
 const stationInteractionStore = useStationInteractionStore()
@@ -138,16 +147,38 @@ async function updateLayersVisibility() {
   })
 }
 
+function sleep(time) {
+  return new Promise((resolve) => setTimeout(resolve, time))
+}
+
 async function updateViewPoint() {
   const activeMap = vcsApp.maps.activeMap
-  const selectedViewPoint = vcsApp.viewpoints.getByKey(mapStore.viewPoint)
+  if (viewStore.currentView == 'station') {
+    console.log('update view point current view')
+    const stationName = stationViewStore.selectedStation
 
-  if (selectedViewPoint) {
-    await activeMap.gotoViewpoint(selectedViewPoint)
+    sleep(500).then(() => {})
+    let layer: GeoJSONLayer = vcsApp.layers.getByKey(
+      RENNES_LAYERS[6]
+    ) as GeoJSONLayer
+    layer.getFeatures().forEach((f) => {
+      const properties = f.getProperties()
+      if (stationName == properties.nom) {
+        const viewpoint = getViewpointFromFeature(f)
+        const newVp = cloneViewPointAndResetCameraPosition(viewpoint, null)
+        activeMap.gotoViewpoint(newVp)
+      }
+    })
   } else {
-    // go to home
-    const homeViewPoint = vcsApp.viewpoints.getByKey('rennes')
-    await activeMap.gotoViewpoint(homeViewPoint!)
+    const selectedViewPoint = vcsApp.viewpoints.getByKey(mapStore.viewPoint)
+
+    if (selectedViewPoint) {
+      await activeMap.gotoViewpoint(selectedViewPoint)
+    } else {
+      // go to home
+      const homeViewPoint = vcsApp.viewpoints.getByKey('rennes')
+      await activeMap.gotoViewpoint(homeViewPoint!)
+    }
   }
 }
 
@@ -206,14 +237,14 @@ async function updateStationViewStyle() {
       mapStore.is3D()
     )
   )
-  // clearLayerAndApplyStyle(RENNES_LAYERS[6], (feature) =>
-  //   trambusStopLineViewStyleFunction(
-  //     feature,
-  //     lineViewStore.selectedLine,
-  //     isTrambusStopBelongsToLine(feature, lineViewStore.selectedLine),
-  //     mapStore.is3D()
-  //   )
-  // )
+  clearLayerAndApplyStyle(RENNES_LAYERS[6], (feature) =>
+    trambusStopLineViewStyleFunction(
+      feature,
+      lineViewStore.selectedLine,
+      isTrambusStopBelongsToLine(feature, lineViewStore.selectedLine),
+      mapStore.is3D()
+    )
+  )
   clearLayerAndApplyStyle('poi', poiStyle)
   clearLayerAndApplyStyle('parking', parkingStyle)
 }

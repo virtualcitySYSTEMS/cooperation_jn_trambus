@@ -17,16 +17,14 @@ onBeforeMount(async () => {
   const { params } = useRoute()
   const routeParams = ref(params)
 
-  stationStore.selectStation(Number(routeParams.value.id))
+  stationStore.selectStation(String(routeParams.value.stationName))
   lineStore.selectLine(Number(routeParams.value.lineid))
-
-  // state.stationDescription = await apiClientService.fetchStationDescription(lineStore.selectedLine)
 })
 
 onMounted(async () => {
   viewStore.currentView = 'station'
-  // mapStore.updateViewpoint(`line${lineStore.selectedLine}`, true)
-  mapStore.updateViewpoint('line4|Maltière', true)
+  const viewPoint = `line ${lineStore.selectedLine} | station ${stationStore.selectedStation}`
+  mapStore.updateViewpoint(viewPoint, true)
 
   // Set visibilities
   layerStore.visibilities.trambusLines = true
@@ -49,7 +47,7 @@ onMounted(async () => {
     <div class="flex items-center p-0 gap-4">
       <h2>Station View</h2>
       <div>Line : {{ $route.params.lineid }}</div>
-      <div>Station : {{ $route.params.id }}</div>
+      <div>Station : {{ $route.params.stationName }}</div>
     </div>
   </div>
 

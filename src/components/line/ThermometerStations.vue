@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import type { LineNumber } from '@/model/lines.model'
+import router from '@/router'
 import ItemThermometerStations from '@/components/line/ItemThermometerStations.vue'
 import { apiClientService } from '@/services/api.client'
 import { reactive, onBeforeMount } from 'vue'
@@ -40,6 +41,11 @@ function mouseOverAndLeaveItem(action: actionItem, stationName: string) {
     stationInteractionStore.selectStation(stationName)
   }
 }
+
+function goToStationPage(stationName: string) {
+  const stationEncode = encodeURI(stationName)
+  router.push(`/line/${props.line}/station/${stationEncode}`)
+}
 </script>
 
 <template>
@@ -59,6 +65,7 @@ function mouseOverAndLeaveItem(action: actionItem, stationName: string) {
         :key="index"
         @mouseover="mouseOverAndLeaveItem('over', station.nom)"
         @mouseleave="mouseOverAndLeaveItem('leave', station.nom)"
+        @click="goToStationPage(station.nom)"
         :index="index + 1"
         :line="props.line"
         :name="station.nom"

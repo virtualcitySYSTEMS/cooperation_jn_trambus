@@ -14,10 +14,8 @@ import {
 import type { Feature } from 'ol'
 import type { Point } from 'ol/geom'
 import { useStationInteractionStore } from '@/stores/interactionMap'
-import {
-  getViewpointFromFeature,
-  cloneViewPointAndResetCameraPosition,
-} from '@/helpers/viewPointHelper'
+import { useLineViewsStore, useViewsStore } from '@/stores/views'
+import router from '@/router'
 
 class SelectStationInteraction extends AbstractInteraction {
   private readonly _stationsLayerName: string
@@ -37,16 +35,17 @@ class SelectStationInteraction extends AbstractInteraction {
 
     if (isLayerFeature) {
       document.body.style.cursor = 'pointer'
-      let stationName: string = ''
-
+      const feature: Feature<Point> = event.feature as Feature<Point>
+      const stationName = feature?.get('nom')
       if (event.type & EventType.CLICK) {
-        const feature: Feature<Point> = event.feature as Feature<Point>
-        const viewpoint = getViewpointFromFeature(feature)
-        const newVp = cloneViewPointAndResetCameraPosition(viewpoint, null)
-        await this._vcsApp.maps?.activeMap.gotoViewpoint(newVp)
+        const viewStore = useViewsStore()
+        if (viewStore.currentView == 'line') {
+          const lineViewStore = useLineViewsStore()
+          const lineNumber = lineViewStore.selectedLine
+          const stationEncode = encodeURI(stationName)
+          router.push(`/line/${lineNumber}/station/${stationEncode}`)
+        }
       } else if (event.type & EventType.MOVE) {
-        const feature: Feature<Point> = event.feature as Feature<Point>
-        stationName = feature?.get('nom')
         stationInteractionStore.selectStation(stationName)
       }
     } else {
