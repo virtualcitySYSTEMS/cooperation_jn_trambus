@@ -25,3 +25,13 @@ export const useLineViewsStore = defineStore('line-views', () => {
 
   return { selectLine, selectedLine }
 })
+
+export const useStationViewsStore = defineStore('station-views', () => {
+  const selectedStation: Ref<number> = ref(0)
+
+  function selectStation(station: number) {
+    selectedStation.value = station
+  }
+
+  return { selectStation, selectedStation }
+})

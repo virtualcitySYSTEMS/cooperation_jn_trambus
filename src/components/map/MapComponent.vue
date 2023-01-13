@@ -15,7 +15,7 @@ import { parkingStyle, poiStyle } from '@/styles/common'
 import { useLayersStore, RENNES_LAYERS } from '@/stores/layers'
 import { useMapStore } from '@/stores/map'
 import { useLineViewsStore, useTravelTimesViewStore } from '@/stores/views'
-import { useInteractionMapStore } from '@/stores/interactionMap'
+import { useStationInteractionStore } from '@/stores/interactionMap'
 
 import mapConfig from '../../map.config.json'
 import type { StyleFunction } from 'ol/style/Style'
@@ -43,7 +43,7 @@ const mapStore = useMapStore()
 const lineViewStore = useLineViewsStore()
 const travelTimesViewStore = useTravelTimesViewStore()
 const viewStore = useViewsStore()
-const interactionMapStore = useInteractionMapStore()
+const stationInteractionStore = useStationInteractionStore()
 
 onMounted(async () => {
   const context = new Context(mapConfig)
@@ -59,7 +59,7 @@ onMounted(async () => {
 
   vcsApp.maps.eventHandler.featureInteraction.setActive(EventType.CLICKMOVE)
   vcsApp.maps.eventHandler.addPersistentInteraction(
-    new SelectStationInteraction('trambusStops')
+    new SelectStationInteraction(vcsApp, 'trambusStops')
   )
 })
 
@@ -174,7 +174,7 @@ async function updateLineViewStyle() {
       lineViewStore.selectedLine,
       isTrambusStopBelongsToLine(feature, lineViewStore.selectedLine),
       mapStore.is3D(),
-      interactionMapStore.selectedStation
+      stationInteractionStore.selectedStation
     )
   )
   clearLayerAndApplyStyle('poi', poiStyle)
@@ -198,6 +198,26 @@ async function updateTravelTimesViewStyle() {
   )
 }
 
+async function updateStationViewStyle() {
+  clearLayerAndApplyStyle(RENNES_LAYERS[5], (feature) =>
+    trambusLineViewStyleFunction(
+      feature,
+      lineViewStore.selectedLine,
+      mapStore.is3D()
+    )
+  )
+  // clearLayerAndApplyStyle(RENNES_LAYERS[6], (feature) =>
+  //   trambusStopLineViewStyleFunction(
+  //     feature,
+  //     lineViewStore.selectedLine,
+  //     isTrambusStopBelongsToLine(feature, lineViewStore.selectedLine),
+  //     mapStore.is3D()
+  //   )
+  // )
+  clearLayerAndApplyStyle('poi', poiStyle)
+  clearLayerAndApplyStyle('parking', parkingStyle)
+}
+
 function updateHomeViewStyle() {
   clearLayerAndApplyStyle(RENNES_LAYERS[5], undefined)
   clearLayerAndApplyStyle('parking', parkingStyle)
@@ -211,6 +231,7 @@ function updateMapStyle() {
   if (viewStore.currentView == 'home') updateHomeViewStyle()
   if (viewStore.currentView == 'line') updateLineViewStyle()
   if (viewStore.currentView == 'traveltimes') updateTravelTimesViewStyle()
+  if (viewStore.currentView == 'station') updateStationViewStyle()
 }
 
 layerStore.$subscribe(async () => {
@@ -243,7 +264,7 @@ lineViewStore.$subscribe(async () => {
   }
 })
 
-interactionMapStore.$subscribe(async () => {
+stationInteractionStore.$subscribe(async () => {
   if (viewStore.currentView == 'line') updateLineViewStyle()
   if (viewStore.currentView == 'traveltimes') updateTravelTimesViewStyle()
 })

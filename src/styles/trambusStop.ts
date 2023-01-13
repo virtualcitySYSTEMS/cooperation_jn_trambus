@@ -120,10 +120,10 @@ export function trambusStopStyle(
     isShowTextStation,
     is3D
   )
-  const textStyle = getTextStyle(lineNumber, isStartEndStation, stationName)
   if (!isShowTextStation) {
     return [circleStyle]
   }
+  const textStyle = getTextStyle(lineNumber, isStartEndStation, stationName)
   return [circleStyle, textStyle]
 }
 

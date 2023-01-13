@@ -6,7 +6,7 @@ import { apiClientService } from '@/services/api.client'
 import { reactive, onBeforeMount } from 'vue'
 import type { StationModel } from '@/model/stations.model'
 
-import { useInteractionMapStore } from '@/stores/interactionMap'
+import { useStationInteractionStore } from '@/stores/interactionMap'
 
 type actionItem = 'leave' | 'over'
 
@@ -17,7 +17,7 @@ const props = defineProps({
   },
 })
 
-const interactionMapStore = useInteractionMapStore()
+const stationInteractionStore = useStationInteractionStore()
 
 const state = reactive({
   stations: null as null | StationModel[],
@@ -28,13 +28,16 @@ onBeforeMount(async () => {
 })
 
 function mouseOverAndLeaveItem(action: actionItem, stationName: string) {
-  if (action == 'leave' && stationName == interactionMapStore.selectedStation) {
-    interactionMapStore.selectStation(null)
+  if (
+    action == 'leave' &&
+    stationName == stationInteractionStore.selectedStation
+  ) {
+    stationInteractionStore.selectStation(null)
   } else if (
     action == 'over' &&
-    stationName != interactionMapStore.selectedStation
+    stationName != stationInteractionStore.selectedStation
   ) {
-    interactionMapStore.selectStation(stationName)
+    stationInteractionStore.selectStation(stationName)
   }
 }
 </script>
