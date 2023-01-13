@@ -18,7 +18,6 @@ const lineViewsStore = useLineViewsStore()
 onMounted(() => {
   viewStore.currentView = viewStore.viewsList.home
   mapStore.updateViewpoint(`home`, true)
-
   lineViewsStore.selectedLine = 0
   layerStore.setVisibilities(mapStore.is3D(), {
     trambusLines: true,

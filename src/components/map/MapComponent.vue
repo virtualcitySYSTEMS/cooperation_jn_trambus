@@ -163,7 +163,9 @@ async function updateViewPoint() {
         newVp = cloneViewPointAndResetCameraPosition(viewpoint, null)
       }
     })
-    if (newVp !== null) await activeMap.gotoViewpoint(newVp)
+    if (newVp !== null) {
+      await activeMap.gotoViewpoint(newVp)
+    }
   } else {
     const selectedViewPoint = vcsApp.viewpoints.getByKey(mapStore.viewPoint)
 
@@ -254,12 +256,20 @@ async function updateActiveMap() {
 }
 
 function updateMapStyle() {
-  if (viewStore.currentView == viewStore.viewsList.home) updateHomeViewStyle()
-  if (viewStore.currentView == viewStore.viewsList.line) updateLineViewStyle()
-  if (viewStore.currentView == viewStore.viewsList.traveltimes)
-    updateTravelTimesViewStyle()
-  if (viewStore.currentView == viewStore.viewsList.station)
-    updateStationViewStyle()
+  switch (viewStore.currentView) {
+    case viewStore.viewsList.home:
+      updateHomeViewStyle()
+      break
+    case viewStore.viewsList.line:
+      updateLineViewStyle()
+      break
+    case viewStore.viewsList.traveltimes:
+      updateTravelTimesViewStyle()
+      break
+    case viewStore.viewsList.station:
+      updateStationViewStyle()
+      break
+  }
 }
 
 layerStore.$subscribe(async () => {

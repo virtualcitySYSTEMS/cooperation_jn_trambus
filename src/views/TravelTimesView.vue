@@ -23,7 +23,7 @@ const state = reactive({
 
 onMounted(async () => {
   viewStore.currentView = viewStore.viewsList.traveltimes
-  // mapStore.updateViewpoint(`traveltimes`, true)
+  mapStore.updateViewpoint(`home`, true)
   layerStore.setVisibilities(mapStore.is3D(), {
     trambusLines: true,
     trambusStops: true,
