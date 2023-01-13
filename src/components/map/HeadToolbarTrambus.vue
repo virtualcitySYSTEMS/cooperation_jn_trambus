@@ -19,7 +19,11 @@ const layerStore = useLayersStore()
 const viewStore = useViewsStore()
 
 const isLayerButtonsVisible = computed(() => {
-  return viewStore.currentView == viewStore.viewsList.home
+  return [
+    viewStore.viewsList.home,
+    viewStore.viewsList.line,
+    viewStore.viewsList.station,
+  ].includes(viewStore.currentView)
 })
 
 const isPlanningButtonVisible = computed(() => {
