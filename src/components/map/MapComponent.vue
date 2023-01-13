@@ -155,15 +155,15 @@ async function updateViewPoint() {
     let layer: GeoJSONLayer = vcsApp.layers.getByKey(
       RENNES_LAYERS[6]
     ) as GeoJSONLayer
-    let newVp: Viewpoint | null = null
+    let viewpoint: Viewpoint | null = null
     layer.getFeatures().forEach((f) => {
       const properties = f.getProperties()
       if (stationName == properties.nom) {
-        const viewpoint = getViewpointFromFeature(f)
-        newVp = cloneViewPointAndResetCameraPosition(viewpoint, null)
+        viewpoint = getViewpointFromFeature(f)
       }
     })
-    if (newVp !== null) {
+    if (viewpoint !== null) {
+      const newVp = cloneViewPointAndResetCameraPosition(viewpoint, null)
       await activeMap.gotoViewpoint(newVp)
     }
   } else {

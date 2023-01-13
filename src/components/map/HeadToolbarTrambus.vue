@@ -23,7 +23,7 @@ const isLayerButtonsVisible = computed(() => {
     viewStore.viewsList.home,
     viewStore.viewsList.line,
     viewStore.viewsList.station,
-  ].includes(viewStore.currentView)
+  ].includes(viewStore.currentView.toString())
 })
 
 const isPlanningButtonVisible = computed(() => {

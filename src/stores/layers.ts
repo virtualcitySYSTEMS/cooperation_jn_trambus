@@ -42,7 +42,15 @@ export const useLayersStore = defineStore('layers', () => {
     visibilities.value.rennesOrtho = is3D
   }
 
-  function setVisibilities(is3D: boolean, newVisibilities: LayersVisibility) {
+  function setVisibilities(
+    is3D: boolean,
+    newVisibilities: {
+      trambusLines: boolean
+      trambusStops: boolean
+      parking: boolean
+      poi: boolean
+    }
+  ) {
     if (is3D) {
       visibilities.value.rennesBase = false
       visibilities.value.rennesOrtho = true

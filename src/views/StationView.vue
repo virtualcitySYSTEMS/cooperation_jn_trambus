@@ -11,6 +11,7 @@ import UiStationHeader from '@/components/ui/UiStationHeader.vue'
 import UiButton from '@/components/ui/UiButton.vue'
 import { apiClientService } from '@/services/api.client'
 import FooterArea from '@/components/home/FooterArea.vue'
+import type { LineModel } from '@/model/lines.model'
 
 const mapStore = useMapStore()
 const viewStore = useViewsStore()
@@ -24,14 +25,16 @@ const stationName = ref(String(routeParams.value.stationName))
 const lineNumber = ref(Number(routeParams.value.lineid))
 
 const state = reactive({
-  frequency: null as null | number,
+  lineDescription: null as null | LineModel,
 })
 
 onBeforeMount(async () => {
   stationStore.selectStation(stationName.value)
   lineStore.selectLine(lineNumber.value)
 
-  state.frequency = await apiClientService.fetchLineFrequency(lineNumber.value)
+  state.lineDescription = await apiClientService.fetchLineDescription(
+    lineStore.selectedLine
+  )
 })
 
 onMounted(async () => {
@@ -64,10 +67,10 @@ function backButtonClicked() {
         <img :src="ChevronArrowLeft" />
       </UiButton>
       <UiStationHeader
-        v-if="state.frequency"
-        :line="lineNumber"
+        v-if="state.lineDescription"
+        :line="state.lineDescription?.id!"
         :nameStation="stationName"
-        :frequency="state.frequency"
+        :frequency="state.lineDescription.frequency"
       >
       </UiStationHeader>
     </div>
