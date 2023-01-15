@@ -10,6 +10,7 @@ import { useLayersStore } from '@/stores/layers'
 import { useLineViewsStore, useViewsStore } from '@/stores/views'
 import { useMapStore } from '@/stores/map'
 import { viewList } from '@/model/views.model'
+import { SelectedTrambusLine } from '@/model/selected-line.model'
 
 const layerStore = useLayersStore()
 const viewStore = useViewsStore()
@@ -19,7 +20,7 @@ const lineViewsStore = useLineViewsStore()
 onMounted(() => {
   viewStore.currentView = viewList.home
   mapStore.updateViewpoint(`home`, true)
-  lineViewsStore.selectedLine = 0
+  lineViewsStore.selectLine(SelectedTrambusLine.NONE)
   layerStore.setVisibilities(mapStore.is3D(), {
     trambusLines: true,
     trambusStops: false,

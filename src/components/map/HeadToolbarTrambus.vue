@@ -7,22 +7,29 @@ import IconCalendar from '@/components/ui/icons/IconCalendar.vue'
 import IconVelo from '@/components/ui/icons/logo-transports-icons/IconVelo.vue'
 import IconBus from '@/components/ui/icons/logo-transports-icons/IconBus.vue'
 import IconMetro from '@/components/ui/icons/logo-transports-icons/IconMetro.vue'
+import IconTB from '@/components/ui/icons/logo-transports-icons/IconTB.vue'
+
 import LoginButtons from '@/components/map/buttons/LoginButtons.vue'
 
 import { usePanelsStore } from '@/stores/panels'
 import { useLayersStore } from '@/stores/layers'
-import { useViewsStore } from '@/stores/views'
+import { useViewsStore, useLineViewsStore } from '@/stores/views'
 import type { Layers } from '@/stores/layers'
 import { viewList } from '@/model/views.model'
 
 const panelStore = usePanelsStore()
 const layerStore = useLayersStore()
 const viewStore = useViewsStore()
+const lineStore = useLineViewsStore()
 
 const isLayerButtonsVisible = computed(() => {
   return [viewList.home, viewList.line, viewList.station].includes(
     viewStore.currentView
   )
+})
+
+const isTrambusButtonVisible = computed(() => {
+  return viewStore.currentView == viewList.line
 })
 
 const isPlanningButtonVisible = computed(() => {
@@ -37,6 +44,10 @@ function onPlanningButtonClicked() {
 function toggleLayer(name: Layers) {
   layerStore.toggleLayer(name)
 }
+
+function activeAllTrambusLine() {
+  lineStore.displayOtherLines()
+}
 </script>
 
 <template>
@@ -47,10 +58,20 @@ function toggleLayer(name: Layers) {
       v-show="isLayerButtonsVisible"
     >
       <UiIconButton
+        @click="() => activeAllTrambusLine()"
+        :active="lineStore.displayedOtherLines"
+        type="button"
+        class="rounded-l-lg px-3 py-3 border border-gray-200 bg-white text-gray-900 inline-flex items-center"
+        v-if="isTrambusButtonVisible"
+      >
+        <IconTB :active="lineStore.displayedOtherLines"></IconTB>
+      </UiIconButton>
+      <UiIconButton
         @click="() => toggleLayer('metro')"
         :active="layerStore.visibilities.metro"
         type="button"
-        class="rounded-l-lg px-3 py-3 border border-gray-200 bg-white text-gray-900 inline-flex items-center"
+        :class="{ 'rounded-l-lg': !isTrambusButtonVisible }"
+        class="px-3 py-3 border border-gray-200 bg-white text-gray-900 inline-flex items-center"
       >
         <IconMetro :active="layerStore.visibilities.metro"></IconMetro>
       </UiIconButton>
