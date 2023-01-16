@@ -42,7 +42,7 @@ import SelectStationInteraction from '@/interactions/selectStation'
 import {
   getViewpointFromFeature,
   cloneViewPointAndResetCameraPosition,
-} from '@/helpers/viewPointHelper'
+} from '@/helpers/viewpointHelper'
 
 const vcsApp = new VcsApp()
 provide('vcsApp', vcsApp)

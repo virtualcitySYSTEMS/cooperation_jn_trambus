@@ -51,13 +51,7 @@ export const useLayersStore = defineStore('layers', () => {
       poi: boolean
     }
   ) {
-    if (is3D) {
-      visibilities.value.rennesBase = false
-      visibilities.value.rennesOrtho = true
-    } else {
-      visibilities.value.rennesBase = true
-      visibilities.value.rennesOrtho = false
-    }
+    update3DBaseLayer(is3D)
     visibilities.value.trambusLines = newVisibilities.trambusLines
     visibilities.value.trambusStops = newVisibilities.trambusStops
     visibilities.value.parking = newVisibilities.parking

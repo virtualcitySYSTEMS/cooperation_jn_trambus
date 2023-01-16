@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { VcsApp } from '@vcmap/core'
 import { inject } from 'vue'
-import { cloneViewPointAndResetCameraPosition } from '@/helpers/viewPointHelper'
+import { cloneViewPointAndResetCameraPosition } from '@/helpers/viewpointHelper'
 
 import IconHome from '@/components/ui/icons/IconHome.vue'
 import UiIconButton from '@/components/ui/UiIconButton.vue'

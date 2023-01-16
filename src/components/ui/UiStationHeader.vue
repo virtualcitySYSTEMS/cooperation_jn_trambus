@@ -19,9 +19,7 @@ const props = defineProps({
     </h2>
     <div class="flex flex-row p-0 gap-2">
       <IconLine :line="line" :size="'m'"></IconLine>
-      <div
-        class="font-normal not-italic -tracking-[1%] text-base text-neutral-800"
-      >
+      <div class="-tracking-[1%] text-neutral-800">
         Toutes les {{ props.frequency }} min
       </div>
     </div>
