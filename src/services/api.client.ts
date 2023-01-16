@@ -68,6 +68,12 @@ class ApiClientService {
     })
   }
 
+  async fetchLineFrequency(lineNumber: number) {
+    return new Promise<number>((resolve) => {
+      resolve(linesFixtures()[lineNumber - 1]['frequency'])
+    })
+  }
+
   async fetchPhotos() {
     return new Promise<PhotoModel[]>((resolve) => {
       resolve(photoFixtures())
@@ -90,6 +96,12 @@ class ApiClientService {
       val = keepOnlyUsefulDessertes(val)
       val = formatLiCode(val, num_line)
       return val
+    })
+  }
+
+  async fetchStationDescription(stationId: number) {
+    return new Promise<StationModel>((resolve) => {
+      resolve(stationsFixtures().find((station) => station.id == stationId)!)
     })
   }
 }

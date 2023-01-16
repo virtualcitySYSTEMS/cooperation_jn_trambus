@@ -9,42 +9,52 @@ import {
   ModificationKeyType,
   vcsLayerName,
   type InteractionEvent,
+  type VcsApp,
 } from '@vcmap/core'
 import type { Feature } from 'ol'
 import type { Point } from 'ol/geom'
-import { useInteractionMapStore } from '@/stores/interactionMap'
+import { useStationInteractionStore } from '@/stores/interactionMap'
+import { useLineViewsStore, useViewsStore } from '@/stores/views'
+import router from '@/router'
+import { viewList } from '@/model/views.model'
 
 class SelectStationInteraction extends AbstractInteraction {
   private readonly _stationsLayerName: string
+  private _vcsApp: VcsApp
 
-  constructor(stationsLayerName: string) {
+  constructor(vcsApp: VcsApp, stationsLayerName: string) {
     super(EventType.CLICKMOVE, ModificationKeyType.NONE)
 
     this._stationsLayerName = stationsLayerName
+    this._vcsApp = vcsApp
   }
 
   async pipe(event: InteractionEvent): Promise<InteractionEvent> {
     const isLayerFeature =
       event.feature?.[vcsLayerName] === this._stationsLayerName
-    const interactionMapStore = useInteractionMapStore()
+    const stationInteractionStore = useStationInteractionStore()
 
     if (isLayerFeature) {
       document.body.style.cursor = 'pointer'
-      let stationName: string = ''
+      const feature: Feature<Point> = event.feature as Feature<Point>
+      const stationName = feature?.get('nom')
       if (event.type & EventType.CLICK) {
-        console.log('click station')
+        const viewStore = useViewsStore()
+        if (viewStore.currentView == viewList.line) {
+          const lineViewStore = useLineViewsStore()
+          const lineNumber = lineViewStore.selectedLine
+          const stationId = feature?.get('id')
+          router.push(`/line/${lineNumber}/station/${stationId}`)
+        }
       } else if (event.type & EventType.MOVE) {
-        const feature: Feature<Point> = event.feature as Feature<Point>
-        stationName = feature?.get('nom')
-        interactionMapStore.selectStation(stationName)
+        stationInteractionStore.selectStation(stationName)
       }
     } else {
-      if (interactionMapStore.selectedStation !== null) {
-        interactionMapStore.selectStation(null)
+      if (stationInteractionStore.selectedStation !== null) {
+        stationInteractionStore.selectStation(null)
       }
       document.body.style.cursor = 'auto'
     }
-
     return event
   }
 }

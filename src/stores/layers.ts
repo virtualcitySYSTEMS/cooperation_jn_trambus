@@ -54,5 +54,21 @@ export const useLayersStore = defineStore('layers', () => {
     visibilities.value.rennesOrtho = is3D
   }
 
-  return { visibilities, toggleLayer, update3DBaseLayer }
+  function setVisibilities(
+    is3D: boolean,
+    newVisibilities: {
+      trambusLines: boolean
+      trambusStops: boolean
+      parking: boolean
+      poi: boolean
+    }
+  ) {
+    update3DBaseLayer(is3D)
+    visibilities.value.trambusLines = newVisibilities.trambusLines
+    visibilities.value.trambusStops = newVisibilities.trambusStops
+    visibilities.value.parking = newVisibilities.parking
+    visibilities.value.poi = newVisibilities.poi
+  }
+
+  return { visibilities, toggleLayer, update3DBaseLayer, setVisibilities }
 })
