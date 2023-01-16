@@ -198,10 +198,13 @@ async function updateTravelTimesViewStyle() {
     )
   )
   // Update arc
+  const scratchTraveltimeArcLayerName = '_traveltimeArcLayer'
   if (travelTimesViewStore.selectedTravelTime) {
-    console.log('update arc')
-    const scratchArcLayerName = '_poiArcLayer'
-    const arcLayer = getScratchLayer(vcsApp, scratchArcLayerName, true)
+    const arcLayer = getScratchLayer(
+      vcsApp,
+      scratchTraveltimeArcLayerName,
+      true
+    )
     arcLayer.removeAllFeatures()
     const lineString = new LineString([
       [-191094.63351528606, 6124032.874140845],
@@ -210,6 +213,14 @@ async function updateTravelTimesViewStyle() {
     const feature = new Feature(lineString)
     const arcFeatures = [feature]
     arcLayer.addFeatures(arcFeatures)
+    arcLayer.activate()
+  } else {
+    const arcLayer = getScratchLayer(
+      vcsApp,
+      scratchTraveltimeArcLayerName,
+      true
+    )
+    arcLayer.deactivate()
   }
 }
 
