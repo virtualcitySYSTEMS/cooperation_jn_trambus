@@ -157,7 +157,7 @@ async function updateViewPoint() {
   if (viewStore.currentView == viewList.station) {
     const stationName = stationViewStore.nameSelectedStation
     let layer: GeoJSONLayer = vcsApp.layers.getByKey(
-      RENNES_LAYERS[6]
+      RENNES_LAYER.trambusStops
     ) as GeoJSONLayer
     let viewpoint: Viewpoint | null = null
     layer.getFeatures().forEach((f) => {
@@ -228,14 +228,14 @@ function updateTraveltimeArrow() {
 }
 
 async function updateLineViewStyle() {
-  clearLayerAndApplyStyle(RENNES_LAYERS[5], (feature) =>
+  clearLayerAndApplyStyle(RENNES_LAYER.trambusLines, (feature) =>
     trambusLineViewStyleFunction(
       feature,
       lineViewStore.selectedLine,
       mapStore.is3D()
     )
   )
-  clearLayerAndApplyStyle(RENNES_LAYERS[6], (feature) =>
+  clearLayerAndApplyStyle(RENNES_LAYER.trambusStops, (feature) =>
     trambusStopLineViewStyleFunction(
       feature,
       lineViewStore.selectedLine,
@@ -243,19 +243,19 @@ async function updateLineViewStyle() {
       mapStore.is3D()
     )
   )
-  clearLayerAndApplyStyle('poi', poiStyle)
-  clearLayerAndApplyStyle('parking', parkingStyle)
+  clearLayerAndApplyStyle(RENNES_LAYER.poi, poiStyle)
+  clearLayerAndApplyStyle(RENNES_LAYER.parking, parkingStyle)
 }
 
 async function updateTravelTimesViewStyle() {
-  clearLayerAndApplyStyle(RENNES_LAYERS[5], (feature) =>
+  clearLayerAndApplyStyle(RENNES_LAYER.trambusLines, (feature) =>
     trambusLineTravelTimesViewStyleFunction(
       feature,
       travelTimesViewStore.selectedTravelTime!,
       mapStore.is3D()
     )
   )
-  clearLayerAndApplyStyle(RENNES_LAYERS[6], (feature) =>
+  clearLayerAndApplyStyle(RENNES_LAYER.trambusStops, (feature) =>
     trambusStopTravelTimesViewStyleFunction(
       feature,
       travelTimesViewStore.selectedTravelTime!,
@@ -266,14 +266,14 @@ async function updateTravelTimesViewStyle() {
 }
 
 async function updateStationViewStyle() {
-  clearLayerAndApplyStyle(RENNES_LAYERS[5], (feature) =>
+  clearLayerAndApplyStyle(RENNES_LAYER.trambusLines, (feature) =>
     trambusLineViewStyleFunction(
       feature,
       lineViewStore.selectedLine,
       mapStore.is3D()
     )
   )
-  clearLayerAndApplyStyle(RENNES_LAYERS[6], (feature) =>
+  clearLayerAndApplyStyle(RENNES_LAYER.trambusStops, (feature) =>
     trambusStopLineViewStyleFunction(
       feature,
       lineViewStore.selectedLine,
@@ -281,13 +281,13 @@ async function updateStationViewStyle() {
       mapStore.is3D()
     )
   )
-  clearLayerAndApplyStyle('poi', poiStyle)
-  clearLayerAndApplyStyle('parking', parkingStyle)
+  clearLayerAndApplyStyle(RENNES_LAYER.poi, poiStyle)
+  clearLayerAndApplyStyle(RENNES_LAYER.parking, parkingStyle)
 }
 
 function updateHomeViewStyle() {
-  clearLayerAndApplyStyle(RENNES_LAYERS[5], undefined)
-  clearLayerAndApplyStyle('parking', parkingStyle)
+  clearLayerAndApplyStyle(RENNES_LAYER.trambusLines, undefined)
+  clearLayerAndApplyStyle(RENNES_LAYER.parking, parkingStyle)
 }
 
 async function updateActiveMap() {
