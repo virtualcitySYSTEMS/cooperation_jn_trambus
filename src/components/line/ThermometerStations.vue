@@ -42,7 +42,7 @@ function mouseOverAndLeaveItem(action: actionItem, stationName: string) {
   }
 }
 
-function goToStationPage(stationId: string) {
+function goToStationPage(stationId: number) {
   router.push(`/line/${props.line}/station/${stationId}`)
 }
 </script>

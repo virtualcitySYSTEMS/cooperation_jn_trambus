@@ -22,7 +22,7 @@ const stationStore = useStationViewsStore()
 
 const { params } = useRoute()
 const routeParams = ref(params)
-const stationId = ref(String(routeParams.value.id))
+const stationId = ref(Number(routeParams.value.id))
 const lineNumber = ref(Number(routeParams.value.lineid))
 
 const state = reactive({
@@ -47,7 +47,7 @@ onBeforeMount(async () => {
 
 onMounted(async () => {
   viewStore.currentView = viewStore.viewsList.station
-  const viewPoint = `line ${lineStore.selectedLine} | station ${stationStore.selectedStation}`
+  const viewPoint = `line ${lineStore.selectedLine} | station ${stationStore.nameSelectedStation}`
   mapStore.updateViewpoint(viewPoint, true)
 
   layerStore.setVisibilities(mapStore.is3D(), {
