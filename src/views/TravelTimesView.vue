@@ -41,6 +41,11 @@ function onTravelTimesClicked(travelTime: TravelTimeModel) {
     travelTimeStore.selectedTravelTime = travelTime
   }
 }
+
+function backButtonClicked() {
+  router.go(-1)
+  travelTimeStore.selectedTravelTime = null
+}
 </script>
 
 <template>
@@ -48,7 +53,7 @@ function onTravelTimesClicked(travelTime: TravelTimeModel) {
     <div class="flex items-center p-0 gap-4">
       <UiButton
         class="shadow-md rounded-lg p-2 flex gap-2.5 shrink-0 grow-0"
-        @click="router.go(-1)"
+        @click="backButtonClicked"
       >
         <img :src="ChevronArrowLeft" />
       </UiButton>

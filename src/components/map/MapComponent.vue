@@ -191,7 +191,7 @@ function clearLayerAndApplyStyle(
   if (style) layer.setStyle(style)
 }
 
-function showTraveltimeArrow() {
+function updateTraveltimeArrow() {
   // Arrow style for travel time
   const scratchTraveltimeArcLayerName = '_traveltimeArcLayer'
   const arcLayer = getScratchLayer(vcsApp, scratchTraveltimeArcLayerName, true)
@@ -263,7 +263,7 @@ async function updateTravelTimesViewStyle() {
       mapStore.is3D()
     )
   )
-  showTraveltimeArrow()
+  updateTraveltimeArrow()
 }
 
 async function updateStationViewStyle() {
