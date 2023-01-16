@@ -42,8 +42,8 @@ class SelectStationInteraction extends AbstractInteraction {
         if (viewStore.currentView == viewStore.viewsList.line) {
           const lineViewStore = useLineViewsStore()
           const lineNumber = lineViewStore.selectedLine
-          const stationEncode = encodeURI(stationName)
-          router.push(`/line/${lineNumber}/station/${stationEncode}`)
+          const stationId = feature?.get('id')
+          router.push(`/line/${lineNumber}/station/${stationId}`)
         }
       } else if (event.type & EventType.MOVE) {
         stationInteractionStore.selectStation(stationName)

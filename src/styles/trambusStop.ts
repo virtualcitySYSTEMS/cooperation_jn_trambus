@@ -167,7 +167,7 @@ function displayLabelStation(
 
   if (
     stationInteractionStore.selectedStation == stationName ||
-    stationViewStore.selectedStation == stationName
+    stationViewStore.nameSelectedStation == stationName
   ) {
     return true
   }

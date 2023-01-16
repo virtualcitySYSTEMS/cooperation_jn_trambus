@@ -151,7 +151,7 @@ async function updateLayersVisibility() {
 async function updateViewPoint() {
   const activeMap = vcsApp.maps.activeMap
   if (viewStore.currentView == viewStore.viewsList.station) {
-    const stationName = stationViewStore.selectedStation
+    const stationName = stationViewStore.nameSelectedStation
     let layer: GeoJSONLayer = vcsApp.layers.getByKey(
       RENNES_LAYERS[6]
     ) as GeoJSONLayer

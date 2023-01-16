@@ -42,9 +42,8 @@ function mouseOverAndLeaveItem(action: actionItem, stationName: string) {
   }
 }
 
-function goToStationPage(stationName: string) {
-  const stationEncode = encodeURI(stationName)
-  router.push(`/line/${props.line}/station/${stationEncode}`)
+function goToStationPage(stationId: string) {
+  router.push(`/line/${props.line}/station/${stationId}`)
 }
 </script>
 
@@ -65,7 +64,7 @@ function goToStationPage(stationName: string) {
         :key="index"
         @mouseover="mouseOverAndLeaveItem('over', station.nom)"
         @mouseleave="mouseOverAndLeaveItem('leave', station.nom)"
-        @click="goToStationPage(station.nom)"
+        @click="goToStationPage(station.id)"
         :index="index + 1"
         :line="props.line"
         :name="station.nom"

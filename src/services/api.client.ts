@@ -98,6 +98,12 @@ class ApiClientService {
       return val
     })
   }
+
+  async fetchStationDescription(stationId: number) {
+    return new Promise<StationModel>((resolve) => {
+      resolve(stationsFixtures().find((station) => station.id == stationId)!)
+    })
+  }
 }
 
 export const apiClientService = new ApiClientService()

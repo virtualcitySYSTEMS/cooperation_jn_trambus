@@ -12,6 +12,7 @@ import UiButton from '@/components/ui/UiButton.vue'
 import { apiClientService } from '@/services/api.client'
 import FooterArea from '@/components/home/FooterArea.vue'
 import type { LineModel } from '@/model/lines.model'
+import type { StationModel } from '@/model/stations.model'
 
 const mapStore = useMapStore()
 const viewStore = useViewsStore()
@@ -21,20 +22,27 @@ const stationStore = useStationViewsStore()
 
 const { params } = useRoute()
 const routeParams = ref(params)
-const stationName = ref(String(routeParams.value.stationName))
+const stationId = ref(String(routeParams.value.id))
 const lineNumber = ref(Number(routeParams.value.lineid))
 
 const state = reactive({
   lineDescription: null as null | LineModel,
+  stationDescription: null as null | StationModel,
 })
 
 onBeforeMount(async () => {
-  stationStore.selectStation(stationName.value)
   lineStore.selectLine(lineNumber.value)
-
   state.lineDescription = await apiClientService.fetchLineDescription(
     lineStore.selectedLine
   )
+
+  stationStore.setIdSelectedStation(stationId.value)
+  await apiClientService
+    .fetchStationDescription(stationId.value)
+    .then((station) => {
+      stationStore.setNameSelectedStation(station.nom)
+      state.stationDescription = station
+    })
 })
 
 onMounted(async () => {
@@ -54,6 +62,7 @@ function backButtonClicked() {
   const line = lineNumber.value.toString()
   router.push('/line/' + line)
   mapStore.viewPoint = `line${line}`
+  stationStore.emptySelectedStation()
 }
 </script>
 
@@ -67,9 +76,9 @@ function backButtonClicked() {
         <img :src="ChevronArrowLeft" />
       </UiButton>
       <UiStationHeader
-        v-if="state.lineDescription"
+        v-if="state.lineDescription && state.stationDescription"
         :line="state.lineDescription?.id!"
-        :nameStation="stationName"
+        :nameStation="state.stationDescription.nom"
         :frequency="state.lineDescription.frequency"
       >
       </UiStationHeader>

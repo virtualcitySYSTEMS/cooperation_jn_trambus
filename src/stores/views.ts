@@ -34,11 +34,27 @@ export const useLineViewsStore = defineStore('line-views', () => {
 })
 
 export const useStationViewsStore = defineStore('station-views', () => {
-  const selectedStation: Ref<string> = ref('')
+  const nameSelectedStation: Ref<string> = ref('')
+  const idSelectedStation: Ref<number> = ref(0)
 
-  function selectStation(stationName: string) {
-    selectedStation.value = stationName
+  function setNameSelectedStation(stationName: string) {
+    nameSelectedStation.value = stationName
   }
 
-  return { selectStation, selectedStation }
+  function setIdSelectedStation(idStation: number) {
+    idSelectedStation.value = idStation
+  }
+
+  function emptySelectedStation() {
+    nameSelectedStation.value = ''
+    idSelectedStation.value = 0
+  }
+
+  return {
+    nameSelectedStation,
+    setNameSelectedStation,
+    idSelectedStation,
+    setIdSelectedStation,
+    emptySelectedStation,
+  }
 })
