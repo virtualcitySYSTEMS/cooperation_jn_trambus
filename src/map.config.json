@@ -44,7 +44,8 @@
       "type": "TerrainLayer",
       "url": "https://demo.virtualcitymap.de/rennes/datasource-data/b3ef17bf-fdde-4979-8f05-8b4db5811c43",
       "activeOnStartup": true,
-      "requestVertexNormals": true
+      "requestVertexNormals": true,
+      "zIndex": 1
     },
     {
       "type": "CesiumTilesetLayer",
@@ -52,7 +53,8 @@
       "url": "https://demo.virtualcitymap.de/rennes/datasource-data/f8a215a9-d0cc-4804-b284-0eac8a58924d",
       "activeOnStartup": true,
       "screenSpaceError": 16,
-      "screenSpaceErrorMobile": 32
+      "screenSpaceErrorMobile": 32,
+      "zIndex": 1
     },
     {
       "name": "rennesBase",
@@ -67,7 +69,8 @@
           -2.1170142251181825, 47.78117827367612, -1.170835369910388,
           48.39479586736775
         ],
-        "epsg": "EPSG:4326"
+        "epsg": "EPSG:4326",
+        "zIndex": 1
       },
       "activeOnStartup": true
     },
@@ -86,7 +89,8 @@
         ],
         "epsg": "EPSG:4326"
       },
-      "activeOnStartup": false
+      "activeOnStartup": false,
+      "zIndex": 1
     },
     {
       "name": "metro",
@@ -106,7 +110,8 @@
             ]
           }
         }
-      }
+      },
+      "zIndex": 2
     },
     {
       "name": "bus",
@@ -131,7 +136,8 @@
             ]
           }
         }
-      }
+      },
+      "zIndex": 2
     },
     {
       "name": "bike",
@@ -145,7 +151,8 @@
           "color": "#06b6d4",
           "width": 2
         }
-      }
+      },
+      "zIndex": 2
     },
     {
       "name": "trambusLines",
@@ -167,7 +174,8 @@
           }
         }
       },
-      "activeOnStartup": true
+      "activeOnStartup": true,
+      "zIndex": 2
     },
     {
       "name": "trambusStops",
@@ -187,19 +195,22 @@
           }
         }
       },
-      "activeOnStartup": false
+      "activeOnStartup": false,
+      "zIndex": 4
     },
     {
       "name": "parking",
       "url": "https://public.sig.rennesmetropole.fr/geoserver/ows?service=WFS&request=getFeature&typename=trp_coll:trambus_parc_relais&outputFormat=application/json&srsName=EPSG:4326",
       "type": "GeoJSONLayer",
-      "activeOnStartup": true
+      "activeOnStartup": true,
+      "zIndex": 3
     },
     {
       "name": "poi",
       "url": "https://public.sig.rennesmetropole.fr/geoserver/ows?service=WFS&request=getFeature&typename=trp_coll:trambus_station_to_site&outputFormat=application/json&srsName=EPSG:4326",
       "type": "GeoJSONLayer",
-      "activeOnStartup": true
+      "activeOnStartup": true,
+      "zIndex": 3
     }
   ],
   "viewpoints": [

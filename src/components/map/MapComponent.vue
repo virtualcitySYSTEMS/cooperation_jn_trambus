@@ -189,7 +189,9 @@ function clearLayerAndApplyStyle(
 ) {
   const layer = vcsApp.layers.getByKey(layerName) as FeatureLayer
   layer.clearStyle()
-  if (style) layer.setStyle(style)
+  if (style) {
+    layer.setStyle(style)
+  }
 }
 
 async function updateLineViewStyle() {
