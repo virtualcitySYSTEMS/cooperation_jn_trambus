@@ -8,6 +8,11 @@ import {
   FeatureLayer,
   GeoJSONLayer,
   EventType,
+  VectorLayer,
+  mercatorProjection,
+  ArcStyle,
+  DeclarativeStyleItem,
+  markVolatile,
 } from '@vcmap/core'
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
@@ -28,9 +33,9 @@ import {
 } from '@/styles/trambusStop'
 import { isStationOnLine, isTrambusStopBelongsToLine } from '@/services/station'
 import { stationsFixtures } from '@/model/stations.fixtures'
-import { Point } from 'ol/geom'
+import { Point, LineString } from 'ol/geom'
 import { transform } from 'ol/proj'
-import type { Feature } from 'ol'
+import { Feature } from 'ol'
 import type { Style } from 'ol/style'
 import { trambusLineViewStyleFunction } from '@/styles/line'
 import SelectStationInteraction from '@/interactions/selectStation'
@@ -53,7 +58,7 @@ onMounted(async () => {
   if (cesiumMap && cesiumMap instanceof CesiumMap) {
     cesiumMap.getScene().globe.maximumScreenSpaceError = 1
   }
-  // window.vcmap = vcsApp
+  window.vcmap = vcsApp
   await updateLayersVisibility()
   updateMapStyle()
 
@@ -247,6 +252,60 @@ interactionMapStore.$subscribe(async () => {
   if (viewStore.currentView == 'line') updateLineViewStyle()
   if (viewStore.currentView == 'traveltimes') updateTravelTimesViewStyle()
 })
+
+// TODO: Move it to other file
+function getScratchLayer(
+  app: VcsApp,
+  layerName: string,
+  arc?: boolean
+): VectorLayer {
+  if (app.layers.hasKey(layerName)) {
+    return app.layers.getByKey(layerName) as VectorLayer
+  }
+
+  const layer = new VectorLayer({
+    name: layerName,
+    projection: mercatorProjection.toJSON(),
+  })
+  if (arc) {
+    layer.setStyle(new ArcStyle())
+  } else {
+    layer.setStyle(
+      new DeclarativeStyleItem({
+        declarativeStyle: {
+          pointOutlineColor: "color('#6B23C9')",
+          pointOutlineWidth: '2',
+          labelText: {
+            conditions: [
+              ['${ordre}===1', "'${nom_site}'"],
+              ['true', "''"],
+            ],
+          },
+          labelOutlineColor: "color('#ffffff')",
+          labelColor: "color('#6B23C9')",
+          labelOutlineWidth: '2',
+          font: "'13px sans-serif'",
+        },
+      })
+    )
+  }
+  markVolatile(layer)
+  app.layers.add(layer)
+  layer.activate()
+  return layer
+}
+
+const scratchArcLayerName = '_poiArcLayer'
+const arcLayer = getScratchLayer(vcsApp, scratchArcLayerName, true)
+arcLayer.removeAllFeatures()
+const lineString = new LineString([
+  [-1.7219, 48.09],
+  [0.0, 0.0],
+])
+const feature = new Feature(lineString)
+const arcFeatures = [feature]
+arcFeatures.push()
+arcLayer.addFeatures(arcFeatures)
 </script>
 
 <template>
