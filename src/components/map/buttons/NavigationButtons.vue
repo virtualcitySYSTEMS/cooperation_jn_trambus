@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { Viewpoint, type VcsApp, type ViewpointOptions } from '@vcmap/core'
+import type { VcsApp } from '@vcmap/core'
 import { inject } from 'vue'
+import { cloneViewPointAndResetCameraPosition } from '@/helpers/viewpointHelper'
 
 import IconHome from '@/components/ui/icons/IconHome.vue'
 import UiIconButton from '@/components/ui/UiIconButton.vue'
@@ -10,6 +11,7 @@ import NavigationHelp from '@/components/map/NavigationHelp.vue'
 import { useMapStore } from '@/stores/map'
 import { useLayersStore } from '@/stores/layers'
 import { useViewsStore } from '@/stores/views'
+import { viewList } from '@/model/views.model'
 
 const vcsApp = inject('vcsApp') as VcsApp
 
@@ -29,18 +31,12 @@ async function zoom(out = false, zoomFactor = 2): Promise<void> {
   const viewpoint = await activeMap?.getViewpoint()
 
   if (activeMap && viewpoint) {
-    const vpJson: ViewpointOptions = viewpoint?.toJSON() as ViewpointOptions
-    // Set the camera position to null to force its position recalculation
-    vpJson.cameraPosition = undefined
-    vpJson.animate = true
-    vpJson.duration = 0.5
+    let distance = viewpoint.distance / zoomFactor
     if (out) {
-      vpJson.distance = viewpoint.distance * zoomFactor
-    } else {
-      vpJson.distance = viewpoint.distance / zoomFactor
+      distance = viewpoint.distance * zoomFactor
     }
 
-    const newVp = new Viewpoint(vpJson)
+    const newVp = cloneViewPointAndResetCameraPosition(viewpoint, distance)
     await vcsApp.maps?.activeMap.gotoViewpoint(newVp)
   }
 }
@@ -64,7 +60,7 @@ const shouldDisplayNavHelp = () => {
     <UiIconButton
       class="rounded-lg px-3 py-3"
       @click="returnToHome"
-      v-show="viewStore.currentView != 'traveltimes'"
+      v-show="viewStore.currentView != viewList.traveltimes"
       ><IconHome
     /></UiIconButton>
     <div class="flex flex-col zoom-buttons text-2xl [&>*]:p-2" role="group">

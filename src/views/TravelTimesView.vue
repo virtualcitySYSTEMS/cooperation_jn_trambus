@@ -11,6 +11,7 @@ import ChevronArrowLeft from '@/assets/icons/chevron-left.svg'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiTravelTime from '@/components/ui/UiTravelTime.vue'
 import { useMapStore } from '@/stores/map'
+import { viewList } from '@/model/views.model'
 
 const viewStore = useViewsStore()
 const layerStore = useLayersStore()
@@ -22,19 +23,14 @@ const state = reactive({
 })
 
 onMounted(async () => {
-  viewStore.currentView = 'traveltimes'
-  if (mapStore.is3D()) {
-    layerStore.visibilities.rennesBase = false
-    layerStore.visibilities.rennesOrtho = true
-  } else {
-    layerStore.visibilities.rennesBase = true
-    layerStore.visibilities.rennesOrtho = false
-  }
-  layerStore.visibilities.trambusLines = true
-  layerStore.visibilities.trambusStops = true
-  layerStore.visibilities.parking = false
-  layerStore.visibilities.poi = false
-
+  viewStore.currentView = viewList.traveltimes
+  mapStore.updateViewpoint(`home`, true)
+  layerStore.setVisibilities(mapStore.is3D(), {
+    trambusLines: true,
+    trambusStops: true,
+    parking: false,
+    poi: false,
+  })
   state.travelTimes = await apiClientService.fetchTravelTime()
 })
 

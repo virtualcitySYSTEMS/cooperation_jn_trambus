@@ -9,6 +9,7 @@ import UiTrambusTitle from '@/components/ui/UiTrambusTitle.vue'
 import { useLayersStore } from '@/stores/layers'
 import { useLineViewsStore, useViewsStore } from '@/stores/views'
 import { useMapStore } from '@/stores/map'
+import { viewList } from '@/model/views.model'
 
 const layerStore = useLayersStore()
 const viewStore = useViewsStore()
@@ -16,21 +17,15 @@ const mapStore = useMapStore()
 const lineViewsStore = useLineViewsStore()
 
 onMounted(() => {
-  viewStore.currentView = 'home'
+  viewStore.currentView = viewList.home
   mapStore.updateViewpoint(`home`, true)
-
-  if (mapStore.is3D()) {
-    layerStore.visibilities.rennesBase = false
-    layerStore.visibilities.rennesOrtho = true
-  } else {
-    layerStore.visibilities.rennesBase = true
-    layerStore.visibilities.rennesOrtho = false
-  }
   lineViewsStore.selectedLine = 0
-  layerStore.visibilities.trambusLines = true
-  layerStore.visibilities.trambusStops = false
-  layerStore.visibilities.parking = true
-  layerStore.visibilities.poi = false
+  layerStore.setVisibilities(mapStore.is3D(), {
+    trambusLines: true,
+    trambusStops: false,
+    parking: true,
+    poi: false,
+  })
 })
 </script>
 

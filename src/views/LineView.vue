@@ -20,6 +20,7 @@ import { useViewsStore } from '@/stores/views'
 import { useLayersStore } from '@/stores/layers'
 import { useLineViewsStore } from '@/stores/views'
 import UiLineHeader from '@/components/ui/UiLineHeader.vue'
+import { viewList } from '@/model/views.model'
 
 const mapStore = useMapStore()
 const viewStore = useViewsStore()
@@ -48,22 +49,15 @@ onBeforeMount(async () => {
 })
 
 onMounted(async () => {
-  viewStore.currentView = 'line'
+  viewStore.currentView = viewList.line
   mapStore.updateViewpoint(`line${lineStore.selectedLine}`, true)
 
-  // Set visibilities
-  layerStore.visibilities.trambusLines = true
-  layerStore.visibilities.trambusStops = true
-  layerStore.visibilities.parking = true
-  layerStore.visibilities.poi = true
-
-  if (mapStore.is3D()) {
-    layerStore.visibilities.rennesBase = false
-    layerStore.visibilities.rennesOrtho = true
-  } else {
-    layerStore.visibilities.rennesBase = true
-    layerStore.visibilities.rennesOrtho = false
-  }
+  layerStore.setVisibilities(mapStore.is3D(), {
+    trambusLines: true,
+    trambusStops: true,
+    parking: true,
+    poi: true,
+  })
 })
 
 function backButtonClicked() {
