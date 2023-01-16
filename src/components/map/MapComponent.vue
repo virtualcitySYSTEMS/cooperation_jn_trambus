@@ -8,11 +8,12 @@ import {
   FeatureLayer,
   GeoJSONLayer,
   EventType,
+  VectorLayer,
 } from '@vcmap/core'
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
 import { parkingStyle, poiStyle } from '@/styles/common'
-import { useLayersStore, RENNES_LAYERS } from '@/stores/layers'
+import { useLayersStore, RENNES_LAYERS, RENNES_LAYER } from '@/stores/layers'
 import { useMapStore } from '@/stores/map'
 import { useLineViewsStore, useTravelTimesViewStore } from '@/stores/views'
 import { useInteractionMapStore } from '@/stores/interactionMap'
@@ -164,35 +165,39 @@ function clearLayerAndApplyStyle(
 function showTraveltimeArrow() {
   // Arrow style for travel time
   const scratchTraveltimeArcLayerName = '_traveltimeArcLayer'
+  const arcLayer = getScratchLayer(vcsApp, scratchTraveltimeArcLayerName, true)
+
   if (travelTimesViewStore.selectedTravelTime) {
-    // Get location of the trambus stop of the travel time
-    const arcLayer = getScratchLayer(
-      vcsApp,
-      scratchTraveltimeArcLayerName,
-      true
-    )
     arcLayer.removeAllFeatures()
+    // Get location of the trambus stop of the travel time
+    const startTrambusStop = getTrambusStopByName(
+      travelTimesViewStore.selectedTravelTime.start
+    )
+    const endTrambusStop = getTrambusStopByName(
+      travelTimesViewStore.selectedTravelTime.end
+    )
     const lineString = new LineString([
-      [-191094.63351528606, 6124032.874140845],
-      [-182385.70162491998, 6128585.278430855],
+      startTrambusStop?.getGeometry()?.getCoordinates(),
+      endTrambusStop?.getGeometry()?.getCoordinates(),
     ])
-    const feature = new Feature(lineString)
-    const arcFeatures = [feature]
-    arcLayer.addFeatures(arcFeatures)
+    const arcFeature = new Feature(lineString)
+    arcLayer.addFeatures([arcFeature])
     arcLayer.activate()
   } else {
-    const arcLayer = getScratchLayer(
-      vcsApp,
-      scratchTraveltimeArcLayerName,
-      true
-    )
+    arcLayer.removeAllFeatures()
     arcLayer.deactivate()
   }
 }
 
-// function getTrambusStopByName(name: string) {
-//   const trambusStopLayer = vcsApp.layers.getByKey(name) as VectorLayer
-// }
+function getTrambusStopByName(name: string) {
+  const trambusStopLayer = vcsApp.layers.getByKey(
+    RENNES_LAYER.trambusStops
+  ) as VectorLayer
+  const feature = trambusStopLayer.getFeatures().find((feature) => {
+    return feature.getProperty('nom') === name
+  })
+  return feature
+}
 
 async function updateLineViewStyle() {
   clearLayerAndApplyStyle(RENNES_LAYERS[5], (feature) =>

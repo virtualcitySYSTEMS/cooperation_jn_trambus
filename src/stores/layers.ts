@@ -2,7 +2,7 @@ import type { Ref } from 'vue'
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
-const RENNES_LAYER = {
+export const RENNES_LAYER = {
   rennesOrtho: 'rennesOrtho',
   rennesBase: 'rennesBase',
   metro: 'metro',
