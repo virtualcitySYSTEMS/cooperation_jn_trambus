@@ -29,7 +29,7 @@ const isLayerButtonsVisible = computed(() => {
 })
 
 const isTrambusButtonVisible = computed(() => {
-  return viewStore.currentView == viewList.line
+  return [viewList.line, viewList.station].includes(viewStore.currentView)
 })
 
 const isPlanningButtonVisible = computed(() => {
