@@ -12,7 +12,7 @@ import LoginButtons from '@/components/map/buttons/LoginButtons.vue'
 import { usePanelsStore } from '@/stores/panels'
 import { useLayersStore } from '@/stores/layers'
 import { useViewsStore } from '@/stores/views'
-import type { Layers } from '@/stores/layers'
+import type { RennesLayer } from '@/stores/layers'
 
 const panelStore = usePanelsStore()
 const layerStore = useLayersStore()
@@ -31,7 +31,7 @@ function onPlanningButtonClicked() {
   panelStore.hasPlanningViewRendered = true
 }
 
-function toggleLayer(name: Layers) {
+function toggleLayer(name: RennesLayer) {
   layerStore.toggleLayer(name)
 }
 </script>

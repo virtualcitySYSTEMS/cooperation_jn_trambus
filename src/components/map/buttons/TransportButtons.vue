@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import UiIconButton from '@/components/ui/UiIconButton.vue'
 
-import type { Layers } from '@/stores/layers'
+import type { RennesLayer } from '@/stores/layers'
 import { useLayersStore } from '@/stores/layers'
 
 const layerStore = useLayersStore()
 
-function toggleLayer(name: Layers) {
+function toggleLayer(name: RennesLayer) {
   layerStore.toggleLayer(name)
 }
 </script>

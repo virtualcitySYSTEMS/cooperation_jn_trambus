@@ -161,6 +161,39 @@ function clearLayerAndApplyStyle(
   if (style) layer.setStyle(style)
 }
 
+function showTraveltimeArrow() {
+  // Arrow style for travel time
+  const scratchTraveltimeArcLayerName = '_traveltimeArcLayer'
+  if (travelTimesViewStore.selectedTravelTime) {
+    // Get location of the trambus stop of the travel time
+    const arcLayer = getScratchLayer(
+      vcsApp,
+      scratchTraveltimeArcLayerName,
+      true
+    )
+    arcLayer.removeAllFeatures()
+    const lineString = new LineString([
+      [-191094.63351528606, 6124032.874140845],
+      [-182385.70162491998, 6128585.278430855],
+    ])
+    const feature = new Feature(lineString)
+    const arcFeatures = [feature]
+    arcLayer.addFeatures(arcFeatures)
+    arcLayer.activate()
+  } else {
+    const arcLayer = getScratchLayer(
+      vcsApp,
+      scratchTraveltimeArcLayerName,
+      true
+    )
+    arcLayer.deactivate()
+  }
+}
+
+// function getTrambusStopByName(name: string) {
+//   const trambusStopLayer = vcsApp.layers.getByKey(name) as VectorLayer
+// }
+
 async function updateLineViewStyle() {
   clearLayerAndApplyStyle(RENNES_LAYERS[5], (feature) =>
     trambusLineViewStyleFunction(
@@ -197,31 +230,7 @@ async function updateTravelTimesViewStyle() {
       mapStore.is3D()
     )
   )
-  // Update arc
-  const scratchTraveltimeArcLayerName = '_traveltimeArcLayer'
-  if (travelTimesViewStore.selectedTravelTime) {
-    const arcLayer = getScratchLayer(
-      vcsApp,
-      scratchTraveltimeArcLayerName,
-      true
-    )
-    arcLayer.removeAllFeatures()
-    const lineString = new LineString([
-      [-191094.63351528606, 6124032.874140845],
-      [-182385.70162491998, 6128585.278430855],
-    ])
-    const feature = new Feature(lineString)
-    const arcFeatures = [feature]
-    arcLayer.addFeatures(arcFeatures)
-    arcLayer.activate()
-  } else {
-    const arcLayer = getScratchLayer(
-      vcsApp,
-      scratchTraveltimeArcLayerName,
-      true
-    )
-    arcLayer.deactivate()
-  }
+  showTraveltimeArrow()
 }
 
 function updateHomeViewStyle() {
