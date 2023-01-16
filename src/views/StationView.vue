@@ -13,6 +13,7 @@ import { apiClientService } from '@/services/api.client'
 import FooterArea from '@/components/home/FooterArea.vue'
 import type { LineModel } from '@/model/lines.model'
 import type { StationModel } from '@/model/stations.model'
+import { viewList } from '@/model/views.model'
 
 const mapStore = useMapStore()
 const viewStore = useViewsStore()
@@ -46,7 +47,7 @@ onBeforeMount(async () => {
 })
 
 onMounted(async () => {
-  viewStore.currentView = viewStore.viewsList.station
+  viewStore.currentView = viewList.station
   const viewPoint = `line ${lineStore.selectedLine} | station ${stationStore.nameSelectedStation}`
   mapStore.updateViewpoint(viewPoint, true)
 

@@ -43,6 +43,7 @@ import {
   getViewpointFromFeature,
   cloneViewPointAndResetCameraPosition,
 } from '@/helpers/viewpointHelper'
+import { viewList } from '@/model/views.model'
 
 const vcsApp = new VcsApp()
 provide('vcsApp', vcsApp)
@@ -150,7 +151,7 @@ async function updateLayersVisibility() {
 
 async function updateViewPoint() {
   const activeMap = vcsApp.maps.activeMap
-  if (viewStore.currentView == viewStore.viewsList.station) {
+  if (viewStore.currentView == viewList.station) {
     const stationName = stationViewStore.nameSelectedStation
     let layer: GeoJSONLayer = vcsApp.layers.getByKey(
       RENNES_LAYERS[6]
@@ -256,16 +257,16 @@ async function updateActiveMap() {
 
 function updateMapStyle() {
   switch (viewStore.currentView) {
-    case viewStore.viewsList.home:
+    case viewList.home:
       updateHomeViewStyle()
       break
-    case viewStore.viewsList.line:
+    case viewList.line:
       updateLineViewStyle()
       break
-    case viewStore.viewsList.traveltimes:
+    case viewList.traveltimes:
       updateTravelTimesViewStyle()
       break
-    case viewStore.viewsList.station:
+    case viewList.station:
       updateStationViewStyle()
       break
   }

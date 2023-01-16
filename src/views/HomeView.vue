@@ -9,6 +9,7 @@ import UiTrambusTitle from '@/components/ui/UiTrambusTitle.vue'
 import { useLayersStore } from '@/stores/layers'
 import { useLineViewsStore, useViewsStore } from '@/stores/views'
 import { useMapStore } from '@/stores/map'
+import { viewList } from '@/model/views.model'
 
 const layerStore = useLayersStore()
 const viewStore = useViewsStore()
@@ -16,7 +17,7 @@ const mapStore = useMapStore()
 const lineViewsStore = useLineViewsStore()
 
 onMounted(() => {
-  viewStore.currentView = viewStore.viewsList.home
+  viewStore.currentView = viewList.home
   mapStore.updateViewpoint(`home`, true)
   lineViewsStore.selectedLine = 0
   layerStore.setVisibilities(mapStore.is3D(), {

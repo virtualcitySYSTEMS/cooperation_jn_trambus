@@ -20,6 +20,7 @@ import { useViewsStore } from '@/stores/views'
 import { useLayersStore } from '@/stores/layers'
 import { useLineViewsStore } from '@/stores/views'
 import UiLineHeader from '@/components/ui/UiLineHeader.vue'
+import { viewList } from '@/model/views.model'
 
 const mapStore = useMapStore()
 const viewStore = useViewsStore()
@@ -48,7 +49,7 @@ onBeforeMount(async () => {
 })
 
 onMounted(async () => {
-  viewStore.currentView = viewStore.viewsList.line
+  viewStore.currentView = viewList.line
   mapStore.updateViewpoint(`line${lineStore.selectedLine}`, true)
 
   layerStore.setVisibilities(mapStore.is3D(), {

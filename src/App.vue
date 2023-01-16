@@ -6,7 +6,7 @@ import MapComponent from '@/components/map/MapComponent.vue'
 import SidePanel from '@/components/home/SidePanel.vue'
 import HeadToolbarTrambus from '@/components/map/HeadToolbarTrambus.vue'
 import PlanningView from '@/views/PlanningView.vue'
-
+import { viewList } from '@/model/views.model'
 import { usePanelsStore } from '@/stores/panels'
 import { useViewsStore } from '@/stores/views'
 
@@ -17,7 +17,7 @@ const isPhotoGalleryVisible = computed(() => {
   if (panelStore.isPlanningViewShown) {
     return false
   }
-  if (viewStore.currentView == viewStore.viewsList.home) {
+  if (viewStore.currentView == viewList.home) {
     return true
   }
   return false

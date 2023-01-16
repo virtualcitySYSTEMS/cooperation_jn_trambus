@@ -11,6 +11,7 @@ import ChevronArrowLeft from '@/assets/icons/chevron-left.svg'
 import UiButton from '@/components/ui/UiButton.vue'
 import UiTravelTime from '@/components/ui/UiTravelTime.vue'
 import { useMapStore } from '@/stores/map'
+import { viewList } from '@/model/views.model'
 
 const viewStore = useViewsStore()
 const layerStore = useLayersStore()
@@ -22,7 +23,7 @@ const state = reactive({
 })
 
 onMounted(async () => {
-  viewStore.currentView = viewStore.viewsList.traveltimes
+  viewStore.currentView = viewList.traveltimes
   mapStore.updateViewpoint(`home`, true)
   layerStore.setVisibilities(mapStore.is3D(), {
     trambusLines: true,

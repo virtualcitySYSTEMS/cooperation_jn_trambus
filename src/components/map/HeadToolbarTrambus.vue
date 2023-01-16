@@ -13,21 +13,20 @@ import { usePanelsStore } from '@/stores/panels'
 import { useLayersStore } from '@/stores/layers'
 import { useViewsStore } from '@/stores/views'
 import type { Layers } from '@/stores/layers'
+import { viewList } from '@/model/views.model'
 
 const panelStore = usePanelsStore()
 const layerStore = useLayersStore()
 const viewStore = useViewsStore()
 
 const isLayerButtonsVisible = computed(() => {
-  return [
-    viewStore.viewsList.home,
-    viewStore.viewsList.line,
-    viewStore.viewsList.station,
-  ].includes(viewStore.currentView.toString())
+  return [viewList.home, viewList.line, viewList.station].includes(
+    viewStore.currentView
+  )
 })
 
 const isPlanningButtonVisible = computed(() => {
-  return viewStore.currentView == viewStore.viewsList.home
+  return viewStore.currentView == viewList.home
 })
 
 function onPlanningButtonClicked() {

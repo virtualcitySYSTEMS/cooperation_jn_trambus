@@ -11,6 +11,7 @@ import NavigationHelp from '@/components/map/NavigationHelp.vue'
 import { useMapStore } from '@/stores/map'
 import { useLayersStore } from '@/stores/layers'
 import { useViewsStore } from '@/stores/views'
+import { viewList } from '@/model/views.model'
 
 const vcsApp = inject('vcsApp') as VcsApp
 
@@ -59,7 +60,7 @@ const shouldDisplayNavHelp = () => {
     <UiIconButton
       class="rounded-lg px-3 py-3"
       @click="returnToHome"
-      v-show="viewStore.currentView != viewStore.viewsList.traveltimes"
+      v-show="viewStore.currentView != viewList.traveltimes"
       ><IconHome
     /></UiIconButton>
     <div class="flex flex-col zoom-buttons text-2xl [&>*]:p-2" role="group">

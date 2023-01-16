@@ -16,6 +16,7 @@ import type { Point } from 'ol/geom'
 import { useStationInteractionStore } from '@/stores/interactionMap'
 import { useLineViewsStore, useViewsStore } from '@/stores/views'
 import router from '@/router'
+import { viewList } from '@/model/views.model'
 
 class SelectStationInteraction extends AbstractInteraction {
   private readonly _stationsLayerName: string
@@ -39,7 +40,7 @@ class SelectStationInteraction extends AbstractInteraction {
       const stationName = feature?.get('nom')
       if (event.type & EventType.CLICK) {
         const viewStore = useViewsStore()
-        if (viewStore.currentView == viewStore.viewsList.line) {
+        if (viewStore.currentView == viewList.line) {
           const lineViewStore = useLineViewsStore()
           const lineNumber = lineViewStore.selectedLine
           const stationId = feature?.get('id')

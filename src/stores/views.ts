@@ -2,19 +2,13 @@ import { ref } from 'vue'
 import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { TravelTimeModel } from '@/model/travel-time.model'
+import { type View, viewList } from '@/model/views.model'
 
 export const useViewsStore = defineStore('views', () => {
   // TODO: use union string for list of view
-  const currentView: Ref<String> = ref('')
+  const currentView: Ref<View> = ref(viewList.home)
 
-  const viewsList = {
-    home: 'home',
-    station: 'station',
-    line: 'line',
-    traveltimes: 'traveltimes',
-  }
-
-  return { currentView, viewsList }
+  return { currentView }
 })
 
 export const useTravelTimesViewStore = defineStore('traveltimes-views', () => {
