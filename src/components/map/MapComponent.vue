@@ -40,12 +40,13 @@ import { Feature } from 'ol'
 import type { Style } from 'ol/style'
 import { trambusLineViewStyleFunction } from '@/styles/line'
 import SelectStationInteraction from '@/interactions/selectStation'
-import { getScratchLayer } from '@/styles/traveltimes'
+import { getTrambusStopArrowScratchLayer } from '@/styles/traveltimes'
 import {
   getViewpointFromFeature,
   cloneViewPointAndResetCameraPosition,
 } from '@/helpers/viewpointHelper'
 import { viewList } from '@/model/views.model'
+import { getTrambusStopByName } from '@/helpers/layerHelper'
 
 const vcsApp = new VcsApp()
 provide('vcsApp', vcsApp)
@@ -194,16 +195,24 @@ function clearLayerAndApplyStyle(
 function updateTraveltimeArrow() {
   // Arrow style for travel time
   const scratchTraveltimeArcLayerName = '_traveltimeArcLayer'
-  const arcLayer = getScratchLayer(vcsApp, scratchTraveltimeArcLayerName, true)
+  const arcLayer = getTrambusStopArrowScratchLayer(
+    vcsApp,
+    scratchTraveltimeArcLayerName
+  )
+  const trambusStopLayer = vcsApp.layers.getByKey(
+    RENNES_LAYER.trambusStops
+  ) as VectorLayer
 
   if (travelTimesViewStore.selectedTravelTime) {
     arcLayer.removeAllFeatures()
     // Get location of the trambus stop of the travel time
     const startTrambusStop = getTrambusStopByName(
-      travelTimesViewStore.selectedTravelTime.start
+      travelTimesViewStore.selectedTravelTime.start,
+      trambusStopLayer
     )
     const endTrambusStop = getTrambusStopByName(
-      travelTimesViewStore.selectedTravelTime.end
+      travelTimesViewStore.selectedTravelTime.end,
+      trambusStopLayer
     )
     const lineString = new LineString([
       startTrambusStop?.getGeometry()?.getCoordinates(),
@@ -216,16 +225,6 @@ function updateTraveltimeArrow() {
     arcLayer.removeAllFeatures()
     arcLayer.deactivate()
   }
-}
-
-function getTrambusStopByName(name: string) {
-  const trambusStopLayer = vcsApp.layers.getByKey(
-    RENNES_LAYER.trambusStops
-  ) as VectorLayer
-  const feature = trambusStopLayer.getFeatures().find((feature) => {
-    return feature.getProperty('nom') === name
-  })
-  return feature
 }
 
 async function updateLineViewStyle() {
