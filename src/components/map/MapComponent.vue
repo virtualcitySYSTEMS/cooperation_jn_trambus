@@ -160,6 +160,7 @@ async function updateViewPoint() {
       RENNES_LAYERS[6]
     ) as GeoJSONLayer
     let viewpoint: Viewpoint | null = null
+    await layer.fetchData()
     layer.getFeatures().forEach((f) => {
       const properties = f.getProperties()
       if (stationName == properties.nom) {

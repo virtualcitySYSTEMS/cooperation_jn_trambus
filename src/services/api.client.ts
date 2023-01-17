@@ -10,6 +10,8 @@ import { travelTimeFixtures } from '@/model/travel-time.fixtures'
 import type { TravelTimeModel } from '@/model/travel-time.model'
 import type { NetworkFigureModel } from '../model/network-figures.model'
 import type { LineFigureModel } from '../model/line-figures.model'
+import { servicesFixtures } from '@/model/services.fixtures'
+import type { ServiceModel } from '@/model/services.model'
 import {
   sortStationsByOrder,
   filterStationsByLineNumber,
@@ -102,6 +104,14 @@ class ApiClientService {
   async fetchStationDescription(stationId: number) {
     return new Promise<StationModel>((resolve) => {
       resolve(stationsFixtures().find((station) => station.id == stationId)!)
+    })
+  }
+
+  async fetchServicesByStation(stationId: number) {
+    console.log(stationId)
+    //TODO: when RENNES send data of services, filter services by stationId
+    return new Promise<ServiceModel[]>((resolve) => {
+      resolve(servicesFixtures())
     })
   }
 }

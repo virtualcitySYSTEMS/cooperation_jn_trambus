@@ -14,6 +14,8 @@ import FooterArea from '@/components/home/FooterArea.vue'
 import type { LineModel } from '@/model/lines.model'
 import type { StationModel } from '@/model/stations.model'
 import { viewList } from '@/model/views.model'
+import ServicesStation from '@/components/station/ServicesStation.vue'
+import PointsOfInterestsStation from '@/components/station/PointsOfInterestsStation.vue'
 
 const mapStore = useMapStore()
 const viewStore = useViewsStore()
@@ -86,6 +88,15 @@ function backButtonClicked() {
     </div>
   </div>
 
+  <div class="border-b border-neutral-300 mt-2 -mx-6"></div>
+
+  <ServicesStation
+    v-if="state.stationDescription?.id"
+    :nameStation="state.stationDescription.nom"
+    :idStation="state.stationDescription.id"
+  />
+
+  <PointsOfInterestsStation v-if="state.stationDescription?.id" />
   <div class="border-b border-neutral-300 my-3"></div>
   <FooterArea />
 </template>
