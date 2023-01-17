@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ParkingIcon from '@/assets/icons/parking.svg'
+import ParkingIcon from '@/assets/icons/parkingRelais.png'
 const props = defineProps({
   name: String,
   station: String,
