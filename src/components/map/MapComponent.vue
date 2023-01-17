@@ -47,7 +47,7 @@ import {
   cloneViewPointAndResetCameraPosition,
 } from '@/helpers/viewpointHelper'
 import { viewList } from '@/model/views.model'
-import { getTrambusStopByName } from '@/helpers/layerHelper'
+import { getFeatureByAttribute } from '@/helpers/layerHelper'
 
 const vcsApp = new VcsApp()
 provide('vcsApp', vcsApp)
@@ -208,11 +208,13 @@ function updateTraveltimeArrow() {
     arrowLayer.removeAllFeatures()
     // Update arrow's line string feature
     // Get location of the trambus stop of the travel time
-    const startTrambusStop = getTrambusStopByName(
+    const startTrambusStop = getFeatureByAttribute(
+      'nom',
       travelTimesViewStore.selectedTravelTime.start,
       trambusStopLayer
     )
-    const endTrambusStop = getTrambusStopByName(
+    const endTrambusStop = getFeatureByAttribute(
+      'nom',
       travelTimesViewStore.selectedTravelTime.end,
       trambusStopLayer
     )

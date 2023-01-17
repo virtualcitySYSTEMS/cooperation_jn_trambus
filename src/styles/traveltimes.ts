@@ -1,4 +1,3 @@
-import { RENNES_LAYER } from '@/stores/layers'
 import {
   markVolatile,
   mercatorProjection,

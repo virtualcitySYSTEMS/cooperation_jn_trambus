@@ -1,8 +1,12 @@
 import type { VectorLayer } from '@vcmap/core'
 
-export function getTrambusStopByName(name: string, layer: VectorLayer) {
+export function getFeatureByAttribute(
+  attribute: string,
+  value: string,
+  layer: VectorLayer
+) {
   const feature = layer.getFeatures().find((feature) => {
-    return feature.getProperty('nom') === name
+    return feature.getProperty(attribute) === value
   })
   return feature
 }
