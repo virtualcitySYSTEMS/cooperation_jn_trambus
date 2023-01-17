@@ -1,32 +1,10 @@
 <script setup lang="ts">
 import type { ServiceType } from '@/model/services.model'
+import { TEXT_OF_SERVICE } from '@/model/services.model'
 import type { PropType } from 'vue'
-import { computed } from 'vue'
 
 const props = defineProps({
   type: String as PropType<ServiceType>,
-})
-
-const getTextOfService = computed(() => {
-  switch (props.type) {
-    case 'ticket-machine':
-      return 'Distributeur de titre'
-    case 'box-bike':
-      return 'Box vélo et casier sécurisés'
-    case 'newspaper-distributor':
-      return 'Distributeur de journeaux'
-    case 'vegetable-garden':
-      return 'Potager'
-    case 'bike-rack':
-      return 'Arceau vélo'
-    case 'usb-charging':
-      return 'Prise recharge USB'
-    case 'parcel-locker':
-      return 'Casier livraison colis'
-    case 'public-sanitary':
-      return 'Sanitaire public'
-  }
-  return ''
 })
 </script>
 
@@ -38,7 +16,7 @@ const getTextOfService = computed(() => {
       :alt="props.type"
     />
     <p class="font-dm-sans text-sm -tracking-[1%]">
-      {{ getTextOfService }}
+      {{ props.type !== undefined ? TEXT_OF_SERVICE[props.type] : '' }}
     </p>
   </div>
 </template>
