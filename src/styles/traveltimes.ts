@@ -1,6 +1,5 @@
 import { RENNES_LAYER } from '@/stores/layers'
 import {
-  ArcStyle,
   markVolatile,
   mercatorProjection,
   VcsApp,
@@ -19,7 +18,6 @@ export function getTrambusStopArrowScratchLayer(
     name: layerName,
     projection: mercatorProjection.toJSON(),
   })
-  layer.setStyle(new ArcStyle({ width: 1.5 }))
 
   markVolatile(layer)
   app.layers.add(layer)

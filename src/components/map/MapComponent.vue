@@ -10,6 +10,7 @@ import {
   EventType,
   VectorLayer,
   Viewpoint,
+  ArcStyle,
 } from '@vcmap/core'
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
@@ -195,7 +196,7 @@ function clearLayerAndApplyStyle(
 function updateTraveltimeArrow() {
   // Arrow style for travel time
   const scratchTraveltimeArcLayerName = '_traveltimeArcLayer'
-  const arcLayer = getTrambusStopArrowScratchLayer(
+  const arrowLayer = getTrambusStopArrowScratchLayer(
     vcsApp,
     scratchTraveltimeArcLayerName
   )
@@ -204,7 +205,8 @@ function updateTraveltimeArrow() {
   ) as VectorLayer
 
   if (travelTimesViewStore.selectedTravelTime) {
-    arcLayer.removeAllFeatures()
+    arrowLayer.removeAllFeatures()
+    // Update arrow's line string feature
     // Get location of the trambus stop of the travel time
     const startTrambusStop = getTrambusStopByName(
       travelTimesViewStore.selectedTravelTime.start,
@@ -219,11 +221,21 @@ function updateTraveltimeArrow() {
       endTrambusStop?.getGeometry()?.getCoordinates(),
     ])
     const arcFeature = new Feature(lineString)
-    arcLayer.addFeatures([arcFeature])
-    arcLayer.activate()
+    arrowLayer.addFeatures([arcFeature])
+
+    // Update arrow's style
+    let arcColor = '#000000'
+    if (mapStore.is3D()) {
+      arcColor = '#FFFFFF'
+    }
+    arrowLayer.setStyle(
+      new ArcStyle({ width: 1.5, arcFactor: 0.25, color: arcColor })
+    )
+
+    arrowLayer.activate()
   } else {
-    arcLayer.removeAllFeatures()
-    arcLayer.deactivate()
+    arrowLayer.removeAllFeatures()
+    arrowLayer.deactivate()
   }
 }
 
@@ -320,6 +332,9 @@ mapStore.$subscribe(async () => {
   await updateActiveMap()
   await updateLayersVisibility()
   await updateViewPoint()
+  if (viewStore.currentView === viewList.traveltimes) {
+    updateTraveltimeArrow()
+  }
 })
 
 viewStore.$subscribe(async () => {
