@@ -16,7 +16,7 @@ defineProps({
 </script>
 
 <template>
-  <button :disabled="disabled">
+  <button :disabled="disabled" class="bg-white hover:bg-gray-100">
     <component
       v-if="icon"
       :is="icon"

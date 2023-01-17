@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { onBeforeMount, reactive, onMounted, ref } from 'vue'
-import router from '@/router'
 
-import ChevronArrowLeft from '@/assets/icons/chevron-left.svg'
 import type { LineModel } from '@/model/lines.model'
 import type { TravelTimeModel } from '@/model/travel-time.model'
 import type { PhotoModel } from '@/model/photos.model'
 import { apiClientService } from '@/services/api.client'
-import UiButton from '@/components/ui/UiButton.vue'
 import LineFigures from '@/components/line/LineFigures.vue'
 import UiTravelTime from '@/components/ui/UiTravelTime.vue'
 import ThermometerStations from '@/components/line/ThermometerStations.vue'
@@ -21,6 +18,7 @@ import { useLayersStore } from '@/stores/layers'
 import { useLineViewsStore } from '@/stores/views'
 import UiLineHeader from '@/components/ui/UiLineHeader.vue'
 import { viewList } from '@/model/views.model'
+import BackButton from '@/components/home/BackButton.vue'
 
 const mapStore = useMapStore()
 const viewStore = useViewsStore()
@@ -59,22 +57,12 @@ onMounted(async () => {
     poi: true,
   })
 })
-
-function backButtonClicked() {
-  router.push('/home')
-  mapStore.viewPoint = `home`
-}
 </script>
 
 <template>
   <div class="flex flex-col items-start py-0 gap-2">
     <div class="flex items-center p-0 gap-4">
-      <UiButton
-        class="shadow-md rounded-lg p-2 flex gap-2.5 shrink-0 grow-0"
-        @click="backButtonClicked"
-      >
-        <img :src="ChevronArrowLeft" />
-      </UiButton>
+      <BackButton></BackButton>
       <UiLineHeader
         v-if="state.lineDescription"
         :line="state.lineDescription?.id!"
