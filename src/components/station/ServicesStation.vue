@@ -4,10 +4,10 @@ import { apiClientService } from '@/services/api.client'
 import type { ServiceModel } from '@/model/services.model'
 import ItemService from '@/components/station/ItemService.vue'
 
-const props = defineProps({
-  nameStation: String,
-  idStation: Number,
-})
+const props = defineProps<{
+  nameStation: string
+  idStation: number
+}>()
 
 const state = reactive({
   services: null as null | ServiceModel[],

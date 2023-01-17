@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import localizationIcon from '@/assets/icons/localization-icon.svg'
 
-const props = defineProps({
-  urlImg: String,
-  name: String,
-  distance: Number,
-})
+const props = defineProps<{
+  urlImg: string
+  name: string
+  distance: number
+}>()
 </script>
 
 <template>

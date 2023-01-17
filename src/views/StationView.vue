@@ -96,10 +96,7 @@ function backButtonClicked() {
     :idStation="state.stationDescription.id"
   />
 
-  <PointsOfInterestsStation
-    v-if="state.stationDescription?.id"
-    :idStation="state.stationDescription.id"
-  />
+  <PointsOfInterestsStation v-if="state.stationDescription?.id" />
   <div class="border-b border-neutral-300 my-3"></div>
   <FooterArea />
 </template>
