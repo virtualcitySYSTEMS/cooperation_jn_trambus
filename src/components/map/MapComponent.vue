@@ -8,9 +8,7 @@ import {
   FeatureLayer,
   GeoJSONLayer,
   EventType,
-  VectorLayer,
   Viewpoint,
-  ArcStyle,
 } from '@vcmap/core'
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
@@ -25,7 +23,6 @@ import {
 import { useStationInteractionStore } from '@/stores/interactionMap'
 
 import mapConfig from '../../map.config.json'
-import type { TravelTimeModel } from '@/model/travel-time.model'
 import type { StyleFunction } from 'ol/style/Style'
 import type { LineNumber } from '@/model/lines.model'
 import { useViewsStore } from '@/stores/views'
@@ -36,19 +33,23 @@ import {
 } from '@/styles/trambusStop'
 import { isStationOnLine, isTrambusStopBelongsToLine } from '@/services/station'
 import { stationsFixtures } from '@/model/stations.fixtures'
-import { Point, LineString } from 'ol/geom'
+import { Point } from 'ol/geom'
 import { transform } from 'ol/proj'
-import { Feature } from 'ol'
+import type { Feature } from 'ol'
 import type { Style } from 'ol/style'
 import { trambusLineViewStyleFunction } from '@/styles/line'
 import SelectStationInteraction from '@/interactions/selectStation'
-import { getTrambusStopArrowScratchLayer } from '@/styles/traveltimes'
+import {
+  getArrowScratchLayer,
+  updateArrowFeatures,
+  updateArrowLayerStyle,
+} from '@/styles/arrow'
 import {
   getViewpointFromFeature,
   cloneViewPointAndResetCameraPosition,
 } from '@/helpers/viewpointHelper'
 import { viewList } from '@/model/views.model'
-import { getFeatureByAttribute } from '@/helpers/layerHelper'
+import { lineStringsFromTraveltimes } from '@/helpers/traveltimesHelper'
 import { apiClientService } from '@/services/api.client'
 
 const vcsApp = new VcsApp()
@@ -70,7 +71,7 @@ onMounted(async () => {
   if (cesiumMap && cesiumMap instanceof CesiumMap) {
     cesiumMap.getScene().globe.maximumScreenSpaceError = 1
   }
-  window.vcmap = vcsApp
+  // window.vcmap = vcsApp
   await updateLayersVisibility()
   updateMapStyle()
 
@@ -195,60 +196,10 @@ function clearLayerAndApplyStyle(
   if (style) layer.setStyle(style)
 }
 
-function updateArrowFeatures(
-  linestrings: LineString[],
-  arrowLayer: VectorLayer
-) {
-  const features: Feature[] = []
-  linestrings.forEach((linestring) => {
-    features.push(new Feature(linestring))
-  })
-  arrowLayer.removeAllFeatures()
-  arrowLayer.addFeatures(features)
-}
-
-function updateArrowLayerStyle(arrowLayer: VectorLayer, is3D: boolean) {
-  // Update arrow's style
-  let arrowColor = '#000000'
-  if (is3D) {
-    arrowColor = '#FFFFFF'
-  }
-  arrowLayer.setStyle(
-    new ArcStyle({ width: 1.5, arcFactor: 0.25, color: arrowColor })
-  )
-}
-
-function lineStringsFromTraveltimes(
-  traveltimes: TravelTimeModel[]
-): LineString[] {
-  const lineStrings: LineString[] = []
-  const trambusStopLayer = vcsApp.layers.getByKey(
-    RENNES_LAYER.trambusStops
-  ) as VectorLayer
-  traveltimes.forEach((traveltime) => {
-    const startTrambusStop = getFeatureByAttribute(
-      'nom',
-      traveltime.start,
-      trambusStopLayer
-    )
-    const endTrambusStop = getFeatureByAttribute(
-      'nom',
-      traveltime.end,
-      trambusStopLayer
-    )
-    const lineString = new LineString([
-      startTrambusStop?.getGeometry()?.getCoordinates(),
-      endTrambusStop?.getGeometry()?.getCoordinates(),
-    ])
-    lineStrings.push(lineString)
-  })
-  return lineStrings
-}
-
 async function updateTraveltimeArrow() {
   // Arrow style for travel time
-  const scratchTraveltimeArrowLayerName = '_traveltimeArcLayer'
-  const arrowLayer = getTrambusStopArrowScratchLayer(
+  const scratchTraveltimeArrowLayerName = '_traveltimeArrowLayer'
+  const arrowLayer = getArrowScratchLayer(
     vcsApp,
     scratchTraveltimeArrowLayerName
   )
@@ -257,9 +208,10 @@ async function updateTraveltimeArrow() {
     viewStore.currentView === viewList.traveltimes &&
     travelTimesViewStore.selectedTravelTime
   ) {
-    const lineStrings = lineStringsFromTraveltimes([
-      travelTimesViewStore.selectedTravelTime,
-    ])
+    const lineStrings = lineStringsFromTraveltimes(
+      [travelTimesViewStore.selectedTravelTime],
+      vcsApp
+    )
     updateArrowFeatures(lineStrings, arrowLayer)
     updateArrowLayerStyle(arrowLayer, mapStore.is3D())
 
@@ -268,7 +220,7 @@ async function updateTraveltimeArrow() {
     const travelTimes = await apiClientService.fetchTravelTimeByLine(
       lineViewStore.selectedLine
     )
-    const lineStrings = lineStringsFromTraveltimes(travelTimes)
+    const lineStrings = lineStringsFromTraveltimes(travelTimes, vcsApp)
     updateArrowFeatures(lineStrings, arrowLayer)
     updateArrowLayerStyle(arrowLayer, mapStore.is3D())
 
