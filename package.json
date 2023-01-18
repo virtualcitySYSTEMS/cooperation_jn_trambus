@@ -29,6 +29,7 @@
   "dependencies": {
     "@pinia/testing": "^0.0.14",
     "@vcmap/core": "^5.0.0-rc.23",
+    "@vcmap/cesium": "~1.93.1",
     "ol": "^7.1.0",
     "pinia": "^2.0.21",
     "rollup-plugin-strip-pragma": "^1.0.0",

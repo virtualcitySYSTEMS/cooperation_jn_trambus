@@ -12,6 +12,7 @@ import {
 } from '@vcmap/core'
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
+import CustomComponent from '@/components/map/test/CustomComponent.vue'
 
 import { parkingStyle, poiStyle } from '@/styles/common'
 
@@ -42,6 +43,7 @@ import type { Style } from 'ol/style'
 import { trambusLineViewStyleFunction } from '@/styles/line'
 import { SelectedTrambusLine } from '@/model/selected-line.model'
 import SelectStationInteraction from '@/interactions/selectStation'
+import MapInteraction from '@/interactions/mapInteraction'
 import {
   getViewpointFromFeature,
   cloneViewPointAndResetCameraPosition,
@@ -71,10 +73,11 @@ onMounted(async () => {
   await updateLayersVisibility()
   updateMapStyle()
 
-  vcsApp.maps.eventHandler.featureInteraction.setActive(EventType.CLICKMOVE)
+  vcsApp.maps.eventHandler.featureInteraction.setActive(EventType.ALL)
   vcsApp.maps.eventHandler.addPersistentInteraction(
     new SelectStationInteraction(vcsApp, 'trambusStops')
   )
+  vcsApp.maps.eventHandler.addPersistentInteraction(new MapInteraction(vcsApp))
 })
 
 // The following code is needed to cleanup resources we created
@@ -318,4 +321,5 @@ stationInteractionStore.$subscribe(async () => {
 <template>
   <UiMap></UiMap>
   <NavigationButtons />
+  <CustomComponent />
 </template>
