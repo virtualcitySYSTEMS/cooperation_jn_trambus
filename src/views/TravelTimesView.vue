@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import { reactive, onMounted } from 'vue'
 
-import router from '@/router/index'
 import { useViewsStore, useTravelTimesViewStore } from '@/stores/views'
 import { useLayersStore } from '@/stores/layers'
 import { apiClientService } from '@/services/api.client'
 import type { TravelTimeModel } from '@/model/travel-time.model'
-
-import ChevronArrowLeft from '@/assets/icons/chevron-left.svg'
-import UiButton from '@/components/ui/UiButton.vue'
+import BackButton from '@/components/home/BackButton.vue'
 import UiTravelTime from '@/components/ui/UiTravelTime.vue'
 import { useMapStore } from '@/stores/map'
 import { viewList } from '@/model/views.model'
@@ -46,13 +43,7 @@ function onTravelTimesClicked(travelTime: TravelTimeModel) {
 <template>
   <div class="flex flex-col items-start py-0 gap-2">
     <div class="flex items-center p-0 gap-4">
-      <UiButton
-        class="shadow-md rounded-lg p-2 flex gap-2.5 shrink-0 grow-0"
-        @click="router.go(-1)"
-      >
-        <img :src="ChevronArrowLeft" />
-      </UiButton>
-
+      <BackButton></BackButton>
       <div class="flex flex-col items-start p-0 gap-2">
         <h1 class="font-dm-sans font-bold text-2xl">
           Les temps de parcours théoriques
