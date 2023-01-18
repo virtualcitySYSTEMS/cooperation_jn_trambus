@@ -49,6 +49,7 @@ import {
 } from '@/helpers/viewpointHelper'
 import { viewList } from '@/model/views.model'
 import { getFeatureByAttribute } from '@/helpers/layerHelper'
+import { apiClientService } from '@/services/api.client'
 
 const vcsApp = new VcsApp()
 provide('vcsApp', vcsApp)
@@ -244,18 +245,30 @@ function lineStringsFromTraveltimes(
   return lineStrings
 }
 
-function updateTraveltimeArrow() {
+async function updateTraveltimeArrow() {
   // Arrow style for travel time
   const scratchTraveltimeArrowLayerName = '_traveltimeArcLayer'
   const arrowLayer = getTrambusStopArrowScratchLayer(
     vcsApp,
     scratchTraveltimeArrowLayerName
   )
-  if (travelTimesViewStore.selectedTravelTime) {
-    // Update arrow's line string feature
+
+  if (
+    viewStore.currentView === viewList.traveltimes &&
+    travelTimesViewStore.selectedTravelTime
+  ) {
     const lineStrings = lineStringsFromTraveltimes([
       travelTimesViewStore.selectedTravelTime,
     ])
+    updateArrowFeatures(lineStrings, arrowLayer)
+    updateArrowLayerStyle(arrowLayer, mapStore.is3D())
+
+    arrowLayer.activate()
+  } else if (viewStore.currentView === viewList.line) {
+    const travelTimes = await apiClientService.fetchTravelTimeByLine(
+      lineViewStore.selectedLine
+    )
+    const lineStrings = lineStringsFromTraveltimes(travelTimes)
     updateArrowFeatures(lineStrings, arrowLayer)
     updateArrowLayerStyle(arrowLayer, mapStore.is3D())
 
@@ -284,6 +297,8 @@ async function updateLineViewStyle() {
   )
   clearLayerAndApplyStyle(RENNES_LAYER.poi, poiStyle)
   clearLayerAndApplyStyle(RENNES_LAYER.parking, parkingStyle)
+
+  await updateTraveltimeArrow()
 }
 
 async function updateTravelTimesViewStyle() {
@@ -301,7 +316,7 @@ async function updateTravelTimesViewStyle() {
       mapStore.is3D()
     )
   )
-  updateTraveltimeArrow()
+  await updateTraveltimeArrow()
 }
 
 async function updateStationViewStyle() {
