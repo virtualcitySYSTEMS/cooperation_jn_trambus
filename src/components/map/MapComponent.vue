@@ -193,19 +193,41 @@ function clearLayerAndApplyStyle(
   if (style) layer.setStyle(style)
 }
 
+function updateArrowFeatures(
+  linestrings: LineString[],
+  arrowLayer: VectorLayer
+) {
+  const features: Feature[] = []
+  linestrings.forEach((linestring) => {
+    features.push(new Feature(linestring))
+  })
+  arrowLayer.removeAllFeatures()
+  arrowLayer.addFeatures(features)
+}
+
+function updateArrowLayerStyle(arrowLayer: VectorLayer, is3D: boolean) {
+  // Update arrow's style
+  let arrowColor = '#000000'
+  if (is3D) {
+    arrowColor = '#FFFFFF'
+  }
+  arrowLayer.setStyle(
+    new ArcStyle({ width: 1.5, arcFactor: 0.25, color: arrowColor })
+  )
+}
+
 function updateTraveltimeArrow() {
   // Arrow style for travel time
-  const scratchTraveltimeArcLayerName = '_traveltimeArcLayer'
+  const scratchTraveltimeArrowLayerName = '_traveltimeArcLayer'
   const arrowLayer = getTrambusStopArrowScratchLayer(
     vcsApp,
-    scratchTraveltimeArcLayerName
+    scratchTraveltimeArrowLayerName
   )
   const trambusStopLayer = vcsApp.layers.getByKey(
     RENNES_LAYER.trambusStops
   ) as VectorLayer
 
   if (travelTimesViewStore.selectedTravelTime) {
-    arrowLayer.removeAllFeatures()
     // Update arrow's line string feature
     // Get location of the trambus stop of the travel time
     const startTrambusStop = getFeatureByAttribute(
@@ -222,17 +244,9 @@ function updateTraveltimeArrow() {
       startTrambusStop?.getGeometry()?.getCoordinates(),
       endTrambusStop?.getGeometry()?.getCoordinates(),
     ])
-    const arcFeature = new Feature(lineString)
-    arrowLayer.addFeatures([arcFeature])
 
-    // Update arrow's style
-    let arcColor = '#000000'
-    if (mapStore.is3D()) {
-      arcColor = '#FFFFFF'
-    }
-    arrowLayer.setStyle(
-      new ArcStyle({ width: 1.5, arcFactor: 0.25, color: arcColor })
-    )
+    updateArrowFeatures([lineString], arrowLayer)
+    updateArrowLayerStyle(arrowLayer, mapStore.is3D())
 
     arrowLayer.activate()
   } else {
