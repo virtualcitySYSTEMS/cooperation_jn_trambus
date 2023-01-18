@@ -25,6 +25,7 @@ import {
 import { useStationInteractionStore } from '@/stores/interactionMap'
 
 import mapConfig from '../../map.config.json'
+import type { TravelTimeModel } from '@/model/travel-time.model'
 import type { StyleFunction } from 'ol/style/Style'
 import type { LineNumber } from '@/model/lines.model'
 import { useViewsStore } from '@/stores/views'
@@ -216,6 +217,33 @@ function updateArrowLayerStyle(arrowLayer: VectorLayer, is3D: boolean) {
   )
 }
 
+function lineStringsFromTraveltimes(
+  traveltimes: TravelTimeModel[]
+): LineString[] {
+  const lineStrings: LineString[] = []
+  const trambusStopLayer = vcsApp.layers.getByKey(
+    RENNES_LAYER.trambusStops
+  ) as VectorLayer
+  traveltimes.forEach((traveltime) => {
+    const startTrambusStop = getFeatureByAttribute(
+      'nom',
+      traveltime.start,
+      trambusStopLayer
+    )
+    const endTrambusStop = getFeatureByAttribute(
+      'nom',
+      traveltime.end,
+      trambusStopLayer
+    )
+    const lineString = new LineString([
+      startTrambusStop?.getGeometry()?.getCoordinates(),
+      endTrambusStop?.getGeometry()?.getCoordinates(),
+    ])
+    lineStrings.push(lineString)
+  })
+  return lineStrings
+}
+
 function updateTraveltimeArrow() {
   // Arrow style for travel time
   const scratchTraveltimeArrowLayerName = '_traveltimeArcLayer'
@@ -223,29 +251,12 @@ function updateTraveltimeArrow() {
     vcsApp,
     scratchTraveltimeArrowLayerName
   )
-  const trambusStopLayer = vcsApp.layers.getByKey(
-    RENNES_LAYER.trambusStops
-  ) as VectorLayer
-
   if (travelTimesViewStore.selectedTravelTime) {
     // Update arrow's line string feature
-    // Get location of the trambus stop of the travel time
-    const startTrambusStop = getFeatureByAttribute(
-      'nom',
-      travelTimesViewStore.selectedTravelTime.start,
-      trambusStopLayer
-    )
-    const endTrambusStop = getFeatureByAttribute(
-      'nom',
-      travelTimesViewStore.selectedTravelTime.end,
-      trambusStopLayer
-    )
-    const lineString = new LineString([
-      startTrambusStop?.getGeometry()?.getCoordinates(),
-      endTrambusStop?.getGeometry()?.getCoordinates(),
+    const lineStrings = lineStringsFromTraveltimes([
+      travelTimesViewStore.selectedTravelTime,
     ])
-
-    updateArrowFeatures([lineString], arrowLayer)
+    updateArrowFeatures(lineStrings, arrowLayer)
     updateArrowLayerStyle(arrowLayer, mapStore.is3D())
 
     arrowLayer.activate()
