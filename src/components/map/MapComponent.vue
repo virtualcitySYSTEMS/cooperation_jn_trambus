@@ -217,14 +217,25 @@ async function updateTraveltimeArrow() {
 
     arrowLayer.activate()
   } else if (viewStore.currentView === viewList.line) {
-    const travelTimes = await apiClientService.fetchTravelTimeByLine(
-      lineViewStore.selectedLine
-    )
-    const lineStrings = lineStringsFromTraveltimes(travelTimes, vcsApp)
-    updateArrowFeatures(lineStrings, arrowLayer)
-    updateArrowLayerStyle(arrowLayer, mapStore.is3D())
+    if (lineViewStore.selectedTravelTime) {
+      const lineStrings = lineStringsFromTraveltimes(
+        [lineViewStore.selectedTravelTime],
+        vcsApp
+      )
+      updateArrowFeatures(lineStrings, arrowLayer)
+      updateArrowLayerStyle(arrowLayer, mapStore.is3D())
 
-    arrowLayer.activate()
+      arrowLayer.activate()
+    } else {
+      const travelTimes = await apiClientService.fetchTravelTimeByLine(
+        lineViewStore.selectedLine
+      )
+      const lineStrings = lineStringsFromTraveltimes(travelTimes, vcsApp)
+      updateArrowFeatures(lineStrings, arrowLayer)
+      updateArrowLayerStyle(arrowLayer, mapStore.is3D())
+
+      arrowLayer.activate()
+    }
   } else {
     arrowLayer.removeAllFeatures()
     arrowLayer.deactivate()

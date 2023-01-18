@@ -63,6 +63,15 @@ onMounted(async () => {
 function backButtonClicked() {
   router.push('/home')
   mapStore.viewPoint = `home`
+  lineStore.selectedTravelTime = null
+}
+
+function onTravelTimesClicked(travelTime: TravelTimeModel) {
+  if (travelTime == lineStore.selectedTravelTime) {
+    lineStore.selectedTravelTime = null
+  } else {
+    lineStore.selectedTravelTime = travelTime
+  }
 }
 </script>
 
@@ -101,12 +110,15 @@ function backButtonClicked() {
   </h2>
   <UiTravelTime
     v-for="travelTime in state.travelTimes"
+    role="button"
+    @click="onTravelTimesClicked(travelTime)"
     :key="travelTime.line"
     :newDuration="travelTime.new"
     :oldDuration="travelTime.old"
     :lineNumber="travelTime.line"
     :startStation="travelTime.start"
     :endStation="travelTime.end"
+    :colored="travelTime == lineStore.selectedTravelTime"
   >
   </UiTravelTime>
 

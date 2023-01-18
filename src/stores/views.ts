@@ -19,12 +19,13 @@ export const useTravelTimesViewStore = defineStore('traveltimes-views', () => {
 
 export const useLineViewsStore = defineStore('line-views', () => {
   const selectedLine: Ref<number> = ref(0)
+  const selectedTravelTime: Ref<TravelTimeModel | null> = ref(null)
 
   function selectLine(line: number) {
     selectedLine.value = line
   }
 
-  return { selectLine, selectedLine }
+  return { selectLine, selectedLine, selectedTravelTime }
 })
 
 export const useStationViewsStore = defineStore('station-views', () => {
