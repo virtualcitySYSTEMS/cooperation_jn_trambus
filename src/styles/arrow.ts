@@ -1,5 +1,6 @@
 import {
   ArcStyle,
+  ArrowEnd,
   markVolatile,
   mercatorProjection,
   VcsApp,
@@ -45,7 +46,13 @@ export function updateArrowLayerStyle(arrowLayer: VectorLayer, is3D: boolean) {
   if (is3D) {
     arrowColor = '#FFFFFF'
   }
+  const a = new ArcStyle()
   arrowLayer.setStyle(
-    new ArcStyle({ width: 1.5, arcFactor: 0.25, color: arrowColor })
+    new ArcStyle({
+      width: 1.5,
+      arcFactor: 0.25,
+      color: arrowColor,
+      end: ArrowEnd.BOTH,
+    })
   )
 }
