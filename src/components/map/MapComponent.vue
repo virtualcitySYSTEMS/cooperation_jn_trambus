@@ -3,15 +3,16 @@ import { onMounted, onUnmounted, provide } from 'vue'
 import {
   CesiumMap,
   Context,
-  VcsApp,
-  Layer,
   FeatureLayer,
   GeoJSONLayer,
+  Layer,
+  VcsApp,
   EventType,
   Viewpoint,
 } from '@vcmap/core'
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
+
 import { parkingStyle, poiStyle } from '@/styles/common'
 import { useLayersStore, RENNES_LAYERS, RENNES_LAYER } from '@/stores/layers'
 import { useMapStore } from '@/stores/map'
@@ -19,13 +20,13 @@ import {
   useLineViewsStore,
   useTravelTimesViewStore,
   useStationViewsStore,
+  useViewsStore,
 } from '@/stores/views'
 import { useStationInteractionStore } from '@/stores/interactionMap'
 
 import mapConfig from '../../map.config.json'
 import type { StyleFunction } from 'ol/style/Style'
 import type { LineNumber } from '@/model/lines.model'
-import { useViewsStore } from '@/stores/views'
 import {
   trambusLineTravelTimesViewStyleFunction,
   trambusStopLineViewStyleFunction,
@@ -38,6 +39,7 @@ import { transform } from 'ol/proj'
 import type { Feature } from 'ol'
 import type { Style } from 'ol/style'
 import { trambusLineViewStyleFunction } from '@/styles/line'
+import { SelectedTrambusLine } from '@/model/selected-line.model'
 import SelectStationInteraction from '@/interactions/selectStation'
 import {
   getArrowScratchLayer,
@@ -98,8 +100,8 @@ function removeAllFilters() {
   fixGeometryOfPoi()
 }
 
-function filterFeatureByParkingAndLine(line: number) {
-  filterFeatureByLayerAndKeyAndValue('parking', 'li_code', `T${line}`)
+function filterFeatureByParkingAndLine(line: SelectedTrambusLine) {
+  filterFeatureByLayerAndKeyAndValue('parking', 'li_code', `T${line.valueOf()}`)
 }
 
 function filterFeatureByPoiAndLine(line: number) {
@@ -164,6 +166,7 @@ async function updateViewPoint() {
       RENNES_LAYER.trambusStops
     ) as GeoJSONLayer
     let viewpoint: Viewpoint | null = null
+    await layer.fetchData()
     layer.getFeatures().forEach((f) => {
       const properties = f.getProperties()
       if (stationName == properties.nom) {
@@ -193,7 +196,9 @@ function clearLayerAndApplyStyle(
 ) {
   const layer = vcsApp.layers.getByKey(layerName) as FeatureLayer
   layer.clearStyle()
-  if (style) layer.setStyle(style)
+  if (style) {
+    layer.setStyle(style)
+  }
 }
 
 async function updateTraveltimeArrow() {
@@ -247,6 +252,7 @@ async function updateLineViewStyle() {
     trambusLineViewStyleFunction(
       feature,
       lineViewStore.selectedLine,
+      lineViewStore.displayedOtherLines,
       mapStore.is3D()
     )
   )
@@ -287,6 +293,7 @@ async function updateStationViewStyle() {
     trambusLineViewStyleFunction(
       feature,
       lineViewStore.selectedLine,
+      lineViewStore.displayedOtherLines,
       mapStore.is3D()
     )
   )
@@ -350,12 +357,12 @@ travelTimesViewStore.$subscribe(async () => {
   updateTravelTimesViewStyle()
 })
 
-lineViewStore.$subscribe(async () => {
-  updateLineViewStyle()
-  if (lineViewStore.selectedLine !== 0) {
+lineViewStore.$subscribe(() => {
+  if (lineViewStore.selectedLine !== SelectedTrambusLine.NONE) {
     fixGeometryOfPoi()
     filterFeatureByParkingAndLine(lineViewStore.selectedLine)
     filterFeatureByPoiAndLine(lineViewStore.selectedLine)
+    updateLineViewStyle()
   } else {
     removeAllFilters()
   }

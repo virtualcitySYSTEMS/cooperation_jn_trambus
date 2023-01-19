@@ -2,6 +2,8 @@ import type { LineNumber } from '@/model/lines.model'
 import * as ol_color from 'ol/color'
 import type { FeatureLike } from 'ol/Feature'
 import { Icon, Style } from 'ol/style'
+import parkingIcon from '../assets/icons/parkingRelais.png'
+import pinIcon from '../assets/icons/pin.png'
 
 export function getTrambusLineNumber(feature: FeatureLike): number {
   const lineNumberString = feature.get('li_code') // e.g. T1
@@ -26,15 +28,15 @@ export const lineDimmedColors: Record<LineNumber, ol_color.Color> = {
 export const poiStyle: Style = new Style({
   image: new Icon({
     opacity: 1,
-    src: '/src/assets/icons/mapPin.png',
-    scale: 0.1,
+    src: pinIcon,
+    scale: 1,
   }),
 })
 
 export const parkingStyle: Style = new Style({
   image: new Icon({
     opacity: 1,
-    src: '/src/assets/icons/parkingLocation.svg',
+    src: parkingIcon,
     scale: 1,
   }),
 })
