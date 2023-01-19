@@ -7,14 +7,10 @@ import {
   AbstractInteraction,
   EventType,
   ModificationKeyType,
-  GeoJSONLayer,
   type InteractionEvent,
   type VcsApp,
 } from '@vcmap/core'
-
-import type { Feature, Geometry, Coordinate } from 'ol'
-import { getBalloonPosition } from '@/helpers/balloonHelper'
-import { RENNES_LAYERS } from '@/stores/layers'
+import { useComponentAboveMapStore } from '@/stores/interactionMap'
 
 class MapInteraction extends AbstractInteraction {
   private _vcsApp: VcsApp
@@ -26,18 +22,38 @@ class MapInteraction extends AbstractInteraction {
   }
 
   async pipe(event: InteractionEvent): Promise<InteractionEvent> {
-    console.log(event.type)
-    if (event.type & EventType.DRAGEND) {
-      const layer: GeoJSONLayer = this._vcsApp.layers.getByKey(
-        RENNES_LAYERS[6]
-      ) as GeoJSONLayer
-      const feature: Feature<Geometry> = layer.getFeatureById(
-        'trambus_arrets.1548'
-      )
-      const geometry: Geometry = feature.getGeometry()
-      const coordinates: Coordinate = geometry.getCoordinates()
-      getBalloonPosition(this._vcsApp, coordinates)
+    if (event.type & EventType.DRAG) {
+      const componentAboveMapStore = useComponentAboveMapStore()
+      componentAboveMapStore.updatePositionsComponents(this._vcsApp)
     }
+    // if(event.type){
+    //     switch (event.type) {
+    //         case EventType.CLICK:
+    //             console.log('click');
+    //             break;
+    //         case EventType.DBLCLICK:
+    //             console.log('DBLCLICK');
+    //             break;
+    //         case EventType.DRAG:
+    //             console.log('DRAG');
+    //             break;
+    //         case EventType.DRAGSTART:
+    //             console.log('DRAGSTART');
+    //             break;
+    //         case EventType.DRAGEND:
+    //             console.log('DRAGEND');
+    //             break;
+    //         case EventType.MOVE:
+    //             console.log('MOVE');
+    //             break;
+    //         case EventType.DRAGEVENTS:
+    //             console.log('DRAGEVENTS');
+    //             break;
+    //         case EventType.CLICKMOVE:
+    //             console.log('CLICKMOVE');
+    //             break;
+    //     }
+    // }
     return event
   }
 }

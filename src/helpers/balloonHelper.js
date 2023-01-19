@@ -1,6 +1,5 @@
 import { CesiumMap, OpenlayersMap, Projection } from '@vcmap/core'
 import { Cartesian2, Cartographic, SceneTransforms } from '@vcmap/cesium'
-import { usePositionFeatureStore } from '@/stores/interactionMap'
 
 function getBalloonPositionCesium(scene, cartesian) {
   return SceneTransforms.wgs84ToWindowCoordinates(scene, cartesian)
@@ -37,6 +36,5 @@ export function getBalloonPosition(app, position) {
   } else if (map instanceof OpenlayersMap) {
     cartesian = getBalloonPositionOL(map.olMap, position)
   }
-  const positionFeatureStore = usePositionFeatureStore()
-  positionFeatureStore.setCartesian(cartesian)
+  return cartesian
 }

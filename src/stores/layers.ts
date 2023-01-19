@@ -14,7 +14,7 @@ export const RENNES_LAYERS = [
   'poi',
 ] as const
 
-export type Layers = typeof RENNES_LAYERS[number]
+export type Layers = (typeof RENNES_LAYERS)[number]
 export type LayersVisibility = Record<Layers, boolean>
 
 export const useLayersStore = defineStore('layers', () => {

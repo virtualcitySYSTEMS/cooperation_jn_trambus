@@ -12,7 +12,7 @@ import {
 } from '@vcmap/core'
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
-import CustomComponent from '@/components/map/test/CustomComponent.vue'
+import ComponentsAboveMap from '@/components/map/aboveMap/ComponentsAboveMap.vue'
 
 import { parkingStyle, poiStyle } from '@/styles/common'
 
@@ -21,11 +21,10 @@ import { useMapStore } from '@/stores/map'
 import {
   useLineViewsStore,
   useTravelTimesViewStore,
-  useStationViewsStore,
   useViewsStore,
 } from '@/stores/views'
-import { useStationInteractionStore } from '@/stores/interactionMap'
-
+import { useStationsStore } from '@/stores/stations'
+import { useComponentAboveMapStore } from '@/stores/interactionMap'
 import mapConfig from '../../map.config.json'
 import type { StyleFunction } from 'ol/style/Style'
 import type { LineNumber } from '@/model/lines.model'
@@ -56,10 +55,10 @@ provide('vcsApp', vcsApp)
 const layerStore = useLayersStore()
 const mapStore = useMapStore()
 const lineViewStore = useLineViewsStore()
-const stationViewStore = useStationViewsStore()
+const stationsStore = useStationsStore()
 const travelTimesViewStore = useTravelTimesViewStore()
 const viewStore = useViewsStore()
-const stationInteractionStore = useStationInteractionStore()
+const componentAboveMapStore = useComponentAboveMapStore()
 
 onMounted(async () => {
   const context = new Context(mapConfig)
@@ -78,6 +77,8 @@ onMounted(async () => {
     new SelectStationInteraction(vcsApp, 'trambusStops')
   )
   vcsApp.maps.eventHandler.addPersistentInteraction(new MapInteraction(vcsApp))
+
+  componentAboveMapStore.setVcsApp(vcsApp)
 })
 
 // The following code is needed to cleanup resources we created
@@ -158,7 +159,7 @@ async function updateLayersVisibility() {
 async function updateViewPoint() {
   const activeMap = vcsApp.maps.activeMap
   if (viewStore.currentView == viewList.station) {
-    const stationName = stationViewStore.nameSelectedStation
+    const stationName = stationsStore.currentStationView
     let layer: GeoJSONLayer = vcsApp.layers.getByKey(
       RENNES_LAYERS[6]
     ) as GeoJSONLayer
@@ -313,7 +314,7 @@ lineViewStore.$subscribe(() => {
   }
 })
 
-stationInteractionStore.$subscribe(async () => {
+stationsStore.$subscribe(async () => {
   updateMapStyle()
 })
 </script>
@@ -321,5 +322,5 @@ stationInteractionStore.$subscribe(async () => {
 <template>
   <UiMap></UiMap>
   <NavigationButtons />
-  <CustomComponent />
+  <ComponentsAboveMap />
 </template>

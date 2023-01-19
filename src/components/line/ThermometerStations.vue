@@ -6,8 +6,7 @@ import ItemThermometerStations from '@/components/line/ItemThermometerStations.v
 import { apiClientService } from '@/services/api.client'
 import { reactive, onBeforeMount } from 'vue'
 import type { StationModel } from '@/model/stations.model'
-
-import { useStationInteractionStore } from '@/stores/interactionMap'
+import { useStationsStore } from '@/stores/stations'
 
 type actionItem = 'leave' | 'over'
 
@@ -18,7 +17,7 @@ const props = defineProps({
   },
 })
 
-const stationInteractionStore = useStationInteractionStore()
+const stationsStore = useStationsStore()
 
 const state = reactive({
   stations: null as null | StationModel[],
@@ -31,14 +30,14 @@ onBeforeMount(async () => {
 function mouseOverAndLeaveItem(action: actionItem, stationName: string) {
   if (
     action == 'leave' &&
-    stationName == stationInteractionStore.selectedStation
+    stationsStore.stationIsInStationsToDisplay(stationName)
   ) {
-    stationInteractionStore.selectStation(null)
+    stationsStore.deleteStationToDisplay(stationName)
   } else if (
     action == 'over' &&
-    stationName != stationInteractionStore.selectedStation
+    !stationsStore.stationIsInStationsToDisplay(stationName)
   ) {
-    stationInteractionStore.selectStation(stationName)
+    stationsStore.addStationToDisplay(stationName)
   }
 }
 

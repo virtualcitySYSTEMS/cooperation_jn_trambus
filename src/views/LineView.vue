@@ -16,6 +16,7 @@ import { useMapStore } from '@/stores/map'
 import { useViewsStore } from '@/stores/views'
 import { useLayersStore } from '@/stores/layers'
 import { useLineViewsStore } from '@/stores/views'
+import { useStationsStore } from '@/stores/stations'
 import UiLineHeader from '@/components/ui/UiLineHeader.vue'
 import { viewList } from '@/model/views.model'
 import BackButton from '@/components/home/BackButton.vue'
@@ -24,6 +25,7 @@ const mapStore = useMapStore()
 const viewStore = useViewsStore()
 const layerStore = useLayersStore()
 const lineStore = useLineViewsStore()
+const stationsStore = useStationsStore()
 
 const state = reactive({
   lineDescription: null as null | LineModel,
@@ -49,6 +51,7 @@ onBeforeMount(async () => {
 onMounted(async () => {
   viewStore.currentView = viewList.line
   mapStore.updateViewpoint(`line${lineStore.selectedLine}`, true)
+  stationsStore.lineViewSetUpStationsToDisplay()
 
   layerStore.setVisibilities(mapStore.is3D(), {
     trambusLines: true,

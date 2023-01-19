@@ -3,6 +3,7 @@ import { reactive, onMounted } from 'vue'
 
 import { useViewsStore, useTravelTimesViewStore } from '@/stores/views'
 import { useLayersStore } from '@/stores/layers'
+import { useStationsStore } from '@/stores/stations'
 import { apiClientService } from '@/services/api.client'
 import type { TravelTimeModel } from '@/model/travel-time.model'
 import BackButton from '@/components/home/BackButton.vue'
@@ -14,6 +15,7 @@ const viewStore = useViewsStore()
 const layerStore = useLayersStore()
 const travelTimeStore = useTravelTimesViewStore()
 const mapStore = useMapStore()
+const stationsStore = useStationsStore()
 
 const state = reactive({
   travelTimes: null as null | TravelTimeModel[],
@@ -22,6 +24,7 @@ const state = reactive({
 onMounted(async () => {
   viewStore.currentView = viewList.traveltimes
   mapStore.updateViewpoint(`home`, true)
+  stationsStore.traveltimesViewSetUpStationsToDisplay()
   layerStore.setVisibilities(mapStore.is3D(), {
     trambusLines: true,
     trambusStops: true,

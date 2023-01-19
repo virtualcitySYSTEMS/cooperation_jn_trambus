@@ -13,7 +13,7 @@ import {
 } from '@vcmap/core'
 import type { Feature } from 'ol'
 import type { Point } from 'ol/geom'
-import { useStationInteractionStore } from '@/stores/interactionMap'
+import { useStationsStore } from '@/stores/stations'
 import { useLineViewsStore, useViewsStore } from '@/stores/views'
 import router from '@/router'
 import { viewList } from '@/model/views.model'
@@ -32,7 +32,7 @@ class SelectStationInteraction extends AbstractInteraction {
   async pipe(event: InteractionEvent): Promise<InteractionEvent> {
     const isLayerFeature =
       event.feature?.[vcsLayerName] === this._stationsLayerName
-    const stationInteractionStore = useStationInteractionStore()
+    const stationsStore = useStationsStore()
 
     if (isLayerFeature) {
       document.body.style.cursor = 'pointer'
@@ -47,12 +47,10 @@ class SelectStationInteraction extends AbstractInteraction {
           router.push(`/line/${lineNumber}/station/${stationId}`)
         }
       } else if (event.type & EventType.MOVE) {
-        stationInteractionStore.selectStation(stationName)
+        stationsStore.addStationToDisplay(stationName)
       }
     } else {
-      if (stationInteractionStore.selectedStation !== null) {
-        stationInteractionStore.selectStation(null)
-      }
+      stationsStore.clearStationsExceptPermanent()
       document.body.style.cursor = 'auto'
     }
     return event

@@ -4,7 +4,8 @@ import { useRoute } from 'vue-router'
 import { useMapStore } from '@/stores/map'
 import { useViewsStore } from '@/stores/views'
 import { useLayersStore } from '@/stores/layers'
-import { useLineViewsStore, useStationViewsStore } from '@/stores/views'
+import { useLineViewsStore } from '@/stores/views'
+import { useStationsStore } from '@/stores/stations'
 import UiStationHeader from '@/components/ui/UiStationHeader.vue'
 import { apiClientService } from '@/services/api.client'
 import FooterArea from '@/components/home/FooterArea.vue'
@@ -19,7 +20,7 @@ const mapStore = useMapStore()
 const viewStore = useViewsStore()
 const layerStore = useLayersStore()
 const lineStore = useLineViewsStore()
-const stationStore = useStationViewsStore()
+const stationsStore = useStationsStore()
 
 const { params } = useRoute()
 const routeParams = ref(params)
@@ -37,18 +38,17 @@ onBeforeMount(async () => {
     lineStore.selectedLine
   )
 
-  stationStore.setIdSelectedStation(stationId.value)
   await apiClientService
     .fetchStationDescription(stationId.value)
     .then((station) => {
-      stationStore.setNameSelectedStation(station.nom)
+      stationsStore.stationViewSetUpStationsToDisplay(station.nom)
       state.stationDescription = station
     })
 })
 
 onMounted(async () => {
   viewStore.currentView = viewList.station
-  const viewPoint = `line ${lineStore.selectedLine} | station ${stationStore.nameSelectedStation}`
+  const viewPoint = `line ${lineStore.selectedLine} | station ${stationsStore.currentStationView}`
   mapStore.updateViewpoint(viewPoint, true)
 
   layerStore.setVisibilities(mapStore.is3D(), {
