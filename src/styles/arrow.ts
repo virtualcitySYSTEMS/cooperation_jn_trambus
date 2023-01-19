@@ -17,6 +17,7 @@ export function getScratchLayer(app: VcsApp, layerName: string): VectorLayer {
   const layer = new VectorLayer({
     name: layerName,
     projection: mercatorProjection.toJSON(),
+    zIndex: 3,
   })
 
   markVolatile(layer)
@@ -29,11 +30,11 @@ export function updateArrowFeatures(
   linestrings: LineString[],
   arrowLayer: VectorLayer
 ) {
+  arrowLayer.removeAllFeatures()
   const features: Feature[] = []
   linestrings.forEach((linestring) => {
     features.push(new Feature(linestring))
   })
-  arrowLayer.removeAllFeatures()
   arrowLayer.addFeatures(features)
 }
 

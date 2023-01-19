@@ -196,21 +196,21 @@
         }
       },
       "activeOnStartup": false,
-      "zIndex": 4
+      "zIndex": 5
     },
     {
       "name": "parking",
       "url": "https://public.sig.rennesmetropole.fr/geoserver/ows?service=WFS&request=getFeature&typename=trp_coll:trambus_parc_relais&outputFormat=application/json&srsName=EPSG:4326",
       "type": "GeoJSONLayer",
       "activeOnStartup": true,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "name": "poi",
       "url": "https://public.sig.rennesmetropole.fr/geoserver/ows?service=WFS&request=getFeature&typename=trp_coll:trambus_station_to_site&outputFormat=application/json&srsName=EPSG:4326",
       "type": "GeoJSONLayer",
       "activeOnStartup": true,
-      "zIndex": 3
+      "zIndex": 4
     }
   ],
   "viewpoints": [

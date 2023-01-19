@@ -34,7 +34,7 @@ import {
 } from '@/styles/trambusStop'
 import { isStationOnLine, isTrambusStopBelongsToLine } from '@/services/station'
 import { stationsFixtures } from '@/model/stations.fixtures'
-import { Point } from 'ol/geom'
+import { LineString, Point } from 'ol/geom'
 import { transform } from 'ol/proj'
 import type { Feature } from 'ol'
 import type { Style } from 'ol/style'
@@ -204,43 +204,32 @@ function clearLayerAndApplyStyle(
 async function updateTraveltimeArrow() {
   // Arrow style for travel time
   const arrowLayer = getScratchLayer(vcsApp, RENNES_LAYER._traveltimeArrow)
+  let lineStrings: LineString[] = []
 
   if (
     viewStore.currentView === viewList.traveltimes &&
     travelTimesViewStore.selectedTravelTime
   ) {
-    const lineStrings = lineStringsFromTraveltimes(
+    lineStrings = lineStringsFromTraveltimes(
       [travelTimesViewStore.selectedTravelTime],
       vcsApp
     )
-    updateArrowFeatures(lineStrings, arrowLayer)
-    updateArrowLayerStyle(arrowLayer, mapStore.is3D())
-
-    arrowLayer.activate()
   } else if (viewStore.currentView === viewList.line) {
     if (lineViewStore.selectedTravelTime) {
-      const lineStrings = lineStringsFromTraveltimes(
+      lineStrings = lineStringsFromTraveltimes(
         [lineViewStore.selectedTravelTime],
         vcsApp
       )
-      updateArrowFeatures(lineStrings, arrowLayer)
-      updateArrowLayerStyle(arrowLayer, mapStore.is3D())
-
-      arrowLayer.activate()
     } else {
       const travelTimes = await apiClientService.fetchTravelTimeByLine(
         lineViewStore.selectedLine
       )
-      const lineStrings = lineStringsFromTraveltimes(travelTimes, vcsApp)
-      updateArrowFeatures(lineStrings, arrowLayer)
-      updateArrowLayerStyle(arrowLayer, mapStore.is3D())
-
-      arrowLayer.activate()
+      lineStrings = lineStringsFromTraveltimes(travelTimes, vcsApp)
     }
-  } else {
-    arrowLayer.removeAllFeatures()
-    arrowLayer.deactivate()
   }
+
+  updateArrowFeatures(lineStrings, arrowLayer)
+  updateArrowLayerStyle(arrowLayer, mapStore.is3D())
 }
 
 async function updateLineViewStyle() {
@@ -340,9 +329,7 @@ mapStore.$subscribe(async () => {
   await updateActiveMap()
   await updateLayersVisibility()
   await updateViewPoint()
-  if (viewStore.currentView === viewList.traveltimes) {
-    updateTraveltimeArrow()
-  }
+  await updateTraveltimeArrow()
 })
 
 viewStore.$subscribe(async () => {
