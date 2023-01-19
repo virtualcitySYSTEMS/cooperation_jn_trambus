@@ -9,10 +9,7 @@ import {
 import type { LineString } from 'ol/geom'
 import { Feature } from 'ol'
 
-export function getArrowScratchLayer(
-  app: VcsApp,
-  layerName: string
-): VectorLayer {
+export function getScratchLayer(app: VcsApp, layerName: string): VectorLayer {
   if (app.layers.hasKey(layerName)) {
     return app.layers.getByKey(layerName) as VectorLayer
   }

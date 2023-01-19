@@ -56,6 +56,7 @@ onMounted(async () => {
     trambusStops: true,
     parking: true,
     poi: true,
+    _traveltimeArrow: false,
   })
 })
 </script>

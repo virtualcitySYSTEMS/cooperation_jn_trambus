@@ -42,7 +42,7 @@ import { trambusLineViewStyleFunction } from '@/styles/line'
 import { SelectedTrambusLine } from '@/model/selected-line.model'
 import SelectStationInteraction from '@/interactions/selectStation'
 import {
-  getArrowScratchLayer,
+  getScratchLayer,
   updateArrowFeatures,
   updateArrowLayerStyle,
 } from '@/styles/arrow'
@@ -203,11 +203,7 @@ function clearLayerAndApplyStyle(
 
 async function updateTraveltimeArrow() {
   // Arrow style for travel time
-  const scratchTraveltimeArrowLayerName = '_traveltimeArrowLayer'
-  const arrowLayer = getArrowScratchLayer(
-    vcsApp,
-    scratchTraveltimeArrowLayerName
-  )
+  const arrowLayer = getScratchLayer(vcsApp, RENNES_LAYER._traveltimeArrow)
 
   if (
     viewStore.currentView === viewList.traveltimes &&

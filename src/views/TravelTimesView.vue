@@ -27,6 +27,7 @@ onMounted(async () => {
     trambusStops: true,
     parking: false,
     poi: false,
+    _traveltimeArrow: true,
   })
   state.travelTimes = await apiClientService.fetchTravelTime()
 })

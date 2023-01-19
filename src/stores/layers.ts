@@ -12,6 +12,7 @@ export const RENNES_LAYER = {
   trambusStops: 'trambusStops',
   parking: 'parking',
   poi: 'poi',
+  _traveltimeArrow: '_traveltimeArrow',
 }
 
 export const RENNES_LAYERS = [
@@ -24,6 +25,7 @@ export const RENNES_LAYERS = [
   RENNES_LAYER.trambusStops,
   RENNES_LAYER.parking,
   RENNES_LAYER.poi,
+  RENNES_LAYER._traveltimeArrow,
 ] as const
 
 export type RennesLayer = typeof RENNES_LAYERS[number]
@@ -40,6 +42,7 @@ export const useLayersStore = defineStore('layers', () => {
     trambusStops: false,
     parking: false,
     poi: false,
+    _traveltimeArrow: false,
   })
 
   function toggleLayer(name: RennesLayer) {
@@ -61,6 +64,7 @@ export const useLayersStore = defineStore('layers', () => {
       trambusStops: boolean
       parking: boolean
       poi: boolean
+      _traveltimeArrow: boolean
     }
   ) {
     update3DBaseLayer(is3D)
@@ -68,6 +72,7 @@ export const useLayersStore = defineStore('layers', () => {
     visibilities.value.trambusStops = newVisibilities.trambusStops
     visibilities.value.parking = newVisibilities.parking
     visibilities.value.poi = newVisibilities.poi
+    visibilities.value._traveltimeArrow = newVisibilities._traveltimeArrow
   }
 
   return { visibilities, toggleLayer, update3DBaseLayer, setVisibilities }
