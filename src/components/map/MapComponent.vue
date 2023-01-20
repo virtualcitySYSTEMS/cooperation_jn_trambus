@@ -215,7 +215,7 @@ async function updateTraveltimeArrow() {
   let lineStrings: LineString[] = []
 
   if (traveltimeInteractionStore.selectedTraveltime) {
-    lineStrings = lineStringsFromTraveltimes(
+    lineStrings = await lineStringsFromTraveltimes(
       [traveltimeInteractionStore.selectedTraveltime],
       vcsApp
     )
@@ -223,9 +223,8 @@ async function updateTraveltimeArrow() {
     const travelTimes = await apiClientService.fetchTravelTimeByLine(
       lineViewStore.selectedLine
     )
-    lineStrings = lineStringsFromTraveltimes(travelTimes, vcsApp)
+    lineStrings = await lineStringsFromTraveltimes(travelTimes, vcsApp)
   }
-
   updateArrowFeatures(lineStrings, arrowLayer)
   updateArrowLayerStyle(arrowLayer, mapStore.is3D())
 }
