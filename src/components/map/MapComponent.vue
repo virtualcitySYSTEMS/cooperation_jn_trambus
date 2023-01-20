@@ -14,8 +14,11 @@ import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
 
 import { parkingStyle, poiStyle } from '@/styles/common'
-
-import { RENNES_LAYERS, useLayersStore } from '@/stores/layers'
+import {
+  useLayersStore,
+  RENNES_LAYERNAMES,
+  RENNES_LAYER,
+} from '@/stores/layers'
 import { useMapStore } from '@/stores/map'
 import {
   useLineViewsStore,
@@ -23,7 +26,10 @@ import {
   useStationViewsStore,
   useViewsStore,
 } from '@/stores/views'
-import { useStationInteractionStore } from '@/stores/interactionMap'
+import {
+  useStationInteractionStore,
+  useTraveltimeInteractionStore,
+} from '@/stores/interactionMap'
 
 import mapConfig from '../../map.config.json'
 import type { StyleFunction } from 'ol/style/Style'
@@ -35,7 +41,7 @@ import {
 } from '@/styles/trambusStop'
 import { isStationOnLine, isTrambusStopBelongsToLine } from '@/services/station'
 import { stationsFixtures } from '@/model/stations.fixtures'
-import { Point } from 'ol/geom'
+import { LineString, Point } from 'ol/geom'
 import { transform } from 'ol/proj'
 import type { Feature } from 'ol'
 import type { Style } from 'ol/style'
@@ -43,10 +49,17 @@ import { trambusLineViewStyleFunction } from '@/styles/line'
 import { SelectedTrambusLine } from '@/model/selected-line.model'
 import SelectStationInteraction from '@/interactions/selectStation'
 import {
+  getScratchLayer,
+  updateArrowFeatures,
+  updateArrowLayerStyle,
+} from '@/styles/arrow'
+import {
   getViewpointFromFeature,
   cloneViewPointAndResetCameraPosition,
 } from '@/helpers/viewpointHelper'
 import { viewList } from '@/model/views.model'
+import { lineStringsFromTraveltimes } from '@/helpers/traveltimesHelper'
+import { apiClientService } from '@/services/api.client'
 
 const vcsApp = new VcsApp()
 provide('vcsApp', vcsApp)
@@ -58,6 +71,7 @@ const stationViewStore = useStationViewsStore()
 const travelTimesViewStore = useTravelTimesViewStore()
 const viewStore = useViewsStore()
 const stationInteractionStore = useStationInteractionStore()
+const traveltimeInteractionStore = useTraveltimeInteractionStore()
 
 onMounted(async () => {
   const context = new Context(mapConfig)
@@ -142,12 +156,12 @@ async function setLayerVisible(layerName: string, visible: boolean) {
   if (visible) {
     await layer?.activate()
   } else {
-    layer.deactivate()
+    layer?.deactivate()
   }
 }
 
 async function updateLayersVisibility() {
-  RENNES_LAYERS.forEach(async (layer) => {
+  RENNES_LAYERNAMES.forEach(async (layer) => {
     await setLayerVisible(layer, layerStore.visibilities[layer])
   })
 }
@@ -157,7 +171,7 @@ async function updateViewPoint() {
   if (viewStore.currentView == viewList.station) {
     const stationName = stationViewStore.nameSelectedStation
     let layer: GeoJSONLayer = vcsApp.layers.getByKey(
-      RENNES_LAYERS[6]
+      RENNES_LAYER.trambusStops
     ) as GeoJSONLayer
     let viewpoint: Viewpoint | null = null
     await layer.fetchData()
@@ -195,8 +209,29 @@ function clearLayerAndApplyStyle(
   }
 }
 
+async function updateTraveltimeArrow() {
+  // Arrow style for travel time
+  const arrowLayer = getScratchLayer(vcsApp, RENNES_LAYER._traveltimeArrow)
+  let lineStrings: LineString[] = []
+
+  if (traveltimeInteractionStore.selectedTraveltime) {
+    lineStrings = lineStringsFromTraveltimes(
+      [traveltimeInteractionStore.selectedTraveltime],
+      vcsApp
+    )
+  } else if (viewStore.currentView === viewList.line) {
+    const travelTimes = await apiClientService.fetchTravelTimeByLine(
+      lineViewStore.selectedLine
+    )
+    lineStrings = lineStringsFromTraveltimes(travelTimes, vcsApp)
+  }
+
+  updateArrowFeatures(lineStrings, arrowLayer)
+  updateArrowLayerStyle(arrowLayer, mapStore.is3D())
+}
+
 async function updateLineViewStyle() {
-  clearLayerAndApplyStyle(RENNES_LAYERS[5], (feature) =>
+  clearLayerAndApplyStyle(RENNES_LAYER.trambusLines, (feature) =>
     trambusLineViewStyleFunction(
       feature,
       lineViewStore.selectedLine,
@@ -204,7 +239,7 @@ async function updateLineViewStyle() {
       mapStore.is3D()
     )
   )
-  clearLayerAndApplyStyle(RENNES_LAYERS[6], (feature) =>
+  clearLayerAndApplyStyle(RENNES_LAYER.trambusStops, (feature) =>
     trambusStopLineViewStyleFunction(
       feature,
       lineViewStore.selectedLine,
@@ -212,29 +247,32 @@ async function updateLineViewStyle() {
       mapStore.is3D()
     )
   )
-  clearLayerAndApplyStyle('poi', poiStyle)
-  clearLayerAndApplyStyle('parking', parkingStyle)
+  clearLayerAndApplyStyle(RENNES_LAYER.poi, poiStyle)
+  clearLayerAndApplyStyle(RENNES_LAYER.parking, parkingStyle)
+
+  await updateTraveltimeArrow()
 }
 
 async function updateTravelTimesViewStyle() {
-  clearLayerAndApplyStyle(RENNES_LAYERS[5], (feature) =>
+  clearLayerAndApplyStyle(RENNES_LAYER.trambusLines, (feature) =>
     trambusLineTravelTimesViewStyleFunction(
       feature,
-      travelTimesViewStore.selectedTravelTime!,
+      traveltimeInteractionStore.selectedTraveltime!,
       mapStore.is3D()
     )
   )
-  clearLayerAndApplyStyle(RENNES_LAYERS[6], (feature) =>
+  clearLayerAndApplyStyle(RENNES_LAYER.trambusStops, (feature) =>
     trambusStopTravelTimesViewStyleFunction(
       feature,
-      travelTimesViewStore.selectedTravelTime!,
+      traveltimeInteractionStore.selectedTraveltime!,
       mapStore.is3D()
     )
   )
+  await updateTraveltimeArrow()
 }
 
 async function updateStationViewStyle() {
-  clearLayerAndApplyStyle(RENNES_LAYERS[5], (feature) =>
+  clearLayerAndApplyStyle(RENNES_LAYER.trambusLines, (feature) =>
     trambusLineViewStyleFunction(
       feature,
       lineViewStore.selectedLine,
@@ -242,7 +280,7 @@ async function updateStationViewStyle() {
       mapStore.is3D()
     )
   )
-  clearLayerAndApplyStyle(RENNES_LAYERS[6], (feature) =>
+  clearLayerAndApplyStyle(RENNES_LAYER.trambusStops, (feature) =>
     trambusStopLineViewStyleFunction(
       feature,
       lineViewStore.selectedLine,
@@ -250,13 +288,13 @@ async function updateStationViewStyle() {
       mapStore.is3D()
     )
   )
-  clearLayerAndApplyStyle('poi', poiStyle)
-  clearLayerAndApplyStyle('parking', parkingStyle)
+  clearLayerAndApplyStyle(RENNES_LAYER.poi, poiStyle)
+  clearLayerAndApplyStyle(RENNES_LAYER.parking, parkingStyle)
 }
 
 function updateHomeViewStyle() {
-  clearLayerAndApplyStyle(RENNES_LAYERS[5], undefined)
-  clearLayerAndApplyStyle('parking', parkingStyle)
+  clearLayerAndApplyStyle(RENNES_LAYER.trambusLines, undefined)
+  clearLayerAndApplyStyle(RENNES_LAYER.parking, parkingStyle)
 }
 
 async function updateActiveMap() {
@@ -289,6 +327,7 @@ mapStore.$subscribe(async () => {
   await updateActiveMap()
   await updateLayersVisibility()
   await updateViewPoint()
+  await updateTraveltimeArrow()
 })
 
 viewStore.$subscribe(async () => {
@@ -311,6 +350,10 @@ lineViewStore.$subscribe(() => {
 })
 
 stationInteractionStore.$subscribe(async () => {
+  updateMapStyle()
+})
+
+traveltimeInteractionStore.$subscribe(async () => {
   updateMapStyle()
 })
 </script>

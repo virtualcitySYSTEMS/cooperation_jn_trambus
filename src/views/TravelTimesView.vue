@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, onMounted } from 'vue'
 
-import { useViewsStore, useTravelTimesViewStore } from '@/stores/views'
+import { useViewsStore } from '@/stores/views'
 import { useLayersStore } from '@/stores/layers'
 import { apiClientService } from '@/services/api.client'
 import type { TravelTimeModel } from '@/model/travel-time.model'
@@ -9,10 +9,11 @@ import BackButton from '@/components/home/BackButton.vue'
 import UiTravelTime from '@/components/ui/UiTravelTime.vue'
 import { useMapStore } from '@/stores/map'
 import { viewList } from '@/model/views.model'
+import { useTraveltimeInteractionStore } from '@/stores/interactionMap'
 
 const viewStore = useViewsStore()
 const layerStore = useLayersStore()
-const travelTimeStore = useTravelTimesViewStore()
+const traveltimeInteractionStore = useTraveltimeInteractionStore()
 const mapStore = useMapStore()
 
 const state = reactive({
@@ -27,15 +28,16 @@ onMounted(async () => {
     trambusStops: true,
     parking: false,
     poi: false,
+    _traveltimeArrow: true,
   })
   state.travelTimes = await apiClientService.fetchTravelTime()
 })
 
 function onTravelTimesClicked(travelTime: TravelTimeModel) {
-  if (travelTime == travelTimeStore.selectedTravelTime) {
-    travelTimeStore.selectedTravelTime = null
+  if (travelTime == traveltimeInteractionStore.selectedTraveltime) {
+    traveltimeInteractionStore.selectTraveltime(null)
   } else {
-    travelTimeStore.selectedTravelTime = travelTime
+    traveltimeInteractionStore.selectTraveltime(travelTime)
   }
 }
 </script>
@@ -73,7 +75,7 @@ function onTravelTimesClicked(travelTime: TravelTimeModel) {
       :lineNumber="travelTime.line"
       :startStation="travelTime.start"
       :endStation="travelTime.end"
-      :colored="travelTime == travelTimeStore.selectedTravelTime"
+      :colored="travelTime == traveltimeInteractionStore.selectedTraveltime"
     >
     </UiTravelTime>
   </div>
