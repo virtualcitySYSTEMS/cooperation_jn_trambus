@@ -12,6 +12,7 @@ export const RENNES_LAYER = {
   trambusStops: 'trambusStops',
   parking: 'parking',
   poi: 'poi',
+  // The following layers are scratch layers
   _traveltimeArrow: '_traveltimeArrow',
 }
 

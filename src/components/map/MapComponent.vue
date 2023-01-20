@@ -22,7 +22,10 @@ import {
   useStationViewsStore,
   useViewsStore,
 } from '@/stores/views'
-import { useStationInteractionStore } from '@/stores/interactionMap'
+import {
+  useStationInteractionStore,
+  useTraveltimeInteractionStore,
+} from '@/stores/interactionMap'
 
 import mapConfig from '../../map.config.json'
 import type { StyleFunction } from 'ol/style/Style'
@@ -64,6 +67,7 @@ const stationViewStore = useStationViewsStore()
 const travelTimesViewStore = useTravelTimesViewStore()
 const viewStore = useViewsStore()
 const stationInteractionStore = useStationInteractionStore()
+const traveltimeInteractionStore = useTraveltimeInteractionStore()
 
 onMounted(async () => {
   const context = new Context(mapConfig)
@@ -148,7 +152,7 @@ async function setLayerVisible(layerName: string, visible: boolean) {
   if (visible) {
     await layer?.activate()
   } else {
-    layer.deactivate()
+    layer?.deactivate()
   }
 }
 
@@ -206,26 +210,16 @@ async function updateTraveltimeArrow() {
   const arrowLayer = getScratchLayer(vcsApp, RENNES_LAYER._traveltimeArrow)
   let lineStrings: LineString[] = []
 
-  if (
-    viewStore.currentView === viewList.traveltimes &&
-    travelTimesViewStore.selectedTravelTime
-  ) {
+  if (traveltimeInteractionStore.selectedTraveltime) {
     lineStrings = lineStringsFromTraveltimes(
-      [travelTimesViewStore.selectedTravelTime],
+      [traveltimeInteractionStore.selectedTraveltime],
       vcsApp
     )
   } else if (viewStore.currentView === viewList.line) {
-    if (lineViewStore.selectedTravelTime) {
-      lineStrings = lineStringsFromTraveltimes(
-        [lineViewStore.selectedTravelTime],
-        vcsApp
-      )
-    } else {
-      const travelTimes = await apiClientService.fetchTravelTimeByLine(
-        lineViewStore.selectedLine
-      )
-      lineStrings = lineStringsFromTraveltimes(travelTimes, vcsApp)
-    }
+    const travelTimes = await apiClientService.fetchTravelTimeByLine(
+      lineViewStore.selectedLine
+    )
+    lineStrings = lineStringsFromTraveltimes(travelTimes, vcsApp)
   }
 
   updateArrowFeatures(lineStrings, arrowLayer)
@@ -259,14 +253,14 @@ async function updateTravelTimesViewStyle() {
   clearLayerAndApplyStyle(RENNES_LAYER.trambusLines, (feature) =>
     trambusLineTravelTimesViewStyleFunction(
       feature,
-      travelTimesViewStore.selectedTravelTime!,
+      traveltimeInteractionStore.selectedTraveltime!,
       mapStore.is3D()
     )
   )
   clearLayerAndApplyStyle(RENNES_LAYER.trambusStops, (feature) =>
     trambusStopTravelTimesViewStyleFunction(
       feature,
-      travelTimesViewStore.selectedTravelTime!,
+      traveltimeInteractionStore.selectedTraveltime!,
       mapStore.is3D()
     )
   )
@@ -352,6 +346,10 @@ lineViewStore.$subscribe(() => {
 })
 
 stationInteractionStore.$subscribe(async () => {
+  updateMapStyle()
+})
+
+traveltimeInteractionStore.$subscribe(async () => {
   updateMapStyle()
 })
 </script>

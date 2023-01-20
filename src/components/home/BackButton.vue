@@ -5,18 +5,16 @@ import ChevronArrowLeft from '@/assets/icons/chevron-left.svg'
 import UiButton from '@/components/ui/UiButton.vue'
 
 import { useMapStore } from '@/stores/map'
-import { useLineViewsStore, useTravelTimesViewStore } from '@/stores/views'
+import { useTraveltimeInteractionStore } from '@/stores/interactionMap'
 
 const mapStore = useMapStore()
-const traveltimeViewStore = useTravelTimesViewStore()
-const lineViewStore = useLineViewsStore()
+const traveltimeInteractionStore = useTraveltimeInteractionStore()
 
 function backButtonClicked() {
   router.push('/home')
   mapStore.viewPoint = `home`
   // Reset any selection
-  traveltimeViewStore.selectedTravelTime = null
-  lineViewStore.selectedTravelTime = null
+  traveltimeInteractionStore.selectTraveltime(null)
 }
 </script>
 

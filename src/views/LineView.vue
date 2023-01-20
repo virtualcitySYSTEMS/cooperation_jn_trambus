@@ -19,11 +19,13 @@ import { useLineViewsStore } from '@/stores/views'
 import UiLineHeader from '@/components/ui/UiLineHeader.vue'
 import { viewList } from '@/model/views.model'
 import BackButton from '@/components/home/BackButton.vue'
+import { useTraveltimeInteractionStore } from '@/stores/interactionMap'
 
 const mapStore = useMapStore()
 const viewStore = useViewsStore()
 const layerStore = useLayersStore()
 const lineStore = useLineViewsStore()
+const traveltimeInteractionStore = useTraveltimeInteractionStore()
 
 const state = reactive({
   lineDescription: null as null | LineModel,
@@ -60,10 +62,10 @@ onMounted(async () => {
 })
 
 function onTravelTimesClicked(travelTime: TravelTimeModel) {
-  if (travelTime == lineStore.selectedTravelTime) {
-    lineStore.selectedTravelTime = null
+  if (travelTime == traveltimeInteractionStore.selectedTraveltime) {
+    traveltimeInteractionStore.selectTraveltime(null)
   } else {
-    lineStore.selectedTravelTime = travelTime
+    traveltimeInteractionStore.selectTraveltime(travelTime)
   }
 }
 </script>
@@ -106,7 +108,7 @@ function onTravelTimesClicked(travelTime: TravelTimeModel) {
     :lineNumber="travelTime.line"
     :startStation="travelTime.start"
     :endStation="travelTime.end"
-    :colored="travelTime == lineStore.selectedTravelTime"
+    :colored="travelTime == traveltimeInteractionStore.selectedTraveltime"
   >
   </UiTravelTime>
 
