@@ -16,7 +16,7 @@ export const RENNES_LAYER = {
   _traveltimeArrow: '_traveltimeArrow',
 }
 
-export const RENNES_LAYERS = [
+export const RENNES_LAYERNAMES = [
   RENNES_LAYER.rennesOrtho,
   RENNES_LAYER.rennesBase,
   RENNES_LAYER.metro,
@@ -29,7 +29,7 @@ export const RENNES_LAYERS = [
   RENNES_LAYER._traveltimeArrow,
 ] as const
 
-export type RennesLayer = typeof RENNES_LAYERS[number]
+export type RennesLayer = typeof RENNES_LAYERNAMES[number]
 export type LayersVisibility = Record<RennesLayer, boolean>
 
 export const useLayersStore = defineStore('layers', () => {

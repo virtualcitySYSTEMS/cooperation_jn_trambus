@@ -14,7 +14,11 @@ import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
 
 import { parkingStyle, poiStyle } from '@/styles/common'
-import { useLayersStore, RENNES_LAYERS, RENNES_LAYER } from '@/stores/layers'
+import {
+  useLayersStore,
+  RENNES_LAYERNAMES,
+  RENNES_LAYER,
+} from '@/stores/layers'
 import { useMapStore } from '@/stores/map'
 import {
   useLineViewsStore,
@@ -157,7 +161,7 @@ async function setLayerVisible(layerName: string, visible: boolean) {
 }
 
 async function updateLayersVisibility() {
-  RENNES_LAYERS.forEach(async (layer) => {
+  RENNES_LAYERNAMES.forEach(async (layer) => {
     await setLayerVisible(layer, layerStore.visibilities[layer])
   })
 }
