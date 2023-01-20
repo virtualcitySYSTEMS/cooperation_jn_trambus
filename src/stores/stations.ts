@@ -1,12 +1,17 @@
 import { ref } from 'vue'
 import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
-import { getAllStartEndStations } from '@/model/lines.fixtures'
+import {
+  getAllStartEndStations,
+  getStartEndStationsOfLine,
+} from '@/model/lines.fixtures'
+import type { LineNumber } from '@/model/lines.model'
 
 export const useStationsStore = defineStore('stations', () => {
   const stationsToDisplayPermanently: Ref<string[]> = ref([])
   const stationsToDisplay: Ref<string[]> = ref([])
   const currentStationView: Ref<string | null> = ref('')
+  const flagClearStationsExceptPermanent: Ref<boolean> = ref(false)
 
   function addStationToDisplay(stationName: string) {
     if (!stationsToDisplay.value.includes(stationName)) {
@@ -45,24 +50,33 @@ export const useStationsStore = defineStore('stations', () => {
     )
   }
 
-  function addStationStartEndPermanently() {
-    getAllStartEndStations().forEach((s) => addStationToDisplayPermanently(s))
-  }
-
   function clearAllStations() {
     stationsToDisplay.value = []
     stationsToDisplayPermanently.value = []
   }
 
-  function stationViewSetUpStationsToDisplay(stationName: string) {
-    clearAllStations()
-    setCurrentStationView(stationName)
-    addStationStartEndPermanently()
+  function addStationStartEndPermanently() {
+    getAllStartEndStations().forEach((s) => addStationToDisplayPermanently(s))
   }
 
-  function lineViewSetUpStationsToDisplay() {
+  function addStationStartEndOfLinePermanently(lineNumber: LineNumber) {
+    getStartEndStationsOfLine(lineNumber).forEach((s) =>
+      addStationToDisplayPermanently(s)
+    )
+  }
+
+  function stationViewSetUpStationsToDisplay(
+    stationName: string,
+    lineNumber: LineNumber
+  ) {
     clearAllStations()
-    addStationStartEndPermanently()
+    setCurrentStationView(stationName)
+    addStationStartEndOfLinePermanently(lineNumber)
+  }
+
+  function lineViewSetUpStationsToDisplay(lineNumber: LineNumber) {
+    clearAllStations()
+    addStationStartEndOfLinePermanently(lineNumber)
   }
 
   function traveltimesViewSetUpStationsToDisplay() {
@@ -70,9 +84,14 @@ export const useStationsStore = defineStore('stations', () => {
     addStationStartEndPermanently()
   }
 
+  function homeViewSetUpStationsToDisplay() {
+    clearAllStations()
+  }
+
   return {
     stationsToDisplay,
     currentStationView,
+    flagClearStationsExceptPermanent,
     stationViewSetUpStationsToDisplay,
     lineViewSetUpStationsToDisplay,
     stationIsInStationsToDisplay,
@@ -80,5 +99,6 @@ export const useStationsStore = defineStore('stations', () => {
     addStationToDisplay,
     deleteStationToDisplay,
     clearStationsExceptPermanent,
+    homeViewSetUpStationsToDisplay,
   }
 })

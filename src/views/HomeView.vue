@@ -10,12 +10,14 @@ import { useLayersStore } from '@/stores/layers'
 import { useLineViewsStore, useViewsStore } from '@/stores/views'
 import { useMapStore } from '@/stores/map'
 import { viewList } from '@/model/views.model'
+import { useStationsStore } from '@/stores/stations'
 import { SelectedTrambusLine } from '@/model/selected-line.model'
 
 const layerStore = useLayersStore()
 const viewStore = useViewsStore()
 const mapStore = useMapStore()
 const lineViewsStore = useLineViewsStore()
+const stationsStore = useStationsStore()
 
 onMounted(() => {
   viewStore.currentView = viewList.home
@@ -27,6 +29,7 @@ onMounted(() => {
     parking: true,
     poi: false,
   })
+  stationsStore.homeViewSetUpStationsToDisplay()
 })
 </script>
 

@@ -1,21 +1,17 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useComponentAboveMapStore } from '@/stores/interactionMap'
-
-const componentAboveMapStore = useComponentAboveMapStore()
 
 const props = defineProps<{
-  nameStation: string
+  stationName: string
+  topPosition: number
+  leftPosition: number
 }>()
 
 const positionStyle = computed(() => {
-  if (componentAboveMapStore.cartesian) {
-    let style: string = ''
-    style += 'top: ' + Math.round(componentAboveMapStore.cartesian.y) + 'px; '
-    style += 'left: ' + Math.round(componentAboveMapStore.cartesian.x) + 'px; '
-    return style
-  }
-  return 'top: 10px; left: 10px;'
+  let style: string = ''
+  style += 'top: ' + props.topPosition + 'px; '
+  style += 'left: ' + props.leftPosition + 'px; '
+  return style
 })
 </script>
 
@@ -24,6 +20,6 @@ const positionStyle = computed(() => {
     class="h-90 transition-[height] absolute flex flex-col [&>*]:m-2 text-white items-center overflow-hidden w-32 select-none bg-orange-600"
     :style="positionStyle"
   >
-    {{ props.nameStation }}
+    {{ props.stationName }}
   </div>
 </template>

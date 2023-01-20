@@ -48,9 +48,14 @@ class SelectStationInteraction extends AbstractInteraction {
         }
       } else if (event.type & EventType.MOVE) {
         stationsStore.addStationToDisplay(stationName)
+        stationsStore.flagClearStationsExceptPermanent = true
       }
     } else {
-      stationsStore.clearStationsExceptPermanent()
+      if (stationsStore.flagClearStationsExceptPermanent) {
+        stationsStore.clearStationsExceptPermanent()
+        stationsStore.flagClearStationsExceptPermanent = false
+      }
+
       document.body.style.cursor = 'auto'
     }
     return event

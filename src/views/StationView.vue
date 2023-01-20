@@ -41,7 +41,10 @@ onBeforeMount(async () => {
   await apiClientService
     .fetchStationDescription(stationId.value)
     .then((station) => {
-      stationsStore.stationViewSetUpStationsToDisplay(station.nom)
+      stationsStore.stationViewSetUpStationsToDisplay(
+        station.nom,
+        state.lineDescription.id
+      )
       state.stationDescription = station
     })
 })

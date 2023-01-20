@@ -24,7 +24,7 @@ import {
   useViewsStore,
 } from '@/stores/views'
 import { useStationsStore } from '@/stores/stations'
-import { useComponentAboveMapStore } from '@/stores/interactionMap'
+import { useComponentAboveMapStore } from '@/stores/componentsAboveMapStore'
 import mapConfig from '../../map.config.json'
 import type { StyleFunction } from 'ol/style/Style'
 import type { LineNumber } from '@/model/lines.model'
@@ -42,7 +42,6 @@ import type { Style } from 'ol/style'
 import { trambusLineViewStyleFunction } from '@/styles/line'
 import { SelectedTrambusLine } from '@/model/selected-line.model'
 import SelectStationInteraction from '@/interactions/selectStation'
-import MapInteraction from '@/interactions/mapInteraction'
 import {
   getViewpointFromFeature,
   cloneViewPointAndResetCameraPosition,
@@ -72,13 +71,13 @@ onMounted(async () => {
   await updateLayersVisibility()
   updateMapStyle()
 
-  vcsApp.maps.eventHandler.featureInteraction.setActive(EventType.ALL)
+  vcsApp.maps.eventHandler.featureInteraction.setActive(EventType.CLICKMOVE)
   vcsApp.maps.eventHandler.addPersistentInteraction(
     new SelectStationInteraction(vcsApp, 'trambusStops')
   )
-  vcsApp.maps.eventHandler.addPersistentInteraction(new MapInteraction(vcsApp))
 
   componentAboveMapStore.setVcsApp(vcsApp)
+  componentAboveMapStore.addListenerForUpdatePositions()
 })
 
 // The following code is needed to cleanup resources we created
@@ -316,6 +315,7 @@ lineViewStore.$subscribe(() => {
 
 stationsStore.$subscribe(async () => {
   updateMapStyle()
+  await componentAboveMapStore.updateListLabelsStations()
 })
 </script>
 

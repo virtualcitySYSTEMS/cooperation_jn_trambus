@@ -42,6 +42,7 @@ onBeforeMount(async () => {
   state.lineDescription = await apiClientService.fetchLineDescription(
     lineStore.selectedLine
   )
+  stationsStore.lineViewSetUpStationsToDisplay(state.lineDescription.id)
   state.travelTimes = await apiClientService.fetchTravelTimeByLine(
     lineStore.selectedLine
   )
@@ -51,7 +52,6 @@ onBeforeMount(async () => {
 onMounted(async () => {
   viewStore.currentView = viewList.line
   mapStore.updateViewpoint(`line${lineStore.selectedLine}`, true)
-  stationsStore.lineViewSetUpStationsToDisplay()
 
   layerStore.setVisibilities(mapStore.is3D(), {
     trambusLines: true,
