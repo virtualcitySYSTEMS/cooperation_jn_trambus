@@ -1,25 +1,73 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import {
+  useLineViewsStore,
+  useTravelTimesViewStore,
+  useViewsStore,
+} from '@/stores/views'
+import { getColorLine } from '@/services/color'
+import type { LineNumber } from '@/model/lines.model'
+import { getLinesNumberFromLiCode } from '@/services/station'
+import { viewList } from '@/model/views.model'
 
 const props = defineProps<{
   stationName: string
   topPosition: number
   leftPosition: number
+  liCode?: string
 }>()
+
+const lineViewStore = useLineViewsStore()
+const travelTimeViewStore = useTravelTimesViewStore()
+const viewStore = useViewsStore()
 
 const positionStyle = computed(() => {
   let style: string = ''
-  style += 'top: ' + props.topPosition + 'px; '
-  style += 'left: ' + props.leftPosition + 'px; '
+  const size_text = 9 * props.stationName.length
+  if (
+    props.topPosition + 30 > window.innerHeight ||
+    props.leftPosition + size_text > window.innerWidth
+  ) {
+    style = 'display: none;'
+  } else {
+    style += 'top: ' + props.topPosition + 'px; '
+    style += 'left: ' + props.leftPosition + 'px; '
+  }
   return style
+})
+
+const colorClass = computed(() => {
+  let lineNumber: LineNumber = 0
+
+  if (
+    travelTimeViewStore.selectedTravelTime &&
+    travelTimeViewStore.selectedTravelTime !== null &&
+    viewStore.currentView == viewList.traveltimes
+  ) {
+    lineNumber = travelTimeViewStore.selectedTravelTime.line
+  } else if (lineViewStore.selectedLine) {
+    lineNumber = lineViewStore.selectedLine
+  } else if (props.liCode) {
+    const lines: LineNumber[] = getLinesNumberFromLiCode(props.liCode)
+    lineNumber = lines[0]
+  }
+
+  if (lineNumber != 0) {
+    const bgColor: string = getColorLine('bg', lineNumber, 600)
+    return [bgColor]
+  }
+  return ['bg-orange-600']
 })
 </script>
 
 <template>
   <div
-    class="h-90 transition-[height] absolute flex flex-col [&>*]:m-2 text-white items-center overflow-hidden w-32 select-none bg-orange-600"
+    class="absolute items-center rounded-3xl py-[2px] px-2 h-6"
+    :class="colorClass"
     :style="positionStyle"
   >
-    {{ props.stationName }}
+    <p class="font-dm-sans font-bold text-sm h-5 text-white">
+      {{ props.stationName }}
+    </p>
   </div>
 </template>

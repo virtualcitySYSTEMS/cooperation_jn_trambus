@@ -77,7 +77,6 @@ onMounted(async () => {
   )
 
   componentAboveMapStore.setVcsApp(vcsApp)
-  componentAboveMapStore.addListenerForUpdatePositions()
 })
 
 // The following code is needed to cleanup resources we created
@@ -264,6 +263,7 @@ function updateHomeViewStyle() {
 
 async function updateActiveMap() {
   await vcsApp.maps.setActiveMap(mapStore.activeMap)
+  componentAboveMapStore.addListenerForUpdatePositions()
 }
 
 function updateMapStyle() {

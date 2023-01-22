@@ -6,6 +6,7 @@ import {
   getStartEndStationsOfLine,
 } from '@/model/lines.fixtures'
 import type { LineNumber } from '@/model/lines.model'
+import type { TravelTimeModel } from '@/model/travel-time.model'
 
 export const useStationsStore = defineStore('stations', () => {
   const stationsToDisplayPermanently: Ref<string[]> = ref([])
@@ -88,6 +89,12 @@ export const useStationsStore = defineStore('stations', () => {
     clearAllStations()
   }
 
+  function updateStationsToDisplayFromTravelTimes(travelTime: TravelTimeModel) {
+    clearAllStations()
+    addStationToDisplayPermanently(travelTime.start)
+    addStationToDisplayPermanently(travelTime.end)
+  }
+
   return {
     stationsToDisplay,
     currentStationView,
@@ -100,5 +107,6 @@ export const useStationsStore = defineStore('stations', () => {
     deleteStationToDisplay,
     clearStationsExceptPermanent,
     homeViewSetUpStationsToDisplay,
+    updateStationsToDisplayFromTravelTimes,
   }
 })

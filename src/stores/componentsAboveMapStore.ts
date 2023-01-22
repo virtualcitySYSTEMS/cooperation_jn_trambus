@@ -3,12 +3,11 @@ import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
 import { Cartesian2 } from '@vcmap/cesium'
 import type { GeoJSONLayer } from '@vcmap/core'
-import { VcsApp } from '@vcmap/core'
+import { VcsApp, CesiumMap, OpenlayersMap } from '@vcmap/core'
 import { RENNES_LAYERS } from '@/stores/layers'
 import type { Feature, Geometry } from 'ol'
 import { getCartesianPositionFromFeature } from '@/helpers/featureHelper'
 import { useStationsStore } from '@/stores/stations'
-import { VcsMap } from '@vcmap/core'
 
 export const useComponentAboveMapStore = defineStore(
   'component-above-map',
@@ -94,13 +93,17 @@ export const useComponentAboveMapStore = defineStore(
     }
 
     function addListenerForUpdatePositions() {
-      if (vcsApp.value?.maps?.activeMap) {
-        const map: VcsMap = vcsApp.value?.maps?.activeMap
-        map.postRender.addEventListener(({ map }) => {
-          const vp = map.getViewpointSync()
-          if (vp && vp.isValid()) {
+      const map = vcsApp.value?.maps.activeMap
+      const currentViewpoint = map!.getViewpointSync()
+      if (map instanceof CesiumMap) {
+        map.getScene().postRender.addEventListener(() => {
+          if (!currentViewpoint!.equals(map!.getViewpointSync()!, 0.1)) {
             updatePositionsComponents()
           }
+        })
+      } else if (map instanceof OpenlayersMap) {
+        map.postRender.addEventListener(() => {
+          updatePositionsComponents()
         })
       }
     }

@@ -39,6 +39,7 @@ function onTravelTimesClicked(travelTime: TravelTimeModel) {
     travelTimeStore.selectedTravelTime = null
   } else {
     travelTimeStore.selectedTravelTime = travelTime
+    stationsStore.updateStationsToDisplayFromTravelTimes(travelTime)
   }
 }
 </script>

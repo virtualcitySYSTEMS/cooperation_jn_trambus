@@ -97,6 +97,16 @@ export function formatLiCode(
   })
 }
 
+export function getLinesNumberFromLiCode(li_code: string): LineNumber[] {
+  const lines: LineNumber[] = []
+  li_code.split(' ').map((li_line) => {
+    li_line = li_line.replace('T', '')
+    const line = parseInt(li_line) as LineNumber
+    lines.push(line)
+  })
+  return lines
+}
+
 export function displayLabelStation(stationName: string): boolean {
   const stationsStore = useStationsStore()
   return stationsStore.stationIsInStationsToDisplay(stationName)

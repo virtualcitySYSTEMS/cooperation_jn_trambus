@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useComponentAboveMapStore } from '@/stores/componentsAboveMapStore'
 import LabelStation from '@/components/map/aboveMap/LabelStation.vue'
+
 const componentAboveMapStore = useComponentAboveMapStore()
 </script>
 
@@ -11,5 +12,6 @@ const componentAboveMapStore = useComponentAboveMapStore()
     :stationName="label.stationName"
     :topPosition="Math.round(label.cartesian.y)"
     :leftPosition="Math.round(label.cartesian.x)"
+    :liCode="label.feature.get('li_code')"
   />
 </template>
