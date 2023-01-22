@@ -20,12 +20,14 @@ import { useStationsStore } from '@/stores/stations'
 import UiLineHeader from '@/components/ui/UiLineHeader.vue'
 import { viewList } from '@/model/views.model'
 import BackButton from '@/components/home/BackButton.vue'
+import { useTraveltimeInteractionStore } from '@/stores/interactionMap'
 
 const mapStore = useMapStore()
 const viewStore = useViewsStore()
 const layerStore = useLayersStore()
 const lineStore = useLineViewsStore()
 const stationsStore = useStationsStore()
+const traveltimeInteractionStore = useTraveltimeInteractionStore()
 
 const state = reactive({
   lineDescription: null as null | LineModel,
@@ -58,8 +60,17 @@ onMounted(async () => {
     trambusStops: true,
     parking: true,
     poi: true,
+    _traveltimeArrow: true,
   })
 })
+
+function onTravelTimesClicked(travelTime: TravelTimeModel) {
+  if (travelTime == traveltimeInteractionStore.selectedTraveltime) {
+    traveltimeInteractionStore.selectTraveltime(null)
+  } else {
+    traveltimeInteractionStore.selectTraveltime(travelTime)
+  }
+}
 </script>
 
 <template>
@@ -92,12 +103,15 @@ onMounted(async () => {
   </h2>
   <UiTravelTime
     v-for="travelTime in state.travelTimes"
+    role="button"
+    @click="onTravelTimesClicked(travelTime)"
     :key="travelTime.line"
     :newDuration="travelTime.new"
     :oldDuration="travelTime.old"
     :lineNumber="travelTime.line"
     :startStation="travelTime.start"
     :endStation="travelTime.end"
+    :colored="travelTime == traveltimeInteractionStore.selectedTraveltime"
   >
   </UiTravelTime>
 

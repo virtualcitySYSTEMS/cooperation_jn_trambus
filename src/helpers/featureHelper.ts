@@ -1,13 +1,13 @@
 import type { GeoJSONLayer, VcsApp } from '@vcmap/core'
 import type { Feature } from 'ol'
 import type { Geometry } from 'ol/geom'
-import type { Layers } from '@/stores/layers'
+import type { RennesLayer } from '@/stores/layers'
 import { Cartesian2 } from '@vcmap/cesium'
 import { getBalloonPosition } from '@/helpers/balloonHelper'
 
 export async function getFeatureByIdFromLayer(
   vcsApp: VcsApp,
-  layer_key: Layers,
+  layer_key: RennesLayer,
   id_feature: string
 ): Promise<Feature<Geometry>> {
   const layer: GeoJSONLayer = vcsApp.layers.getByKey(layer_key) as GeoJSONLayer
@@ -18,7 +18,7 @@ export async function getFeatureByIdFromLayer(
 
 export function getFeatureByName(
   vcsApp: VcsApp,
-  layer_key: Layers,
+  layer_key: RennesLayer,
   name: string
 ): Feature<Geometry> {
   const layer: GeoJSONLayer = vcsApp.layers.getByKey(layer_key) as GeoJSONLayer

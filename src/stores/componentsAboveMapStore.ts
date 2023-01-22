@@ -4,7 +4,7 @@ import { defineStore } from 'pinia'
 import { Cartesian2 } from '@vcmap/cesium'
 import type { GeoJSONLayer } from '@vcmap/core'
 import { VcsApp, CesiumMap, OpenlayersMap } from '@vcmap/core'
-import { RENNES_LAYERS } from '@/stores/layers'
+import { RENNES_LAYER } from '@/stores/layers'
 import type { Feature, Geometry } from 'ol'
 import { getCartesianPositionFromFeature } from '@/helpers/featureHelper'
 import { useStationsStore } from '@/stores/stations'
@@ -57,7 +57,7 @@ export const useComponentAboveMapStore = defineStore(
       const stationsStore = useStationsStore()
       //Add new station to list
       const layer: GeoJSONLayer = vcsApp.value.layers.getByKey(
-        RENNES_LAYERS[6]
+        RENNES_LAYER.trambusStops
       ) as GeoJSONLayer
       await layer.fetchData()
       layer.getFeatures().forEach((feature) => {
