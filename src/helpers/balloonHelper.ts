@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { CesiumMap, OpenlayersMap, Projection } from '@vcmap/core'
 import {
   Cartesian2,
@@ -33,7 +34,7 @@ export function getBalloonPosition(
   if (map instanceof CesiumMap) {
     const wgs84Position = Projection.mercatorToWgs84(position)
     cartesian = Cartographic.toCartesian(
-      Cartographic.fromDegrees(...wgs84Position)
+      Cartographic.fromDegrees(wgs84Position[0], wgs84Position[1])
     )
     cartesian = getBalloonPositionCesium(map.getScene(), cartesian)
   } else if (map instanceof OpenlayersMap) {

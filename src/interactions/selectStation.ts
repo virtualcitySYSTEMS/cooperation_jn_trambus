@@ -1,8 +1,3 @@
-// @ts-nocheck
-/**
- * TODO : delete ts-nocheck and ask to VC System how we have an error on import of vcsLayerName
- * Error : Module '"@vcmap/core"' has no exported member 'vcsLayerName'.
- * */
 import {
   AbstractInteraction,
   EventType,

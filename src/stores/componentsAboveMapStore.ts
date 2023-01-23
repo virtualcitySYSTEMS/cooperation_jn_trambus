@@ -1,11 +1,12 @@
 import { ref } from 'vue'
 import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
-import { Cartesian2 } from '@vcmap/cesium'
+import type { Cartesian2 } from '@vcmap/cesium'
 import type { GeoJSONLayer } from '@vcmap/core'
 import { VcsApp, CesiumMap, OpenlayersMap } from '@vcmap/core'
 import { RENNES_LAYER } from '@/stores/layers'
-import type { Feature, Geometry } from 'ol'
+import type { Feature } from 'ol'
+import type { Geometry } from 'ol/geom'
 import { getCartesianPositionFromFeature } from '@/helpers/featureHelper'
 import { useStationsStore } from '@/stores/stations'
 
@@ -35,11 +36,14 @@ export const useComponentAboveMapStore = defineStore(
       stationName: string
     ) {
       if (!stationIsInList(stationName)) {
-        labelsStationsList.value.push({
-          stationName: stationName,
-          feature: feature,
-          cartesian: getCartesianPositionFromFeature(vcsApp, feature),
-        })
+        const cartesian = getCartesianPositionFromFeature(vcsApp, feature)
+        if (cartesian !== undefined) {
+          labelsStationsList.value.push({
+            stationName: stationName,
+            feature: feature,
+            cartesian: cartesian,
+          })
+        }
       }
     }
 
@@ -71,7 +75,9 @@ export const useComponentAboveMapStore = defineStore(
     function updatePositionsComponents(vcsApp: VcsApp) {
       labelsStationsList.value.map((label) => {
         const cartesian = getCartesianPositionFromFeature(vcsApp, label.feature)
-        label.cartesian = cartesian
+        if (cartesian !== undefined) {
+          label.cartesian = cartesian
+        }
         return label
       })
     }
