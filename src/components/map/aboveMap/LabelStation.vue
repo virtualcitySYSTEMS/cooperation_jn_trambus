@@ -62,7 +62,7 @@ const colorClass = computed(() => {
 
 <template>
   <div
-    class="absolute items-center rounded-3xl py-[2px] px-2 h-6"
+    class="absolute items-center rounded-3xl py-0.5 px-2 h-6"
     :class="colorClass"
     :style="positionStyle"
   >

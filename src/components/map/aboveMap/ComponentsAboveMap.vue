@@ -10,8 +10,8 @@ const componentAboveMapStore = useComponentAboveMapStore()
     v-for="label in componentAboveMapStore.labelsStationsList"
     :key="label.stationName"
     :stationName="label.stationName"
-    :topPosition="Math.round(label.cartesian.y)"
-    :leftPosition="Math.round(label.cartesian.x)"
+    :topPosition="label.cartesian.y"
+    :leftPosition="label.cartesian.x"
     :liCode="label.feature.get('li_code')"
   />
 </template>

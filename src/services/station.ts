@@ -107,7 +107,7 @@ export function getLinesNumberFromLiCode(li_code: string): LineNumber[] {
   return lines
 }
 
-export function displayLabelStation(stationName: string): boolean {
+export function isStationLabelDisplayed(stationName: string): boolean {
   const stationsStore = useStationsStore()
   return stationsStore.stationIsInStationsToDisplay(stationName)
 }

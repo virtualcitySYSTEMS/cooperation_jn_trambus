@@ -7,7 +7,7 @@ import type { LineState } from '@/styles/line'
 import { trambusLineStyle } from '@/styles/line'
 import { getAllStartEndStations } from '@/model/lines.fixtures'
 import type { TravelTimeModel } from '@/model/travel-time.model'
-import { displayLabelStation } from '@/services/station'
+import { isStationLabelDisplayed } from '@/services/station'
 
 function getCircleStyle(
   lineNumber: LineNumber,
@@ -106,7 +106,7 @@ export function trambusStopTravelTimesViewStyleFunction(
     lineNumber,
     isShown,
     is3D,
-    displayLabelStation(stationName)
+    isStationLabelDisplayed(stationName)
   )
 }
 
@@ -123,6 +123,6 @@ export function trambusStopLineViewStyleFunction(
     selectedTrambusLine,
     isShown,
     is3D,
-    displayLabelStation(stationName)
+    isStationLabelDisplayed(stationName)
   )
 }
