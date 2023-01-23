@@ -27,7 +27,8 @@ const positionStyle = computed(() => {
   const label_height = 24
   if (
     props.topPosition + label_height > window.innerHeight ||
-    props.leftPosition + size_text > window.innerWidth
+    props.leftPosition + size_text > window.innerWidth ||
+    viewStore.currentView == viewList.home
   ) {
     style = 'display: none;'
   } else {
@@ -38,7 +39,7 @@ const positionStyle = computed(() => {
 })
 
 const colorClass = computed(() => {
-  let lineNumber: LineNumber = 0
+  let lineNumber: LineNumber | null = null
 
   if (
     travelTimeViewStore.selectedTravelTime &&
@@ -53,7 +54,7 @@ const colorClass = computed(() => {
     lineNumber = lines[0]
   }
 
-  if (lineNumber != 0) {
+  if (lineNumber !== null) {
     const bgColor: string = getColorLine('bg', lineNumber, 600)
     return [bgColor]
   }

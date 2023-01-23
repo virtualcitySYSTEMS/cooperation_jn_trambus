@@ -13,11 +13,6 @@ function getBalloonPositionCesium(scene: Scene, cartesian: Cartesian3) {
   return SceneTransforms.wgs84ToWindowCoordinates(scene, cartesian)
 }
 
-/**
- * @param {import("@vcmap/core").OpenlayersMap} olMap
- * @param {import("ol/coordinate").Coordinate} position
- * @returns {undefined|import("@vcmap/cesium").Cartesian2}
- */
 function getBalloonPositionOL(
   olMap: OpenlayersMap,
   position: Coordinate
@@ -29,12 +24,6 @@ function getBalloonPositionOL(
   return undefined
 }
 
-/**
- * returns the windowPosition of a balloon from a map position
- * @param {VcsApp} app
- * @param {import("ol/coordinate").Coordinate} position - position in mercator
- * @returns {Promise<undefined|Cartesian2>}
- */
 export function getBalloonPosition(
   app: VcsApp,
   position: Coordinate

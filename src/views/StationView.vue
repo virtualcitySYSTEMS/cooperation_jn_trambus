@@ -43,7 +43,7 @@ onBeforeMount(async () => {
     .then((station) => {
       stationsStore.stationViewSetUpStationsToDisplay(
         station.nom,
-        state.lineDescription.id
+        state.lineDescription!.id
       )
       state.stationDescription = station
     })

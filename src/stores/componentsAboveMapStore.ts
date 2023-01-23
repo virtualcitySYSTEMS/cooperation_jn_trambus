@@ -12,7 +12,6 @@ import { useStationsStore } from '@/stores/stations'
 export const useComponentAboveMapStore = defineStore(
   'component-above-map',
   () => {
-    const vcsApp: Ref<VcsApp | null> = ref(null)
     const cartesian: Ref<Cartesian2 | null> = ref(null)
     const labelsStationsList: Ref<
       {
@@ -21,10 +20,6 @@ export const useComponentAboveMapStore = defineStore(
         cartesian: Cartesian2
       }[]
     > = ref([])
-
-    function setVcsApp(app: VcsApp) {
-      vcsApp.value = app
-    }
 
     function stationIsInList(stationName: string) {
       return (
@@ -35,28 +30,23 @@ export const useComponentAboveMapStore = defineStore(
     }
 
     function addLabelStationToList(
+      vcsApp: VcsApp,
       feature: Feature<Geometry>,
       stationName: string
     ) {
-      if (vcsApp.value === null) {
-        return
-      }
       if (!stationIsInList(stationName)) {
         labelsStationsList.value.push({
           stationName: stationName,
           feature: feature,
-          cartesian: getCartesianPositionFromFeature(vcsApp.value, feature),
+          cartesian: getCartesianPositionFromFeature(vcsApp, feature),
         })
       }
     }
 
-    async function updateListLabelsStations() {
-      if (vcsApp.value === null) {
-        return
-      }
+    async function updateListLabelsStations(vcsApp: VcsApp) {
       const stationsStore = useStationsStore()
       //Add new station to list
-      const layer: GeoJSONLayer = vcsApp.value.layers.getByKey(
+      const layer: GeoJSONLayer = vcsApp.layers.getByKey(
         RENNES_LAYER.trambusStops
       ) as GeoJSONLayer
       await layer.fetchData()
@@ -64,7 +54,7 @@ export const useComponentAboveMapStore = defineStore(
         const stationInclude: boolean =
           stationsStore.stationsToDisplay.includes(feature.get('nom'))
         if (stationInclude) {
-          addLabelStationToList(feature, feature.get('nom'))
+          addLabelStationToList(vcsApp, feature, feature.get('nom'))
         }
       })
 
@@ -78,32 +68,23 @@ export const useComponentAboveMapStore = defineStore(
       cartesian.value = new_cartesian
     }
 
-    function updatePositionsComponents() {
-      if (vcsApp.value === null) {
-        return
-      }
+    function updatePositionsComponents(vcsApp: VcsApp) {
       labelsStationsList.value.map((label) => {
-        const cartesian = getCartesianPositionFromFeature(
-          vcsApp.value,
-          label.feature
-        )
+        const cartesian = getCartesianPositionFromFeature(vcsApp, label.feature)
         label.cartesian = cartesian
         return label
       })
     }
 
-    function addListenerForUpdatePositions() {
-      const map = vcsApp.value?.maps.activeMap
-      const currentViewpoint = map!.getViewpointSync()
+    function addListenerForUpdatePositions(vcsApp: VcsApp) {
+      const map = vcsApp.maps.activeMap
       if (map instanceof CesiumMap) {
         map.getScene().postRender.addEventListener(() => {
-          if (!currentViewpoint!.equals(map!.getViewpointSync()!, 0.1)) {
-            updatePositionsComponents()
-          }
+          updatePositionsComponents(vcsApp)
         })
       } else if (map instanceof OpenlayersMap) {
         map.postRender.addEventListener(() => {
-          updatePositionsComponents()
+          updatePositionsComponents(vcsApp)
         })
       }
     }
@@ -112,7 +93,6 @@ export const useComponentAboveMapStore = defineStore(
       cartesian,
       labelsStationsList,
       setCartesian,
-      setVcsApp,
       updatePositionsComponents,
       updateListLabelsStations,
       addListenerForUpdatePositions,

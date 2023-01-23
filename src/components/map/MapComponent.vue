@@ -88,8 +88,6 @@ onMounted(async () => {
   vcsApp.maps.eventHandler.addPersistentInteraction(
     new SelectStationInteraction(vcsApp, 'trambusStops')
   )
-
-  componentAboveMapStore.setVcsApp(vcsApp)
 })
 
 // The following code is needed to cleanup resources we created
@@ -299,7 +297,7 @@ function updateHomeViewStyle() {
 
 async function updateActiveMap() {
   await vcsApp.maps.setActiveMap(mapStore.activeMap)
-  componentAboveMapStore.addListenerForUpdatePositions()
+  componentAboveMapStore.addListenerForUpdatePositions(vcsApp)
 }
 
 function updateMapStyle() {
@@ -352,7 +350,7 @@ lineViewStore.$subscribe(() => {
 
 stationsStore.$subscribe(async () => {
   updateMapStyle()
-  await componentAboveMapStore.updateListLabelsStations()
+  await componentAboveMapStore.updateListLabelsStations(vcsApp)
 })
 
 traveltimeInteractionStore.$subscribe(async () => {
