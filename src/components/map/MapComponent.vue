@@ -10,12 +10,14 @@ import {
   EventType,
   Viewpoint,
   ArrowEnd,
+  vectorStyleSymbol,
 } from '@vcmap/core'
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
 import ComponentsAboveMap from '@/components/map/aboveMap/ComponentsAboveMap.vue'
 
-import { parkingStyle, poiStyle } from '@/styles/common'
+import { generatePoiStyle, parkingStyle } from '@/styles/common'
+
 import {
   useLayersStore,
   RENNES_LAYERNAMES,
@@ -58,6 +60,7 @@ import {
   cloneViewPointAndResetCameraPosition,
 } from '@/helpers/viewpointHelper'
 import { viewList } from '@/model/views.model'
+import { shorterName } from '@/services/poi'
 import { lineStringsFromTraveltimes } from '@/helpers/traveltimesHelper'
 import { apiClientService } from '@/services/api.client'
 import {
@@ -140,11 +143,25 @@ async function filterFeatureByPoiAndLine(line: number) {
   layer.removeFeaturesById(featuresToDelete)
 }
 
-async function fixGeometryOfPoi() {
+async function resetStyleOfPoi() {
   let layer: GeoJSONLayer = vcsApp.layers.getByKey(
     RENNES_LAYER.poi
   ) as GeoJSONLayer
   await layer.fetchData()
+  layer.getFeatures().forEach((f) => {
+    let styleItem = generatePoiStyle(
+      shorterName(f.getProperties()['site_nom']),
+      f.getProperties()['distance'],
+      mapStore.is3D()
+    )
+    // @ts-expect-error
+    f[vectorStyleSymbol] = styleItem
+    f.setStyle(styleItem.style)
+  })
+}
+
+async function fixGeometryOfPoi() {
+  let layer: GeoJSONLayer = vcsApp.layers.getByKey('poi') as GeoJSONLayer
   layer.getFeatures().forEach((f) => {
     let coordinates = [f.getProperties()['site_x'], f.getProperties()['site_y']]
     f.setGeometry(new Point(transform(coordinates, 'EPSG:4326', 'EPSG:3857')))
@@ -306,7 +323,6 @@ async function updateLineViewStyle() {
       mapStore.is3D()
     )
   )
-  clearLayerAndApplyStyle(RENNES_LAYER.poi, poiStyle)
   clearLayerAndApplyStyle(RENNES_LAYER.parking, parkingStyle)
 
   await updateTraveltimeArrow()
@@ -347,7 +363,6 @@ async function updateStationViewStyle() {
       mapStore.is3D()
     )
   )
-  clearLayerAndApplyStyle(RENNES_LAYER.poi, poiStyle)
   clearLayerAndApplyStyle(RENNES_LAYER.parking, parkingStyle)
   await updatePOIArrow()
 }
@@ -389,6 +404,7 @@ mapStore.$subscribe(async () => {
   await updateLayersVisibility()
   await updateViewPoint()
   await updateTraveltimeArrow()
+  resetStyleOfPoi()
 })
 
 viewStore.$subscribe(async () => {
@@ -405,6 +421,7 @@ lineViewStore.$subscribe(async () => {
     await filterFeatureByParkingAndLine(lineViewStore.selectedLine)
     await filterFeatureByPoiAndLine(lineViewStore.selectedLine)
     await updateLineViewStyle()
+    fixGeometryOfPoi()
   } else {
     await removeAllFilters()
   }
