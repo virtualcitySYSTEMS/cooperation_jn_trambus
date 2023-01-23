@@ -1,7 +1,15 @@
 import { CesiumMap, OpenlayersMap, Projection } from '@vcmap/core'
-import { Cartesian2, Cartographic, SceneTransforms } from '@vcmap/cesium'
+import {
+  Cartesian2,
+  Cartesian3,
+  Cartographic,
+  SceneTransforms,
+  Scene,
+} from '@vcmap/cesium'
+import type { Coordinate } from 'ol/coordinate'
+import type { VcsApp } from '@vcmap/core'
 
-function getBalloonPositionCesium(scene, cartesian) {
+function getBalloonPositionCesium(scene: Scene, cartesian: Cartesian3) {
   return SceneTransforms.wgs84ToWindowCoordinates(scene, cartesian)
 }
 
@@ -10,7 +18,10 @@ function getBalloonPositionCesium(scene, cartesian) {
  * @param {import("ol/coordinate").Coordinate} position
  * @returns {undefined|import("@vcmap/cesium").Cartesian2}
  */
-function getBalloonPositionOL(olMap, position) {
+function getBalloonPositionOL(
+  olMap: OpenlayersMap,
+  position: Coordinate
+): Cartesian2 | undefined {
   const pixel = olMap.getPixelFromCoordinate(position)
   if (pixel) {
     return new Cartesian2(...pixel)
@@ -24,7 +35,10 @@ function getBalloonPositionOL(olMap, position) {
  * @param {import("ol/coordinate").Coordinate} position - position in mercator
  * @returns {Promise<undefined|Cartesian2>}
  */
-export function getBalloonPosition(app, position) {
+export function getBalloonPosition(
+  app: VcsApp,
+  position: Coordinate
+): Cartesian2 | undefined {
   const map = app.maps.activeMap
   let cartesian = undefined
   if (map instanceof CesiumMap) {
