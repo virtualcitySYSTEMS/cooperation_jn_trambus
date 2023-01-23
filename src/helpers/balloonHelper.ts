@@ -1,4 +1,6 @@
 //@ts-nocheck
+//TODO: the function getPixelFromCoordinate throws an error: Property 'getPixelFromCoordinate' does not exist on type 'OpenlayersMap'
+//We need to ask VC System why this error is detected and when it's solved remove the @ts-nocheck
 import { CesiumMap, OpenlayersMap, Projection } from '@vcmap/core'
 import {
   Cartesian2,
