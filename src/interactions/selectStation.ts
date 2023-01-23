@@ -43,12 +43,12 @@ class SelectStationInteraction extends AbstractInteraction {
         }
       } else if (event.type & EventType.MOVE) {
         stationsStore.addStationToDisplay(stationName)
-        stationsStore.flagClearStationsExceptPermanent = true
+        stationsStore.flagClearStationsExceptPermanently = true
       }
     } else {
-      if (stationsStore.flagClearStationsExceptPermanent) {
-        stationsStore.clearStationsExceptPermanent()
-        stationsStore.flagClearStationsExceptPermanent = false
+      if (stationsStore.flagClearStationsExceptPermanently) {
+        stationsStore.clearStationsExceptPermanently()
+        stationsStore.flagClearStationsExceptPermanently = false
       }
 
       document.body.style.cursor = 'auto'

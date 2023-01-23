@@ -12,7 +12,7 @@ export const useStationsStore = defineStore('stations', () => {
   const stationsToDisplayPermanently: Ref<string[]> = ref([])
   const stationsToDisplay: Ref<string[]> = ref([])
   const currentStationView: Ref<string | null> = ref('')
-  const flagClearStationsExceptPermanent: Ref<boolean> = ref(false)
+  const flagClearStationsExceptPermanently: Ref<boolean> = ref(false)
 
   function addStationToDisplay(stationName: string) {
     if (!stationsToDisplay.value.includes(stationName)) {
@@ -44,7 +44,7 @@ export const useStationsStore = defineStore('stations', () => {
     return stationsToDisplay.value.includes(stationName)
   }
 
-  function clearStationsExceptPermanent() {
+  function clearStationsExceptPermanently() {
     stationsToDisplay.value = []
     stationsToDisplayPermanently.value.forEach((s) =>
       stationsToDisplay.value.push(s)
@@ -98,14 +98,14 @@ export const useStationsStore = defineStore('stations', () => {
   return {
     stationsToDisplay,
     currentStationView,
-    flagClearStationsExceptPermanent,
+    flagClearStationsExceptPermanently,
     stationViewSetUpStationsToDisplay,
     lineViewSetUpStationsToDisplay,
     stationIsInStationsToDisplay,
     traveltimesViewSetUpStationsToDisplay,
     addStationToDisplay,
     deleteStationToDisplay,
-    clearStationsExceptPermanent,
+    clearStationsExceptPermanently,
     homeViewSetUpStationsToDisplay,
     updateStationsToDisplayFromTravelTimes,
   }
