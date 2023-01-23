@@ -18,6 +18,9 @@ export function getScratchLayer(app: VcsApp, layerName: string): VectorLayer {
     name: layerName,
     projection: mercatorProjection.toJSON(),
     zIndex: 3,
+    vectorProperties: {
+      altitudeMode: 'absolute',
+    },
   })
 
   markVolatile(layer)
@@ -47,7 +50,7 @@ export function updateArrowLayerStyle(arrowLayer: VectorLayer, is3D: boolean) {
   arrowLayer.setStyle(
     new ArcStyle({
       width: 1.5,
-      arcFactor: 0.25,
+      arcFactor: 0.15,
       color: arrowColor,
       // False negative: Property 'BOTH' does not exist on type 'typeof ArrowEnd'
       // @ts-ignore
