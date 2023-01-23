@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "@pinia/testing": "^0.0.14",
-    "@vcmap/cesium": "~1.93.1",
     "@vcmap/core": "^5.0.0-rc.25",
     "ol": "^7.1.0",
     "pinia": "^2.0.21",
