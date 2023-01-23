@@ -87,7 +87,7 @@ onMounted(async () => {
 
   vcsApp.maps.eventHandler.featureInteraction.setActive(EventType.CLICKMOVE)
   vcsApp.maps.eventHandler.addPersistentInteraction(
-    new SelectStationInteraction(vcsApp, 'trambusStops')
+    new SelectStationInteraction(vcsApp, RENNES_LAYER.trambusStops)
   )
 })
 
@@ -103,21 +103,23 @@ function removeFilterOnLayers(layerName: string) {
 }
 
 async function removeAllFilters() {
-  removeFilterOnLayers('parking')
-  removeFilterOnLayers('poi')
+  removeFilterOnLayers(RENNES_LAYER.parking)
+  removeFilterOnLayers(RENNES_LAYER.poi)
   await fixGeometryOfPoi()
 }
 
 async function filterFeatureByParkingAndLine(line: SelectedTrambusLine) {
   await filterFeatureByLayerAndKeyAndValue(
-    'parking',
+    RENNES_LAYER.parking,
     'li_code',
     `T${line.valueOf()}`
   )
 }
 
 async function filterFeatureByPoiAndLine(line: number) {
-  let layer: GeoJSONLayer = vcsApp.layers.getByKey('poi') as GeoJSONLayer
+  let layer: GeoJSONLayer = vcsApp.layers.getByKey(
+    RENNES_LAYER.poi
+  ) as GeoJSONLayer
   await layer.fetchData()
   let featuresToDelete = layer
     .getFeatures()
@@ -134,7 +136,9 @@ async function filterFeatureByPoiAndLine(line: number) {
 }
 
 async function fixGeometryOfPoi() {
-  let layer: GeoJSONLayer = vcsApp.layers.getByKey('poi') as GeoJSONLayer
+  let layer: GeoJSONLayer = vcsApp.layers.getByKey(
+    RENNES_LAYER.poi
+  ) as GeoJSONLayer
   await layer.fetchData()
   layer.getFeatures().forEach((f) => {
     let coordinates = [f.getProperties()['site_x'], f.getProperties()['site_y']]
