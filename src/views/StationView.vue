@@ -64,7 +64,7 @@ onMounted(async () => {
 <template>
   <div class="flex flex-col items-start py-0 gap-2">
     <div class="flex items-center p-0 gap-4">
-      <BackButton></BackButton>
+      <BackButton :url="'/line/' + lineNumber"></BackButton>
       <UiStationHeader
         v-if="state.lineDescription && state.stationDescription"
         :line="state.lineDescription?.id!"
