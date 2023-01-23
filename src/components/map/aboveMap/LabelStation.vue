@@ -24,8 +24,9 @@ const viewStore = useViewsStore()
 const positionStyle = computed(() => {
   let style: string = ''
   const size_text = 9 * props.stationName.length
+  const label_height = 24
   if (
-    props.topPosition + 30 > window.innerHeight ||
+    props.topPosition + label_height > window.innerHeight ||
     props.leftPosition + size_text > window.innerWidth
   ) {
     style = 'display: none;'
