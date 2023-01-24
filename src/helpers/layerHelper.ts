@@ -11,7 +11,7 @@ export async function getFeatureByAttribute(
     .find((feature) => feature.getProperty(attribute) === value)
 }
 
-export async function getFeaturesByAttribute(
+export async function filterFeaturesByAttribute(
   attribute: string,
   value: string,
   layer: GeoJSONLayer

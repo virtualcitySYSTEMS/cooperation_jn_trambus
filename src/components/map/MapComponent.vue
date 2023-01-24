@@ -63,7 +63,7 @@ import { lineStringsFromTraveltimes } from '@/helpers/traveltimesHelper'
 import { apiClientService } from '@/services/api.client'
 import {
   getFeatureByAttribute,
-  getFeaturesByAttribute,
+  filterFeaturesByAttribute,
 } from '@/helpers/layerHelper'
 import { lineStringsFromStationPois } from '@/helpers/stationHelper'
 
@@ -248,7 +248,7 @@ async function updatePOIArrow() {
   ) as GeoJSONLayer
   await poiLayer.fetchData()
 
-  const selectedPoiFeatures = await getFeaturesByAttribute(
+  const selectedPoiFeatures = await filterFeaturesByAttribute(
     'station_nom',
     stationName,
     poiLayer
