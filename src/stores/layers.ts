@@ -14,6 +14,7 @@ export const RENNES_LAYER = {
   poi: 'poi',
   // The following layers are scratch layers
   _traveltimeArrow: '_traveltimeArrow',
+  _poiArrow: '_poiArrow',
 }
 
 export const RENNES_LAYERNAMES = [
@@ -27,6 +28,7 @@ export const RENNES_LAYERNAMES = [
   RENNES_LAYER.parking,
   RENNES_LAYER.poi,
   RENNES_LAYER._traveltimeArrow,
+  RENNES_LAYER._poiArrow,
 ] as const
 
 export type RennesLayer = typeof RENNES_LAYERNAMES[number]
@@ -44,6 +46,7 @@ export const useLayersStore = defineStore('layers', () => {
     parking: false,
     poi: false,
     _traveltimeArrow: false,
+    _poiArrow: false,
   })
 
   function toggleLayer(name: RennesLayer) {
@@ -66,6 +69,7 @@ export const useLayersStore = defineStore('layers', () => {
       parking: boolean
       poi: boolean
       _traveltimeArrow: boolean
+      _poiArrow: boolean
     }
   ) {
     update3DBaseLayer(is3D)
@@ -74,6 +78,7 @@ export const useLayersStore = defineStore('layers', () => {
     visibilities.value.parking = newVisibilities.parking
     visibilities.value.poi = newVisibilities.poi
     visibilities.value._traveltimeArrow = newVisibilities._traveltimeArrow
+    visibilities.value._poiArrow = newVisibilities._poiArrow
   }
 
   return { visibilities, toggleLayer, update3DBaseLayer, setVisibilities }
