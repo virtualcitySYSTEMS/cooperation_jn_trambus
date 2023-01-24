@@ -13,6 +13,7 @@ import {
 } from '@vcmap/core'
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
+import ComponentsAboveMap from '@/components/map/aboveMap/ComponentsAboveMap.vue'
 
 import { parkingStyle, poiStyle } from '@/styles/common'
 import {
@@ -24,13 +25,11 @@ import { useMapStore } from '@/stores/map'
 import {
   useLineViewsStore,
   useTravelTimesViewStore,
-  useStationViewsStore,
   useViewsStore,
 } from '@/stores/views'
-import {
-  useStationInteractionStore,
-  useTraveltimeInteractionStore,
-} from '@/stores/interactionMap'
+import { useStationsStore } from '@/stores/stations'
+import { useComponentAboveMapStore } from '@/stores/componentsAboveMapStore'
+import { useTraveltimeInteractionStore } from '@/stores/interactionMap'
 
 import mapConfig from '../../map.config.json'
 import type { StyleFunction } from 'ol/style/Style'
@@ -73,10 +72,10 @@ provide('vcsApp', vcsApp)
 const layerStore = useLayersStore()
 const mapStore = useMapStore()
 const lineViewStore = useLineViewsStore()
-const stationViewStore = useStationViewsStore()
+const stationsStore = useStationsStore()
 const travelTimesViewStore = useTravelTimesViewStore()
 const viewStore = useViewsStore()
-const stationInteractionStore = useStationInteractionStore()
+const componentAboveMapStore = useComponentAboveMapStore()
 const traveltimeInteractionStore = useTraveltimeInteractionStore()
 
 onMounted(async () => {
@@ -186,7 +185,7 @@ async function updateLayersVisibility() {
 async function updateViewPoint() {
   const activeMap = vcsApp.maps.activeMap
   if (viewStore.currentView == viewList.station) {
-    const stationName = stationViewStore.nameSelectedStation
+    const stationName = stationsStore.currentStationView
     let layer: GeoJSONLayer = vcsApp.layers.getByKey(
       RENNES_LAYER.trambusStops
     ) as GeoJSONLayer
@@ -231,7 +230,10 @@ async function updatePOIArrow() {
   const arrowLayer = getScratchLayer(vcsApp, RENNES_LAYER._poiArrow)
 
   // Get station
-  const stationName = stationViewStore.nameSelectedStation
+  const stationName = stationsStore.currentStationView
+  if (stationName === null) {
+    return
+  }
   let stationLayer: GeoJSONLayer = vcsApp.layers.getByKey(
     RENNES_LAYER.trambusStops
   ) as GeoJSONLayer
@@ -357,6 +359,7 @@ function updateHomeViewStyle() {
 
 async function updateActiveMap() {
   await vcsApp.maps.setActiveMap(mapStore.activeMap)
+  componentAboveMapStore.addListenerForUpdatePositions(vcsApp)
 }
 
 async function updateMapStyle() {
@@ -407,8 +410,9 @@ lineViewStore.$subscribe(async () => {
   }
 })
 
-stationInteractionStore.$subscribe(async () => {
+stationsStore.$subscribe(async () => {
   await updateMapStyle()
+  await componentAboveMapStore.updateListLabelsStations(vcsApp)
 })
 
 traveltimeInteractionStore.$subscribe(async () => {
@@ -419,4 +423,5 @@ traveltimeInteractionStore.$subscribe(async () => {
 <template>
   <UiMap></UiMap>
   <NavigationButtons />
+  <ComponentsAboveMap />
 </template>

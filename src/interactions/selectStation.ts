@@ -1,8 +1,3 @@
-// @ts-nocheck
-/**
- * TODO : delete ts-nocheck and ask to VC System how we have an error on import of vcsLayerName
- * Error : Module '"@vcmap/core"' has no exported member 'vcsLayerName'.
- * */
 import {
   AbstractInteraction,
   EventType,
@@ -13,7 +8,7 @@ import {
 } from '@vcmap/core'
 import type { Feature } from 'ol'
 import type { Point } from 'ol/geom'
-import { useStationInteractionStore } from '@/stores/interactionMap'
+import { useStationsStore } from '@/stores/stations'
 import { useLineViewsStore, useViewsStore } from '@/stores/views'
 import router from '@/router'
 import { viewList } from '@/model/views.model'
@@ -32,7 +27,7 @@ class SelectStationInteraction extends AbstractInteraction {
   async pipe(event: InteractionEvent): Promise<InteractionEvent> {
     const isLayerFeature =
       event.feature?.[vcsLayerName] === this._stationsLayerName
-    const stationInteractionStore = useStationInteractionStore()
+    const stationsStore = useStationsStore()
 
     if (isLayerFeature) {
       document.body.style.cursor = 'pointer'
@@ -47,12 +42,15 @@ class SelectStationInteraction extends AbstractInteraction {
           router.push(`/line/${lineNumber}/station/${stationId}`)
         }
       } else if (event.type & EventType.MOVE) {
-        stationInteractionStore.selectStation(stationName)
+        stationsStore.addStationToDisplay(stationName)
+        stationsStore.flagClearStationsExceptPermanently = true
       }
     } else {
-      if (stationInteractionStore.selectedStation !== null) {
-        stationInteractionStore.selectStation(null)
+      if (stationsStore.flagClearStationsExceptPermanently) {
+        stationsStore.clearStationsExceptPermanently()
+        stationsStore.flagClearStationsExceptPermanently = false
       }
+
       document.body.style.cursor = 'auto'
     }
     return event

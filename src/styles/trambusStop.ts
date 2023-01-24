@@ -1,24 +1,17 @@
 import type { LineNumber } from '@/model/lines.model'
-import { Circle, Fill, Stroke, Style, Text } from 'ol/style'
+import { Circle, Fill, Stroke, Style } from 'ol/style'
 import { getTrambusLineNumber, lineColors } from './common'
 import * as ol_color from 'ol/color'
 import type { FeatureLike } from 'ol/Feature'
 import type { LineState } from '@/styles/line'
 import { trambusLineStyle } from '@/styles/line'
-import {
-  getAllStartEndStations,
-  isStartEndStation,
-  isStartEndStationOfLine,
-  getStartEndStationsOfLine,
-} from '@/model/lines.fixtures'
+import { getAllStartEndStations } from '@/model/lines.fixtures'
 import type { TravelTimeModel } from '@/model/travel-time.model'
-import { useStationViewsStore } from '@/stores/views'
-import { useStationInteractionStore } from '@/stores/interactionMap'
+import { isStationLabelDisplayed } from '@/services/station'
 
 function getCircleStyle(
   lineNumber: LineNumber,
-  isStartEndStation: boolean,
-  isShowTextStation: boolean,
+  isStationSelected: boolean,
   is3D: boolean
 ): Style {
   let fillColor = ol_color.fromString('#FFFFFF')
@@ -37,7 +30,7 @@ function getCircleStyle(
   let circleRadius = 6
   let strokeWidth = 3
   // Make the circle bigger
-  if (isStartEndStation || isShowTextStation) {
+  if (isStationSelected) {
     circleRadius = 8
     strokeWidth = 4
   }
@@ -60,56 +53,17 @@ function getCircleStyle(
   return style_circle
 }
 
-function getTextStyle(
-  lineNumber: LineNumber,
-  isStartEndStation: boolean,
-  stationName: string
-): Style {
-  const backgroundFillColor = lineColors[lineNumber]
-  const style_text = new Style({
-    text: new Text({
-      textAlign: 'start',
-      textBaseline: 'middle',
-      font: 'Normal 12px Arial',
-      text: stationName,
-      fill: new Fill({
-        color: ol_color.fromString('#FFFFFF'),
-      }),
-      backgroundFill: new Fill({
-        color: backgroundFillColor,
-      }),
-      offsetX: 20,
-      offsetY: 0,
-      rotation: 0,
-      padding: [5, 3, 5, 3],
-    }),
-    zIndex: 10,
-  })
-  return style_text
-}
-
 export function trambusStopStyle(
   lineNumber: LineNumber,
-  isStartEndStation: boolean,
   isShown: boolean,
-  isShowTextStation: boolean,
   is3D: boolean,
-  stationName: string
+  isSelectedStation: boolean
 ): Style[] {
   if (!isShown) {
     return []
   }
-  const circleStyle = getCircleStyle(
-    lineNumber,
-    isStartEndStation,
-    isShowTextStation,
-    is3D
-  )
-  if (!isShowTextStation) {
-    return [circleStyle]
-  }
-  const textStyle = getTextStyle(lineNumber, isStartEndStation, stationName)
-  return [circleStyle, textStyle]
+  const circleStyle = getCircleStyle(lineNumber, isSelectedStation, is3D)
+  return [circleStyle]
 }
 
 export function trambusLineTravelTimesViewStyleFunction(
@@ -150,29 +104,10 @@ export function trambusStopTravelTimesViewStyleFunction(
 
   return trambusStopStyle(
     lineNumber,
-    isStartEndStation(stationName),
     isShown,
-    isShown, //always shown text when tranmbusStop is shown
     is3D,
-    stationName
+    isStationLabelDisplayed(stationName)
   )
-}
-
-function displayLabelStation(
-  stationName: string,
-  lineNumber: LineNumber
-): boolean {
-  const stationInteractionStore = useStationInteractionStore()
-  const stationViewStore = useStationViewsStore()
-
-  if (
-    stationInteractionStore.selectedStation == stationName ||
-    stationViewStore.nameSelectedStation == stationName
-  ) {
-    return true
-  }
-  const shownStations = getStartEndStationsOfLine(lineNumber)
-  return shownStations.includes(stationName)
 }
 
 export function trambusStopLineViewStyleFunction(
@@ -183,17 +118,11 @@ export function trambusStopLineViewStyleFunction(
 ): Style[] {
   const selectedTrambusLine = Number(selectedLine) as LineNumber
   const stationName = feature.get('nom')
-  const isShowTextStation = displayLabelStation(
-    stationName,
-    selectedTrambusLine
-  )
 
   return trambusStopStyle(
     selectedTrambusLine,
-    isStartEndStationOfLine(selectedTrambusLine, stationName),
     isShown,
-    isShowTextStation,
     is3D,
-    stationName
+    isStationLabelDisplayed(stationName)
   )
 }

@@ -2,6 +2,7 @@ import type { LineNumber } from '@/model/lines.model'
 import type { StationModel } from '@/model/stations.model'
 import { LIST_BUS } from '@/model/bus.model'
 import type { FeatureLike } from 'ol/Feature'
+import { useStationsStore } from '@/stores/stations'
 
 export function sortStationsByOrder(
   stations: StationModel[],
@@ -94,4 +95,19 @@ export function formatLiCode(
     station.li_code = new_li_code
     return station
   })
+}
+
+export function getLinesNumberFromLiCode(li_code: string): LineNumber[] {
+  const lines: LineNumber[] = []
+  li_code.split(' ').map((li_line) => {
+    li_line = li_line.replace('T', '')
+    const line = parseInt(li_line) as LineNumber
+    lines.push(line)
+  })
+  return lines
+}
+
+export function isStationLabelDisplayed(stationName: string): boolean {
+  const stationsStore = useStationsStore()
+  return stationsStore.stationIsInStationsToDisplay(stationName)
 }

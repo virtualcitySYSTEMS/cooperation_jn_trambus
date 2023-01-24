@@ -40,29 +40,3 @@ export const useLineViewsStore = defineStore('line-views', () => {
     selectedTravelTime,
   }
 })
-
-export const useStationViewsStore = defineStore('station-views', () => {
-  const nameSelectedStation: Ref<string> = ref('')
-  const idSelectedStation: Ref<number> = ref(0)
-
-  function setNameSelectedStation(stationName: string) {
-    nameSelectedStation.value = stationName
-  }
-
-  function setIdSelectedStation(idStation: number) {
-    idSelectedStation.value = idStation
-  }
-
-  function emptySelectedStation() {
-    nameSelectedStation.value = ''
-    idSelectedStation.value = 0
-  }
-
-  return {
-    nameSelectedStation,
-    setNameSelectedStation,
-    idSelectedStation,
-    setIdSelectedStation,
-    emptySelectedStation,
-  }
-})

@@ -16,6 +16,7 @@ import { useMapStore } from '@/stores/map'
 import { useViewsStore } from '@/stores/views'
 import { useLayersStore } from '@/stores/layers'
 import { useLineViewsStore } from '@/stores/views'
+import { useStationsStore } from '@/stores/stations'
 import UiLineHeader from '@/components/ui/UiLineHeader.vue'
 import { viewList } from '@/model/views.model'
 import BackButton from '@/components/home/BackButton.vue'
@@ -25,6 +26,7 @@ const mapStore = useMapStore()
 const viewStore = useViewsStore()
 const layerStore = useLayersStore()
 const lineStore = useLineViewsStore()
+const stationsStore = useStationsStore()
 const traveltimeInteractionStore = useTraveltimeInteractionStore()
 
 const state = reactive({
@@ -42,6 +44,7 @@ onBeforeMount(async () => {
   state.lineDescription = await apiClientService.fetchLineDescription(
     lineStore.selectedLine
   )
+  stationsStore.lineViewSetUpStationsToDisplay(state.lineDescription.id)
   state.travelTimes = await apiClientService.fetchTravelTimeByLine(
     lineStore.selectedLine
   )

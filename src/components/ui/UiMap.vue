@@ -3,6 +3,7 @@ import { inject, onMounted, ref } from 'vue'
 import type { VcsApp } from '@vcmap/core'
 
 const mapContainer = ref(null)
+
 onMounted(async () => {
   if (mapContainer.value) {
     const app = inject('vcsApp') as VcsApp
