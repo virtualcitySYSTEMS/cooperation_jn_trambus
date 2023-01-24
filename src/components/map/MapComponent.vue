@@ -9,6 +9,7 @@ import {
   VcsApp,
   EventType,
   Viewpoint,
+  ArrowEnd,
 } from '@vcmap/core'
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
@@ -272,7 +273,9 @@ async function updateTraveltimeArrow() {
     lineStrings = await lineStringsFromTraveltimes(travelTimes, vcsApp)
   }
   updateArrowFeatures(lineStrings, arrowLayer)
-  updateArrowLayerStyle(arrowLayer, mapStore.is3D())
+  // False negative: Property 'BOTH' does not exist on type 'typeof ArrowEnd'
+  // @ts-ignore
+  updateArrowLayerStyle(arrowLayer, mapStore.is3D(), ArrowEnd.BOTH)
 }
 
 async function updateLineViewStyle() {

@@ -41,7 +41,13 @@ export function updateArrowFeatures(
   arrowLayer.addFeatures(features)
 }
 
-export function updateArrowLayerStyle(arrowLayer: VectorLayer, is3D: boolean) {
+export function updateArrowLayerStyle(
+  arrowLayer: VectorLayer,
+  is3D: boolean,
+  // False negative: Property 'END' does not exist on type 'typeof ArrowEnd'
+  // @ts-ignore
+  end: ArrowEnd = ArrowEnd.END
+) {
   // Update arrow's style
   let arrowColor = '#000000'
   if (is3D) {
@@ -52,9 +58,7 @@ export function updateArrowLayerStyle(arrowLayer: VectorLayer, is3D: boolean) {
       width: 1.5,
       arcFactor: 0.15,
       color: arrowColor,
-      // False negative: Property 'BOTH' does not exist on type 'typeof ArrowEnd'
-      // @ts-ignore
-      end: ArrowEnd.BOTH,
+      end: end,
     })
   )
 }
