@@ -85,9 +85,12 @@ export const useComponentAboveMapStore = defineStore(
     function addListenerForUpdatePositions(vcsApp: VcsApp) {
       const map = vcsApp.maps.activeMap
       if (map instanceof CesiumMap) {
-        map.getScene().postRender.addEventListener(() => {
-          updatePositionsComponents(vcsApp)
-        })
+        // map.getScene().postRender.addEventListener(() => {
+        //   updatePositionsComponents(vcsApp)
+        // })
+        //TODO : delete this when 3D performance issue will be fixed with custom components
+        const stationsStore = useStationsStore()
+        stationsStore.clearAllStations()
       } else if (map instanceof OpenlayersMap) {
         map.postRender.addEventListener(() => {
           updatePositionsComponents(vcsApp)
