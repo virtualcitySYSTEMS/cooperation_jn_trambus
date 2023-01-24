@@ -9,6 +9,7 @@ import {
   VcsApp,
   EventType,
   Viewpoint,
+  ArrowEnd,
 } from '@vcmap/core'
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
@@ -59,6 +60,11 @@ import {
 import { viewList } from '@/model/views.model'
 import { lineStringsFromTraveltimes } from '@/helpers/traveltimesHelper'
 import { apiClientService } from '@/services/api.client'
+import {
+  getFeatureByAttribute,
+  filterFeaturesByAttribute,
+} from '@/helpers/layerHelper'
+import { lineStringsFromStationPois } from '@/helpers/stationHelper'
 
 const vcsApp = new VcsApp()
 provide('vcsApp', vcsApp)
@@ -86,7 +92,7 @@ onMounted(async () => {
 
   vcsApp.maps.eventHandler.featureInteraction.setActive(EventType.CLICKMOVE)
   vcsApp.maps.eventHandler.addPersistentInteraction(
-    new SelectStationInteraction(vcsApp, 'trambusStops')
+    new SelectStationInteraction(vcsApp, RENNES_LAYER.trambusStops)
   )
 })
 
@@ -101,18 +107,25 @@ function removeFilterOnLayers(layerName: string) {
   vcsApp.layers.getByKey(layerName)?.reload()
 }
 
-function removeAllFilters() {
-  removeFilterOnLayers('parking')
-  removeFilterOnLayers('poi')
-  fixGeometryOfPoi()
+async function removeAllFilters() {
+  removeFilterOnLayers(RENNES_LAYER.parking)
+  removeFilterOnLayers(RENNES_LAYER.poi)
+  await fixGeometryOfPoi()
 }
 
-function filterFeatureByParkingAndLine(line: SelectedTrambusLine) {
-  filterFeatureByLayerAndKeyAndValue('parking', 'li_code', `T${line.valueOf()}`)
+async function filterFeatureByParkingAndLine(line: SelectedTrambusLine) {
+  await filterFeatureByLayerAndKeyAndValue(
+    RENNES_LAYER.parking,
+    'li_code',
+    `T${line.valueOf()}`
+  )
 }
 
-function filterFeatureByPoiAndLine(line: number) {
-  let layer: GeoJSONLayer = vcsApp.layers.getByKey('poi') as GeoJSONLayer
+async function filterFeatureByPoiAndLine(line: number) {
+  let layer: GeoJSONLayer = vcsApp.layers.getByKey(
+    RENNES_LAYER.poi
+  ) as GeoJSONLayer
+  await layer.fetchData()
   let featuresToDelete = layer
     .getFeatures()
     .filter(
@@ -127,20 +140,24 @@ function filterFeatureByPoiAndLine(line: number) {
   layer.removeFeaturesById(featuresToDelete)
 }
 
-function fixGeometryOfPoi() {
-  let layer: GeoJSONLayer = vcsApp.layers.getByKey('poi') as GeoJSONLayer
+async function fixGeometryOfPoi() {
+  let layer: GeoJSONLayer = vcsApp.layers.getByKey(
+    RENNES_LAYER.poi
+  ) as GeoJSONLayer
+  await layer.fetchData()
   layer.getFeatures().forEach((f) => {
     let coordinates = [f.getProperties()['site_x'], f.getProperties()['site_y']]
     f.setGeometry(new Point(transform(coordinates, 'EPSG:4326', 'EPSG:3857')))
   })
 }
 
-function filterFeatureByLayerAndKeyAndValue(
+async function filterFeatureByLayerAndKeyAndValue(
   layerName: string,
   featureKey: string,
   featureValue: string
 ) {
   let layer: GeoJSONLayer = vcsApp.layers.getByKey(layerName) as GeoJSONLayer
+  await layer.fetchData()
   let featuresToDelete = layer
     .getFeatures()
     .filter((feature: Feature) => {
@@ -208,6 +225,45 @@ function clearLayerAndApplyStyle(
   }
 }
 
+async function updatePOIArrow() {
+  // Get scratch layer for POI arrow
+  const arrowLayer = getScratchLayer(vcsApp, RENNES_LAYER._poiArrow)
+
+  // Get station
+  const stationName = stationsStore.currentStationView
+  let stationLayer: GeoJSONLayer = vcsApp.layers.getByKey(
+    RENNES_LAYER.trambusStops
+  ) as GeoJSONLayer
+  await stationLayer.fetchData()
+  const selectedStationFeature = await getFeatureByAttribute(
+    'nom',
+    stationName,
+    stationLayer
+  )
+
+  // Get POI that related to the selected station (note: not all station has a POIs)
+  let poiLayer: GeoJSONLayer = vcsApp.layers.getByKey(
+    RENNES_LAYER.poi
+  ) as GeoJSONLayer
+  await poiLayer.fetchData()
+
+  const selectedPoiFeatures = await filterFeaturesByAttribute(
+    'station_nom',
+    stationName,
+    poiLayer
+  )
+
+  // Create line string from station to POI
+  const lineStrings = await lineStringsFromStationPois(
+    selectedStationFeature!,
+    selectedPoiFeatures
+  )
+  // Update features
+  updateArrowFeatures(lineStrings, arrowLayer)
+  // Update style
+  updateArrowLayerStyle(arrowLayer, mapStore.is3D())
+}
+
 async function updateTraveltimeArrow() {
   // Arrow style for travel time
   const arrowLayer = getScratchLayer(vcsApp, RENNES_LAYER._traveltimeArrow)
@@ -225,7 +281,9 @@ async function updateTraveltimeArrow() {
     lineStrings = await lineStringsFromTraveltimes(travelTimes, vcsApp)
   }
   updateArrowFeatures(lineStrings, arrowLayer)
-  updateArrowLayerStyle(arrowLayer, mapStore.is3D())
+  // False negative: Property 'BOTH' does not exist on type 'typeof ArrowEnd'
+  // @ts-ignore
+  updateArrowLayerStyle(arrowLayer, mapStore.is3D(), ArrowEnd.BOTH)
 }
 
 async function updateLineViewStyle() {
@@ -288,6 +346,7 @@ async function updateStationViewStyle() {
   )
   clearLayerAndApplyStyle(RENNES_LAYER.poi, poiStyle)
   clearLayerAndApplyStyle(RENNES_LAYER.parking, parkingStyle)
+  await updatePOIArrow()
 }
 
 function updateHomeViewStyle() {
@@ -300,7 +359,7 @@ async function updateActiveMap() {
   componentAboveMapStore.addListenerForUpdatePositions(vcsApp)
 }
 
-function updateMapStyle() {
+async function updateMapStyle() {
   switch (viewStore.currentView) {
     case viewList.home:
       updateHomeViewStyle()
@@ -312,7 +371,7 @@ function updateMapStyle() {
       updateTravelTimesViewStyle()
       break
     case viewList.station:
-      updateStationViewStyle()
+      await updateStationViewStyle()
       break
   }
 }
@@ -330,31 +389,31 @@ mapStore.$subscribe(async () => {
 })
 
 viewStore.$subscribe(async () => {
-  updateMapStyle()
+  await updateMapStyle()
 })
 
 travelTimesViewStore.$subscribe(async () => {
   updateTravelTimesViewStyle()
 })
 
-lineViewStore.$subscribe(() => {
+lineViewStore.$subscribe(async () => {
   if (lineViewStore.selectedLine !== SelectedTrambusLine.NONE) {
-    fixGeometryOfPoi()
-    filterFeatureByParkingAndLine(lineViewStore.selectedLine)
-    filterFeatureByPoiAndLine(lineViewStore.selectedLine)
-    updateLineViewStyle()
+    await fixGeometryOfPoi()
+    await filterFeatureByParkingAndLine(lineViewStore.selectedLine)
+    await filterFeatureByPoiAndLine(lineViewStore.selectedLine)
+    await updateLineViewStyle()
   } else {
-    removeAllFilters()
+    await removeAllFilters()
   }
 })
 
 stationsStore.$subscribe(async () => {
-  updateMapStyle()
+  await updateMapStyle()
   await componentAboveMapStore.updateListLabelsStations(vcsApp)
 })
 
 traveltimeInteractionStore.$subscribe(async () => {
-  updateMapStyle()
+  await updateMapStyle()
 })
 </script>
 

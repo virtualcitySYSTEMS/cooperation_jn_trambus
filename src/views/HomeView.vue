@@ -29,6 +29,7 @@ onMounted(() => {
     parking: true,
     poi: false,
     _traveltimeArrow: false,
+    _poiArrow: false,
   })
   stationsStore.homeViewSetUpStationsToDisplay()
 })
