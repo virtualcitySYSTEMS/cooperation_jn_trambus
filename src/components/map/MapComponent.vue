@@ -61,7 +61,10 @@ import {
 import { viewList } from '@/model/views.model'
 import { lineStringsFromTraveltimes } from '@/helpers/traveltimesHelper'
 import { apiClientService } from '@/services/api.client'
-import { getFeatureByAttribute } from '@/helpers/layerHelper'
+import {
+  getFeatureByAttribute,
+  getFeaturesByAttribute,
+} from '@/helpers/layerHelper'
 import { lineStringsFromStationPois } from '@/helpers/stationHelper'
 
 const vcsApp = new VcsApp()
@@ -226,12 +229,6 @@ function clearLayerAndApplyStyle(
 async function updatePOIArrow() {
   // Get scratch layer for POI arrow
   const arrowLayer = getScratchLayer(vcsApp, RENNES_LAYER._poiArrow)
-  // Get POI list
-  let poiLayer: GeoJSONLayer = vcsApp.layers.getByKey(
-    RENNES_LAYER.poi
-  ) as GeoJSONLayer
-  await poiLayer.fetchData()
-  let poiFeatures = poiLayer.getFeatures()
 
   // Get station
   const stationName = stationViewStore.nameSelectedStation
@@ -245,10 +242,22 @@ async function updatePOIArrow() {
     stationLayer
   )
 
+  // Get POI that related to the selected station (note: not all station has a POIs)
+  let poiLayer: GeoJSONLayer = vcsApp.layers.getByKey(
+    RENNES_LAYER.poi
+  ) as GeoJSONLayer
+  await poiLayer.fetchData()
+
+  const selectedPoiFeatures = await getFeaturesByAttribute(
+    'station_nom',
+    stationName,
+    poiLayer
+  )
+
   // Create line string from station to POI
   const lineStrings = await lineStringsFromStationPois(
     selectedStationFeature!,
-    poiFeatures
+    selectedPoiFeatures
   )
   // Update features
   updateArrowFeatures(lineStrings, arrowLayer)
@@ -350,7 +359,7 @@ async function updateActiveMap() {
   await vcsApp.maps.setActiveMap(mapStore.activeMap)
 }
 
-function updateMapStyle() {
+async function updateMapStyle() {
   switch (viewStore.currentView) {
     case viewList.home:
       updateHomeViewStyle()
@@ -362,7 +371,7 @@ function updateMapStyle() {
       updateTravelTimesViewStyle()
       break
     case viewList.station:
-      updateStationViewStyle()
+      await updateStationViewStyle()
       break
   }
 }
@@ -380,7 +389,7 @@ mapStore.$subscribe(async () => {
 })
 
 viewStore.$subscribe(async () => {
-  updateMapStyle()
+  await updateMapStyle()
 })
 
 travelTimesViewStore.$subscribe(async () => {
@@ -399,11 +408,11 @@ lineViewStore.$subscribe(async () => {
 })
 
 stationInteractionStore.$subscribe(async () => {
-  updateMapStyle()
+  await updateMapStyle()
 })
 
 traveltimeInteractionStore.$subscribe(async () => {
-  updateMapStyle()
+  await updateMapStyle()
 })
 </script>
 
