@@ -11,6 +11,7 @@ import {
   Viewpoint,
   ArrowEnd,
   vectorStyleSymbol,
+  OpenlayersMap,
 } from '@vcmap/core'
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
@@ -68,6 +69,7 @@ import {
   filterFeaturesByAttribute,
 } from '@/helpers/layerHelper'
 import { lineStringsFromStationPois } from '@/helpers/stationHelper'
+import { setDistanceDisplayConditionFeature } from '@/services/setDistanceDisplayCondition'
 
 const vcsApp = new VcsApp()
 provide('vcsApp', vcsApp)
@@ -85,13 +87,13 @@ onMounted(async () => {
   const context = new Context(mapConfig)
   await vcsApp.addContext(context)
   const cesiumMap = vcsApp.maps.getByKey('cesium')
+
   await cesiumMap?.initialize()
   if (cesiumMap && cesiumMap instanceof CesiumMap) {
     cesiumMap.getScene().globe.maximumScreenSpaceError = 1
   }
-  // window.vcmap = vcsApp
   await updateLayersVisibility()
-  updateMapStyle()
+  await updateMapStyle()
 
   vcsApp.maps.eventHandler.featureInteraction.setActive(EventType.CLICKMOVE)
   vcsApp.maps.eventHandler.addPersistentInteraction(
@@ -111,6 +113,7 @@ function removeFilterOnLayers(layerName: string) {
 }
 
 async function removeAllFilters() {
+  console.log('remove filter')
   removeFilterOnLayers(RENNES_LAYER.parking)
   removeFilterOnLayers(RENNES_LAYER.poi)
   await fixGeometryOfPoi()
@@ -154,6 +157,10 @@ async function resetStyleOfPoi() {
       f.getProperties()['distance'],
       mapStore.is3D()
     )
+    setDistanceDisplayConditionFeature(
+      styleItem,
+      vcsApp.maps.getByKey('ol') as OpenlayersMap
+    )
     // @ts-expect-error
     f[vectorStyleSymbol] = styleItem
     f.setStyle(styleItem.style)
@@ -161,7 +168,9 @@ async function resetStyleOfPoi() {
 }
 
 async function fixGeometryOfPoi() {
-  let layer: GeoJSONLayer = vcsApp.layers.getByKey('poi') as GeoJSONLayer
+  let layer: GeoJSONLayer = vcsApp.layers.getByKey(
+    RENNES_LAYER.poi
+  ) as GeoJSONLayer
   layer.getFeatures().forEach((f) => {
     let coordinates = [f.getProperties()['site_x'], f.getProperties()['site_y']]
     f.setGeometry(new Point(transform(coordinates, 'EPSG:4326', 'EPSG:3857')))
@@ -404,7 +413,7 @@ mapStore.$subscribe(async () => {
   await updateLayersVisibility()
   await updateViewPoint()
   await updateTraveltimeArrow()
-  resetStyleOfPoi()
+  await resetStyleOfPoi()
 })
 
 viewStore.$subscribe(async () => {
@@ -412,16 +421,15 @@ viewStore.$subscribe(async () => {
 })
 
 travelTimesViewStore.$subscribe(async () => {
-  updateTravelTimesViewStyle()
+  await updateTravelTimesViewStyle()
 })
 
 lineViewStore.$subscribe(async () => {
   if (lineViewStore.selectedLine !== SelectedTrambusLine.NONE) {
-    await fixGeometryOfPoi()
     await filterFeatureByParkingAndLine(lineViewStore.selectedLine)
     await filterFeatureByPoiAndLine(lineViewStore.selectedLine)
+    await fixGeometryOfPoi()
     await updateLineViewStyle()
-    fixGeometryOfPoi()
   } else {
     await removeAllFilters()
   }
