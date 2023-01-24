@@ -69,7 +69,7 @@ export function generatePoiStyle(
 
     label: label + '\n' + distance + 'm',
     image: {
-      src: '/src/assets/icons/pin.png',
+      src: pinIcon,
       scale: 0.75,
     },
   })
