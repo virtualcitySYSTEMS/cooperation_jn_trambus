@@ -87,7 +87,7 @@ onMounted(async () => {
 
   vcsApp.maps.eventHandler.featureInteraction.setActive(EventType.CLICKMOVE)
   vcsApp.maps.eventHandler.addPersistentInteraction(
-    new SelectStationInteraction(vcsApp, 'trambusStops')
+    new SelectStationInteraction(vcsApp, RENNES_LAYER.trambusStops)
   )
 })
 
@@ -102,18 +102,25 @@ function removeFilterOnLayers(layerName: string) {
   vcsApp.layers.getByKey(layerName)?.reload()
 }
 
-function removeAllFilters() {
-  removeFilterOnLayers('parking')
-  removeFilterOnLayers('poi')
-  fixGeometryOfPoi()
+async function removeAllFilters() {
+  removeFilterOnLayers(RENNES_LAYER.parking)
+  removeFilterOnLayers(RENNES_LAYER.poi)
+  await fixGeometryOfPoi()
 }
 
-function filterFeatureByParkingAndLine(line: SelectedTrambusLine) {
-  filterFeatureByLayerAndKeyAndValue('parking', 'li_code', `T${line.valueOf()}`)
+async function filterFeatureByParkingAndLine(line: SelectedTrambusLine) {
+  await filterFeatureByLayerAndKeyAndValue(
+    RENNES_LAYER.parking,
+    'li_code',
+    `T${line.valueOf()}`
+  )
 }
 
-function filterFeatureByPoiAndLine(line: number) {
-  let layer: GeoJSONLayer = vcsApp.layers.getByKey('poi') as GeoJSONLayer
+async function filterFeatureByPoiAndLine(line: number) {
+  let layer: GeoJSONLayer = vcsApp.layers.getByKey(
+    RENNES_LAYER.poi
+  ) as GeoJSONLayer
+  await layer.fetchData()
   let featuresToDelete = layer
     .getFeatures()
     .filter(
@@ -128,20 +135,24 @@ function filterFeatureByPoiAndLine(line: number) {
   layer.removeFeaturesById(featuresToDelete)
 }
 
-function fixGeometryOfPoi() {
-  let layer: GeoJSONLayer = vcsApp.layers.getByKey('poi') as GeoJSONLayer
+async function fixGeometryOfPoi() {
+  let layer: GeoJSONLayer = vcsApp.layers.getByKey(
+    RENNES_LAYER.poi
+  ) as GeoJSONLayer
+  await layer.fetchData()
   layer.getFeatures().forEach((f) => {
     let coordinates = [f.getProperties()['site_x'], f.getProperties()['site_y']]
     f.setGeometry(new Point(transform(coordinates, 'EPSG:4326', 'EPSG:3857')))
   })
 }
 
-function filterFeatureByLayerAndKeyAndValue(
+async function filterFeatureByLayerAndKeyAndValue(
   layerName: string,
   featureKey: string,
   featureValue: string
 ) {
   let layer: GeoJSONLayer = vcsApp.layers.getByKey(layerName) as GeoJSONLayer
+  await layer.fetchData()
   let featuresToDelete = layer
     .getFeatures()
     .filter((feature: Feature) => {
@@ -337,14 +348,14 @@ travelTimesViewStore.$subscribe(async () => {
   updateTravelTimesViewStyle()
 })
 
-lineViewStore.$subscribe(() => {
+lineViewStore.$subscribe(async () => {
   if (lineViewStore.selectedLine !== SelectedTrambusLine.NONE) {
-    fixGeometryOfPoi()
-    filterFeatureByParkingAndLine(lineViewStore.selectedLine)
-    filterFeatureByPoiAndLine(lineViewStore.selectedLine)
+    await fixGeometryOfPoi()
+    await filterFeatureByParkingAndLine(lineViewStore.selectedLine)
+    await filterFeatureByPoiAndLine(lineViewStore.selectedLine)
     updateLineViewStyle()
   } else {
-    removeAllFilters()
+    await removeAllFilters()
   }
 })
 
