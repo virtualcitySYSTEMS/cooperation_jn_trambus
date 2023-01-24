@@ -231,6 +231,9 @@ async function updatePOIArrow() {
 
   // Get station
   const stationName = stationsStore.currentStationView
+  if (stationName === null) {
+    return
+  }
   let stationLayer: GeoJSONLayer = vcsApp.layers.getByKey(
     RENNES_LAYER.trambusStops
   ) as GeoJSONLayer
