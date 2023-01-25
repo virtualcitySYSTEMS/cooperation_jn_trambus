@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, reactive, onMounted, ref } from 'vue'
+import { onBeforeMount, reactive, onMounted, ref, inject } from 'vue'
 
 import type { LineModel } from '@/model/lines.model'
 import type { TravelTimeModel } from '@/model/travel-time.model'
@@ -11,7 +11,6 @@ import ThermometerStations from '@/components/line/ThermometerStations.vue'
 import ParkingsInformations from '@/components/line/ParkingsInformations.vue'
 import FooterArea from '@/components/home/FooterArea.vue'
 import { useRoute } from 'vue-router'
-
 import { useMapStore } from '@/stores/map'
 import { useViewsStore } from '@/stores/views'
 import { useLayersStore } from '@/stores/layers'
@@ -21,6 +20,9 @@ import UiLineHeader from '@/components/ui/UiLineHeader.vue'
 import { viewList } from '@/model/views.model'
 import BackButton from '@/components/home/BackButton.vue'
 import { useTraveltimeInteractionStore } from '@/stores/interactionMap'
+import type { RennesApp } from '@/services/RennesApp'
+import { fetchParkingsByLine } from '@/services/parking'
+import type { ParkingModel } from '@/model/parkings.model'
 
 const mapStore = useMapStore()
 const viewStore = useViewsStore()
@@ -29,10 +31,13 @@ const lineStore = useLineViewsStore()
 const stationsStore = useStationsStore()
 const traveltimeInteractionStore = useTraveltimeInteractionStore()
 
+const vcsApp = inject('vcsApp') as RennesApp
+
 const state = reactive({
   lineDescription: null as null | LineModel,
   travelTimes: null as null | TravelTimeModel[],
   photo: null as null | PhotoModel,
+  parkings: null as null | ParkingModel[],
 })
 
 onBeforeMount(async () => {
@@ -49,6 +54,7 @@ onBeforeMount(async () => {
     lineStore.selectedLine
   )
   state.photo = await apiClientService.fetchPhotoByLine(lineStore.selectedLine)
+  state.parkings = await fetchParkingsByLine(vcsApp, lineStore.selectedLine)
 })
 
 onMounted(async () => {
@@ -97,7 +103,11 @@ function onTravelTimesClicked(travelTime: TravelTimeModel) {
     />
   </template>
 
-  <LineFigures v-if="state.lineDescription" :line="state.lineDescription?.id" />
+  <LineFigures
+    v-if="state.lineDescription && state.parkings"
+    :line="state.lineDescription?.id"
+    :nb_parking="state.parkings.length"
+  />
 
   <h2 class="font-dm-sans font-bold text-lg leading-6">
     Nouveaux temps de parcours
@@ -116,11 +126,10 @@ function onTravelTimesClicked(travelTime: TravelTimeModel) {
   >
   </UiTravelTime>
 
-  <div class="border-b border-neutral-300 mt-2"></div>
-  <ParkingsInformations
-    v-if="state.lineDescription"
-    :line="state.lineDescription?.id"
-  />
+  <template v-if="state.parkings && state.parkings.length > 0">
+    <div class="border-b border-neutral-300 mt-2"></div>
+    <ParkingsInformations :parkings="state.parkings" />
+  </template>
   <div class="border-b border-neutral-300 mb-3"></div>
   <ThermometerStations
     v-if="state.lineDescription"

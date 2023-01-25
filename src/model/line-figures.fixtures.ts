@@ -11,12 +11,6 @@ export const lineFiguresFixtures = (): LineFigureModel[] => [
     icon: stationIcon,
   },
   {
-    id: 'parking',
-    idLine: 1,
-    figure: 1,
-    description: 'Parking relais',
-  },
-  {
     id: 'frequency',
     idLine: 1,
     figure: 7,
@@ -31,12 +25,6 @@ export const lineFiguresFixtures = (): LineFigureModel[] => [
     figure: 32,
     description: 'Stations',
     icon: stationIcon,
-  },
-  {
-    id: 'parking',
-    idLine: 2,
-    figure: 3,
-    description: 'Parking relais',
   },
   {
     id: 'frequency',
@@ -55,12 +43,6 @@ export const lineFiguresFixtures = (): LineFigureModel[] => [
     icon: stationIcon,
   },
   {
-    id: 'parking',
-    idLine: 3,
-    figure: 4,
-    description: 'Parking relais',
-  },
-  {
     id: 'frequency',
     idLine: 3,
     figure: 7,
@@ -75,12 +57,6 @@ export const lineFiguresFixtures = (): LineFigureModel[] => [
     figure: 21,
     description: 'Stations',
     icon: stationIcon,
-  },
-  {
-    id: 'parking',
-    idLine: 4,
-    figure: 1,
-    description: 'Parking relais',
   },
   {
     id: 'frequency',
