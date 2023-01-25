@@ -53,6 +53,10 @@ module.exports = {
 
     'before:bg-red-600',
     'stroke-red-600',
+    'text-neutral-500',
+    'before:bg-neutral-500',
+    'text-neutral-900',
+    'before:bg-neutral-900',
 
     'before:border-indigo-500',
     'before:border-indigo-600',
