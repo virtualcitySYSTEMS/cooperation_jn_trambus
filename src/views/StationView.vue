@@ -88,7 +88,10 @@ onMounted(async () => {
     :idStation="state.stationDescription.id"
   />
 
-  <PointsOfInterestsStation v-if="state.stationDescription?.id" />
+  <PointsOfInterestsStation
+    v-if="state.stationDescription?.id"
+    :nameStation="state.stationDescription.nom"
+  />
   <div class="border-b border-neutral-300 my-3"></div>
   <FooterArea />
 </template>

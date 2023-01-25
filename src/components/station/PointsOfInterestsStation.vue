@@ -1,41 +1,47 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, inject, onMounted } from 'vue'
+import type { Ref } from 'vue'
 import ItemPOI from '@/components/station/ItemPOI.vue'
+import type { RennesApp } from '@/services/RennesApp'
+import { RENNES_LAYER } from '@/stores/layers'
 
-const pointsOfInterests = ref([
-  {
-    img: '',
-    name: 'Ville de Rennes - Service formalités Centre',
-    distance: 400,
-  },
-  {
-    img: 'bains-douches-saint-georges.png',
-    name: 'Bains douches Saint-Georges',
-    distance: 400,
-  },
-  {
-    img: '',
-    name: 'Rennes Métroppole - Direction des risques',
-    distance: 300,
-  },
-  {
-    img: 'direction-ressources.png',
-    name: 'Ville de Rennes - Rennes Métropole - Direction ressources',
-    distance: 400,
-  },
-])
+const props = defineProps<{
+  nameStation: string
+}>()
+
+const vcsApp = inject('vcsApp') as RennesApp
+const pointsOfInterests: Ref<
+  { img: string; name: string; distance: number }[]
+> = ref([])
+
+onMounted(async () => {
+  const poiFeatures = await vcsApp.getFeaturesByAttributeFromLayer(
+    RENNES_LAYER.poi,
+    'station_nom',
+    props.nameStation
+  )
+  poiFeatures.forEach((feature) => {
+    pointsOfInterests.value.push({
+      img: '',
+      name: feature.get('site_nom'),
+      distance: feature.get('distance'),
+    })
+  })
+})
 </script>
 
 <template>
-  <h2 class="font-dm-sans font-bold text-lg leading-6 mb-2 mt-3">
-    Centres d'intérêt
-  </h2>
+  <template v-if="pointsOfInterests.length > 0">
+    <h2 class="font-dm-sans font-bold text-lg leading-6 mb-2 mt-3">
+      Centres d'intérêt
+    </h2>
 
-  <ItemPOI
-    v-for="poi in pointsOfInterests"
-    :key="poi.name"
-    :img="poi.img"
-    :name="poi.name"
-    :distance="poi.distance"
-  />
+    <ItemPOI
+      v-for="poi in pointsOfInterests"
+      :key="poi.name"
+      :img="poi.img"
+      :name="poi.name"
+      :distance="poi.distance"
+    />
+  </template>
 </template>
