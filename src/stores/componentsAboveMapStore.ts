@@ -2,7 +2,6 @@ import { ref } from 'vue'
 import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { Cartesian2 } from '@vcmap/cesium'
-import type { GeoJSONLayer } from '@vcmap/core'
 import { CesiumMap, OpenlayersMap } from '@vcmap/core'
 import { RENNES_LAYER } from '@/stores/layers'
 import type { Feature } from 'ol'
@@ -51,10 +50,7 @@ export const useComponentAboveMapStore = defineStore(
     async function updateListLabelsStations(vcsApp: RennesApp) {
       const stationsStore = useStationsStore()
       //Add new station to list
-      const layer: GeoJSONLayer = vcsApp.layers.getByKey(
-        RENNES_LAYER.trambusStops
-      ) as GeoJSONLayer
-      await layer.fetchData()
+      const layer = await vcsApp.getLayerByKey(RENNES_LAYER.trambusStops)
       layer.getFeatures().forEach((feature) => {
         const stationInclude: boolean =
           stationsStore.stationsToDisplay.includes(feature.get('nom'))

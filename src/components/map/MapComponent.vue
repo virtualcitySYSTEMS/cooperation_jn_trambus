@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, inject } from 'vue'
-import {
-  FeatureLayer,
-  GeoJSONLayer,
-  Layer,
-  Viewpoint,
-  ArrowEnd,
-} from '@vcmap/core'
+import { FeatureLayer, Layer, Viewpoint, ArrowEnd } from '@vcmap/core'
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
 import ComponentsAboveMap from '@/components/map/aboveMap/ComponentsAboveMap.vue'
@@ -101,10 +95,7 @@ async function filterFeatureByParkingAndLine(line: SelectedTrambusLine) {
 }
 
 async function filterFeatureByPoiAndLine(line: number) {
-  let layer: GeoJSONLayer = vcsApp.layers.getByKey(
-    RENNES_LAYER.poi
-  ) as GeoJSONLayer
-  await layer.fetchData()
+  let layer = await vcsApp.getLayerByKey(RENNES_LAYER.poi)
   let featuresToDelete = layer
     .getFeatures()
     .filter(
@@ -120,10 +111,7 @@ async function filterFeatureByPoiAndLine(line: number) {
 }
 
 async function fixGeometryOfPoi() {
-  let layer: GeoJSONLayer = vcsApp.layers.getByKey(
-    RENNES_LAYER.poi
-  ) as GeoJSONLayer
-  await layer.fetchData()
+  let layer = await vcsApp.getLayerByKey(RENNES_LAYER.poi)
   layer.getFeatures().forEach((f) => {
     let coordinates = [f.getProperties()['site_x'], f.getProperties()['site_y']]
     f.setGeometry(new Point(transform(coordinates, 'EPSG:4326', 'EPSG:3857')))
@@ -135,8 +123,7 @@ async function filterFeatureByLayerAndKeyAndValue(
   featureKey: string,
   featureValue: string
 ) {
-  let layer: GeoJSONLayer = vcsApp.layers.getByKey(layerName) as GeoJSONLayer
-  await layer.fetchData()
+  let layer = await vcsApp.getLayerByKey(layerName)
   let featuresToDelete = layer
     .getFeatures()
     .filter((feature: Feature) => {
@@ -165,11 +152,8 @@ async function updateViewPoint() {
   const activeMap = vcsApp.maps.activeMap
   if (viewStore.currentView == viewList.station) {
     const stationName = stationsStore.currentStationView
-    let layer: GeoJSONLayer = vcsApp.layers.getByKey(
-      RENNES_LAYER.trambusStops
-    ) as GeoJSONLayer
+    let layer = await vcsApp.getLayerByKey(RENNES_LAYER.trambusStops)
     let viewpoint: Viewpoint | null = null
-    await layer.fetchData()
     layer.getFeatures().forEach((f) => {
       const properties = f.getProperties()
       if (stationName == properties.nom) {
