@@ -3,12 +3,13 @@ import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { Cartesian2 } from '@vcmap/cesium'
 import type { GeoJSONLayer } from '@vcmap/core'
-import { VcsApp, CesiumMap, OpenlayersMap } from '@vcmap/core'
+import { CesiumMap, OpenlayersMap } from '@vcmap/core'
 import { RENNES_LAYER } from '@/stores/layers'
 import type { Feature } from 'ol'
 import type { Geometry } from 'ol/geom'
 import { getCartesianPositionFromFeature } from '@/helpers/featureHelper'
 import { useStationsStore } from '@/stores/stations'
+import type { RennesApp } from '@/services/RennesApp'
 
 export const useComponentAboveMapStore = defineStore(
   'component-above-map',
@@ -31,7 +32,7 @@ export const useComponentAboveMapStore = defineStore(
     }
 
     function addLabelStationToList(
-      vcsApp: VcsApp,
+      vcsApp: RennesApp,
       feature: Feature<Geometry>,
       stationName: string
     ) {
@@ -47,7 +48,7 @@ export const useComponentAboveMapStore = defineStore(
       }
     }
 
-    async function updateListLabelsStations(vcsApp: VcsApp) {
+    async function updateListLabelsStations(vcsApp: RennesApp) {
       const stationsStore = useStationsStore()
       //Add new station to list
       const layer: GeoJSONLayer = vcsApp.layers.getByKey(
@@ -72,7 +73,7 @@ export const useComponentAboveMapStore = defineStore(
       cartesian.value = new_cartesian
     }
 
-    function updatePositionsComponents(vcsApp: VcsApp) {
+    function updatePositionsComponents(vcsApp: RennesApp) {
       labelsStationsList.value.map((label) => {
         const cartesian = getCartesianPositionFromFeature(vcsApp, label.feature)
         if (cartesian !== undefined) {
@@ -82,7 +83,7 @@ export const useComponentAboveMapStore = defineStore(
       })
     }
 
-    function addListenerForUpdatePositions(vcsApp: VcsApp) {
+    function addListenerForUpdatePositions(vcsApp: RennesApp) {
       const map = vcsApp.maps.activeMap
       if (map instanceof CesiumMap) {
         // map.getScene().postRender.addEventListener(() => {
