@@ -6,7 +6,7 @@ import MapComponent from '@/components/map/MapComponent.vue'
 import SidePanel from '@/components/home/SidePanel.vue'
 import HeadToolbarTrambus from '@/components/map/HeadToolbarTrambus.vue'
 import PlanningView from '@/views/PlanningView.vue'
-import UiLinkFooter from '@/components/ui/UiLinkFooter.vue'
+import LegalLink from '@/components/home/LegalLink.vue'
 import { viewList } from '@/model/views.model'
 import { usePanelsStore } from '@/stores/panels'
 import { useViewsStore } from '@/stores/views'
@@ -41,23 +41,11 @@ const isPhotoGalleryVisible = computed(() => {
       <MapComponent></MapComponent>
     </div>
 
-    <div
-      class="absolute z-20 bottom-3 left-3 font-dm-sans"
+    <LegalLink
+      class="absolute z-20 bottom-3 left-3"
       v-show="panelStore.isInformationPanelShown === false"
     >
-      <div class="flex gap-3 justify-center">
-        <UiLinkFooter
-          :url="'https://metropole.rennes.fr/mentions-legales'"
-          :textColor="'neutral-900'"
-          >Mentions légales</UiLinkFooter
-        >
-        <UiLinkFooter
-          :url="'https://fabriquecitoyenne.fr/privacy'"
-          :textColor="'neutral-900'"
-          >Politique de protection des données personnelles</UiLinkFooter
-        >
-      </div>
-    </div>
+    </LegalLink>
 
     <PhotoGallery
       class="z-10 absolute inset-x-0 bottom-0 max-w-max m-auto"
