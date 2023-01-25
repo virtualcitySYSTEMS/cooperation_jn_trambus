@@ -58,15 +58,12 @@ const styleClass = computed(() => {
       return ''
   }
 })
-const leftAlignment = computed(() =>
-  props.isOpen ? 'relative top-28' : 'absolute left-0 top-28'
-)
 </script>
 
 <template>
   <button
-    class="justify-center items-center gap-4 bg-white shadow"
-    :class="[styleClass, leftAlignment]"
+    class="flex justify-center items-center gap-4 bg-white shadow"
+    :class="styleClass"
   >
     <img :src="arrowIcon" />
   </button>

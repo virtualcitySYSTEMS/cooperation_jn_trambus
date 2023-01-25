@@ -40,12 +40,10 @@ const isPhotoGalleryVisible = computed(() => {
       <MapComponent></MapComponent>
     </div>
 
-    <div
+    <PhotoGallery
       class="z-10 absolute inset-x-0 bottom-0 max-w-max m-auto"
       v-show="isPhotoGalleryVisible"
-    >
-      <PhotoGallery></PhotoGallery>
-    </div>
+    ></PhotoGallery>
 
     <!--Do lazy loading for planning view.
       Only render it once, and after that 'hide' the planning view so that we can keep its state and no need to load it again. -->
