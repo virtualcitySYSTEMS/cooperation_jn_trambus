@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import type { LineNumber } from '@/model/lines.model'
 import router from '@/router'
 import ItemThermometerStations from '@/components/line/ItemThermometerStations.vue'
@@ -10,12 +9,9 @@ import { useStationsStore } from '@/stores/stations'
 
 type actionItem = 'leave' | 'over'
 
-const props = defineProps({
-  line: {
-    type: Number as PropType<LineNumber>,
-    required: true,
-  },
-})
+const props = defineProps<{
+  line: LineNumber
+}>()
 
 const stationsStore = useStationsStore()
 
