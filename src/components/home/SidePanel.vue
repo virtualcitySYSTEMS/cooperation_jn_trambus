@@ -1,11 +1,18 @@
 <script lang="ts" setup>
 import { usePanelsStore } from '@/stores/panels'
 import UiPanelControlButton from '@/components/ui/UiPanelControlButton.vue'
+import { computed } from 'vue'
 
 const panelStore = usePanelsStore()
 function toggleInformationPanel() {
   panelStore.toggleInformationPanel()
 }
+
+const leftAlignment = computed(() =>
+  panelStore.isInformationPanelShown
+    ? 'relative top-28'
+    : 'absolute left-0 top-28'
+)
 </script>
 
 <template>
@@ -21,6 +28,7 @@ function toggleInformationPanel() {
         :anchor-position="'left'"
         :is-open="panelStore.isInformationPanelShown"
         @click="toggleInformationPanel"
+        :class="leftAlignment"
       ></UiPanelControlButton>
     </div>
   </div>
