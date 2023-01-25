@@ -1,13 +1,9 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, provide } from 'vue'
+import { onMounted, onUnmounted, inject } from 'vue'
 import {
-  CesiumMap,
-  Context,
   FeatureLayer,
   GeoJSONLayer,
   Layer,
-  VcsApp,
-  EventType,
   Viewpoint,
   ArrowEnd,
 } from '@vcmap/core'
@@ -30,8 +26,6 @@ import {
 import { useStationsStore } from '@/stores/stations'
 import { useComponentAboveMapStore } from '@/stores/componentsAboveMapStore'
 import { useTraveltimeInteractionStore } from '@/stores/interactionMap'
-
-import mapConfig from '../../map.config.json'
 import type { StyleFunction } from 'ol/style/Style'
 import type { LineNumber } from '@/model/lines.model'
 import {
@@ -47,7 +41,6 @@ import type { Feature } from 'ol'
 import type { Style } from 'ol/style'
 import { trambusLineViewStyleFunction } from '@/styles/line'
 import { SelectedTrambusLine } from '@/model/selected-line.model'
-import SelectStationInteraction from '@/interactions/selectStation'
 import {
   getScratchLayer,
   updateArrowFeatures,
@@ -60,14 +53,10 @@ import {
 import { viewList } from '@/model/views.model'
 import { lineStringsFromTraveltimes } from '@/helpers/traveltimesHelper'
 import { apiClientService } from '@/services/api.client'
-import {
-  getFeatureByAttribute,
-  filterFeaturesByAttribute,
-} from '@/helpers/layerHelper'
 import { lineStringsFromStationPois } from '@/helpers/stationHelper'
+import type { RennesApp } from '@/services/RennesApp'
 
-const vcsApp = new VcsApp()
-provide('vcsApp', vcsApp)
+const vcsApp = inject('vcsApp') as RennesApp
 
 const layerStore = useLayersStore()
 const mapStore = useMapStore()
@@ -79,21 +68,11 @@ const componentAboveMapStore = useComponentAboveMapStore()
 const traveltimeInteractionStore = useTraveltimeInteractionStore()
 
 onMounted(async () => {
-  const context = new Context(mapConfig)
-  await vcsApp.addContext(context)
-  const cesiumMap = vcsApp.maps.getByKey('cesium')
-  await cesiumMap?.initialize()
-  if (cesiumMap && cesiumMap instanceof CesiumMap) {
-    cesiumMap.getScene().globe.maximumScreenSpaceError = 1
-  }
-  // window.vcmap = vcsApp
+  console.log('MapComponent.vue on mounted')
+
+  await vcsApp.initializeMap()
   await updateLayersVisibility()
   updateMapStyle()
-
-  vcsApp.maps.eventHandler.featureInteraction.setActive(EventType.CLICKMOVE)
-  vcsApp.maps.eventHandler.addPersistentInteraction(
-    new SelectStationInteraction(vcsApp, RENNES_LAYER.trambusStops)
-  )
 })
 
 // The following code is needed to cleanup resources we created
@@ -234,26 +213,17 @@ async function updatePOIArrow() {
   if (stationName === null) {
     return
   }
-  let stationLayer: GeoJSONLayer = vcsApp.layers.getByKey(
-    RENNES_LAYER.trambusStops
-  ) as GeoJSONLayer
-  await stationLayer.fetchData()
-  const selectedStationFeature = await getFeatureByAttribute(
+  const selectedStationFeature = await vcsApp.getFeatureByAttributeFromLayer(
+    RENNES_LAYER.trambusStops,
     'nom',
-    stationName,
-    stationLayer
+    stationName
   )
 
   // Get POI that related to the selected station (note: not all station has a POIs)
-  let poiLayer: GeoJSONLayer = vcsApp.layers.getByKey(
-    RENNES_LAYER.poi
-  ) as GeoJSONLayer
-  await poiLayer.fetchData()
-
-  const selectedPoiFeatures = await filterFeaturesByAttribute(
+  const selectedPoiFeatures = await vcsApp.getFeaturesByAttributeFromLayer(
+    RENNES_LAYER.poi,
     'station_nom',
-    stationName,
-    poiLayer
+    stationName
   )
 
   // Create line string from station to POI

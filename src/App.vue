@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onBeforeMount, provide } from 'vue'
 
 import PhotoGallery from '@/components/home/PhotoGallery.vue'
 import MapComponent from '@/components/map/MapComponent.vue'
@@ -9,9 +9,16 @@ import PlanningView from '@/views/PlanningView.vue'
 import { viewList } from '@/model/views.model'
 import { usePanelsStore } from '@/stores/panels'
 import { useViewsStore } from '@/stores/views'
+import { RennesApp } from '@/services/RennesApp'
 
 const panelStore = usePanelsStore()
 const viewStore = useViewsStore()
+
+onBeforeMount(() => {
+  console.log('App.vue on before mount')
+  const vcsApp = new RennesApp()
+  provide('vcsApp', vcsApp)
+})
 
 const isPhotoGalleryVisible = computed(() => {
   if (panelStore.isPlanningViewShown) {

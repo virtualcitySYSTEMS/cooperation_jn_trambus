@@ -33,6 +33,7 @@ const state = reactive({
 })
 
 onBeforeMount(async () => {
+  console.log('onbefore mount station view')
   lineStore.selectLine(lineNumber.value)
   state.lineDescription = await apiClientService.fetchLineDescription(
     lineStore.selectedLine
