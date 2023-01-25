@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import {
-  Viewpoint,
-  type VcsApp,
-  type VcsMap,
-  type ViewpointOptions,
-} from '@vcmap/core'
+import { Viewpoint, type VcsMap, type ViewpointOptions } from '@vcmap/core'
 import { inject, onMounted, ref } from 'vue'
+import type { RennesApp } from '@/services/RennesApp'
 import IconCompass from '../ui/icons/IconCompass.vue'
 
-const vcsApp = inject('vcsApp') as VcsApp
+const vcsApp = inject('vcsApp') as RennesApp
 
 const compass = ref<HTMLDivElement | null>(null)
 const arrow = ref<HTMLDivElement | null>(null)

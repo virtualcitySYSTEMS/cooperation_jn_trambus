@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { VcsApp } from '@vcmap/core'
 import { inject } from 'vue'
 import { cloneViewPointAndResetCameraPosition } from '@/helpers/viewpointHelper'
 
@@ -12,8 +11,9 @@ import { useMapStore } from '@/stores/map'
 import { useLayersStore } from '@/stores/layers'
 import { useViewsStore } from '@/stores/views'
 import { viewList } from '@/model/views.model'
+import type { RennesApp } from '@/services/RennesApp'
 
-const vcsApp = inject('vcsApp') as VcsApp
+const vcsApp = inject('vcsApp') as RennesApp
 
 const mapStore = useMapStore()
 const layerStore = useLayersStore()
