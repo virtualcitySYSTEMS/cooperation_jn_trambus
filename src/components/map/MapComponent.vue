@@ -12,12 +12,17 @@ import {
   ArrowEnd,
   vectorStyleSymbol,
   OpenlayersMap,
+  StyleItem,
 } from '@vcmap/core'
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
 import ComponentsAboveMap from '@/components/map/aboveMap/ComponentsAboveMap.vue'
 
-import { generatePoiStyle, parkingStyle } from '@/styles/common'
+import {
+  generatePoiStyle,
+  generatePoiStyleWithoutLabel,
+  parkingStyle,
+} from '@/styles/common'
 
 import {
   useLayersStore,
@@ -60,7 +65,7 @@ import {
   getViewpointFromFeature,
   cloneViewPointAndResetCameraPosition,
 } from '@/helpers/viewpointHelper'
-import { viewList } from '@/model/views.model'
+import { View, viewList } from '@/model/views.model'
 import { shorterName } from '@/services/poi'
 import { lineStringsFromTraveltimes } from '@/helpers/traveltimesHelper'
 import { apiClientService } from '@/services/api.client'
@@ -70,6 +75,7 @@ import {
 } from '@/helpers/layerHelper'
 import { lineStringsFromStationPois } from '@/helpers/stationHelper'
 import { setDistanceDisplayConditionFeature } from '@/services/setDistanceDisplayCondition'
+import { NearFarScalar } from '@vcmap/cesium'
 
 const vcsApp = new VcsApp()
 provide('vcsApp', vcsApp)
@@ -146,22 +152,28 @@ async function filterFeatureByPoiAndLine(line: number) {
   layer.removeFeaturesById(featuresToDelete)
 }
 
-async function resetStyleOfPoi() {
+async function resetStyleOfPoi(view: View) {
   let layer: GeoJSONLayer = vcsApp.layers.getByKey(
     RENNES_LAYER.poi
   ) as GeoJSONLayer
   await layer.fetchData()
+
   layer.getFeatures().forEach((f) => {
-    let styleItem = generatePoiStyle(
-      shorterName(f.getProperties()['site_nom']),
-      f.getProperties()['distance'],
-      mapStore.is3D()
-    )
+    let styleItem: StyleItem
+    if (view === viewList.station) {
+      styleItem = generatePoiStyle(
+        shorterName(f.getProperties()['site_nom']),
+        f.getProperties()['distance'],
+        mapStore.is3D()
+      )
+    } else {
+      styleItem = generatePoiStyleWithoutLabel()
+    }
     setDistanceDisplayConditionFeature(
       styleItem,
       vcsApp.maps.getByKey('ol') as OpenlayersMap
     )
-    // @ts-expect-error
+    //@ts-expect-error
     f[vectorStyleSymbol] = styleItem
     f.setStyle(styleItem.style)
   })
@@ -171,9 +183,15 @@ async function fixGeometryOfPoi() {
   let layer: GeoJSONLayer = vcsApp.layers.getByKey(
     RENNES_LAYER.poi
   ) as GeoJSONLayer
+
   layer.getFeatures().forEach((f) => {
     let coordinates = [f.getProperties()['site_x'], f.getProperties()['site_y']]
     f.setGeometry(new Point(transform(coordinates, 'EPSG:4326', 'EPSG:3857')))
+    const echelleMax = f.get('echelle_max') / 5
+    f.set(
+      'olcs_scaleByDistance',
+      new NearFarScalar(echelleMax - 1, 1, echelleMax, 0)
+    )
   })
 }
 
@@ -392,13 +410,15 @@ async function updateMapStyle() {
       updateHomeViewStyle()
       break
     case viewList.line:
-      updateLineViewStyle()
+      await updateLineViewStyle()
+      await resetStyleOfPoi(viewList.line)
       break
     case viewList.traveltimes:
-      updateTravelTimesViewStyle()
+      await updateTravelTimesViewStyle()
       break
     case viewList.station:
       await updateStationViewStyle()
+      await resetStyleOfPoi(viewList.station)
       break
   }
 }
@@ -413,7 +433,6 @@ mapStore.$subscribe(async () => {
   await updateLayersVisibility()
   await updateViewPoint()
   await updateTraveltimeArrow()
-  await resetStyleOfPoi()
 })
 
 viewStore.$subscribe(async () => {

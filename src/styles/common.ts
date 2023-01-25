@@ -52,7 +52,6 @@ export function generatePoiStyle(
   // @ts-ignore
   return new VectorStyleItem({
     text: {
-      text: 'LABEL',
       font: is3D ? 'bold 14px DM Sans' : '14px DM Sans',
       fill: {
         color: is3D ? '#ffffff' : '#000000',
@@ -68,6 +67,16 @@ export function generatePoiStyle(
     },
 
     label: label + '\n' + distance + 'm',
+    image: {
+      src: pinIcon,
+      scale: 0.75,
+    },
+  })
+}
+
+export function generatePoiStyleWithoutLabel() {
+  // @ts-ignore
+  return new VectorStyleItem({
     image: {
       src: pinIcon,
       scale: 0.75,
