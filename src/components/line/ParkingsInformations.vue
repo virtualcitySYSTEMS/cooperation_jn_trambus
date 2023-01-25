@@ -5,8 +5,6 @@ import UiParkingInformation from '@/components/ui/UiParkingInformation.vue'
 const props = defineProps<{
   parkings: ParkingModel[]
 }>()
-
-console.log(props.parkings)
 </script>
 
 <template>

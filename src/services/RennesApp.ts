@@ -74,4 +74,29 @@ export class RennesApp extends VcsApp {
     )
     return features[0]
   }
+
+  async filterFeaturesThatContainAttribute(
+    attribute: string,
+    value: string,
+    layer: GeoJSONLayer
+  ) {
+    const selected = layer
+      .getFeatures()
+      .filter((feature) => feature.getProperty(attribute).includes(value))
+    return selected
+  }
+
+  async getFeaturesThatContainAttributeFromLayer(
+    layer_key: RennesLayer,
+    attribute: string,
+    value: string
+  ) {
+    const layer = await this.getLayerByKey(layer_key)
+    const features = await this.filterFeaturesThatContainAttribute(
+      attribute,
+      value,
+      layer
+    )
+    return features
+  }
 }

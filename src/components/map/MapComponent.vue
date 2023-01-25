@@ -52,8 +52,6 @@ const componentAboveMapStore = useComponentAboveMapStore()
 const traveltimeInteractionStore = useTraveltimeInteractionStore()
 
 onMounted(async () => {
-  console.log('MapComponent.vue on mounted')
-
   await vcsApp.initializeMap()
   await updateLayersVisibility()
   updateMapStyle()

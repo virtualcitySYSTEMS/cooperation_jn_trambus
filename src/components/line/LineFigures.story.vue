@@ -4,6 +4,7 @@ function initState() {
   return {
     id: 1,
     nb_parking: 2,
+    nb_station: 30,
   }
 }
 </script>
@@ -22,6 +23,7 @@ function initState() {
       <LineFigures
         :line="state.id"
         :nb_parking="state.nb_parking"
+        :nb_station="state.nb_station"
       ></LineFigures>
     </template>
   </Story>

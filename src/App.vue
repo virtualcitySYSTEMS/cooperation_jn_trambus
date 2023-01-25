@@ -15,7 +15,6 @@ const panelStore = usePanelsStore()
 const viewStore = useViewsStore()
 
 onBeforeMount(() => {
-  console.log('App.vue on before mount')
   const vcsApp = new RennesApp()
   provide('vcsApp', vcsApp)
 })

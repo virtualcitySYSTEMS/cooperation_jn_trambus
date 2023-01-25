@@ -23,6 +23,8 @@ import { useTraveltimeInteractionStore } from '@/stores/interactionMap'
 import type { RennesApp } from '@/services/RennesApp'
 import { fetchParkingsByLine } from '@/services/parking'
 import type { ParkingModel } from '@/model/parkings.model'
+import type { StationModel } from '@/model/stations.model'
+import { fetchStationsByLine, completeStationsData } from '@/services/station'
 
 const mapStore = useMapStore()
 const viewStore = useViewsStore()
@@ -38,6 +40,7 @@ const state = reactive({
   travelTimes: null as null | TravelTimeModel[],
   photo: null as null | PhotoModel,
   parkings: null as null | ParkingModel[],
+  stations: null as null | StationModel[],
 })
 
 onBeforeMount(async () => {
@@ -55,6 +58,15 @@ onBeforeMount(async () => {
   )
   state.photo = await apiClientService.fetchPhotoByLine(lineStore.selectedLine)
   state.parkings = await fetchParkingsByLine(vcsApp, lineStore.selectedLine)
+
+  const stations = await fetchStationsByLine(vcsApp, lineStore.selectedLine)
+  state.stations = await completeStationsData(
+    vcsApp,
+    stations,
+    lineStore.selectedLine,
+    state.parkings
+  )
+  console.log(state.stations)
 })
 
 onMounted(async () => {
@@ -104,9 +116,10 @@ function onTravelTimesClicked(travelTime: TravelTimeModel) {
   </template>
 
   <LineFigures
-    v-if="state.lineDescription && state.parkings"
+    v-if="state.lineDescription && state.parkings && state.stations"
     :line="state.lineDescription?.id"
     :nb_parking="state.parkings.length"
+    :nb_station="state.stations.length"
   />
 
   <h2 class="font-dm-sans font-bold text-lg leading-6">
@@ -132,8 +145,9 @@ function onTravelTimesClicked(travelTime: TravelTimeModel) {
   </template>
   <div class="border-b border-neutral-300 mb-3"></div>
   <ThermometerStations
-    v-if="state.lineDescription"
+    v-if="state.lineDescription && state.stations"
     :line="state.lineDescription?.id"
+    :stations="state.stations"
   />
   <div class="border-b border-neutral-300 my-3"></div>
   <FooterArea />
