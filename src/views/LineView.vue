@@ -21,6 +21,7 @@ import UiLineHeader from '@/components/ui/UiLineHeader.vue'
 import { viewList } from '@/model/views.model'
 import BackButton from '@/components/home/BackButton.vue'
 import { useTraveltimeInteractionStore } from '@/stores/interactionMap'
+import { usePoiStore } from '@/stores/poi'
 
 const mapStore = useMapStore()
 const viewStore = useViewsStore()
@@ -28,6 +29,7 @@ const layerStore = useLayersStore()
 const lineStore = useLineViewsStore()
 const stationsStore = useStationsStore()
 const traveltimeInteractionStore = useTraveltimeInteractionStore()
+const poiStore = usePoiStore()
 
 const state = reactive({
   lineDescription: null as null | LineModel,
@@ -54,7 +56,6 @@ onBeforeMount(async () => {
 onMounted(async () => {
   viewStore.currentView = viewList.line
   mapStore.updateViewpoint(`line${lineStore.selectedLine}`, true)
-
   layerStore.setVisibilities(mapStore.is3D(), {
     trambusLines: true,
     trambusStops: true,
@@ -63,6 +64,8 @@ onMounted(async () => {
     _traveltimeArrow: true,
     _poiArrow: false,
   })
+  poiStore.activeLineProfile()
+  stationsStore.clearAllStations()
 })
 
 function onTravelTimesClicked(travelTime: TravelTimeModel) {

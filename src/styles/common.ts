@@ -1,9 +1,12 @@
+// @ts-nocheck
+
 import type { LineNumber } from '@/model/lines.model'
 import * as ol_color from 'ol/color'
 import type { FeatureLike } from 'ol/Feature'
 import { Icon, Style } from 'ol/style'
 import parkingIcon from '../assets/icons/parkingRelais.png'
 import pinIcon from '../assets/icons/pin.png'
+import { VectorStyleItem } from '@vcmap/core'
 
 export function getTrambusLineNumber(feature: FeatureLike): number {
   const lineNumberString = feature.get('li_code') // e.g. T1
@@ -40,3 +43,43 @@ export const parkingStyle: Style = new Style({
     scale: 1,
   }),
 })
+
+export function generatePoiStyle(
+  label: string,
+  distance: string,
+  is3D: boolean
+) {
+  // @ts-ignore
+  return new VectorStyleItem({
+    text: {
+      font: is3D ? 'bold 14px DM Sans' : '14px DM Sans',
+      fill: {
+        color: is3D ? '#ffffff' : '#000000',
+      },
+      stroke: {
+        color: is3D ? '#000000' : '#ffffff',
+        width: 1,
+      },
+      offsetX: 25,
+      offsetY: is3D ? -40 : -10,
+      textAlign: 'left',
+      justify: 'left',
+    },
+
+    label: label + '\n' + distance + 'm',
+    image: {
+      src: pinIcon,
+      scale: 0.75,
+    },
+  })
+}
+
+export function generatePoiStyleWithoutLabel() {
+  // @ts-ignore
+  return new VectorStyleItem({
+    image: {
+      src: pinIcon,
+      scale: 0.75,
+    },
+  })
+}
