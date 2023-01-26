@@ -24,7 +24,7 @@ function backButtonClicked() {
 
 <template>
   <UiButton
-    class="shadow-md rounded-lg p-2 flex gap-2.5 shrink-0 grow-0 visible"
+    class="shadow-md rounded-lg p-2 flex gap-2.5 shrink-0 grow-0 visible ui-btn-floating"
     @click="backButtonClicked"
   >
     <img :src="ChevronArrowLeft" />
