@@ -27,13 +27,7 @@ import {
 import { useStationsStore } from '@/stores/stations'
 import { useComponentAboveMapStore } from '@/stores/componentsAboveMapStore'
 import { useTraveltimeInteractionStore } from '@/stores/interactionMap'
-import type { LineNumber } from '@/model/lines.model'
-import { isStationOnLine } from '@/services/station'
-import { stationsFixtures } from '@/model/stations.fixtures'
-import { Point } from 'ol/geom'
-import { transform } from 'ol/proj'
-import type { Feature } from 'ol'
-import type { SelectedTrambusLine } from '@/model/selected-line.model'
+
 import {
   getViewpointFromFeature,
   cloneViewPointAndResetCameraPosition,
@@ -49,8 +43,15 @@ import { updateTraveltimeArrow } from '@/services/arrow'
 import { View, viewList } from '@/model/views.model'
 import { shorterName } from '@/services/poi'
 import { setDistanceDisplayConditionFeature } from '@/services/setDistanceDisplayCondition'
-import { NearFarScalar } from '@vcmap/cesium'
 import { usePoiStore } from '@/stores/poi'
+import {
+  filterFeatureByParkingAndLine,
+  filterFeatureByPoiAndStation,
+  filterFeatureByPoiAndLine,
+  removeFiltersOnPoiAndParking,
+} from '@/services/filter'
+
+import { fixGeometryOfPoi } from '@/services/poi'
 
 const rennesApp = inject('rennesApp') as RennesApp
 
@@ -77,56 +78,6 @@ onUnmounted(() => {
   rennesApp.destroy()
 })
 
-async function removeFilterOnLayers(layerName: string) {
-  await rennesApp.layers.getByKey(layerName)?.reload()
-}
-
-/**
- * Reload parking and poi layers, and hide them during restyling
- */
-async function removeFiltersOnPoiAndParking() {
-  layerStore.toggleLayer(RENNES_LAYER.poi)
-  layerStore.toggleLayer(RENNES_LAYER.parking)
-  await removeFilterOnLayers(RENNES_LAYER.poi)
-  await removeFilterOnLayers(RENNES_LAYER.parking)
-  fixGeometryOfPoi()
-  layerStore.toggleLayer(RENNES_LAYER.poi)
-  layerStore.toggleLayer(RENNES_LAYER.parking)
-}
-
-async function filterFeatureByParkingAndLine(line: SelectedTrambusLine) {
-  await filterFeatureByLayerAndKeyAndValue(
-    RENNES_LAYER.parking,
-    'li_code',
-    `T${line.valueOf()}`
-  )
-}
-
-async function filterFeatureByPoiAndLine(line: number) {
-  let layer = await rennesApp.getLayerByKey(RENNES_LAYER.poi)
-  let featuresToDelete = layer
-    .getFeatures()
-    .filter(
-      (f) =>
-        !isStationOnLine(
-          stationsFixtures(),
-          f.getProperties()['station_nom'],
-          line as LineNumber
-        )
-    )
-    .map((f) => f.getId()!)
-  layer.removeFeaturesById(featuresToDelete)
-}
-
-async function filterFeatureByPoiAndStation(station: string) {
-  let layer = await rennesApp.getLayerByKey(RENNES_LAYER.poi)
-  let featuresToDelete = layer
-    .getFeatures()
-    .filter((f) => f.getProperties()['station_nom'] !== station)
-    .map((f) => f.getId()!)
-  layer.removeFeaturesById(featuresToDelete)
-}
-
 async function resetStyleOfPoi(view: View) {
   let layer = await rennesApp.getLayerByKey(RENNES_LAYER.poi)
   layer.getFeatures().forEach((f) => {
@@ -149,35 +100,6 @@ async function resetStyleOfPoi(view: View) {
     f[vectorStyleSymbol] = styleItem
     f.setStyle(styleItem.style)
   })
-}
-
-async function fixGeometryOfPoi() {
-  let layer = await rennesApp.getLayerByKey(RENNES_LAYER.poi)
-
-  layer.getFeatures().forEach((f) => {
-    let coordinates = [f.getProperties()['site_x'], f.getProperties()['site_y']]
-    f.setGeometry(new Point(transform(coordinates, 'EPSG:4326', 'EPSG:3857')))
-    const echelleMax = f.get('echelle_max') / 5
-    f.set(
-      'olcs_scaleByDistance',
-      new NearFarScalar(echelleMax - 1, 1, echelleMax, 0)
-    )
-  })
-}
-
-async function filterFeatureByLayerAndKeyAndValue(
-  layerName: string,
-  featureKey: string,
-  featureValue: string
-) {
-  let layer = await rennesApp.getLayerByKey(layerName)
-  let featuresToDelete = layer
-    .getFeatures()
-    .filter((feature: Feature) => {
-      return feature.getProperties()[featureKey] !== featureValue
-    })
-    .map((f) => f.getId()!)
-  layer.removeFeaturesById(featuresToDelete)
 }
 
 async function setLayerVisible(layerName: string, visible: boolean) {
@@ -279,21 +201,24 @@ poiStore.$subscribe(async () => {
     poiStore.currentDisplay === viewList.station &&
     stationsStore.currentStationView
   ) {
-    await fixGeometryOfPoi()
-    await filterFeatureByParkingAndLine(lineViewStore.selectedLine)
-    await filterFeatureByPoiAndStation(stationsStore.currentStationView)
+    await fixGeometryOfPoi(rennesApp)
+    await filterFeatureByParkingAndLine(rennesApp, lineViewStore.selectedLine)
+    await filterFeatureByPoiAndStation(
+      rennesApp,
+      stationsStore.currentStationView
+    )
     await resetStyleOfPoi(viewList.station)
   } else if (
     poiStore.currentDisplay === viewList.line &&
     lineViewStore.selectedLine
   ) {
-    await removeFiltersOnPoiAndParking()
-    await fixGeometryOfPoi()
-    await filterFeatureByParkingAndLine(lineViewStore.selectedLine)
-    await filterFeatureByPoiAndLine(lineViewStore.selectedLine)
+    await removeFiltersOnPoiAndParking(rennesApp)
+    await fixGeometryOfPoi(rennesApp)
+    await filterFeatureByParkingAndLine(rennesApp, lineViewStore.selectedLine)
+    await filterFeatureByPoiAndLine(rennesApp, lineViewStore.selectedLine)
     await resetStyleOfPoi(viewList.line)
   } else {
-    await removeFiltersOnPoiAndParking()
+    await removeFiltersOnPoiAndParking(rennesApp)
   }
 })
 traveltimeInteractionStore.$subscribe(async () => {
