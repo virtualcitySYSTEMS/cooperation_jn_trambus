@@ -6,6 +6,7 @@ import MapComponent from '@/components/map/MapComponent.vue'
 import SidePanel from '@/components/home/SidePanel.vue'
 import HeadToolbarTrambus from '@/components/map/HeadToolbarTrambus.vue'
 import PlanningView from '@/views/PlanningView.vue'
+import LegalLink from '@/components/home/LegalLink.vue'
 import { viewList } from '@/model/views.model'
 import { usePanelsStore } from '@/stores/panels'
 import { useViewsStore } from '@/stores/views'
@@ -39,6 +40,16 @@ const isPhotoGalleryVisible = computed(() => {
     <div class="grow">
       <MapComponent></MapComponent>
     </div>
+
+    <LegalLink
+      class="absolute z-20 bottom-3 left-3"
+      v-show="
+        panelStore.isInformationPanelShown === false ||
+        panelStore.isPlanningViewShown === true
+      "
+      :text-color="'neutral-900'"
+    >
+    </LegalLink>
 
     <PhotoGallery
       class="z-10 absolute inset-x-0 bottom-0 max-w-max m-auto"

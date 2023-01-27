@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import UiRennesLogo from '@/components/ui/UiRennesLogo.vue'
-import UiLinkFooter from '@/components/ui/UiLinkFooter.vue'
+import LegalLink from '@/components/home/LegalLink.vue'
 </script>
 <template>
   <footer
@@ -13,13 +13,6 @@ import UiLinkFooter from '@/components/ui/UiLinkFooter.vue'
         3D.
       </div>
     </div>
-    <div class="flex gap-3 justify-center">
-      <UiLinkFooter :url="'https://metropole.rennes.fr/mentions-legales'"
-        >Mentions légales</UiLinkFooter
-      >
-      <UiLinkFooter :url="'https://fabriquecitoyenne.fr/privacy'"
-        >Politique de protection des données personnelles</UiLinkFooter
-      >
-    </div>
+    <LegalLink> </LegalLink>
   </footer>
 </template>
