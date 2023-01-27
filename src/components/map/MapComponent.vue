@@ -1,9 +1,17 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, inject } from 'vue'
-import type { Layer, Viewpoint } from '@vcmap/core'
+import {
+  Layer,
+  Viewpoint,
+  vectorStyleSymbol,
+  OpenlayersMap,
+  StyleItem,
+} from '@vcmap/core'
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
 import ComponentsAboveMap from '@/components/map/aboveMap/ComponentsAboveMap.vue'
+
+import { generatePoiStyle, generatePoiStyleWithoutLabel } from '@/styles/common'
 
 import {
   useLayersStore,
@@ -25,12 +33,11 @@ import { stationsFixtures } from '@/model/stations.fixtures'
 import { Point } from 'ol/geom'
 import { transform } from 'ol/proj'
 import type { Feature } from 'ol'
-import { SelectedTrambusLine } from '@/model/selected-line.model'
+import type { SelectedTrambusLine } from '@/model/selected-line.model'
 import {
   getViewpointFromFeature,
   cloneViewPointAndResetCameraPosition,
 } from '@/helpers/viewpointHelper'
-import { viewList } from '@/model/views.model'
 import type { RennesApp } from '@/services/RennesApp'
 import {
   updateLineViewStyle,
@@ -39,10 +46,16 @@ import {
   updateHomeViewStyle,
 } from '@/services/viewStyle'
 import { updateTraveltimeArrow } from '@/services/arrow'
+import { View, viewList } from '@/model/views.model'
+import { shorterName } from '@/services/poi'
+import { setDistanceDisplayConditionFeature } from '@/services/setDistanceDisplayCondition'
+import { NearFarScalar } from '@vcmap/cesium'
+import { usePoiStore } from '@/stores/poi'
 
 const vcsApp = inject('vcsApp') as RennesApp
 
 const layerStore = useLayersStore()
+const poiStore = usePoiStore()
 const mapStore = useMapStore()
 const lineViewStore = useLineViewsStore()
 const stationsStore = useStationsStore()
@@ -64,14 +77,21 @@ onUnmounted(() => {
   vcsApp.destroy()
 })
 
-function removeFilterOnLayers(layerName: string) {
-  vcsApp.layers.getByKey(layerName)?.reload()
+async function removeFilterOnLayers(layerName: string) {
+  await vcsApp.layers.getByKey(layerName)?.reload()
 }
 
-async function removeAllFilters() {
-  removeFilterOnLayers(RENNES_LAYER.parking)
-  removeFilterOnLayers(RENNES_LAYER.poi)
-  await fixGeometryOfPoi()
+/**
+ * Reload parking and poi layers, and hide them during restyling
+ */
+async function removeFiltersOnPoiAndParking() {
+  layerStore.toggleLayer(RENNES_LAYER.poi)
+  layerStore.toggleLayer(RENNES_LAYER.parking)
+  await removeFilterOnLayers(RENNES_LAYER.poi)
+  await removeFilterOnLayers(RENNES_LAYER.parking)
+  fixGeometryOfPoi()
+  layerStore.toggleLayer(RENNES_LAYER.poi)
+  layerStore.toggleLayer(RENNES_LAYER.parking)
 }
 
 async function filterFeatureByParkingAndLine(line: SelectedTrambusLine) {
@@ -98,11 +118,50 @@ async function filterFeatureByPoiAndLine(line: number) {
   layer.removeFeaturesById(featuresToDelete)
 }
 
+async function filterFeatureByPoiAndStation(station: string) {
+  let layer = await vcsApp.getLayerByKey(RENNES_LAYER.poi)
+  let featuresToDelete = layer
+    .getFeatures()
+    .filter((f) => f.getProperties()['station_nom'] !== station)
+    .map((f) => f.getId()!)
+  layer.removeFeaturesById(featuresToDelete)
+}
+
+async function resetStyleOfPoi(view: View) {
+  let layer = await vcsApp.getLayerByKey(RENNES_LAYER.poi)
+  layer.getFeatures().forEach((f) => {
+    let styleItem: StyleItem
+    if (view === viewList.station) {
+      styleItem = generatePoiStyle(
+        shorterName(f.getProperties()['site_nom']),
+        f.getProperties()['distance'],
+        mapStore.is3D()
+      )
+    } else {
+      styleItem = generatePoiStyleWithoutLabel()
+      setDistanceDisplayConditionFeature(
+        styleItem,
+        vcsApp.maps.getByKey('ol') as OpenlayersMap
+      )
+    }
+
+    //@ts-expect-error
+    f[vectorStyleSymbol] = styleItem
+    f.setStyle(styleItem.style)
+  })
+}
+
 async function fixGeometryOfPoi() {
   let layer = await vcsApp.getLayerByKey(RENNES_LAYER.poi)
+
   layer.getFeatures().forEach((f) => {
     let coordinates = [f.getProperties()['site_x'], f.getProperties()['site_y']]
     f.setGeometry(new Point(transform(coordinates, 'EPSG:4326', 'EPSG:3857')))
+    const echelleMax = f.get('echelle_max') / 5
+    f.set(
+      'olcs_scaleByDistance',
+      new NearFarScalar(echelleMax - 1, 1, echelleMax, 0)
+    )
   })
 }
 
@@ -196,6 +255,9 @@ mapStore.$subscribe(async () => {
   await updateActiveMap()
   await updateLayersVisibility()
   await updateViewPoint()
+  if (poiStore.currentDisplay) {
+    await resetStyleOfPoi(poiStore.currentDisplay)
+  }
   await updateTraveltimeArrow(vcsApp)
 })
 
@@ -204,18 +266,7 @@ viewStore.$subscribe(async () => {
 })
 
 travelTimesViewStore.$subscribe(async () => {
-  updateTravelTimesViewStyle(vcsApp)
-})
-
-lineViewStore.$subscribe(async () => {
-  if (lineViewStore.selectedLine !== SelectedTrambusLine.NONE) {
-    await fixGeometryOfPoi()
-    await filterFeatureByParkingAndLine(lineViewStore.selectedLine)
-    await filterFeatureByPoiAndLine(lineViewStore.selectedLine)
-    await updateLineViewStyle(vcsApp)
-  } else {
-    await removeAllFilters()
-  }
+  await updateTravelTimesViewStyle(vcsApp)
 })
 
 stationsStore.$subscribe(async () => {
@@ -223,6 +274,28 @@ stationsStore.$subscribe(async () => {
   await componentAboveMapStore.updateListLabelsStations(vcsApp)
 })
 
+poiStore.$subscribe(async () => {
+  if (
+    poiStore.currentDisplay === viewList.station &&
+    stationsStore.currentStationView
+  ) {
+    await fixGeometryOfPoi()
+    await filterFeatureByParkingAndLine(lineViewStore.selectedLine)
+    await filterFeatureByPoiAndStation(stationsStore.currentStationView)
+    await resetStyleOfPoi(viewList.station)
+  } else if (
+    poiStore.currentDisplay === viewList.line &&
+    lineViewStore.selectedLine
+  ) {
+    await removeFiltersOnPoiAndParking()
+    await fixGeometryOfPoi()
+    await filterFeatureByParkingAndLine(lineViewStore.selectedLine)
+    await filterFeatureByPoiAndLine(lineViewStore.selectedLine)
+    await resetStyleOfPoi(viewList.line)
+  } else {
+    await removeFiltersOnPoiAndParking()
+  }
+})
 traveltimeInteractionStore.$subscribe(async () => {
   await updateMapStyle()
 })

@@ -25,6 +25,7 @@ import { fetchParkingsByLine } from '@/services/parking'
 import type { ParkingModel } from '@/model/parkings.model'
 import type { StationModel } from '@/model/stations.model'
 import { fetchStationsByLine, completeStationsData } from '@/services/station'
+import { usePoiStore } from '@/stores/poi'
 
 const mapStore = useMapStore()
 const viewStore = useViewsStore()
@@ -32,6 +33,7 @@ const layerStore = useLayersStore()
 const lineStore = useLineViewsStore()
 const stationsStore = useStationsStore()
 const traveltimeInteractionStore = useTraveltimeInteractionStore()
+const poiStore = usePoiStore()
 
 const vcsApp = inject('vcsApp') as RennesApp
 
@@ -71,7 +73,6 @@ onBeforeMount(async () => {
 onMounted(async () => {
   viewStore.currentView = viewList.line
   mapStore.updateViewpoint(`line${lineStore.selectedLine}`, true)
-
   layerStore.setVisibilities(mapStore.is3D(), {
     trambusLines: true,
     trambusStops: true,
@@ -80,6 +81,8 @@ onMounted(async () => {
     _traveltimeArrow: true,
     _poiArrow: false,
   })
+  poiStore.activeLineProfile()
+  stationsStore.clearAllStations()
 })
 
 function onTravelTimesClicked(travelTime: TravelTimeModel) {

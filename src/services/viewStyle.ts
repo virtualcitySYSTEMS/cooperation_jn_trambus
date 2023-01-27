@@ -14,7 +14,7 @@ import {
 import { isTrambusStopBelongsToLine } from '@/services/station'
 import { parkingStyle, poiStyle } from '@/styles/common'
 import { useTraveltimeInteractionStore } from '@/stores/interactionMap'
-import { updateTraveltimeArrow, updatePOIArrow } from '@/services/arrow'
+import { updateTraveltimeArrow } from '@/services/arrow'
 
 export function clearLayerAndApplyStyle(
   vcsApp: RennesApp,
@@ -47,9 +47,7 @@ export async function updateLineViewStyle(vcsApp: RennesApp) {
       mapStore.is3D()
     )
   )
-  clearLayerAndApplyStyle(vcsApp, RENNES_LAYER.poi, poiStyle)
   clearLayerAndApplyStyle(vcsApp, RENNES_LAYER.parking, parkingStyle)
-
   await updateTraveltimeArrow(vcsApp)
 }
 
@@ -93,8 +91,6 @@ export async function updateStationViewStyle(vcsApp: RennesApp) {
     )
   )
   clearLayerAndApplyStyle(vcsApp, RENNES_LAYER.poi, poiStyle)
-  clearLayerAndApplyStyle(vcsApp, RENNES_LAYER.parking, parkingStyle)
-  await updatePOIArrow(vcsApp)
 }
 
 export function updateHomeViewStyle(vcsApp: RennesApp) {

@@ -12,17 +12,20 @@ import { useMapStore } from '@/stores/map'
 import { viewList } from '@/model/views.model'
 import { useStationsStore } from '@/stores/stations'
 import { SelectedTrambusLine } from '@/model/selected-line.model'
+import { usePoiStore } from '@/stores/poi'
 
 const layerStore = useLayersStore()
 const viewStore = useViewsStore()
 const mapStore = useMapStore()
 const lineViewsStore = useLineViewsStore()
 const stationsStore = useStationsStore()
+const poiStore = usePoiStore()
 
 onMounted(() => {
   viewStore.currentView = viewList.home
   mapStore.updateViewpoint(`home`, true)
   lineViewsStore.selectLine(SelectedTrambusLine.NONE)
+  poiStore.disablePoi()
   layerStore.setVisibilities(mapStore.is3D(), {
     trambusLines: true,
     trambusStops: false,
