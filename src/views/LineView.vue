@@ -35,7 +35,7 @@ const stationsStore = useStationsStore()
 const traveltimeInteractionStore = useTraveltimeInteractionStore()
 const poiStore = usePoiStore()
 
-const vcsApp = inject('vcsApp') as RennesApp
+const rennesApp = inject('rennesApp') as RennesApp
 
 const state = reactive({
   lineDescription: null as null | LineModel,
@@ -59,11 +59,11 @@ onBeforeMount(async () => {
     lineStore.selectedLine
   )
   state.photo = await apiClientService.fetchPhotoByLine(lineStore.selectedLine)
-  state.parkings = await fetchParkingsByLine(vcsApp, lineStore.selectedLine)
+  state.parkings = await fetchParkingsByLine(rennesApp, lineStore.selectedLine)
 
-  const stations = await fetchStationsByLine(vcsApp, lineStore.selectedLine)
+  const stations = await fetchStationsByLine(rennesApp, lineStore.selectedLine)
   state.stations = await completeStationsData(
-    vcsApp,
+    rennesApp,
     stations,
     lineStore.selectedLine,
     state.parkings

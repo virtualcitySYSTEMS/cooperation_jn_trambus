@@ -52,7 +52,7 @@ import { setDistanceDisplayConditionFeature } from '@/services/setDistanceDispla
 import { NearFarScalar } from '@vcmap/cesium'
 import { usePoiStore } from '@/stores/poi'
 
-const vcsApp = inject('vcsApp') as RennesApp
+const rennesApp = inject('rennesApp') as RennesApp
 
 const layerStore = useLayersStore()
 const poiStore = usePoiStore()
@@ -65,20 +65,20 @@ const componentAboveMapStore = useComponentAboveMapStore()
 const traveltimeInteractionStore = useTraveltimeInteractionStore()
 
 onMounted(async () => {
-  await vcsApp.initializeMap()
+  await rennesApp.initializeMap()
   await updateLayersVisibility()
   updateMapStyle()
 })
 
 // The following code is needed to cleanup resources we created
-// (in this case, the vcsApp) once a component gets destroyed (unmounted).
-// Otherwise, we will keep on rendering the vcsApp in its container after a hot reload.
+// (in this case, the rennesApp) once a component gets destroyed (unmounted).
+// Otherwise, we will keep on rendering the rennesApp in its container after a hot reload.
 onUnmounted(() => {
-  vcsApp.destroy()
+  rennesApp.destroy()
 })
 
 async function removeFilterOnLayers(layerName: string) {
-  await vcsApp.layers.getByKey(layerName)?.reload()
+  await rennesApp.layers.getByKey(layerName)?.reload()
 }
 
 /**
@@ -103,7 +103,7 @@ async function filterFeatureByParkingAndLine(line: SelectedTrambusLine) {
 }
 
 async function filterFeatureByPoiAndLine(line: number) {
-  let layer = await vcsApp.getLayerByKey(RENNES_LAYER.poi)
+  let layer = await rennesApp.getLayerByKey(RENNES_LAYER.poi)
   let featuresToDelete = layer
     .getFeatures()
     .filter(
@@ -119,7 +119,7 @@ async function filterFeatureByPoiAndLine(line: number) {
 }
 
 async function filterFeatureByPoiAndStation(station: string) {
-  let layer = await vcsApp.getLayerByKey(RENNES_LAYER.poi)
+  let layer = await rennesApp.getLayerByKey(RENNES_LAYER.poi)
   let featuresToDelete = layer
     .getFeatures()
     .filter((f) => f.getProperties()['station_nom'] !== station)
@@ -128,7 +128,7 @@ async function filterFeatureByPoiAndStation(station: string) {
 }
 
 async function resetStyleOfPoi(view: View) {
-  let layer = await vcsApp.getLayerByKey(RENNES_LAYER.poi)
+  let layer = await rennesApp.getLayerByKey(RENNES_LAYER.poi)
   layer.getFeatures().forEach((f) => {
     let styleItem: StyleItem
     if (view === viewList.station) {
@@ -141,7 +141,7 @@ async function resetStyleOfPoi(view: View) {
       styleItem = generatePoiStyleWithoutLabel()
       setDistanceDisplayConditionFeature(
         styleItem,
-        vcsApp.maps.getByKey('ol') as OpenlayersMap
+        rennesApp.maps.getByKey('ol') as OpenlayersMap
       )
     }
 
@@ -152,7 +152,7 @@ async function resetStyleOfPoi(view: View) {
 }
 
 async function fixGeometryOfPoi() {
-  let layer = await vcsApp.getLayerByKey(RENNES_LAYER.poi)
+  let layer = await rennesApp.getLayerByKey(RENNES_LAYER.poi)
 
   layer.getFeatures().forEach((f) => {
     let coordinates = [f.getProperties()['site_x'], f.getProperties()['site_y']]
@@ -170,7 +170,7 @@ async function filterFeatureByLayerAndKeyAndValue(
   featureKey: string,
   featureValue: string
 ) {
-  let layer = await vcsApp.getLayerByKey(layerName)
+  let layer = await rennesApp.getLayerByKey(layerName)
   let featuresToDelete = layer
     .getFeatures()
     .filter((feature: Feature) => {
@@ -181,7 +181,7 @@ async function filterFeatureByLayerAndKeyAndValue(
 }
 
 async function setLayerVisible(layerName: string, visible: boolean) {
-  const layer: Layer = vcsApp.maps.layerCollection.getByKey(layerName)
+  const layer: Layer = rennesApp.maps.layerCollection.getByKey(layerName)
   if (visible) {
     await layer?.activate()
   } else {
@@ -196,10 +196,10 @@ async function updateLayersVisibility() {
 }
 
 async function updateViewPoint() {
-  const activeMap = vcsApp.maps.activeMap
+  const activeMap = rennesApp.maps.activeMap
   if (viewStore.currentView == viewList.station) {
     const stationName = stationsStore.currentStationView
-    let layer = await vcsApp.getLayerByKey(RENNES_LAYER.trambusStops)
+    let layer = await rennesApp.getLayerByKey(RENNES_LAYER.trambusStops)
     let viewpoint: Viewpoint | null = null
     layer.getFeatures().forEach((f) => {
       const properties = f.getProperties()
@@ -212,36 +212,36 @@ async function updateViewPoint() {
       await activeMap.gotoViewpoint(newVp)
     }
   } else {
-    const selectedViewPoint = vcsApp.viewpoints.getByKey(mapStore.viewPoint)
+    const selectedViewPoint = rennesApp.viewpoints.getByKey(mapStore.viewPoint)
 
     if (selectedViewPoint) {
       await activeMap.gotoViewpoint(selectedViewPoint)
     } else {
       // go to home
-      const homeViewPoint = vcsApp.viewpoints.getByKey('rennes')
+      const homeViewPoint = rennesApp.viewpoints.getByKey('rennes')
       await activeMap.gotoViewpoint(homeViewPoint!)
     }
   }
 }
 
 async function updateActiveMap() {
-  await vcsApp.maps.setActiveMap(mapStore.activeMap)
-  componentAboveMapStore.addListenerForUpdatePositions(vcsApp)
+  await rennesApp.maps.setActiveMap(mapStore.activeMap)
+  componentAboveMapStore.addListenerForUpdatePositions(rennesApp)
 }
 
 async function updateMapStyle() {
   switch (viewStore.currentView) {
     case viewList.home:
-      updateHomeViewStyle(vcsApp)
+      updateHomeViewStyle(rennesApp)
       break
     case viewList.line:
-      updateLineViewStyle(vcsApp)
+      updateLineViewStyle(rennesApp)
       break
     case viewList.traveltimes:
-      updateTravelTimesViewStyle(vcsApp)
+      updateTravelTimesViewStyle(rennesApp)
       break
     case viewList.station:
-      await updateStationViewStyle(vcsApp)
+      await updateStationViewStyle(rennesApp)
       break
   }
 }
@@ -258,7 +258,7 @@ mapStore.$subscribe(async () => {
   if (poiStore.currentDisplay) {
     await resetStyleOfPoi(poiStore.currentDisplay)
   }
-  await updateTraveltimeArrow(vcsApp)
+  await updateTraveltimeArrow(rennesApp)
 })
 
 viewStore.$subscribe(async () => {
@@ -266,12 +266,12 @@ viewStore.$subscribe(async () => {
 })
 
 travelTimesViewStore.$subscribe(async () => {
-  await updateTravelTimesViewStyle(vcsApp)
+  await updateTravelTimesViewStyle(rennesApp)
 })
 
 stationsStore.$subscribe(async () => {
   await updateMapStyle()
-  await componentAboveMapStore.updateListLabelsStations(vcsApp)
+  await componentAboveMapStore.updateListLabelsStations(rennesApp)
 })
 
 poiStore.$subscribe(async () => {

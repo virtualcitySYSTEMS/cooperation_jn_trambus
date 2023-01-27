@@ -17,26 +17,26 @@ import { apiClientService } from '@/services/api.client'
 import { useLineViewsStore } from '@/stores/views'
 import { ArrowEnd } from '@vcmap/core'
 
-export async function updatePOIArrow(vcsApp: RennesApp) {
+export async function updatePOIArrow(rennesApp: RennesApp) {
   const stationsStore = useStationsStore()
   const mapStore = useMapStore()
 
   // Get scratch layer for POI arrow
-  const arrowLayer = getScratchLayer(vcsApp, RENNES_LAYER._poiArrow)
+  const arrowLayer = getScratchLayer(rennesApp, RENNES_LAYER._poiArrow)
 
   // Get station
   const stationName = stationsStore.currentStationView
   if (stationName === null) {
     return
   }
-  const selectedStationFeature = await vcsApp.getFeatureByAttributeFromLayer(
+  const selectedStationFeature = await rennesApp.getFeatureByAttributeFromLayer(
     RENNES_LAYER.trambusStops,
     'nom',
     stationName
   )
 
   // Get POI that related to the selected station (note: not all station has a POIs)
-  const selectedPoiFeatures = await vcsApp.getFeaturesByAttributeFromLayer(
+  const selectedPoiFeatures = await rennesApp.getFeaturesByAttributeFromLayer(
     RENNES_LAYER.poi,
     'station_nom',
     stationName
@@ -53,26 +53,26 @@ export async function updatePOIArrow(vcsApp: RennesApp) {
   updateArrowLayerStyle(arrowLayer, mapStore.is3D())
 }
 
-export async function updateTraveltimeArrow(vcsApp: RennesApp) {
+export async function updateTraveltimeArrow(rennesApp: RennesApp) {
   const traveltimeInteractionStore = useTraveltimeInteractionStore()
   const viewStore = useViewsStore()
   const lineViewStore = useLineViewsStore()
   const mapStore = useMapStore()
 
   // Arrow style for travel time
-  const arrowLayer = getScratchLayer(vcsApp, RENNES_LAYER._traveltimeArrow)
+  const arrowLayer = getScratchLayer(rennesApp, RENNES_LAYER._traveltimeArrow)
   let lineStrings: LineString[] = []
 
   if (traveltimeInteractionStore.selectedTraveltime) {
     lineStrings = await lineStringsFromTraveltimes(
       [traveltimeInteractionStore.selectedTraveltime],
-      vcsApp
+      rennesApp
     )
   } else if (viewStore.currentView === viewList.line) {
     const travelTimes = await apiClientService.fetchTravelTimeByLine(
       lineViewStore.selectedLine
     )
-    lineStrings = await lineStringsFromTraveltimes(travelTimes, vcsApp)
+    lineStrings = await lineStringsFromTraveltimes(travelTimes, rennesApp)
   }
   updateArrowFeatures(lineStrings, arrowLayer)
   // False negative: Property 'BOTH' does not exist on type 'typeof ArrowEnd'

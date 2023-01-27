@@ -3,13 +3,13 @@ import type { RennesApp } from '@/services/RennesApp'
 import { RENNES_LAYER } from '@/stores/layers'
 
 export async function fetchParkingsByLine(
-  vcsApp: RennesApp,
+  rennesApp: RennesApp,
   lineNumber: number
 ) {
   const num_line = 'T' + lineNumber.toString()
 
   const parkings: ParkingModel[] = []
-  const parkingsFeatures = await vcsApp.getFeaturesByAttributeFromLayer(
+  const parkingsFeatures = await rennesApp.getFeaturesByAttributeFromLayer(
     RENNES_LAYER.parking,
     'li_code',
     num_line

@@ -31,12 +31,12 @@ export const useComponentAboveMapStore = defineStore(
     }
 
     function addLabelStationToList(
-      vcsApp: RennesApp,
+      rennesApp: RennesApp,
       feature: Feature<Geometry>,
       stationName: string
     ) {
       if (!stationIsInList(stationName)) {
-        const cartesian = getCartesianPositionFromFeature(vcsApp, feature)
+        const cartesian = getCartesianPositionFromFeature(rennesApp, feature)
         if (cartesian !== undefined) {
           labelsStationsList.value.push({
             stationName: stationName,
@@ -47,15 +47,15 @@ export const useComponentAboveMapStore = defineStore(
       }
     }
 
-    async function updateListLabelsStations(vcsApp: RennesApp) {
+    async function updateListLabelsStations(rennesApp: RennesApp) {
       const stationsStore = useStationsStore()
       //Add new station to list
-      const layer = await vcsApp.getLayerByKey(RENNES_LAYER.trambusStops)
+      const layer = await rennesApp.getLayerByKey(RENNES_LAYER.trambusStops)
       layer.getFeatures().forEach((feature) => {
         const stationInclude: boolean =
           stationsStore.stationsToDisplay.includes(feature.get('nom'))
         if (stationInclude) {
-          addLabelStationToList(vcsApp, feature, feature.get('nom'))
+          addLabelStationToList(rennesApp, feature, feature.get('nom'))
         }
       })
 
@@ -69,9 +69,12 @@ export const useComponentAboveMapStore = defineStore(
       cartesian.value = new_cartesian
     }
 
-    function updatePositionsComponents(vcsApp: RennesApp) {
+    function updatePositionsComponents(rennesApp: RennesApp) {
       labelsStationsList.value.map((label) => {
-        const cartesian = getCartesianPositionFromFeature(vcsApp, label.feature)
+        const cartesian = getCartesianPositionFromFeature(
+          rennesApp,
+          label.feature
+        )
         if (cartesian !== undefined) {
           label.cartesian = cartesian
         }
@@ -79,18 +82,18 @@ export const useComponentAboveMapStore = defineStore(
       })
     }
 
-    function addListenerForUpdatePositions(vcsApp: RennesApp) {
-      const map = vcsApp.maps.activeMap
+    function addListenerForUpdatePositions(rennesApp: RennesApp) {
+      const map = rennesApp.maps.activeMap
       if (map instanceof CesiumMap) {
         // map.getScene().postRender.addEventListener(() => {
-        //   updatePositionsComponents(vcsApp)
+        //   updatePositionsComponents(rennesApp)
         // })
         //TODO : delete this when 3D performance issue will be fixed with custom components
         const stationsStore = useStationsStore()
         stationsStore.clearAllStations()
       } else if (map instanceof OpenlayersMap) {
         map.postRender.addEventListener(() => {
-          updatePositionsComponents(vcsApp)
+          updatePositionsComponents(rennesApp)
         })
       }
     }

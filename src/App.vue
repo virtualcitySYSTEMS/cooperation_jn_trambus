@@ -15,8 +15,8 @@ const panelStore = usePanelsStore()
 const viewStore = useViewsStore()
 
 onBeforeMount(() => {
-  const vcsApp = new RennesApp()
-  provide('vcsApp', vcsApp)
+  const rennesApp = new RennesApp()
+  provide('rennesApp', rennesApp)
 })
 
 const isPhotoGalleryVisible = computed(() => {

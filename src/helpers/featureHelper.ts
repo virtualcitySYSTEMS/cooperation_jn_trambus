@@ -5,11 +5,11 @@ import { getBalloonPosition } from '@/helpers/balloonHelper'
 import type { RennesApp } from '@/services/RennesApp'
 
 export function getCartesianPositionFromFeature(
-  vcsApp: RennesApp,
+  rennesApp: RennesApp,
   feature: Feature<Geometry>
 ): Cartesian2 | undefined {
   const cartesian = getBalloonPosition(
-    vcsApp,
+    rennesApp,
     feature.getGeometry()!.getCoordinates()
   )
   return cartesian

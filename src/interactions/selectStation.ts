@@ -15,13 +15,13 @@ import type { RennesApp } from '@/services/RennesApp'
 
 class SelectStationInteraction extends AbstractInteraction {
   private readonly _stationsLayerName: string
-  private _vcsApp: RennesApp
+  private _rennesApp: RennesApp
 
-  constructor(vcsApp: RennesApp, stationsLayerName: string) {
+  constructor(rennesApp: RennesApp, stationsLayerName: string) {
     super(EventType.CLICKMOVE, ModificationKeyType.NONE)
 
     this._stationsLayerName = stationsLayerName
-    this._vcsApp = vcsApp
+    this._rennesApp = rennesApp
   }
 
   async pipe(event: InteractionEvent): Promise<InteractionEvent> {

@@ -117,12 +117,12 @@ export function isStationLabelDisplayed(stationName: string): boolean {
 }
 
 export async function fetchStationsByLine(
-  vcsApp: RennesApp,
+  rennesApp: RennesApp,
   lineNumber: number
 ) {
   const stations: StationModel[] = []
   const stationsFeatures =
-    await vcsApp.getFeaturesThatContainAttributeFromLayer(
+    await rennesApp.getFeaturesThatContainAttributeFromLayer(
       RENNES_LAYER.trambusStops,
       'li_code',
       lineNumber.toString()
@@ -147,7 +147,7 @@ export async function fetchStationsByLine(
 }
 
 export async function completeStationsData(
-  vcsApp: RennesApp,
+  rennesApp: RennesApp,
   stations: StationModel[],
   lineNumber: number,
   parkings: ParkingModel[]

@@ -17,21 +17,21 @@ import { useTraveltimeInteractionStore } from '@/stores/interactionMap'
 import { updateTraveltimeArrow } from '@/services/arrow'
 
 export function clearLayerAndApplyStyle(
-  vcsApp: RennesApp,
+  rennesApp: RennesApp,
   layerName: string,
   style: Style | StyleFunction | undefined
 ) {
-  const layer = vcsApp.layers.getByKey(layerName) as FeatureLayer
+  const layer = rennesApp.layers.getByKey(layerName) as FeatureLayer
   layer.clearStyle()
   if (style) {
     layer.setStyle(style)
   }
 }
 
-export async function updateLineViewStyle(vcsApp: RennesApp) {
+export async function updateLineViewStyle(rennesApp: RennesApp) {
   const mapStore = useMapStore()
   const lineViewStore = useLineViewsStore()
-  clearLayerAndApplyStyle(vcsApp, RENNES_LAYER.trambusLines, (feature) =>
+  clearLayerAndApplyStyle(rennesApp, RENNES_LAYER.trambusLines, (feature) =>
     trambusLineViewStyleFunction(
       feature,
       lineViewStore.selectedLine,
@@ -39,7 +39,7 @@ export async function updateLineViewStyle(vcsApp: RennesApp) {
       mapStore.is3D()
     )
   )
-  clearLayerAndApplyStyle(vcsApp, RENNES_LAYER.trambusStops, (feature) =>
+  clearLayerAndApplyStyle(rennesApp, RENNES_LAYER.trambusStops, (feature) =>
     trambusStopLineViewStyleFunction(
       feature,
       lineViewStore.selectedLine,
@@ -47,34 +47,34 @@ export async function updateLineViewStyle(vcsApp: RennesApp) {
       mapStore.is3D()
     )
   )
-  clearLayerAndApplyStyle(vcsApp, RENNES_LAYER.parking, parkingStyle)
-  await updateTraveltimeArrow(vcsApp)
+  clearLayerAndApplyStyle(rennesApp, RENNES_LAYER.parking, parkingStyle)
+  await updateTraveltimeArrow(rennesApp)
 }
 
-export async function updateTravelTimesViewStyle(vcsApp: RennesApp) {
+export async function updateTravelTimesViewStyle(rennesApp: RennesApp) {
   const mapStore = useMapStore()
   const traveltimeInteractionStore = useTraveltimeInteractionStore()
-  clearLayerAndApplyStyle(vcsApp, RENNES_LAYER.trambusLines, (feature) =>
+  clearLayerAndApplyStyle(rennesApp, RENNES_LAYER.trambusLines, (feature) =>
     trambusLineTravelTimesViewStyleFunction(
       feature,
       traveltimeInteractionStore.selectedTraveltime!,
       mapStore.is3D()
     )
   )
-  clearLayerAndApplyStyle(vcsApp, RENNES_LAYER.trambusStops, (feature) =>
+  clearLayerAndApplyStyle(rennesApp, RENNES_LAYER.trambusStops, (feature) =>
     trambusStopTravelTimesViewStyleFunction(
       feature,
       traveltimeInteractionStore.selectedTraveltime!,
       mapStore.is3D()
     )
   )
-  await updateTraveltimeArrow(vcsApp)
+  await updateTraveltimeArrow(rennesApp)
 }
 
-export async function updateStationViewStyle(vcsApp: RennesApp) {
+export async function updateStationViewStyle(rennesApp: RennesApp) {
   const mapStore = useMapStore()
   const lineViewStore = useLineViewsStore()
-  clearLayerAndApplyStyle(vcsApp, RENNES_LAYER.trambusLines, (feature) =>
+  clearLayerAndApplyStyle(rennesApp, RENNES_LAYER.trambusLines, (feature) =>
     trambusLineViewStyleFunction(
       feature,
       lineViewStore.selectedLine,
@@ -82,7 +82,7 @@ export async function updateStationViewStyle(vcsApp: RennesApp) {
       mapStore.is3D()
     )
   )
-  clearLayerAndApplyStyle(vcsApp, RENNES_LAYER.trambusStops, (feature) =>
+  clearLayerAndApplyStyle(rennesApp, RENNES_LAYER.trambusStops, (feature) =>
     trambusStopLineViewStyleFunction(
       feature,
       lineViewStore.selectedLine,
@@ -90,10 +90,10 @@ export async function updateStationViewStyle(vcsApp: RennesApp) {
       mapStore.is3D()
     )
   )
-  clearLayerAndApplyStyle(vcsApp, RENNES_LAYER.poi, poiStyle)
+  clearLayerAndApplyStyle(rennesApp, RENNES_LAYER.poi, poiStyle)
 }
 
-export function updateHomeViewStyle(vcsApp: RennesApp) {
-  clearLayerAndApplyStyle(vcsApp, RENNES_LAYER.trambusLines, undefined)
-  clearLayerAndApplyStyle(vcsApp, RENNES_LAYER.parking, parkingStyle)
+export function updateHomeViewStyle(rennesApp: RennesApp) {
+  clearLayerAndApplyStyle(rennesApp, RENNES_LAYER.trambusLines, undefined)
+  clearLayerAndApplyStyle(rennesApp, RENNES_LAYER.parking, parkingStyle)
 }

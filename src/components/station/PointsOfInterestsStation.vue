@@ -9,13 +9,13 @@ const props = defineProps<{
   nameStation: string
 }>()
 
-const vcsApp = inject('vcsApp') as RennesApp
+const rennesApp = inject('rennesApp') as RennesApp
 const pointsOfInterests: Ref<
   { img: string; name: string; distance: number }[]
 > = ref([])
 
 onMounted(async () => {
-  const poiFeatures = await vcsApp.getFeaturesByAttributeFromLayer(
+  const poiFeatures = await rennesApp.getFeaturesByAttributeFromLayer(
     RENNES_LAYER.poi,
     'station_nom',
     props.nameStation

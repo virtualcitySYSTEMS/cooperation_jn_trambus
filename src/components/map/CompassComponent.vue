@@ -4,14 +4,14 @@ import { inject, onMounted, ref } from 'vue'
 import type { RennesApp } from '@/services/RennesApp'
 import IconCompass from '../ui/icons/IconCompass.vue'
 
-const vcsApp = inject('vcsApp') as RennesApp
+const rennesApp = inject('rennesApp') as RennesApp
 
 const compass = ref<HTMLDivElement | null>(null)
 const arrow = ref<HTMLDivElement | null>(null)
 
 onMounted(() => {
-  if (vcsApp?.maps?.activeMap) {
-    syncCompass(vcsApp.maps.activeMap)
+  if (rennesApp?.maps?.activeMap) {
+    syncCompass(rennesApp.maps.activeMap)
   }
 })
 
@@ -86,23 +86,23 @@ function onCompassClick() {
 }
 
 const headingMap = async (heading: number, animate = false) => {
-  const vp = await vcsApp.maps?.activeMap.getViewpoint()
+  const vp = await rennesApp.maps?.activeMap.getViewpoint()
   if (vp) {
     vp.heading = heading
     vp.animate = animate
-    vcsApp.maps?.activeMap.gotoViewpoint(vp)
+    rennesApp.maps?.activeMap.gotoViewpoint(vp)
   }
 }
 
 const tiltingMap = async (pitch: number) => {
-  const vp = await vcsApp.maps?.activeMap.getViewpoint()
+  const vp = await rennesApp.maps?.activeMap.getViewpoint()
   if (vp) {
     const vpJson: ViewpointOptions = vp?.toJSON() as ViewpointOptions
     // Set the camera position to null to force its position recalculation
     vpJson.cameraPosition = undefined
     vpJson.pitch = pitch
     const newVp = new Viewpoint(vpJson)
-    vcsApp.maps?.activeMap.gotoViewpoint(newVp)
+    rennesApp.maps?.activeMap.gotoViewpoint(newVp)
   }
 }
 

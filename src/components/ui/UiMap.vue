@@ -6,7 +6,7 @@ const mapContainer = ref(null)
 
 onMounted(async () => {
   if (mapContainer.value) {
-    const app = inject('vcsApp') as RennesApp
+    const app = inject('rennesApp') as RennesApp
     app.maps.setTarget(mapContainer.value)
   }
 })

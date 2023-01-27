@@ -5,15 +5,15 @@ import type { RennesApp } from '@/services/RennesApp'
 
 export async function lineStringsFromTraveltimes(
   traveltimes: TravelTimeModel[],
-  vcsApp: RennesApp
+  rennesApp: RennesApp
 ): Promise<LineString[]> {
   const promises = traveltimes.map(async (traveltime) => {
-    const startTrambusStop = await vcsApp.getFeatureByAttributeFromLayer(
+    const startTrambusStop = await rennesApp.getFeatureByAttributeFromLayer(
       RENNES_LAYER.trambusStops,
       'nom',
       traveltime.start
     )
-    const endTrambusStop = await vcsApp.getFeatureByAttributeFromLayer(
+    const endTrambusStop = await rennesApp.getFeatureByAttributeFromLayer(
       RENNES_LAYER.trambusStops,
       'nom',
       traveltime.end
