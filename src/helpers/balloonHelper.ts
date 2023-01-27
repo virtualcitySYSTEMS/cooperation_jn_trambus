@@ -10,7 +10,7 @@ import {
   Scene,
 } from '@vcmap/cesium'
 import type { Coordinate } from 'ol/coordinate'
-import type { VcsApp } from '@vcmap/core'
+import type { RennesApp } from '@/services/RennesApp'
 
 function getBalloonPositionCesium(scene: Scene, cartesian: Cartesian3) {
   return SceneTransforms.wgs84ToWindowCoordinates(scene, cartesian)
@@ -28,7 +28,7 @@ function getBalloonPositionOL(
 }
 
 export function getBalloonPosition(
-  app: VcsApp,
+  app: RennesApp,
   position: Coordinate
 ): Cartesian2 | undefined {
   const map = app.maps.activeMap

@@ -3,6 +3,8 @@ import LineFigures from './LineFigures.vue'
 function initState() {
   return {
     id: 1,
+    nb_parking: 2,
+    nb_station: 30,
   }
 }
 </script>
@@ -18,7 +20,11 @@ function initState() {
     :init-state="initState"
   >
     <template #default="{ state }">
-      <LineFigures :line="state.id"></LineFigures>
+      <LineFigures
+        :line="state.id"
+        :nb_parking="state.nb_parking"
+        :nb_station="state.nb_station"
+      ></LineFigures>
     </template>
   </Story>
 </template>

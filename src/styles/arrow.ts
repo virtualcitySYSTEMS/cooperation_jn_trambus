@@ -3,13 +3,16 @@ import {
   ArrowEnd,
   markVolatile,
   mercatorProjection,
-  VcsApp,
   VectorLayer,
 } from '@vcmap/core'
 import type { LineString } from 'ol/geom'
 import { Feature } from 'ol'
+import type { RennesApp } from '@/services/RennesApp'
 
-export function getScratchLayer(app: VcsApp, layerName: string): VectorLayer {
+export function getScratchLayer(
+  app: RennesApp,
+  layerName: string
+): VectorLayer {
   if (app.layers.hasKey(layerName)) {
     return app.layers.getByKey(layerName) as VectorLayer
   }

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { VcsApp } from '@vcmap/core'
 import { inject } from 'vue'
 import { cloneViewPointAndResetCameraPosition } from '@/helpers/viewpointHelper'
 
@@ -12,8 +11,9 @@ import { useMapStore } from '@/stores/map'
 import { useLayersStore } from '@/stores/layers'
 import { useViewsStore } from '@/stores/views'
 import { viewList } from '@/model/views.model'
+import type { RennesApp } from '@/services/RennesApp'
 
-const vcsApp = inject('vcsApp') as VcsApp
+const rennesApp = inject('rennesApp') as RennesApp
 
 const mapStore = useMapStore()
 const layerStore = useLayersStore()
@@ -27,7 +27,7 @@ async function toggle3DMap() {
 }
 
 async function zoom(out = false, zoomFactor = 2): Promise<void> {
-  const activeMap = vcsApp.maps.activeMap
+  const activeMap = rennesApp.maps.activeMap
   const viewpoint = await activeMap?.getViewpoint()
 
   if (activeMap && viewpoint) {
@@ -37,7 +37,7 @@ async function zoom(out = false, zoomFactor = 2): Promise<void> {
     }
 
     const newVp = cloneViewPointAndResetCameraPosition(viewpoint, distance)
-    await vcsApp.maps?.activeMap.gotoViewpoint(newVp)
+    await rennesApp.maps?.activeMap.gotoViewpoint(newVp)
   }
 }
 

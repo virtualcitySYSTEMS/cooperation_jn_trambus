@@ -49,6 +49,10 @@ export const useStationsStore = defineStore('stations', () => {
     return stationsToDisplay.value.includes(stationName)
   }
 
+  function stationIsInStationsToDisplayPermanently(stationName: string) {
+    return stationsToDisplayPermanently.value.includes(stationName)
+  }
+
   function clearStationsExceptPermanently() {
     stationsToDisplay.value = []
     stationsToDisplayPermanently.value.forEach((s) =>
@@ -105,6 +109,7 @@ export const useStationsStore = defineStore('stations', () => {
     currentStationView,
     flagClearStationsExceptPermanently,
     stationViewSetUpStationsToDisplay,
+    stationIsInStationsToDisplayPermanently,
     lineViewSetUpStationsToDisplay,
     stationIsInStationsToDisplay,
     traveltimesViewSetUpStationsToDisplay,

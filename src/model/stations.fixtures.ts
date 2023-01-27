@@ -179,7 +179,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t2: null,
     ordre_t3: 11,
     ordre_t4: null,
-    parking: true,
+
     desserte: '12 14 178 78 C2',
     desserte_scolaire: '204',
     desserte_soirs_we: '',
@@ -564,7 +564,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t2: 32,
     ordre_t3: null,
     ordre_t4: null,
-    parking: true,
+
     desserte: '67 C6',
     desserte_scolaire: '',
     desserte_soirs_we: '11',
@@ -617,7 +617,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t2: 1,
     ordre_t3: null,
     ordre_t4: null,
-    parking: true,
+
     desserte: '11 54 55 56',
     desserte_scolaire: '',
     desserte_soirs_we: '54',
@@ -1005,7 +1005,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t2: null,
     ordre_t3: 6,
     ordre_t4: null,
-    parking: true,
+
     desserte: '',
   },
   {
@@ -1049,7 +1049,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t2: null,
     ordre_t3: 39,
     ordre_t4: null,
-    parking: true,
+
     desserte: '',
   },
   {
@@ -1273,7 +1273,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t2: null,
     ordre_t3: null,
     ordre_t4: 11,
-    parking: true,
+
     desserte: '',
   },
   {
@@ -1307,7 +1307,7 @@ export const stationsFixtures = (): StationModel[] => [
     ordre_t2: null,
     ordre_t3: 33,
     ordre_t4: null,
-    parking: true,
+
     desserte: '',
   },
   {

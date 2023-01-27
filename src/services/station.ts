@@ -3,6 +3,10 @@ import type { StationModel } from '@/model/stations.model'
 import { LIST_BUS } from '@/model/bus.model'
 import type { FeatureLike } from 'ol/Feature'
 import { useStationsStore } from '@/stores/stations'
+import type { RennesApp } from '@/services/RennesApp'
+import { RENNES_LAYER } from '@/stores/layers'
+import { apiClientService } from '@/services/api.client'
+import type { ParkingModel } from '@/model/parkings.model'
 
 export function sortStationsByOrder(
   stations: StationModel[],
@@ -110,4 +114,72 @@ export function getLinesNumberFromLiCode(li_code: string): LineNumber[] {
 export function isStationLabelDisplayed(stationName: string): boolean {
   const stationsStore = useStationsStore()
   return stationsStore.stationIsInStationsToDisplay(stationName)
+}
+
+export async function fetchStationsByLine(
+  rennesApp: RennesApp,
+  lineNumber: number
+) {
+  const stations: StationModel[] = []
+  const stationsFeatures =
+    await rennesApp.getFeaturesThatContainAttributeFromLayer(
+      RENNES_LAYER.trambusStops,
+      'li_code',
+      lineNumber.toString()
+    )
+  stationsFeatures.forEach((feature) => {
+    stations.push({
+      id: feature.get('id'),
+      nom: feature.get('nom'),
+      li_code: feature.get('li_code'),
+      ordre_t1: null,
+      ordre_t2: null,
+      ordre_t3: null,
+      ordre_t4: null,
+      parking: false,
+      desserte: feature.get('desserte'),
+      desserte_scolaire: feature.get('desserte_scolaire'),
+      desserte_soirs_we: feature.get('desserte_soirs_we'),
+      desserte_dimanche: feature.get('desserte_dimanche'),
+    })
+  })
+  return stations
+}
+
+export async function completeStationsData(
+  rennesApp: RennesApp,
+  stations: StationModel[],
+  lineNumber: number,
+  parkings: ParkingModel[]
+) {
+  const stationsOrder = await apiClientService.fetchStationsOrderByLine(
+    lineNumber
+  )
+  stations.forEach((station) => {
+    const stationOrder = stationsOrder.find(
+      (order) => order.nom === station.nom
+    )
+    if (stationOrder === undefined) {
+      return station
+    }
+    station.ordre_t1 = stationOrder.ordre_t1
+    station.ordre_t2 = stationOrder.ordre_t2
+    station.ordre_t3 = stationOrder.ordre_t3
+    station.ordre_t4 = stationOrder.ordre_t4
+
+    const parking = parkings.find(
+      (parking) => parking.arret_nom === station.nom
+    )
+    if (parking !== undefined) {
+      station.parking = true
+    }
+
+    return station
+  })
+  stations = sortStationsByOrder(stations, lineNumber)
+  stations = keepOnlyUsefulDessertes(stations)
+  const num_line = 'T' + lineNumber.toString()
+  stations = formatLiCode(stations, num_line)
+
+  return stations
 }

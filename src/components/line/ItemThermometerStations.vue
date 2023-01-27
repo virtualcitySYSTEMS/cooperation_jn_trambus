@@ -7,6 +7,7 @@ import IconParking from '@/components/ui/icons/IconParking.vue'
 import type { LineNumber } from '@/model/lines.model'
 import { getColorLine } from '@/services/color'
 import type { BusNumber } from '@/model/bus.model'
+import { useStationsStore } from '@/stores/stations'
 
 const props = defineProps({
   index: {
@@ -41,6 +42,7 @@ const props = defineProps({
   },
 })
 const stationActive = ref<Boolean>(false)
+const stationInteractionOnMap = ref<Boolean>(false)
 const borderColor = ref(getColorLine('border', props.line, 600))
 
 let desserteSplit = props.desserte
@@ -62,10 +64,22 @@ if (props.li_code != '') {
   })
 }
 
+const stationsStore = useStationsStore()
+stationsStore.$subscribe(async () => {
+  if (
+    stationsStore.stationIsInStationsToDisplay(props.name) &&
+    !stationsStore.stationIsInStationsToDisplayPermanently(props.name)
+  ) {
+    stationInteractionOnMap.value = true
+  } else if (stationInteractionOnMap.value) {
+    stationInteractionOnMap.value = false
+  }
+})
+
 function getClassCircle() {
   let marginLeftNegative = '-ml-1'
   let border2px = 'border-2'
-  if (stationActive.value) {
+  if (stationActive.value || stationInteractionOnMap.value) {
     return [
       'min-w-[16px]',
       'w-4',
@@ -101,7 +115,7 @@ function getClassBeforeCircle() {
   let ml = 'before:ml-px'
   let bottom = 'before:bottom-[65%]'
   let height = 'before:h-[95%]'
-  if (stationActive.value) {
+  if (stationActive.value || stationInteractionOnMap.value) {
     ml = 'before:ml-1.5'
     bottom = 'before:bottom-[75%]'
     height = 'before:h-[70%]'
@@ -123,7 +137,7 @@ const classCircle = computed(() => {
 <template>
   <li
     class="flex items-center mb-1 cursor-pointer"
-    :class="stationActive ? 'bg-slate-100' : ''"
+    :class="stationActive || stationInteractionOnMap ? 'bg-slate-100' : ''"
     @mouseover="stationActive = true"
     @mouseleave="stationActive = false"
   >

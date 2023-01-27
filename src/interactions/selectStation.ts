@@ -4,7 +4,6 @@ import {
   ModificationKeyType,
   vcsLayerName,
   type InteractionEvent,
-  type VcsApp,
 } from '@vcmap/core'
 import type { Feature } from 'ol'
 import type { Point } from 'ol/geom'
@@ -12,16 +11,17 @@ import { useStationsStore } from '@/stores/stations'
 import { useLineViewsStore, useViewsStore } from '@/stores/views'
 import router from '@/router'
 import { viewList } from '@/model/views.model'
+import type { RennesApp } from '@/services/RennesApp'
 
 class SelectStationInteraction extends AbstractInteraction {
   private readonly _stationsLayerName: string
-  private _vcsApp: VcsApp
+  private _rennesApp: RennesApp
 
-  constructor(vcsApp: VcsApp, stationsLayerName: string) {
+  constructor(rennesApp: RennesApp, stationsLayerName: string) {
     super(EventType.CLICKMOVE, ModificationKeyType.NONE)
 
     this._stationsLayerName = stationsLayerName
-    this._vcsApp = vcsApp
+    this._rennesApp = rennesApp
   }
 
   async pipe(event: InteractionEvent): Promise<InteractionEvent> {

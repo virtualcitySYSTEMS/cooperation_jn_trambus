@@ -3,34 +3,19 @@ import type { LineModel } from '@/model/lines.model'
 import { stationsFixtures } from '@/model/stations.fixtures'
 import type { StationModel } from '@/model/stations.model'
 import { networkFiguresFixtures } from '@/model/network-figures.fixtures'
-import { lineFiguresFixtures } from '@/model/line-figures.fixtures'
 import { photoFixtures } from '@/model/photos.fixtures'
 import type { PhotoModel } from '@/model/photos.model'
 import { travelTimeFixtures } from '@/model/travel-time.fixtures'
 import type { TravelTimeModel } from '@/model/travel-time.model'
 import type { NetworkFigureModel } from '../model/network-figures.model'
-import type { LineFigureModel } from '../model/line-figures.model'
 import { servicesFixtures } from '@/model/services.fixtures'
 import type { ServiceModel } from '@/model/services.model'
-import {
-  sortStationsByOrder,
-  filterStationsByLineNumber,
-  keepOnlyUsefulDessertes,
-  formatLiCode,
-} from '@/services/station'
+import { filterStationsByLineNumber } from '@/services/station'
 
 class ApiClientService {
   async fetchNetworkFigure() {
     return new Promise<NetworkFigureModel[]>((resolve) => {
       resolve(networkFiguresFixtures())
-    })
-  }
-
-  async fetchLineFigure(lineNumber: number) {
-    return new Promise<LineFigureModel[]>((resolve) => {
-      resolve(
-        lineFiguresFixtures().filter((figure) => figure.idLine == lineNumber)
-      )
     })
   }
 
@@ -88,15 +73,12 @@ class ApiClientService {
     })
   }
 
-  async fetchStationsByLine(lineNumber: number) {
+  async fetchStationsOrderByLine(lineNumber: number) {
     return new Promise<StationModel[]>((resolve) => {
       resolve(stationsFixtures())
     }).then((val) => {
       const num_line = 'T' + lineNumber.toString()
       val = filterStationsByLineNumber(val, num_line)
-      val = sortStationsByOrder(val, lineNumber)
-      val = keepOnlyUsefulDessertes(val)
-      val = formatLiCode(val, num_line)
       return val
     })
   }

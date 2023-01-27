@@ -1,27 +1,22 @@
 import type { TravelTimeModel } from '@/model/travel-time.model'
 import { RENNES_LAYER } from '@/stores/layers'
-import type { GeoJSONLayer, VcsApp } from '@vcmap/core'
 import { LineString } from 'ol/geom'
-import { getFeatureByAttribute } from '@/helpers/layerHelper'
+import type { RennesApp } from '@/services/RennesApp'
 
 export async function lineStringsFromTraveltimes(
   traveltimes: TravelTimeModel[],
-  vcsApp: VcsApp
+  rennesApp: RennesApp
 ): Promise<LineString[]> {
-  const trambusStopLayer = vcsApp.layers.getByKey(
-    RENNES_LAYER.trambusStops
-  ) as GeoJSONLayer
-
   const promises = traveltimes.map(async (traveltime) => {
-    const startTrambusStop = await getFeatureByAttribute(
+    const startTrambusStop = await rennesApp.getFeatureByAttributeFromLayer(
+      RENNES_LAYER.trambusStops,
       'nom',
-      traveltime.start,
-      trambusStopLayer
+      traveltime.start
     )
-    const endTrambusStop = await getFeatureByAttribute(
+    const endTrambusStop = await rennesApp.getFeatureByAttributeFromLayer(
+      RENNES_LAYER.trambusStops,
       'nom',
-      traveltime.end,
-      trambusStopLayer
+      traveltime.end
     )
 
     const lineString = new LineString([

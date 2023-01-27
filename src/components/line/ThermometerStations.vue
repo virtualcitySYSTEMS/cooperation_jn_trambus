@@ -1,31 +1,18 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import type { LineNumber } from '@/model/lines.model'
 import router from '@/router'
 import ItemThermometerStations from '@/components/line/ItemThermometerStations.vue'
-import { apiClientService } from '@/services/api.client'
-import { reactive, onBeforeMount } from 'vue'
 import type { StationModel } from '@/model/stations.model'
 import { useStationsStore } from '@/stores/stations'
 
 type actionItem = 'leave' | 'over'
 
-const props = defineProps({
-  line: {
-    type: Number as PropType<LineNumber>,
-    required: true,
-  },
-})
+const props = defineProps<{
+  line: LineNumber
+  stations: StationModel[]
+}>()
 
 const stationsStore = useStationsStore()
-
-const state = reactive({
-  stations: null as null | StationModel[],
-})
-
-onBeforeMount(async () => {
-  state.stations = await apiClientService.fetchStationsByLine(props.line)
-})
 
 function mouseOverAndLeaveItem(action: actionItem, stationName: string) {
   if (
@@ -54,12 +41,9 @@ function goToStationPage(stationId: number) {
   </div>
 
   <div>
-    <ul
-      class="list-stations"
-      v-if="state.stations !== null && state.stations.length > 0"
-    >
+    <ul class="list-stations" v-if="props.stations.length > 0">
       <ItemThermometerStations
-        v-for="(station, index) in state.stations"
+        v-for="(station, index) in props.stations"
         :key="index"
         @mouseover="mouseOverAndLeaveItem('over', station.nom)"
         @mouseleave="mouseOverAndLeaveItem('leave', station.nom)"
@@ -70,7 +54,7 @@ function goToStationPage(stationId: number) {
         :parking="station.parking"
         :desserte="station.desserte"
         :li_code="station.li_code"
-        :is_last_elem="index + 1 === state.stations.length"
+        :is_last_elem="index + 1 === props.stations.length"
       />
     </ul>
   </div>

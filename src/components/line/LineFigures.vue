@@ -2,25 +2,46 @@
 import { reactive, onMounted } from 'vue'
 
 import { apiClientService } from '@/services/api.client'
-import type { PropType } from 'vue'
 import type { LineNumber } from '@/model/lines.model'
 import UiNetworkFigure from '../ui/UiNetworkFigure.vue'
 import UiVerticalSeparator from '../ui/UiVerticalSeparator.vue'
 import type { LineFigureModel } from '../../model/line-figures.model'
+import stationIcon from '@/assets/icons/station.svg'
 
-const props = defineProps({
-  line: {
-    type: Number as PropType<LineNumber>,
-    required: true,
-  },
-})
+const props = defineProps<{
+  line: LineNumber
+  nb_parking: number
+  nb_station: number
+}>()
 
 const state = reactive({
   lineFigures: null as null | LineFigureModel[],
 })
 
 onMounted(async () => {
-  state.lineFigures = await apiClientService.fetchLineFigure(props.line)
+  state.lineFigures = []
+  state.lineFigures.push({
+    id: 'station',
+    idLine: props.line,
+    figure: props.nb_station,
+    description: 'Stations',
+    icon: stationIcon,
+  })
+  state.lineFigures.push({
+    id: 'parking',
+    idLine: props.line,
+    figure: props.nb_parking,
+    description: props.nb_parking > 1 ? 'Parkings relais' : 'Parking relais',
+  })
+  const frequency = await apiClientService.fetchLineFrequency(props.line)
+  state.lineFigures.push({
+    id: 'frequency',
+    idLine: props.line,
+    figure: frequency,
+    description: 'Fréquence',
+    unit: 'min',
+    moreInformation: 'Fréquence théorique en Heure de Pointe du matin',
+  })
 })
 
 function getLength(networkFigures: null | LineFigureModel[]): Number {

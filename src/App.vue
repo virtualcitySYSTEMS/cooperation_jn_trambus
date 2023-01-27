@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onBeforeMount, provide } from 'vue'
 
 import PhotoGallery from '@/components/home/PhotoGallery.vue'
 import MapComponent from '@/components/map/MapComponent.vue'
@@ -10,9 +10,15 @@ import LegalLink from '@/components/home/LegalLink.vue'
 import { viewList } from '@/model/views.model'
 import { usePanelsStore } from '@/stores/panels'
 import { useViewsStore } from '@/stores/views'
+import { RennesApp } from '@/services/RennesApp'
 
 const panelStore = usePanelsStore()
 const viewStore = useViewsStore()
+
+onBeforeMount(() => {
+  const rennesApp = new RennesApp()
+  provide('rennesApp', rennesApp)
+})
 
 const isPhotoGalleryVisible = computed(() => {
   if (panelStore.isPlanningViewShown) {

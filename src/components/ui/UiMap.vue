@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { inject, onMounted, ref } from 'vue'
-import type { VcsApp } from '@vcmap/core'
+import type { RennesApp } from '@/services/RennesApp'
 
 const mapContainer = ref(null)
 
 onMounted(async () => {
   if (mapContainer.value) {
-    const app = inject('vcsApp') as VcsApp
+    const app = inject('rennesApp') as RennesApp
     app.maps.setTarget(mapContainer.value)
   }
 })

@@ -92,12 +92,6 @@ export default function setDistanceDisplayCondition(
       featureDistance = featureNearFar.far
     }
     featureDistance = 1000
-    console.log('resolution', resolution)
-
-    console.log(
-      'getDistanceFromResolution',
-      getDistanceFromResolution(resolution, map.olMap)
-    )
     if (
       featureDistance != null &&
       getDistanceFromResolution(resolution, map.olMap) > featureDistance
