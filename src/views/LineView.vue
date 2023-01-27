@@ -66,7 +66,6 @@ onBeforeMount(async () => {
     lineStore.selectedLine,
     state.parkings
   )
-  console.log(state.stations)
 })
 
 onMounted(async () => {
