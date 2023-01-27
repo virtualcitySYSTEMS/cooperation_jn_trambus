@@ -43,7 +43,10 @@ const isPhotoGalleryVisible = computed(() => {
 
     <LegalLink
       class="absolute z-20 bottom-3 left-3"
-      v-show="panelStore.isInformationPanelShown === false"
+      v-show="
+        panelStore.isInformationPanelShown === false ||
+        panelStore.isPlanningViewShown === true
+      "
       :text-color="'neutral-900'"
     >
     </LegalLink>
