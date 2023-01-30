@@ -9,6 +9,7 @@ import type { Geometry } from 'ol/geom'
 import { getCartesianPositionFromFeature } from '@/helpers/featureHelper'
 import { useStationsStore } from '@/stores/stations'
 import type { RennesApp } from '@/services/RennesApp'
+import { useLineInteractionStore } from '@/stores/interactionMap'
 
 export const useComponentAboveMapStore = defineStore(
   'component-above-map',
@@ -70,6 +71,7 @@ export const useComponentAboveMapStore = defineStore(
     }
 
     function updatePositionsComponents(rennesApp: RennesApp) {
+      //Update position of stations labels
       labelsStationsList.value.map((label) => {
         const cartesian = getCartesianPositionFromFeature(
           rennesApp,
@@ -80,6 +82,16 @@ export const useComponentAboveMapStore = defineStore(
         }
         return label
       })
+
+      //Update position of line label
+      const lineInteractionStore = useLineInteractionStore()
+      if (lineInteractionStore.featureLabel !== null) {
+        const cartesian = getCartesianPositionFromFeature(
+          rennesApp,
+          lineInteractionStore.featureLabel
+        )
+        lineInteractionStore.selectClickPosition(cartesian)
+      }
     }
 
     function addListenerForUpdatePositions(rennesApp: RennesApp) {
