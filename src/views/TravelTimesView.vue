@@ -32,7 +32,6 @@ onMounted(async () => {
     parking: false,
     poi: false,
     _traveltimeArrow: true,
-    _poiArrow: false,
   })
   state.travelTimes = await apiClientService.fetchTravelTime()
 })

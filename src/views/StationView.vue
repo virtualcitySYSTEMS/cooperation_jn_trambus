@@ -62,7 +62,6 @@ onMounted(async () => {
     parking: true,
     poi: true,
     _traveltimeArrow: false,
-    _poiArrow: true,
   })
 })
 </script>
