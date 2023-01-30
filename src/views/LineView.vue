@@ -79,7 +79,6 @@ onMounted(async () => {
     parking: true,
     poi: true,
     _traveltimeArrow: true,
-    _poiArrow: false,
   })
   poiStore.activeLineProfile()
   stationsStore.clearAllStations()

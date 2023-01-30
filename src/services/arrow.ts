@@ -17,42 +17,6 @@ import { apiClientService } from '@/services/api.client'
 import { useLineViewsStore } from '@/stores/views'
 import { ArrowEnd } from '@vcmap/core'
 
-export async function updatePOIArrow(rennesApp: RennesApp) {
-  const stationsStore = useStationsStore()
-  const mapStore = useMapStore()
-
-  // Get scratch layer for POI arrow
-  const arrowLayer = getScratchLayer(rennesApp, RENNES_LAYER._poiArrow)
-
-  // Get station
-  const stationName = stationsStore.currentStationView
-  if (stationName === null) {
-    return
-  }
-  const selectedStationFeature = await rennesApp.getFeatureByAttributeFromLayer(
-    RENNES_LAYER.trambusStops,
-    'nom',
-    stationName
-  )
-
-  // Get POI that related to the selected station (note: not all station has a POIs)
-  const selectedPoiFeatures = await rennesApp.getFeaturesByAttributeFromLayer(
-    RENNES_LAYER.poi,
-    'station_nom',
-    stationName
-  )
-
-  // Create line string from station to POI
-  const lineStrings = await lineStringsFromStationPois(
-    selectedStationFeature!,
-    selectedPoiFeatures
-  )
-  // Update features
-  updateArrowFeatures(lineStrings, arrowLayer)
-  // Update style
-  updateArrowLayerStyle(arrowLayer, mapStore.is3D())
-}
-
 export async function updateTraveltimeArrow(rennesApp: RennesApp) {
   const traveltimeInteractionStore = useTraveltimeInteractionStore()
   const viewStore = useViewsStore()
