@@ -13,7 +13,7 @@ import router from '@/router'
 import { viewList } from '@/model/views.model'
 import type { RennesApp } from '@/services/RennesApp'
 
-class SelectStationInteraction extends AbstractInteraction {
+class mapClickAndMoveInteraction extends AbstractInteraction {
   private readonly _stationsLayerName: string
   private _rennesApp: RennesApp
 
@@ -57,4 +57,4 @@ class SelectStationInteraction extends AbstractInteraction {
   }
 }
 
-export default SelectStationInteraction
+export default mapClickAndMoveInteraction
