@@ -5,8 +5,6 @@ import {
 } from '@/styles/arrow'
 import type { RennesApp } from '@/services/RennesApp'
 import { RENNES_LAYER } from '@/stores/layers'
-import { useStationsStore } from '@/stores/stations'
-import { lineStringsFromStationPois } from '@/helpers/stationHelper'
 import { useMapStore } from '@/stores/map'
 import type { LineString } from 'ol/geom'
 import { useTraveltimeInteractionStore } from '@/stores/interactionMap'
