@@ -1,13 +1,8 @@
 import type { TravelTimeModel } from '@/model/travel-time.model'
 import { RENNES_LAYER } from '@/stores/layers'
 import { LineString } from 'ol/geom'
-import { fromLonLat, get as getProjection } from 'ol/proj'
 import type { RennesApp } from '@/services/RennesApp'
-import {
-  CesiumMap,
-  getHeightFromTerrainProvider,
-  Projection,
-} from '@vcmap/core'
+import { getHeightFromTerrainProvider, Projection } from '@vcmap/core'
 
 export async function lineStringsFromTraveltimes(
   traveltimes: TravelTimeModel[],
@@ -27,7 +22,7 @@ export async function lineStringsFromTraveltimes(
     )
 
     if (is3D) {
-      const cesiumMap = rennesApp.maps.getByKey('cesium') as CesiumMap
+      const cesiumMap = rennesApp.get3DMap()
       const proj3857 = new Projection({
         epsg: 'EPSG:3857',
         proj4:
