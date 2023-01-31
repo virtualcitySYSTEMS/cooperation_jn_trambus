@@ -1,14 +1,14 @@
-//@ts-nocheck
 import {
   AbstractInteraction,
   EventType,
   ModificationKeyType,
   PointerKeyType,
   vcsLayerName,
+  GeoJSONLayer,
+  type OpenlayersMap,
+  type CesiumMap,
   type InteractionEvent,
 } from '@vcmap/core'
-import type { Feature } from 'ol'
-import type { Point } from 'ol/geom'
 import { useStationsStore } from '@/stores/stations'
 import { useLineViewsStore, useViewsStore } from '@/stores/views'
 import { useLineInteractionStore } from '@/stores/interactionMap'
@@ -47,8 +47,12 @@ class mapClickAndMoveInteraction extends AbstractInteraction {
     }
   }
 
-  isFeatureLine(feature, lines) {
-    if (!feature.getId().includes('trambus_lignes')) {
+  isFeatureLine(feature: Feature, lines: string[]) {
+    const id = feature.getId()
+    if (id === undefined) {
+      return false
+    }
+    if (!id.toString().includes('trambus_lignes')) {
       return false
     }
     const li_nom = feature.get('li_nom')
@@ -64,10 +68,10 @@ class mapClickAndMoveInteraction extends AbstractInteraction {
   getAllLines(event: InteractionEvent) {
     const lines: string[] = []
     if (event.map.className === 'OpenlayersMap') {
-      event.map.olMap.forEachFeatureAtPixel(
+      const map = event.map as OpenlayersMap
+      map.olMap.forEachFeatureAtPixel(
         [event.windowPosition.x, event.windowPosition.y],
-        (feat, layer) => {
-          console.log(layer)
+        (feat: Feature) => {
           if (this.isFeatureLine(feat, lines)) {
             lines.push(feat.get('li_nom'))
           }
@@ -75,7 +79,7 @@ class mapClickAndMoveInteraction extends AbstractInteraction {
         { hitTolerance: 10 }
       )
     } else if (event.map.className === 'CesiumMap') {
-      const cesiumMap = event.map
+      const cesiumMap = event.map as CesiumMap
       const scene = cesiumMap.getScene()
       const pickedObjects = scene.drillPick(event.windowPosition)
       pickedObjects.forEach((object) => {
@@ -93,6 +97,9 @@ class mapClickAndMoveInteraction extends AbstractInteraction {
   async _interactionLine(event: InteractionEvent) {
     document.body.style.cursor = 'pointer'
     if (event.type & EventType.CLICK) {
+      if (event.position === undefined) {
+        return
+      }
       const lines = this.getAllLines(event)
       const lineInteractionStore = useLineInteractionStore()
       lineInteractionStore.selectLines(lines)

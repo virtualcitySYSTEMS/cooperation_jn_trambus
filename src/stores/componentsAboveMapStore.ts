@@ -86,11 +86,13 @@ export const useComponentAboveMapStore = defineStore(
       //Update position of line label
       const lineInteractionStore = useLineInteractionStore()
       if (lineInteractionStore.featureLabel !== null) {
-        const cartesian = getCartesianPositionFromFeature(
-          rennesApp,
-          lineInteractionStore.featureLabel
-        )
-        lineInteractionStore.selectClickPosition(cartesian)
+        const feature = lineInteractionStore.featureLabel as Feature<Geometry>
+        const cartesian = getCartesianPositionFromFeature(rennesApp, feature)
+        if (cartesian == undefined) {
+          lineInteractionStore.selectClickPosition(null)
+        } else {
+          lineInteractionStore.selectClickPosition(cartesian)
+        }
       }
     }
 

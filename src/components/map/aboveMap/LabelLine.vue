@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { getColorLine } from '@/services/color'
 import router from '@/router'
 import { useLineViewsStore } from '@/stores/views'
+import type { LineNumber } from '@/model/lines.model'
 
 const props = defineProps<{
   lines: string[]
@@ -30,9 +31,14 @@ const positionStyle = computed(() => {
 
 const goToLinePage = (line: string) => {
   const num_line = line.replace('T', '')
-  if (num_line != lineViewStore.selectedLine) {
+  if (parseInt(num_line) != lineViewStore.selectedLine) {
     router.push(`/line/${num_line}`)
   }
+}
+
+const getBgColorLine = (line: string) => {
+  const num_line = parseInt(line.replace('T', '')) as LineNumber
+  return getColorLine('bg', num_line, 600)
 }
 </script>
 
@@ -43,7 +49,7 @@ const goToLinePage = (line: string) => {
         v-for="line in props.lines"
         :key="line"
         class="px-2 py-0 border cursor-pointer text-white rounded-md border-black mr-1 font-bold font-dm-sans text-sm text-center items-center"
-        :class="getColorLine('bg', line.replace('T', ''), 600)"
+        :class="getBgColorLine(line)"
         @click="goToLinePage(line)"
       >
         {{ line }}
