@@ -18,6 +18,7 @@ import type { RennesApp } from '@/services/RennesApp'
 import { RENNES_LAYER } from '@/stores/layers'
 import { Feature } from 'ol'
 import { Point } from 'ol/geom'
+import { Style } from 'ol/style'
 
 class mapClickAndMoveInteraction extends AbstractInteraction {
   private _rennesApp: RennesApp
@@ -46,17 +47,29 @@ class mapClickAndMoveInteraction extends AbstractInteraction {
     }
   }
 
+  isFeatureLine(feature, lines) {
+    if (!feature.getId().includes('trambus_lignes')) {
+      return false
+    }
+    const li_nom = feature.get('li_nom')
+    if (li_nom === undefined || li_nom === null || li_nom === '') {
+      return false
+    }
+    if (lines.includes(li_nom)) {
+      return false
+    }
+    return true
+  }
+
   getAllLines(event: InteractionEvent) {
     const lines: string[] = []
     if (event.map.className === 'OpenlayersMap') {
       event.map.olMap.forEachFeatureAtPixel(
         [event.windowPosition.x, event.windowPosition.y],
         (feat, layer) => {
-          RENNES_LAYER
           console.log(layer)
-          const li_nom = feat.get('li_nom')
-          if (!lines.includes(li_nom)) {
-            lines.push(li_nom)
+          if (this.isFeatureLine(feat, lines)) {
+            lines.push(feat.get('li_nom'))
           }
         },
         { hitTolerance: 10 }
@@ -68,9 +81,8 @@ class mapClickAndMoveInteraction extends AbstractInteraction {
       pickedObjects.forEach((object) => {
         if (object.primitive && object.primitive.olFeature) {
           const feature = object.primitive.olFeature
-          const li_nom = feature.get('li_nom')
-          if (!lines.includes(li_nom)) {
-            lines.push(li_nom)
+          if (this.isFeatureLine(feature, lines)) {
+            lines.push(feature.get('li_nom'))
           }
         }
       })
@@ -95,6 +107,8 @@ class mapClickAndMoveInteraction extends AbstractInteraction {
         const new_feature = new Feature()
         const point = new Point(event.position)
         new_feature.setGeometry(point.transform('EPSG:3857', 'EPSG:4326'))
+        console.log(new_feature)
+        new_feature.setStyle(new Style({}))
         customLayer.removeAllFeatures()
         customLayer.addFeatures([new_feature])
         lineInteractionStore.selectFeatureLabel(new_feature)
