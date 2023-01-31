@@ -47,6 +47,10 @@ const shouldDisplayNavHelp = () => {
     sessionStorage.getItem('nav-help-displayed') !== 'true' && mapStore.is3D()
   )
 }
+
+const shouldDisplayHomeButton = () => {
+  return ![viewList.traveltimes, viewList.home].includes(viewStore.currentView)
+}
 </script>
 
 <template>
@@ -57,7 +61,7 @@ const shouldDisplayNavHelp = () => {
     <UiIconButton
       class="rounded-lg px-3 py-3"
       @click="router.push('/home')"
-      v-show="viewStore.currentView != viewList.traveltimes"
+      v-show="shouldDisplayHomeButton()"
       ><IconHome
     /></UiIconButton>
     <div class="flex flex-col zoom-buttons text-2xl [&>*]:p-2" role="group">
