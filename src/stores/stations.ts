@@ -7,7 +7,6 @@ import {
 } from '@/model/lines.fixtures'
 import type { LineNumber } from '@/model/lines.model'
 import type { TravelTimeModel } from '@/model/travel-time.model'
-import { useMapStore } from '@/stores/map'
 
 export const useStationsStore = defineStore('stations', () => {
   const stationsToDisplayPermanently: Ref<string[]> = ref([])
@@ -31,12 +30,8 @@ export const useStationsStore = defineStore('stations', () => {
 
   function addStationToDisplayPermanently(stationName: string) {
     if (!stationsToDisplayPermanently.value.includes(stationName)) {
-      const mapStore = useMapStore()
-      if (!mapStore.is3D()) {
-        //TODO : delete this when 3D performance issue will be fixed with custom components
-        stationsToDisplayPermanently.value.push(stationName)
-        addStationToDisplay(stationName)
-      }
+      stationsToDisplayPermanently.value.push(stationName)
+      addStationToDisplay(stationName)
     }
   }
 
