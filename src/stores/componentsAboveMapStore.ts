@@ -94,7 +94,6 @@ export const useComponentAboveMapStore = defineStore(
             (vp !== null &&
               !vp.equals(previousViewPoint.value, CesiumMath.EPSILON5))
           ) {
-            console.log('here')
             updatePositionsComponents(rennesApp)
             previousViewPoint.value = vp
           }
