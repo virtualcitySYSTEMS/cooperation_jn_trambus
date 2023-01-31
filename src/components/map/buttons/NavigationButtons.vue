@@ -12,6 +12,7 @@ import { useLayersStore } from '@/stores/layers'
 import { useViewsStore } from '@/stores/views'
 import { viewList } from '@/model/views.model'
 import type { RennesApp } from '@/services/RennesApp'
+import router from '@/router'
 
 const rennesApp = inject('rennesApp') as RennesApp
 
@@ -41,10 +42,6 @@ async function zoom(out = false, zoomFactor = 2): Promise<void> {
   }
 }
 
-async function returnToHome() {
-  mapStore.updateViewpoint('home', true)
-}
-
 const shouldDisplayNavHelp = () => {
   return (
     sessionStorage.getItem('nav-help-displayed') !== 'true' && mapStore.is3D()
@@ -59,7 +56,7 @@ const shouldDisplayNavHelp = () => {
   >
     <UiIconButton
       class="rounded-lg px-3 py-3"
-      @click="returnToHome"
+      @click="router.push('/home')"
       v-show="viewStore.currentView != viewList.traveltimes"
       ><IconHome
     /></UiIconButton>
