@@ -41,6 +41,12 @@ export const useLineInteractionStore = defineStore(
       featureLabel.value = feature
     }
 
+    function resetLinesLabels() {
+      selectedLines.value = []
+      clickPosition.value = null
+      featureLabel.value = null
+    }
+
     return {
       selectedLines,
       selectLines,
@@ -48,6 +54,7 @@ export const useLineInteractionStore = defineStore(
       selectClickPosition,
       featureLabel,
       selectFeatureLabel,
+      resetLinesLabels,
     }
   }
 )

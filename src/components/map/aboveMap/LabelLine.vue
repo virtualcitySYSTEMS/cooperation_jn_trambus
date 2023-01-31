@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { getColorLine } from '@/services/color'
+import router from '@/router'
+import { useLineViewsStore } from '@/stores/views'
+
 const props = defineProps<{
   lines: string[]
   topPosition: number
   leftPosition: number
 }>()
+
+const lineViewStore = useLineViewsStore()
+
 const positionStyle = computed(() => {
   let style: string = ''
   const size_text = 9
@@ -20,23 +27,27 @@ const positionStyle = computed(() => {
   }
   return style
 })
+
+const goToLinePage = (line: string) => {
+  const num_line = line.replace('T', '')
+  if (num_line != lineViewStore.selectedLine) {
+    router.push(`/line/${num_line}`)
+  }
+}
 </script>
 
 <template>
-  <div
-    class="absolute items-center rounded-3xl py-0.5 px-2 h-6 bg-red-500"
-    :style="positionStyle"
-    v-if="props.lines.length > 0"
-  >
-    <template v-if="props.lines.length == 1">
-      <p class="font-dm-sans font-bold text-sm h-5 text-white">
-        {{ props.lines }}
-      </p>
-    </template>
-    <template v-else>
-      <p class="font-dm-sans font-bold text-sm h-5 text-white">
-        {{ props.lines }}
-      </p>
-    </template>
+  <div class="absolute" :style="positionStyle" v-if="props.lines.length > 0">
+    <div class="flex p-2 round-md">
+      <div
+        v-for="line in props.lines"
+        :key="line"
+        class="px-2 py-0 border cursor-pointer text-white rounded-md border-black mr-1 font-bold font-dm-sans text-sm text-center items-center"
+        :class="getColorLine('bg', line.replace('T', ''), 600)"
+        @click="goToLinePage(line)"
+      >
+        {{ line }}
+      </div>
+    </div>
   </div>
 </template>
