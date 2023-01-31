@@ -28,13 +28,18 @@ export async function updateTraveltimeArrow(rennesApp: RennesApp) {
   if (traveltimeInteractionStore.selectedTraveltime) {
     lineStrings = await lineStringsFromTraveltimes(
       [traveltimeInteractionStore.selectedTraveltime],
-      rennesApp
+      rennesApp,
+      mapStore.is3D()
     )
   } else if (viewStore.currentView === viewList.line) {
     const travelTimes = await apiClientService.fetchTravelTimeByLine(
       lineViewStore.selectedLine
     )
-    lineStrings = await lineStringsFromTraveltimes(travelTimes, rennesApp)
+    lineStrings = await lineStringsFromTraveltimes(
+      travelTimes,
+      rennesApp,
+      mapStore.is3D()
+    )
   }
   updateArrowFeatures(lineStrings, arrowLayer)
   // False negative: Property 'BOTH' does not exist on type 'typeof ArrowEnd'
