@@ -217,7 +217,7 @@
       }
     },
     {
-      "name": "customLayer",
+      "name": "customLayerLabelLine",
       "type": "GeoJSONLayer",
       "activeOnStartup": true,
       "zIndex": 4
