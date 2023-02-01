@@ -16,6 +16,7 @@ import ServicesStation from '@/components/station/ServicesStation.vue'
 import PointsOfInterestsStation from '@/components/station/PointsOfInterestsStation.vue'
 import BackButton from '@/components/home/BackButton.vue'
 import { usePoiStore } from '@/stores/poi'
+import { useLineInteractionStore } from '@/stores/interactionMap'
 
 const mapStore = useMapStore()
 const viewStore = useViewsStore()
@@ -23,6 +24,7 @@ const layerStore = useLayersStore()
 const lineStore = useLineViewsStore()
 const stationsStore = useStationsStore()
 const poiStore = usePoiStore()
+const lineInteractionStore = useLineInteractionStore()
 
 const { params } = useRoute()
 const routeParams = ref(params)
@@ -56,6 +58,7 @@ onMounted(async () => {
   viewStore.currentView = viewList.station
   const viewPoint = `line ${lineStore.selectedLine} | station ${stationsStore.currentStationView}`
   mapStore.updateViewpoint(viewPoint, true)
+  lineInteractionStore.resetLinesLabels()
   layerStore.setVisibilities(mapStore.is3D(), {
     trambusLines: true,
     trambusStops: true,

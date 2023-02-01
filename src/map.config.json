@@ -215,6 +215,12 @@
         "altitudeMode": "relativeToGround",
         "heightAboveGround": 5
       }
+    },
+    {
+      "name": "customLayerLabelLine",
+      "type": "GeoJSONLayer",
+      "activeOnStartup": true,
+      "zIndex": 4
     }
   ],
   "viewpoints": [

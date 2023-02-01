@@ -7,8 +7,7 @@ import {
   OpenlayersMap,
 } from '@vcmap/core'
 import mapConfig from '../map.config.json'
-import SelectStationInteraction from '@/interactions/selectStation'
-import { RENNES_LAYER } from '@/stores/layers'
+import mapClickAndMoveInteraction from '@/interactions/clickAndMoveInteraction'
 import type { RennesLayer } from '@/stores/layers'
 
 export class RennesApp extends VcsApp {
@@ -28,7 +27,7 @@ export class RennesApp extends VcsApp {
 
     this.maps.eventHandler.featureInteraction.setActive(EventType.CLICKMOVE)
     this.maps.eventHandler.addPersistentInteraction(
-      new SelectStationInteraction(this, RENNES_LAYER.trambusStops)
+      new mapClickAndMoveInteraction(this)
     )
   }
 

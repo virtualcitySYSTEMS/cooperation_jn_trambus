@@ -10,13 +10,17 @@ import BackButton from '@/components/home/BackButton.vue'
 import UiTravelTime from '@/components/ui/UiTravelTime.vue'
 import { useMapStore } from '@/stores/map'
 import { viewList } from '@/model/views.model'
-import { useTraveltimeInteractionStore } from '@/stores/interactionMap'
+import {
+  useTraveltimeInteractionStore,
+  useLineInteractionStore,
+} from '@/stores/interactionMap'
 
 const viewStore = useViewsStore()
 const layerStore = useLayersStore()
 const traveltimeInteractionStore = useTraveltimeInteractionStore()
 const mapStore = useMapStore()
 const stationsStore = useStationsStore()
+const lineInteractionStore = useLineInteractionStore()
 
 const state = reactive({
   travelTimes: null as null | TravelTimeModel[],
@@ -26,6 +30,7 @@ onMounted(async () => {
   viewStore.currentView = viewList.traveltimes
   mapStore.updateViewpoint(`home`, true)
   stationsStore.traveltimesViewSetUpStationsToDisplay()
+  lineInteractionStore.resetLinesLabels()
   layerStore.setVisibilities(mapStore.is3D(), {
     trambusLines: true,
     trambusStops: true,

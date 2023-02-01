@@ -14,6 +14,7 @@ export const RENNES_LAYER = {
   poi: 'poi',
   // The following layers are scratch layers
   _traveltimeArrow: '_traveltimeArrow',
+  customLayerLabelLine: 'customLayerLabelLine',
 }
 
 export const RENNES_LAYERNAMES = [
@@ -27,6 +28,7 @@ export const RENNES_LAYERNAMES = [
   RENNES_LAYER.parking,
   RENNES_LAYER.poi,
   RENNES_LAYER._traveltimeArrow,
+  RENNES_LAYER.customLayerLabelLine,
 ] as const
 
 export type RennesLayer = typeof RENNES_LAYERNAMES[number]
