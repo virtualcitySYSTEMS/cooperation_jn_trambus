@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, inject } from 'vue'
-import {
-  Layer,
-  Viewpoint,
-  vectorStyleSymbol,
-  OpenlayersMap,
-  StyleItem,
-} from '@vcmap/core'
+import { Layer, Viewpoint, vectorStyleSymbol, StyleItem } from '@vcmap/core'
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
 import ComponentsAboveMap from '@/components/map/aboveMap/ComponentsAboveMap.vue'
@@ -90,10 +84,7 @@ async function resetStyleOfPoi(view: View) {
       )
     } else {
       styleItem = generatePoiStyleWithoutLabel()
-      setDistanceDisplayConditionFeature(
-        styleItem,
-        rennesApp.maps.getByKey('ol') as OpenlayersMap
-      )
+      setDistanceDisplayConditionFeature(styleItem, rennesApp.get2DMap())
     }
 
     //@ts-expect-error

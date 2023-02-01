@@ -4,6 +4,7 @@ import {
   CesiumMap,
   EventType,
   GeoJSONLayer,
+  OpenlayersMap,
 } from '@vcmap/core'
 import mapConfig from '../map.config.json'
 import mapClickAndMoveInteraction from '@/interactions/clickAndMoveInteraction'
@@ -18,7 +19,7 @@ export class RennesApp extends VcsApp {
     const context = new Context(mapConfig)
     await this.addContext(context)
 
-    const cesiumMap = this.maps.getByKey('cesium')
+    const cesiumMap = this.get3DMap()
     await cesiumMap?.initialize()
     if (cesiumMap && cesiumMap instanceof CesiumMap) {
       cesiumMap.getScene().globe.maximumScreenSpaceError = 1
@@ -97,5 +98,13 @@ export class RennesApp extends VcsApp {
       layer
     )
     return features
+  }
+
+  get3DMap(): CesiumMap {
+    return this.maps.getByKey('cesium') as CesiumMap
+  }
+
+  get2DMap(): OpenlayersMap {
+    return this.maps.getByKey('ol') as OpenlayersMap
   }
 }
