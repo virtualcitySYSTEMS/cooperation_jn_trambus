@@ -2,10 +2,12 @@ import type { TravelTimeModel } from '@/model/travel-time.model'
 import { RENNES_LAYER } from '@/stores/layers'
 import { LineString } from 'ol/geom'
 import type { RennesApp } from '@/services/RennesApp'
+import { getHeightFromTerrainProvider, mercatorProjection } from '@vcmap/core'
 
 export async function lineStringsFromTraveltimes(
   traveltimes: TravelTimeModel[],
-  rennesApp: RennesApp
+  rennesApp: RennesApp,
+  is3D: boolean
 ): Promise<LineString[]> {
   const promises = traveltimes.map(async (traveltime) => {
     const startTrambusStop = await rennesApp.getFeatureByAttributeFromLayer(
@@ -19,11 +21,27 @@ export async function lineStringsFromTraveltimes(
       traveltime.end
     )
 
-    const lineString = new LineString([
-      startTrambusStop?.getGeometry()?.getCoordinates(),
-      endTrambusStop?.getGeometry()?.getCoordinates(),
-    ])
-    return lineString
+    // Add altitude / height for 3D map so that it's not under the ground
+    if (is3D) {
+      const cesiumMap = rennesApp.get3DMap()
+
+      const [startCoordinate, endCoordinate] =
+        await getHeightFromTerrainProvider(
+          cesiumMap.terrainProvider,
+          [
+            startTrambusStop?.getGeometry()?.getCoordinates(),
+            endTrambusStop?.getGeometry()?.getCoordinates(),
+          ],
+          mercatorProjection
+        )
+
+      return new LineString([startCoordinate, endCoordinate])
+    } else {
+      return new LineString([
+        startTrambusStop?.getGeometry()?.getCoordinates(),
+        endTrambusStop?.getGeometry()?.getCoordinates(),
+      ])
+    }
   })
   const lineStrings = await Promise.all(promises)
   return lineStrings
