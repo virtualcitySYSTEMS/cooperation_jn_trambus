@@ -35,7 +35,7 @@ const isPhotoGalleryVisible = computed(() => {
   <main class="h-screen flex">
     <aside class="z-10 absolute">
       <SidePanel v-show="panelStore.isPlanningViewShown === false">
-        <RouterView />
+        <RouterView :key="$route.fullPath" />
       </SidePanel>
     </aside>
 
