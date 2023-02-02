@@ -7,7 +7,6 @@ import UiIconButton from '@/components/ui/UiIconButton.vue'
 import CompassComponent from '@/components/map/CompassComponent.vue'
 
 import { useMapStore } from '@/stores/map'
-import { useLayersStore } from '@/stores/layers'
 import { useViewsStore } from '@/stores/views'
 import { viewList } from '@/model/views.model'
 import type { RennesApp } from '@/services/RennesApp'
@@ -16,7 +15,6 @@ import { useRouter } from 'vue-router'
 const rennesApp = inject('rennesApp') as RennesApp
 
 const mapStore = useMapStore()
-const layerStore = useLayersStore()
 const viewStore = useViewsStore()
 const router = useRouter()
 
@@ -24,7 +22,6 @@ async function toggle3DMap() {
   mapStore.toggle3D()
   // TODO: if the layer store is merged into map store, we can do the following
   // line in pinia
-  layerStore.update3DBaseLayer(mapStore.is3D())
 }
 
 async function zoom(out = false, zoomFactor = 2): Promise<void> {

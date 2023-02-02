@@ -166,11 +166,10 @@ layerStore.$subscribe(async () => {
 mapStore.$subscribe(async () => {
   // Update map
   await updateActiveMap()
-  await updateLayersVisibility()
   await updateViewPoint()
-  if (poiStore.currentDisplay) {
-    await resetStyleOfPoi(poiStore.currentDisplay)
-  }
+  // if (poiStore.currentDisplay) {
+  //   await resetStyleOfPoi(poiStore.currentDisplay)
+  // }
   await updateTraveltimeArrow(rennesApp)
 })
 
@@ -187,13 +186,18 @@ stationsStore.$subscribe(async () => {
   await componentAboveMapStore.updateListLabelsStations(rennesApp)
 })
 
+async function filterFeaturesOnLine() {
+  await fixGeometryOfPoi(rennesApp)
+  await filterFeatureByParkingAndLine(rennesApp, lineViewStore.selectedLine)
+}
+
 poiStore.$subscribe(async () => {
+  await removeFiltersOnPoiAndParking(rennesApp)
   if (
     poiStore.currentDisplay === viewList.station &&
     stationsStore.currentStationView
   ) {
-    await fixGeometryOfPoi(rennesApp)
-    await filterFeatureByParkingAndLine(rennesApp, lineViewStore.selectedLine)
+    await filterFeaturesOnLine()
     await filterFeatureByPoiAndStation(
       rennesApp,
       stationsStore.currentStationView
@@ -203,13 +207,9 @@ poiStore.$subscribe(async () => {
     poiStore.currentDisplay === viewList.line &&
     lineViewStore.selectedLine
   ) {
-    await removeFiltersOnPoiAndParking(rennesApp)
-    await fixGeometryOfPoi(rennesApp)
-    await filterFeatureByParkingAndLine(rennesApp, lineViewStore.selectedLine)
+    await filterFeaturesOnLine()
     await filterFeatureByPoiAndLine(rennesApp, lineViewStore.selectedLine)
     await resetStyleOfPoi(viewList.line)
-  } else {
-    await removeFiltersOnPoiAndParking(rennesApp)
   }
 })
 traveltimeInteractionStore.$subscribe(async () => {

@@ -2,31 +2,59 @@ import type { Ref } from 'vue'
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { View } from '@/model/views.model'
-import { useLayersStore } from '@/stores/layers'
+import { viewList } from '@/model/views.model'
 
-export const usePoiStore = defineStore('poi', () => {
+export const usePoiStore = defineStore('poi-layer', () => {
   const currentDisplay: Ref<View | null> = ref(null)
-  const layersStore = useLayersStore()
 
+  function activeHomeProfile() {
+    currentDisplay.value = viewList.home
+  }
   function activeLineProfile() {
-    layersStore.enableLayer('poi')
-    currentDisplay.value = 'line'
+    currentDisplay.value = viewList.line
   }
 
   function activeStationProfile() {
-    layersStore.enableLayer('poi')
-    currentDisplay.value = 'station'
+    currentDisplay.value = viewList.station
   }
 
-  function disablePoi() {
-    layersStore.disableLayer('poi')
+  function disablePoiLayer() {
     currentDisplay.value = null
   }
 
   return {
     currentDisplay,
+    activeHomeProfile,
     activeLineProfile,
     activeStationProfile,
-    disablePoi,
+    disablePoiLayer,
+  }
+})
+
+export const useParkingStore = defineStore('parking-layer', () => {
+  const currentDisplay: Ref<View | null> = ref(null)
+  const layersStore = useLayersStore()
+
+  function activeHomeProfile() {
+    currentDisplay.value = viewList.home
+  }
+  function activeLineProfile() {
+    currentDisplay.value = viewList.line
+  }
+
+  function activeStationProfile() {
+    currentDisplay.value = viewList.station
+  }
+
+  function disableParkingLayer() {
+    currentDisplay.value = null
+  }
+
+  return {
+    currentDisplay,
+    activeHomeProfile,
+    activeLineProfile,
+    activeStationProfile,
+    disableParkingLayer,
   }
 })

@@ -1,8 +1,11 @@
 import { ref } from 'vue'
 import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
+import { useLayersStore } from '@/stores/layers'
 
 export const useMapStore = defineStore('map', () => {
+  const layerStore = useLayersStore()
+
   // Map state
   const activeMap: Ref<string> = ref('ol') // Map: 'ol', 'cesium'
   const viewPoint: Ref<string> = ref('rennes') // See the map.config.json
@@ -21,8 +24,10 @@ export const useMapStore = defineStore('map', () => {
   function toggle3D() {
     if (is3D()) {
       activeMap.value = 'ol'
+      layerStore.update3DBaseLayer(false)
     } else {
       activeMap.value = 'cesium'
+      layerStore.update3DBaseLayer(false)
     }
   }
 
@@ -34,8 +39,6 @@ export const useMapStore = defineStore('map', () => {
   }
 
   return {
-    triggerEvent,
-    eventRandomId,
     viewPoint,
     activeMap,
     is3D,
