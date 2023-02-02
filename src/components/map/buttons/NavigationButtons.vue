@@ -5,7 +5,6 @@ import { cloneViewPointAndResetCameraPosition } from '@/helpers/viewpointHelper'
 import IconHome from '@/components/ui/icons/IconHome.vue'
 import UiIconButton from '@/components/ui/UiIconButton.vue'
 import CompassComponent from '@/components/map/CompassComponent.vue'
-import NavigationHelp from '@/components/map/NavigationHelp.vue'
 
 import { useMapStore } from '@/stores/map'
 import { useLayersStore } from '@/stores/layers'
@@ -42,12 +41,6 @@ async function zoom(out = false, zoomFactor = 2): Promise<void> {
   }
 }
 
-const shouldDisplayNavHelp = () => {
-  return (
-    sessionStorage.getItem('nav-help-displayed') !== 'true' && mapStore.is3D()
-  )
-}
-
 const shouldDisplayHomeButton = () => {
   return ![viewList.traveltimes, viewList.home].includes(viewStore.currentView)
 }
@@ -77,5 +70,4 @@ const shouldDisplayHomeButton = () => {
     }}</UiIconButton>
     <CompassComponent v-if="mapStore.is3D()" />
   </div>
-  <NavigationHelp v-if="shouldDisplayNavHelp()" />
 </template>
