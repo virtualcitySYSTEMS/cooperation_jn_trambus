@@ -35,7 +35,7 @@ class mapClickAndMoveInteraction extends AbstractInteraction {
     const stationName = feature?.get('nom')
     if (event.type & EventType.CLICK) {
       const viewStore = useViewsStore()
-      if (viewStore.currentView == viewList.line) {
+      if ([viewList.line, viewList.station].includes(viewStore.currentView)) {
         const lineViewStore = useLineViewsStore()
         const lineNumber = lineViewStore.selectedLine
         const stationId = feature?.get('id')

@@ -21,7 +21,7 @@ import { viewList } from '@/model/views.model'
 import BackButton from '@/components/home/BackButton.vue'
 import { useTraveltimeInteractionStore } from '@/stores/interactionMap'
 import type { RennesApp } from '@/services/RennesApp'
-import { fetchParkingsByLine } from '@/services/parking'
+import { fetchParkingsByStations } from '@/services/parking'
 import type { ParkingModel } from '@/model/parkings.model'
 import type { StationModel } from '@/model/stations.model'
 import { fetchStationsByLine, completeStationsData } from '@/services/station'
@@ -61,9 +61,10 @@ onBeforeMount(async () => {
     lineStore.selectedLine
   )
   state.photo = await apiClientService.fetchPhotoByLine(lineStore.selectedLine)
-  state.parkings = await fetchParkingsByLine(rennesApp, lineStore.selectedLine)
-
   const stations = await fetchStationsByLine(rennesApp, lineStore.selectedLine)
+
+  state.parkings = await fetchParkingsByStations(rennesApp, stations)
+
   state.stations = await completeStationsData(
     rennesApp,
     stations,
