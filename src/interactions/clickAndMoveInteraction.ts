@@ -39,7 +39,7 @@ class mapClickAndMoveInteraction extends AbstractInteraction {
         const lineViewStore = useLineViewsStore()
         const lineNumber = lineViewStore.selectedLine
         const stationId = feature?.get('id')
-        router.push({ path: `/line/${lineNumber}/station/${stationId}` })
+        router.push(`/line/${lineNumber}/station/${stationId}`)
       }
     } else if (event.type & EventType.MOVE) {
       stationsStore.addStationToDisplay(stationName)
