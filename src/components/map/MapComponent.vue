@@ -103,9 +103,9 @@ async function setLayerVisible(layerName: string, visible: boolean) {
 }
 
 async function updateLayersVisibility() {
-  RENNES_LAYERNAMES.forEach(async (layer) => {
+  for (const layer of RENNES_LAYERNAMES) {
     await setLayerVisible(layer, layerStore.visibilities[layer])
-  })
+  }
 }
 
 async function updateViewPoint() {

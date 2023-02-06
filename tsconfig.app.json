@@ -9,6 +9,7 @@
       "@/*": ["./src/*"]
     },
     "skipLibCheck": true,
-    "isolatedModules": false
+    "isolatedModules": false,
+    "types": ["node"]
   }
 }

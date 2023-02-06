@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import router from '@/router'
-
+import { useRouter } from 'vue-router'
 import ChevronArrowLeft from '@/assets/icons/chevron-left.svg'
 import UiButton from '@/components/ui/UiButton.vue'
 
 import { useTraveltimeInteractionStore } from '@/stores/interactionMap'
 
 const traveltimeInteractionStore = useTraveltimeInteractionStore()
+const router = useRouter()
 
 const props = defineProps({
   url: {

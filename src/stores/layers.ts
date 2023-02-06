@@ -55,6 +55,20 @@ export const useLayersStore = defineStore('layers', () => {
     }
   }
 
+  function disableLayer(name: RennesLayer) {
+    visibilities.value = {
+      ...visibilities.value,
+      [name]: false,
+    }
+  }
+
+  function enableLayer(name: RennesLayer) {
+    visibilities.value = {
+      ...visibilities.value,
+      [name]: true,
+    }
+  }
+
   function update3DBaseLayer(is3D: boolean) {
     visibilities.value.rennesBase = !is3D
     visibilities.value.rennesOrtho = is3D
@@ -78,5 +92,12 @@ export const useLayersStore = defineStore('layers', () => {
     visibilities.value._traveltimeArrow = newVisibilities._traveltimeArrow
   }
 
-  return { visibilities, toggleLayer, update3DBaseLayer, setVisibilities }
+  return {
+    visibilities,
+    toggleLayer,
+    disableLayer,
+    enableLayer,
+    update3DBaseLayer,
+    setVisibilities,
+  }
 })

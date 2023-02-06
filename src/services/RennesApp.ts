@@ -6,17 +6,18 @@ import {
   GeoJSONLayer,
   OpenlayersMap,
 } from '@vcmap/core'
-import mapConfig from '../map.config.json'
 import mapClickAndMoveInteraction from '@/interactions/clickAndMoveInteraction'
 import type { RennesLayer } from '@/stores/layers'
 
 export class RennesApp extends VcsApp {
-  constructor() {
+  readonly mapConfig
+  constructor(mapConfig: object) {
     super()
+    this.mapConfig = mapConfig
   }
 
   async initializeMap() {
-    const context = new Context(mapConfig)
+    const context = new Context(this.mapConfig)
     await this.addContext(context)
 
     const cesiumMap = this.get3DMap()

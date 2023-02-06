@@ -1,0 +1,2207 @@
+[
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1471",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.628447, 48.122828]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1471,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1",
+      "nom": "IUT",
+      "desserte": null,
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.628447, 48.122828, -1.628447, 48.122828]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1472",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.700179, 48.126151]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1472,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1",
+      "nom": "Parc Administratif",
+      "desserte": null,
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.700179, 48.126151, -1.700179, 48.126151]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1473",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.60667, 48.123524]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1473,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T2",
+      "nom": "Grande Pierre",
+      "desserte": null,
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.60667, 48.123524, -1.60667, 48.123524]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1474",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.687646, 48.157967]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1474,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Uttenreuth",
+      "desserte": null,
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.687646, 48.157967, -1.687646, 48.157967]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1475",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.668288, 48.157128]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1475,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Bout du Monde",
+      "desserte": null,
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.668288, 48.157128, -1.668288, 48.157128]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1476",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.604079, 48.08399]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1476,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Pont Boeuf",
+      "desserte": null,
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.604079, 48.08399, -1.604079, 48.08399]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1477",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.602935, 48.081266]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1477,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Bocage Citadin",
+      "desserte": null,
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.602935, 48.081266, -1.602935, 48.081266]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1478",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.631441, 48.093109]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1478,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "La Poterie TER",
+      "desserte": null,
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.631441, 48.093109, -1.631441, 48.093109]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1479",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.750788, 48.02484]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1479,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T4",
+      "nom": "Châteliers",
+      "desserte": null,
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.750788, 48.02484, -1.750788, 48.02484]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1480",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.753002, 48.042546]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1480,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T4",
+      "nom": "Croix Madame",
+      "desserte": null,
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.753002, 48.042546, -1.753002, 48.042546]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1481",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.71423, 48.074873]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1481,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T4",
+      "nom": "La Martinière",
+      "desserte": null,
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.71423, 48.074873, -1.71423, 48.074873]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1482",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.713935, 48.067882]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1482,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T4",
+      "nom": "Halte Saint-Jacques",
+      "desserte": null,
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.713935, 48.067882, -1.713935, 48.067882]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1483",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.729808, 48.059022]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1483,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T4",
+      "nom": "Parc Expo",
+      "desserte": null,
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.729808, 48.059022, -1.729808, 48.059022]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1484",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.73109, 48.055457]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1484,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T4",
+      "nom": "Gaudrais",
+      "desserte": null,
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.73109, 48.055457, -1.73109, 48.055457]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1485",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.735436, 48.052495]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1485,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T4",
+      "nom": "Parc Relais",
+      "desserte": null,
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.735436, 48.052495, -1.735436, 48.052495]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1486",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.755342, 48.026353]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1486,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T4",
+      "nom": "Europe",
+      "desserte": null,
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.755342, 48.026353, -1.755342, 48.026353]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1487",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.625436, 48.090775]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1487,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Loges",
+      "desserte": null,
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.625436, 48.090775, -1.625436, 48.090775]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1488",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.674535, 48.109859]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1488,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1 T2 T3",
+      "nom": "Musée Beaux Arts",
+      "desserte": "12 67 C1 C3 C4 C6 N4 N5 Relais_b TTZ",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.674535, 48.109859, -1.674535, 48.109859]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1489",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.669614, 48.110053]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1489,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1 T2",
+      "nom": "Paul Bert",
+      "desserte": "C4 C6 N4",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.669614, 48.110053, -1.669614, 48.110053]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1490",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.686699, 48.15455]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1490,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Discalceat",
+      "desserte": "C2",
+      "desserte_scolaire": "204",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.686699, 48.15455, -1.686699, 48.15455]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1491",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.699637, 48.110488]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1491,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1",
+      "nom": "Guilloux",
+      "desserte": "53 C4 N1",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": "53",
+      "desserte_dimanche": "53"
+    },
+    "bbox": [-1.699637, 48.110488, -1.699637, 48.110488]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1492",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.689512, 48.111694]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1492,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Horizons",
+      "desserte": "C2",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.689512, 48.111694, -1.689512, 48.111694]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1493",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.686133, 48.147192]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1493,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Haut Trait",
+      "desserte": "178 C2",
+      "desserte_scolaire": "204",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.686133, 48.147192, -1.686133, 48.147192]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1494",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.712581, 48.077735]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1494,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T4",
+      "nom": "Haut Bois",
+      "desserte": "C7 N3",
+      "desserte_scolaire": "245",
+      "desserte_soirs_we": "C7",
+      "desserte_dimanche": "C7"
+    },
+    "bbox": [-1.712581, 48.077735, -1.712581, 48.077735]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1495",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.686537, 48.143033]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1495,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "CHP Saint-Grégoire",
+      "desserte": "178 78 C2",
+      "desserte_scolaire": "204",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.686537, 48.143033, -1.686537, 48.143033]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1496",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.630741, 48.129752]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1496,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1",
+      "nom": "Longs Champs Est",
+      "desserte": "C4",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.630741, 48.129752, -1.630741, 48.129752]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1497",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.600443, 48.114371]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1497,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T2",
+      "nom": "Bordage",
+      "desserte": "167 67 C6",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": "11",
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.600443, 48.114371, -1.600443, 48.114371]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1498",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.661248, 48.102709]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1498,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Croix Saint-Hélier",
+      "desserte": "11 C1 C2 TTZ",
+      "desserte_scolaire": "Ts22",
+      "desserte_soirs_we": "11",
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.661248, 48.102709, -1.661248, 48.102709]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1499",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.729611, 48.106779]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1499,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T2",
+      "nom": "Berthault",
+      "desserte": "11 54 55 56",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": "54",
+      "desserte_dimanche": "54 55"
+    },
+    "bbox": [-1.729611, 48.106779, -1.729611, 48.106779]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1500",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.685254, 48.109959]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1500,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1 T2 T3",
+      "nom": "Pont de Bretagne",
+      "desserte": "153 154 155 53 54 55 56",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": "53 54",
+      "desserte_dimanche": "53 54 55"
+    },
+    "bbox": [-1.685254, 48.109959, -1.685254, 48.109959]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1501",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.64205, 48.097341]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1501,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Domaine",
+      "desserte": "C1",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.64205, 48.097341, -1.64205, 48.097341]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1502",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.689159, 48.118414]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1502,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Anatole France",
+      "desserte": "10 Bzh7 C2",
+      "desserte_scolaire": "208",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.689159, 48.118414, -1.689159, 48.118414]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1503",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.604031, 48.085464]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1503,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Rosa Parks",
+      "desserte": "34 C1",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.604031, 48.085464, -1.604031, 48.085464]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1504",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.621894, 48.114165]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1504,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T2",
+      "nom": "Taillis",
+      "desserte": "14 167 67 C6",
+      "desserte_scolaire": "206 214",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.621894, 48.114165, -1.621894, 48.114165]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1505",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.74641, 48.044578]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1505,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T4",
+      "nom": "Ker Lann",
+      "desserte": "C7 C7ex N3",
+      "desserte_scolaire": "219",
+      "desserte_soirs_we": "C7",
+      "desserte_dimanche": "C7"
+    },
+    "bbox": [-1.74641, 48.044578, -1.74641, 48.044578]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1506",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.752705, 48.029045]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1506,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T4",
+      "nom": "Bruz Gare",
+      "desserte": "159 59 90",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.752705, 48.029045, -1.752705, 48.029045]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1507",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.721782, 48.067368]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1507,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T4",
+      "nom": "Aéroport",
+      "desserte": "13 C6",
+      "desserte_scolaire": "219 245",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": "C7"
+    },
+    "bbox": [-1.721782, 48.067368, -1.721782, 48.067368]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1508",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.703077, 48.121378]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1508,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1",
+      "nom": "Villejean-Université",
+      "desserte": "14 152 165 168 178 52 65 68 76 77 78 81 82 C4 N1 Relais_a a",
+      "desserte_scolaire": "205",
+      "desserte_soirs_we": "52 77 81",
+      "desserte_dimanche": "52 65 77 81 82"
+    },
+    "bbox": [-1.703077, 48.121378, -1.703077, 48.121378]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1509",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.648688, 48.111078]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1509,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1 T2",
+      "nom": "François Château",
+      "desserte": "C4 C6 N4 TTZ",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.648688, 48.111078, -1.648688, 48.111078]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1510",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.671435, 48.155286]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1510,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Champ Daguet",
+      "desserte": "C2",
+      "desserte_scolaire": "204",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.671435, 48.155286, -1.671435, 48.155286]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1511",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.695792, 48.133004]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1511,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1",
+      "nom": "Dulac",
+      "desserte": "12 C4",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.695792, 48.133004, -1.695792, 48.133004]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1512",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.692955, 48.135793]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1512,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1",
+      "nom": "Grand Quartier",
+      "desserte": "12 14 178 78 C4",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.692955, 48.135793, -1.692955, 48.135793]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1513",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.690051, 48.109223]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1513,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1 T2",
+      "nom": "Le Mail",
+      "desserte": "11 C4 N1",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.690051, 48.109223, -1.690051, 48.109223]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1514",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.692361, 48.108674]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1514,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1 T2",
+      "nom": "Chèques Postaux",
+      "desserte": "10",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.692361, 48.108674, -1.692361, 48.108674]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1515",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.638049, 48.095361]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1515,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "CARSAT",
+      "desserte": "11 C1 C2",
+      "desserte_scolaire": "214",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.638049, 48.095361, -1.638049, 48.095361]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1516",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.600618, 48.123126]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1516,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T2",
+      "nom": "Bourgchevreuil",
+      "desserte": "34 C6",
+      "desserte_scolaire": "206 214 216",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.600618, 48.123126, -1.600618, 48.123126]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1517",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.704676, 48.118041]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1517,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1",
+      "nom": "Berger",
+      "desserte": "C4 N1",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.704676, 48.118041, -1.704676, 48.118041]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1518",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.673544, 48.107874]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1518,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "TNB",
+      "desserte": "11 12 C2",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.673544, 48.107874, -1.673544, 48.107874]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1519",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.649431, 48.100224]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1519,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Villebois-Mareuil",
+      "desserte": "32 C1",
+      "desserte_scolaire": "Ts22",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.649431, 48.100224, -1.649431, 48.100224]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1520",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.722378, 48.107137]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1520,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T2",
+      "nom": "Lemaistre",
+      "desserte": "11 54 55 56",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": "54 55"
+    },
+    "bbox": [-1.722378, 48.107137, -1.722378, 48.107137]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1521",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.655922, 48.110129]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1521,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1 T2",
+      "nom": "Pont de Strasbourg",
+      "desserte": "32 C4 C6 N4 TTZ",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.655922, 48.110129, -1.655922, 48.110129]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1522",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.710195, 48.108958]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1522,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T2",
+      "nom": "Géniaux",
+      "desserte": "11 14 54 55 56 TTZ",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": "54",
+      "desserte_dimanche": "54 55"
+    },
+    "bbox": [-1.710195, 48.108958, -1.710195, 48.108958]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1523",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.614645, 48.085863]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1523,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Deux Ruisseaux",
+      "desserte": "34 C1",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.614645, 48.085863, -1.614645, 48.085863]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1524",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.681747, 48.124473]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1524,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Cimetière Nord",
+      "desserte": "12 C2",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.681747, 48.124473, -1.681747, 48.124473]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1525",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.671951, 48.104097]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1525,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Gares",
+      "desserte": "11 12 63 Bzh7 Bzh9a Bzh9b C1 C2 Relais_a Relais_b a b",
+      "desserte_scolaire": "208",
+      "desserte_soirs_we": "11",
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.671951, 48.104097, -1.671951, 48.104097]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1526",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.628811, 48.127025]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1526,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1",
+      "nom": "Beaulieu Atalante",
+      "desserte": "164 C4 N4 Relais_b b",
+      "desserte_scolaire": "200",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.628811, 48.127025, -1.628811, 48.127025]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1527",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.599409, 48.120379]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1527,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T2",
+      "nom": "Cesson Collège",
+      "desserte": "C6",
+      "desserte_scolaire": "221",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.599409, 48.120379, -1.599409, 48.120379]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1528",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.739882, 48.104555]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1528,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T2",
+      "nom": "Trois Marches",
+      "desserte": "11 54 55 56",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": "54",
+      "desserte_dimanche": "54 55"
+    },
+    "bbox": [-1.739882, 48.104555, -1.739882, 48.104555]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1529",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.685167, 48.133258]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1529,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Lycée Mendès France",
+      "desserte": "12 14 C2",
+      "desserte_scolaire": "204 228",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.685167, 48.133258, -1.685167, 48.133258]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1530",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.690467, 48.136998]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1530,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1",
+      "nom": "Cerisaie",
+      "desserte": "12 14 178 78",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.690467, 48.136998, -1.690467, 48.136998]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1531",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.609797, 48.114582]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1531,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T2",
+      "nom": "Sports et Nature",
+      "desserte": "14 C6",
+      "desserte_scolaire": "206 214",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.609797, 48.114582, -1.609797, 48.114582]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1532",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.702932, 48.107982]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1532,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T2",
+      "nom": "Kerviler Papeteries",
+      "desserte": "11",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.702932, 48.107982, -1.702932, 48.107982]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1533",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.671556, 48.159122]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1533,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Nobel",
+      "desserte": "C2",
+      "desserte_scolaire": "204",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.671556, 48.159122, -1.671556, 48.159122]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1534",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.757366, 48.035122]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1534,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T4",
+      "nom": "Corbières",
+      "desserte": "C7 C7ex",
+      "desserte_scolaire": "219 245",
+      "desserte_soirs_we": "C7",
+      "desserte_dimanche": "C7"
+    },
+    "bbox": [-1.757366, 48.035122, -1.757366, 48.035122]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1535",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.636047, 48.132545]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1535,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1",
+      "nom": "ZA Saint-Sulpice",
+      "desserte": "34 83 C4",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.636047, 48.132545, -1.636047, 48.132545]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1536",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.600555, 48.116007]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1536,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T2",
+      "nom": "Chalotais",
+      "desserte": "34 C6",
+      "desserte_scolaire": "214 220 Ts61",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.600555, 48.116007, -1.600555, 48.116007]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1537",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.619146, 48.088416]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1537,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Chantepie Mairie",
+      "desserte": "13 34 C1",
+      "desserte_scolaire": "Ts22",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.619146, 48.088416, -1.619146, 48.088416]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1538",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.63495, 48.118705]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1538,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1",
+      "nom": "Beaulieu Chimie",
+      "desserte": "10 14 C4 N4",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.63495, 48.118705, -1.63495, 48.118705]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1539",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.615034, 48.114211]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1539,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T2",
+      "nom": "Hublais",
+      "desserte": "14 C6",
+      "desserte_scolaire": "206 214",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.615034, 48.114211, -1.615034, 48.114211]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1540",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.683445, 48.127854]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1540,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Trois Croix",
+      "desserte": "12 14 C2",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.683445, 48.127854, -1.683445, 48.127854]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1541",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.59028, 48.113445]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1541,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T2",
+      "nom": "Rigourdière",
+      "desserte": "67 C6",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": "11",
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.59028, 48.113445, -1.59028, 48.113445]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1542",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.676477, 48.159052]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1542,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Ricoquais",
+      "desserte": "C2",
+      "desserte_scolaire": "204 223",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.676477, 48.159052, -1.676477, 48.159052]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1543",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.678576, 48.109853]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1543,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1 T2 T3",
+      "nom": "République",
+      "desserte": "100 11 153 154 155 156 167 53 54 55 56 67 API Bzh7 C1 C2 C3 C4 C5 C6 N1 N2 N3 N4 N5 Relais_a a",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": "11 50 51 53 54 61 62 64 72 77 C7",
+      "desserte_dimanche": "53 54 55 67"
+    },
+    "bbox": [-1.678576, 48.109853, -1.678576, 48.109853]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1544",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.74508, 48.024986]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1544,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T4",
+      "nom": "Bruz Centre",
+      "desserte": "159 59 90 C7 C7ex",
+      "desserte_scolaire": "245",
+      "desserte_soirs_we": "C7",
+      "desserte_dimanche": "C7"
+    },
+    "bbox": [-1.74508, 48.024986, -1.74508, 48.024986]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1545",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.691778, 48.131477]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1545,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1",
+      "nom": "Léonard",
+      "desserte": "14 178 52 68 78 C4",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": "52",
+      "desserte_dimanche": "52"
+    },
+    "bbox": [-1.691778, 48.131477, -1.691778, 48.131477]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1546",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.686607, 48.111703]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1546,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Les Lices",
+      "desserte": "C2 Relais_a",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.686607, 48.111703, -1.686607, 48.111703]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1547",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.681069, 48.159108]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1547,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Camus",
+      "desserte": "C2",
+      "desserte_scolaire": "204",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.681069, 48.159108, -1.681069, 48.159108]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1548",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.686082, 48.137742]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1548,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1 T3",
+      "nom": "La Plesse",
+      "desserte": "12 14 178 78 C2",
+      "desserte_scolaire": "204",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.686082, 48.137742, -1.686082, 48.137742]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1549",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.611062, 48.12312]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1549,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T2",
+      "nom": "Mare Pavée",
+      "desserte": "34 C6",
+      "desserte_scolaire": "206 216",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.611062, 48.12312, -1.611062, 48.12312]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1550",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.698366, 48.108893]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1550,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T2",
+      "nom": "Guilloux Lorient",
+      "desserte": "11 53 54 55 56 C4 N1",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": "54",
+      "desserte_dimanche": "53 54 55"
+    },
+    "bbox": [-1.698366, 48.108893, -1.698366, 48.108893]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1551",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.608413, 48.11842]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1551,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T2",
+      "nom": "Muguet",
+      "desserte": "C6",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.608413, 48.11842, -1.608413, 48.11842]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1552",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.724561, 48.065033]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1552,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T4",
+      "nom": "Centre Météo",
+      "desserte": "13",
+      "desserte_scolaire": "219 245",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": "C7"
+    },
+    "bbox": [-1.724561, 48.065033, -1.724561, 48.065033]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1553",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.629188, 48.114079]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1553,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T2",
+      "nom": "Champs Péans",
+      "desserte": "14 67 C6",
+      "desserte_scolaire": "206 214",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.629188, 48.114079, -1.629188, 48.114079]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1554",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.693428, 48.112809]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1554,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Brest Verdun",
+      "desserte": "10 C2",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.693428, 48.112809, -1.693428, 48.112809]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1555",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.707284, 48.087083]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1555,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T4",
+      "nom": "Maltière",
+      "desserte": "13 C6 C7 N3",
+      "desserte_scolaire": "209",
+      "desserte_soirs_we": "C7",
+      "desserte_dimanche": "C7"
+    },
+    "bbox": [-1.707284, 48.087083, -1.707284, 48.087083]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1556",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.641117, 48.1134]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1556,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1 T2",
+      "nom": "Les Préales",
+      "desserte": "C4 C6 N4",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.641117, 48.1134, -1.641117, 48.1134]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1557",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.659853, 48.110098]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1557,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1 T2",
+      "nom": "Robidou",
+      "desserte": "67 C4 C6 N4 TTZ",
+      "desserte_scolaire": "210",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.659853, 48.110098, -1.659853, 48.110098]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1558",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.609976, 48.084981]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1558,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Gériatrie",
+      "desserte": "34 C1",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.609976, 48.084981, -1.609976, 48.084981]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1559",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.742029, 48.047338]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1559,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T4",
+      "nom": "Coeur de Campus",
+      "desserte": "C7 C7ex N3",
+      "desserte_scolaire": "219",
+      "desserte_soirs_we": "C7",
+      "desserte_dimanche": "C7"
+    },
+    "bbox": [-1.742029, 48.047338, -1.742029, 48.047338]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1560",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.663772, 48.110081]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1560,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1 T2",
+      "nom": "Pont de Châteaudun",
+      "desserte": "C4 C6 N4 TTZ",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.663772, 48.110081, -1.663772, 48.110081]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1561",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.740591, 48.0494]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1561,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T4",
+      "nom": "Etangs",
+      "desserte": "C7 C7ex N3",
+      "desserte_scolaire": "219",
+      "desserte_soirs_we": "C7",
+      "desserte_dimanche": "C7"
+    },
+    "bbox": [-1.740591, 48.0494, -1.740591, 48.0494]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1562",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.666933, 48.104717]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1562,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Laënnec",
+      "desserte": "11 C1 C2",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": "11",
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.666933, 48.104717, -1.666933, 48.104717]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1563",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.712439, 48.080562]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1563,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T4",
+      "nom": "St-Jacques Mairie",
+      "desserte": "C7 N3",
+      "desserte_scolaire": "245",
+      "desserte_soirs_we": "C7",
+      "desserte_dimanche": "C7"
+    },
+    "bbox": [-1.712439, 48.080562, -1.712439, 48.080562]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1564",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.714431, 48.107898]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1564,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T2",
+      "nom": "Roazhon Park",
+      "desserte": "11 14 TTZ",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.714431, 48.107898, -1.714431, 48.107898]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1565",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.643574, 48.112334]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1565,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1 T2",
+      "nom": "Plaine de Baud",
+      "desserte": "C4 C6 N4",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.643574, 48.112334, -1.643574, 48.112334]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1566",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.685898, 48.151462]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1566,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Forge",
+      "desserte": "C2",
+      "desserte_scolaire": "204",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.685898, 48.151462, -1.685898, 48.151462]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1567",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.63671, 48.114106]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1567,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1 T2",
+      "nom": "Tournebride",
+      "desserte": "167 67 C4 C6 N4",
+      "desserte_scolaire": "206 210",
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.63671, 48.114106, -1.63671, 48.114106]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1568",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.756699, 48.029198]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1568,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T4",
+      "nom": "Vert Buisson",
+      "desserte": "91 C7 C7ex",
+      "desserte_scolaire": "245",
+      "desserte_soirs_we": "C7",
+      "desserte_dimanche": "C7"
+    },
+    "bbox": [-1.756699, 48.029198, -1.756699, 48.029198]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1569",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.691016, 48.116312]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1569,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "La Touche",
+      "desserte": "10 C2",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.691016, 48.116312, -1.691016, 48.116312]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1570",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.6558, 48.102083]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1570,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Mouézy",
+      "desserte": "11 C1",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": "11",
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.6558, 48.102083, -1.6558, 48.102083]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1571",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.693879, 48.128206]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1571,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1",
+      "nom": "Préfecture",
+      "desserte": "14 C4",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.693879, 48.128206, -1.693879, 48.128206]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1572",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.686342, 48.121598]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1572,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T3",
+      "nom": "Pierre Legrand",
+      "desserte": "C2",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.686342, 48.121598, -1.686342, 48.121598]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1573",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.698316, 48.128634]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1573,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1",
+      "nom": "Cucillé - Frac",
+      "desserte": "14 C4",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.698316, 48.128634, -1.698316, 48.128634]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1574",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.701691, 48.114949]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1574,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T1",
+      "nom": "La Salle",
+      "desserte": "C4 N1 TTZ",
+      "desserte_scolaire": null,
+      "desserte_soirs_we": null,
+      "desserte_dimanche": null
+    },
+    "bbox": [-1.701691, 48.114949, -1.701691, 48.114949]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_arrets.1575",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.703001, 48.091918]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 1575,
+      "version": "2022-12-29",
+      "trace_type": "base",
+      "li_code": "T4",
+      "nom": "Saint-Jacques - Gaîté",
+      "desserte": "13 156 37 C6 C7 C7ex N3 Relais_b b",
+      "desserte_scolaire": "245",
+      "desserte_soirs_we": "C7",
+      "desserte_dimanche": "C7"
+    },
+    "bbox": [-1.703001, 48.091918, -1.703001, 48.091918]
+  }
+]

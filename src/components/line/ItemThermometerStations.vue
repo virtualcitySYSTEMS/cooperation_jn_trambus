@@ -141,7 +141,7 @@ const classCircle = computed(() => {
     @mouseover="stationActive = true"
     @mouseleave="stationActive = false"
   >
-    <div :class="classCircle" />
+    <div :id="'divcircle-' + name" :class="classCircle" />
     <p class="font-dm-sans font-bold text-base -tracking-[1%] w-80 h-6 mb-1">
       {{ name }}
     </p>

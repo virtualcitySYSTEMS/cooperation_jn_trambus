@@ -11,12 +11,13 @@ import { viewList } from '@/model/views.model'
 import { usePanelsStore } from '@/stores/panels'
 import { useViewsStore } from '@/stores/views'
 import { RennesApp } from '@/services/RennesApp'
+import mapConfig from './map.config.json'
 
 const panelStore = usePanelsStore()
 const viewStore = useViewsStore()
 
 onBeforeMount(() => {
-  const rennesApp = new RennesApp()
+  const rennesApp = new RennesApp(mapConfig)
   provide('rennesApp', rennesApp)
 })
 
