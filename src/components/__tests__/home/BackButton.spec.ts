@@ -1,5 +1,3 @@
-//@ts-nocheck
-//error TS2708: Cannot use namespace 'jest' as a value.
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 import { mount, VueWrapper } from '@vue/test-utils'
