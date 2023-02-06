@@ -216,7 +216,8 @@
       "zIndex": 4,
       "vectorProperties": {
         "altitudeMode": "relativeToGround",
-        "heightAboveGround": 5
+        "heightAboveGround": 5,
+        "eyeOffset": [0, 0, -100]
       }
     },
     {
