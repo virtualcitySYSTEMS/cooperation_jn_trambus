@@ -3,11 +3,13 @@ import type { VcsObjectOptions } from '@vcmap/core'
 import { OpenlayersMap, GeoJSONLayer, Context } from '@vcmap/core'
 import trambusStops from '../tests/dataLayers/trambusStops.json'
 import parking from '../tests/dataLayers/parking.json'
+import poi from '../tests/dataLayers/poi.json'
 import { RENNES_LAYER } from '@/stores/layers'
 import { Feature } from 'ol'
 import { Point } from 'ol/geom'
 import type { Geometry } from 'ol/geom'
 import type { RennesLayer } from '@/stores/layers'
+import { LineString } from 'ol/geom'
 
 export class RennesAppTest extends RennesApp {
   test_viewpoints: VcsObjectOptions[]
@@ -56,9 +58,11 @@ export class RennesAppTest extends RennesApp {
     return feature
   }
 
-  _getGeometryFromKey(key: RennesLayer, coordinates: number[]) {
+  _getGeometryFromKey(key: RennesLayer, coordinates: number[] | number[][]) {
     if ([RENNES_LAYER.trambusStops, RENNES_LAYER.parking].includes(key)) {
-      return new Point(coordinates)
+      return new Point(coordinates as number[])
+    } else if ([RENNES_LAYER.poi].includes(key)) {
+      return new LineString(coordinates)
     }
   }
 
@@ -68,6 +72,8 @@ export class RennesAppTest extends RennesApp {
         return trambusStops
       case RENNES_LAYER.parking:
         return parking
+      case RENNES_LAYER.poi:
+        return poi
     }
     return []
   }
@@ -95,5 +101,26 @@ export class RennesAppTest extends RennesApp {
     await this.addContext(this.test_context)
     await this._linkedFeaturesToLayer(RENNES_LAYER.trambusStops)
     await this._linkedFeaturesToLayer(RENNES_LAYER.parking)
+  }
+
+  async _initializeMapWithAllLayers() {
+    // metro: 'metro',
+    // bus: 'bus',
+    // bike: 'bike',
+    // trambusLines: 'trambusLines',
+    // poi: 'poi',
+    // // The following layers are scratch layers
+    // _traveltimeArrow: '_traveltimeArrow',
+
+    this._addOpenLayerMap()
+    this._addLayer(RENNES_LAYER.trambusStops)
+    this._addLayer(RENNES_LAYER.parking)
+    this._addLayer(RENNES_LAYER.poi)
+    this._createContext()
+    if (this.test_context === null) return
+    await this.addContext(this.test_context)
+    await this._linkedFeaturesToLayer(RENNES_LAYER.trambusStops)
+    await this._linkedFeaturesToLayer(RENNES_LAYER.parking)
+    await this._linkedFeaturesToLayer(RENNES_LAYER.poi)
   }
 }
