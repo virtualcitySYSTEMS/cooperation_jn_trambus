@@ -203,7 +203,10 @@
       "url": "https://public.sig.rennesmetropole.fr/geoserver/ows?service=WFS&request=getFeature&typename=trp_coll:trambus_parc_relais&outputFormat=application/json&srsName=EPSG:4326",
       "type": "GeoJSONLayer",
       "activeOnStartup": true,
-      "zIndex": 4
+      "zIndex": 4,
+      "vectorProperties": {
+        "eyeOffset": [0, 0, -100]
+      }
     },
     {
       "name": "poi",
@@ -213,7 +216,8 @@
       "zIndex": 4,
       "vectorProperties": {
         "altitudeMode": "relativeToGround",
-        "heightAboveGround": 5
+        "heightAboveGround": 5,
+        "eyeOffset": [0, 0, -100]
       }
     },
     {
