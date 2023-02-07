@@ -163,3 +163,20 @@ export function trambusStopLineViewStyleFunction(
     isStationLabelDisplayed(stationName)
   )
 }
+
+export function trambusStopOutlineLineViewStyleFunction(
+  feature: FeatureLike,
+  selectedLine: number,
+  isShown: boolean,
+  is3D: boolean
+): Style[] {
+  const selectedTrambusLine = Number(selectedLine) as LineNumber
+  const stationName = feature.get('nom')
+
+  return trambusStopOutlineStyle(
+    selectedTrambusLine,
+    isShown,
+    is3D,
+    isStationLabelDisplayed(stationName)
+  )
+}
