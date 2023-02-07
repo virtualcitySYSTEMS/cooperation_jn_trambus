@@ -33,6 +33,7 @@ describe('ThermometerStations', () => {
   })
 
   const stationsStore = useStationsStore()
+  const items = wrapper.findAllComponents(ItemThermometerStations)
 
   describe('stations', () => {
     it('good number of stations', () => {
@@ -47,14 +48,12 @@ describe('ThermometerStations', () => {
 
   describe('parking', () => {
     it('first item contain parking', () => {
-      const items = wrapper.findAllComponents(ItemThermometerStations)
       const firstItem = items.find((item) => item.props('name') === 'La Plesse')
       expect(firstItem).toBeDefined()
       expect(firstItem?.props('parking')).toBe(true)
     })
 
     it("second item doesn't contain parking", () => {
-      const items = wrapper.findAllComponents(ItemThermometerStations)
       const secondItem = items.find((item) => item.props('name') === 'Cerisaie')
       expect(secondItem).toBeDefined()
       expect(secondItem?.props('parking')).toBe(false)
@@ -63,7 +62,6 @@ describe('ThermometerStations', () => {
 
   describe('dessertes', () => {
     it('station republique have good desserte', () => {
-      const items = wrapper.findAllComponents(ItemThermometerStations)
       const itemRepublique = items.find(
         (item) => item.props('name') === 'République'
       )
@@ -77,7 +75,6 @@ describe('ThermometerStations', () => {
 
   describe('correspondence with other stations', () => {
     it('station republique have good correspondence', () => {
-      const items = wrapper.findAllComponents(ItemThermometerStations)
       const itemRepublique = items.find(
         (item) => item.props('name') === 'République'
       )
@@ -109,7 +106,6 @@ describe('ThermometerStations', () => {
 
   describe('mouseover item', () => {
     it('change the background color', async () => {
-      const items = wrapper.findAllComponents(ItemThermometerStations)
       const itemRepublique = items.find(
         (item) => item.props('name') === 'République'
       )
@@ -119,7 +115,6 @@ describe('ThermometerStations', () => {
     })
 
     it('display the station label on the map ', async () => {
-      const items = wrapper.findAllComponents(ItemThermometerStations)
       const itemRepublique = items.find(
         (item) => item.props('name') === 'République'
       )
