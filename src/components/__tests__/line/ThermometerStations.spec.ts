@@ -49,14 +49,14 @@ describe('ThermometerStations', () => {
     it('first item contain parking', () => {
       const items = wrapper.findAllComponents(ItemThermometerStations)
       const firstItem = items.find((item) => item.props('name') === 'La Plesse')
-      expect(firstItem === undefined).toBe(false)
+      expect(firstItem).toBeDefined()
       expect(firstItem?.props('parking')).toBe(true)
     })
 
     it("second item doesn't contain parking", () => {
       const items = wrapper.findAllComponents(ItemThermometerStations)
       const secondItem = items.find((item) => item.props('name') === 'Cerisaie')
-      expect(secondItem === undefined).toBe(false)
+      expect(secondItem).toBeDefined()
       expect(secondItem?.props('parking')).toBe(false)
     })
   })

@@ -38,7 +38,7 @@ describe('RennesApp', () => {
       for (let i = 0; i < 5; i++) {
         const feature = getRandomFeature(features)
         const data = getDataFromIdFeature(feature.get('id'), RENNES_LAYER.poi)
-        expect(data['properties'] !== undefined).toBe(true)
+        expect(data['properties']).toBeDefined()
         expect(
           feature.get('id') === data['properties']['id'] &&
             feature.get('site_x') === data['properties']['site_x'] &&
@@ -56,7 +56,7 @@ describe('RennesApp', () => {
           feature.get('id'),
           RENNES_LAYER.trambusStops
         )
-        expect(data['properties'] !== undefined).toBe(true)
+        expect(data['properties']).toBeDefined()
         expect(
           feature.get('id') === data['properties']['id'] &&
             feature.get('nom') === data['properties']['nom'] &&
