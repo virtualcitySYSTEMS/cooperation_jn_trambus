@@ -3,8 +3,6 @@ import { Circle, Fill, Stroke, Style } from 'ol/style'
 import { getTrambusLineNumber, lineColors } from './common'
 import * as ol_color from 'ol/color'
 import type { FeatureLike } from 'ol/Feature'
-import type { LineState } from '@/styles/line'
-import { trambusLineStyle } from '@/styles/line'
 import { getAllStartEndStations } from '@/model/lines.fixtures'
 import type { TravelTimeModel } from '@/model/travel-time.model'
 import { isStationLabelDisplayed } from '@/services/station'
@@ -64,24 +62,6 @@ export function trambusStopStyle(
   }
   const circleStyle = getCircleStyle(lineNumber, isSelectedStation, is3D)
   return [circleStyle]
-}
-
-export function trambusLineTravelTimesViewStyleFunction(
-  feature: FeatureLike,
-  selectedTravelTime: TravelTimeModel,
-  is3D: boolean
-): Style[] {
-  const lineNumber = getTrambusLineNumber(feature) as LineNumber
-  let lineState: LineState = 'normal'
-
-  if (selectedTravelTime == null) {
-    lineState = 'normal'
-  } else if (getTrambusLineNumber(feature) == selectedTravelTime.line) {
-    lineState = 'selected'
-  } else {
-    lineState = 'unselected'
-  }
-  return trambusLineStyle(lineNumber, lineState, is3D)
 }
 
 export function trambusStopTravelTimesViewStyleFunction(

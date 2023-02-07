@@ -3,11 +3,14 @@ import type { StyleFunction } from 'ol/style/Style'
 import type { Style } from 'ol/style'
 import type { FeatureLayer } from '@vcmap/core'
 import type { RennesApp } from '@/services/RennesApp'
-import { trambusLineViewStyleFunction } from '@/styles/line'
+import {
+  trambusLineViewStyleFunction,
+  trambusLineTravelTimesViewStyleFunction,
+} from '@/styles/line'
+
 import { useMapStore } from '@/stores/map'
 import { useLineViewsStore } from '@/stores/views'
 import {
-  trambusLineTravelTimesViewStyleFunction,
   trambusStopLineViewStyleFunction,
   trambusStopTravelTimesViewStyleFunction,
 } from '@/styles/trambusStop'
