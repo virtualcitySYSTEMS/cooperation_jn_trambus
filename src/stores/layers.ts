@@ -15,6 +15,7 @@ export const RENNES_LAYER = {
   // The following layers are scratch layers
   _traveltimeArrow: '_traveltimeArrow',
   customLayerLabelLine: 'customLayerLabelLine',
+  _trambusStopsOutline: '_trambusStopsOutline',
 }
 
 export const RENNES_LAYERNAMES = [
@@ -29,6 +30,7 @@ export const RENNES_LAYERNAMES = [
   RENNES_LAYER.poi,
   RENNES_LAYER._traveltimeArrow,
   RENNES_LAYER.customLayerLabelLine,
+  RENNES_LAYER._trambusStopsOutline,
 ] as const
 
 export type RennesLayer = typeof RENNES_LAYERNAMES[number]
@@ -46,6 +48,7 @@ export const useLayersStore = defineStore('layers', () => {
     parking: false,
     poi: false,
     _traveltimeArrow: false,
+    _trambusStopsOutline: false,
   })
 
   function toggleLayer(name: RennesLayer) {
@@ -73,6 +76,8 @@ export const useLayersStore = defineStore('layers', () => {
     update3DBaseLayer(is3D)
     visibilities.value.trambusLines = newVisibilities.trambusLines
     visibilities.value.trambusStops = newVisibilities.trambusStops
+    // Set the "fake" layer for trambus stops outline to the same as the trambus stop
+    visibilities.value._trambusStopsOutline = newVisibilities.trambusStops
     visibilities.value.parking = newVisibilities.parking
     visibilities.value.poi = newVisibilities.poi
     visibilities.value._traveltimeArrow = newVisibilities._traveltimeArrow
