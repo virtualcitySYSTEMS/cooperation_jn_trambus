@@ -15,7 +15,8 @@ function getCircleStyle(
   let fillColor = ol_color.fromString('#FFFFFF')
   let strokeColor = lineColors[lineNumber]
 
-  // TODO: change to use disk style
+  // Only handle the color of the 3D style here, disk is configured by
+  // vector properties of the layer
   if (is3D) {
     fillColor = ol_color.fromString('#FFFFFF')
     strokeColor = lineColors[lineNumber]
@@ -64,6 +65,8 @@ export function trambusStopStyle(
   return [circleStyle]
 }
 
+// The only way until now to created a disk with a proper border, we render the same trambus layer
+//  but using the same color as the stroke color
 export function trambusStopOutlineStyle(
   lineNumber: LineNumber,
   isShown: boolean,
@@ -74,8 +77,10 @@ export function trambusStopOutlineStyle(
     return []
   }
   let radius = 6
+  // TODO: it seems this radius is not used if we user vector properties, need to remove it or
+  // somehow set a new value for the vector properties of the layer
   if (isSelectedStation) {
-    radius = 6
+    radius = 8
   }
   const outline_style = new Style({
     image: new Circle({
