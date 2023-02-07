@@ -3,18 +3,19 @@ import { describe, it, expect, vi, beforeEach, beforeAll } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import MapComponent from '../../map/MapComponent.vue'
-import mapConfigTest from '../../../../tests/map.config.test.json'
 import { flushPromises } from '@vue/test-utils'
 import { usePanelsStore } from '@/stores/panels'
 import { useLayersStore } from '@/stores/layers'
 import { useLineViewsStore, useViewsStore } from '@/stores/views'
 import { useMapStore } from '@/stores/map'
-import { RennesApp } from '@/services/RennesApp'
 import fetch from 'node-fetch'
 import { usePoiStore } from '@/stores/poi'
+import { RennesAppTest } from '../../../../tests/RennesAppTest'
+
+const app = new RennesAppTest()
+await app._initializeMapWithAllLayers()
 
 describe('MapComponent', () => {
-  const rennesApp = new RennesApp(mapConfigTest)
   const wrapper = mount(MapComponent, {
     global: {
       plugins: [
@@ -26,7 +27,7 @@ describe('MapComponent', () => {
         }),
       ],
       provide: {
-        rennesApp: rennesApp,
+        rennesApp: app,
       },
     },
   })
@@ -54,7 +55,7 @@ describe('MapComponent', () => {
       })
       poiStore.activeLineProfile()
       await flushPromises()
-      const poi = await rennesApp.getLayerByKey('poi')
+      const poi = await app.getLayerByKey('poi')
       expect(layersStore.enableLayer).toHaveBeenCalledWith('poi')
       expect(poi.visibility).toBeTruthy()
     })

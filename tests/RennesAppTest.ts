@@ -4,12 +4,14 @@ import { OpenlayersMap, GeoJSONLayer, Context } from '@vcmap/core'
 import trambusStops from '../tests/dataLayers/trambusStops.json'
 import parking from '../tests/dataLayers/parking.json'
 import poi from '../tests/dataLayers/poi.json'
+import trambusLines from '../tests/dataLayers/trambusLines.json'
 import { RENNES_LAYER } from '@/stores/layers'
 import { Feature } from 'ol'
 import { Point } from 'ol/geom'
 import type { Geometry } from 'ol/geom'
 import type { RennesLayer } from '@/stores/layers'
-import { LineString } from 'ol/geom'
+import { LineString, MultiLineString } from 'ol/geom'
+import type { Coordinate } from 'ol/coordinate'
 
 export class RennesAppTest extends RennesApp {
   test_viewpoints: VcsObjectOptions[]
@@ -58,11 +60,18 @@ export class RennesAppTest extends RennesApp {
     return feature
   }
 
-  _getGeometryFromKey(key: RennesLayer, coordinates: number[] | number[][]) {
+  _getGeometryFromKey(
+    key: RennesLayer,
+    coordinates: number[] | number[][] | (LineString | Coordinate[])[]
+  ) {
     if ([RENNES_LAYER.trambusStops, RENNES_LAYER.parking].includes(key)) {
       return new Point(coordinates as number[])
     } else if ([RENNES_LAYER.poi].includes(key)) {
-      return new LineString(coordinates)
+      return new LineString(coordinates as number[] | Coordinate[])
+    } else if ([RENNES_LAYER.trambusLines].includes(key)) {
+      return new MultiLineString(
+        coordinates as number[] | (LineString | Coordinate[])[]
+      )
     }
   }
 
@@ -74,6 +83,8 @@ export class RennesAppTest extends RennesApp {
         return parking
       case RENNES_LAYER.poi:
         return poi
+      case RENNES_LAYER.trambusLines:
+        return trambusLines
     }
     return []
   }
@@ -104,23 +115,21 @@ export class RennesAppTest extends RennesApp {
   }
 
   async _initializeMapWithAllLayers() {
-    // metro: 'metro',
-    // bus: 'bus',
-    // bike: 'bike',
-    // trambusLines: 'trambusLines',
-    // poi: 'poi',
-    // // The following layers are scratch layers
-    // _traveltimeArrow: '_traveltimeArrow',
-
     this._addOpenLayerMap()
-    this._addLayer(RENNES_LAYER.trambusStops)
-    this._addLayer(RENNES_LAYER.parking)
-    this._addLayer(RENNES_LAYER.poi)
+    const layers = [
+      RENNES_LAYER.trambusStops,
+      RENNES_LAYER.parking,
+      RENNES_LAYER.poi,
+      RENNES_LAYER.trambusLines,
+    ]
+    layers.forEach((layer) => {
+      this._addLayer(layer)
+    })
     this._createContext()
     if (this.test_context === null) return
     await this.addContext(this.test_context)
-    await this._linkedFeaturesToLayer(RENNES_LAYER.trambusStops)
-    await this._linkedFeaturesToLayer(RENNES_LAYER.parking)
-    await this._linkedFeaturesToLayer(RENNES_LAYER.poi)
+    for (let i = 0; i < layers.length; i++) {
+      await this._linkedFeaturesToLayer(layers[i])
+    }
   }
 }
