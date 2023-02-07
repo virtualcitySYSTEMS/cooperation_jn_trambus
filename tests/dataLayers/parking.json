@@ -1,0 +1,154 @@
+[
+  {
+    "type": "Feature",
+    "id": "trambus_parc_relais.33",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.590007, 48.113279]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 33,
+      "version": "2022-12-29",
+      "nom": "Cesson Rigourdière",
+      "nb_min_places": 50,
+      "nb_max_places": 100,
+      "li_code": "T2",
+      "arret_nom": "Rigourdière"
+    },
+    "bbox": [-1.590007, 48.113279, -1.590007, 48.113279]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_parc_relais.34",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.739899, 48.104439]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 34,
+      "version": "2022-12-29",
+      "nom": "Vezin (Kiloutou)",
+      "nb_min_places": 100,
+      "nb_max_places": 150,
+      "li_code": "T2",
+      "arret_nom": "Trois Marches"
+    },
+    "bbox": [-1.739899, 48.104439, -1.739899, 48.104439]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_parc_relais.35",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.604419, 48.080249]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 35,
+      "version": "2022-12-29",
+      "nom": "Chateaugiron Bocage",
+      "nb_min_places": 100,
+      "nb_max_places": 150,
+      "li_code": "T3",
+      "arret_nom": "Bocage Citadin"
+    },
+    "bbox": [-1.604419, 48.080249, -1.604419, 48.080249]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_parc_relais.36",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.686359, 48.137635]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 36,
+      "version": "2022-12-29",
+      "nom": "La Plesse",
+      "nb_min_places": 50,
+      "nb_max_places": 100,
+      "li_code": "T1",
+      "arret_nom": "La Plesse"
+    },
+    "bbox": [-1.686359, 48.137635, -1.686359, 48.137635]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_parc_relais.37",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.687589, 48.158445]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 37,
+      "version": "2022-12-29",
+      "nom": "Uttenreuth Saint-Grégoire",
+      "nb_min_places": 80,
+      "nb_max_places": 100,
+      "li_code": "T3",
+      "arret_nom": "Uttenreuth"
+    },
+    "bbox": [-1.687589, 48.158445, -1.687589, 48.158445]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_parc_relais.38",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.736437, 48.053637]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 38,
+      "version": "2022-12-29",
+      "nom": "Ker Lann",
+      "nb_min_places": 150,
+      "nb_max_places": 200,
+      "li_code": "T4",
+      "arret_nom": "Parc Relais"
+    },
+    "bbox": [-1.736437, 48.053637, -1.736437, 48.053637]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_parc_relais.39",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.628031, 48.084111]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 39,
+      "version": "2022-12-29",
+      "nom": "Chateaugiron rue des Loges",
+      "nb_min_places": 30,
+      "nb_max_places": 50,
+      "li_code": "T3",
+      "arret_nom": "Loges"
+    },
+    "bbox": [-1.628031, 48.084111, -1.628031, 48.084111]
+  },
+  {
+    "type": "Feature",
+    "id": "trambus_parc_relais.40",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [-1.765673, 48.09589]
+    },
+    "geometry_name": "geom",
+    "properties": {
+      "id": 40,
+      "version": "2022-12-29",
+      "nom": "Le Rheu Pont d'Avoine",
+      "nb_min_places": 50,
+      "nb_max_places": 100,
+      "li_code": "T2",
+      "arret_nom": "Trois Marches"
+    },
+    "bbox": [-1.765673, 48.09589, -1.765673, 48.09589]
+  }
+]

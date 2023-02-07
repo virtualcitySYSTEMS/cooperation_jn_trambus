@@ -11,13 +11,14 @@ import { useLayersStore } from '@/stores/layers'
 import { useViewsStore } from '@/stores/views'
 import { viewList } from '@/model/views.model'
 import type { RennesApp } from '@/services/RennesApp'
-import router from '@/router'
+import { useRouter } from 'vue-router'
 
 const rennesApp = inject('rennesApp') as RennesApp
 
 const mapStore = useMapStore()
 const layerStore = useLayersStore()
 const viewStore = useViewsStore()
+const router = useRouter()
 
 async function toggle3DMap() {
   mapStore.toggle3D()

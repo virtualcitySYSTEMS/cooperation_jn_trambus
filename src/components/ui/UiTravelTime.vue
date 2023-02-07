@@ -36,6 +36,7 @@ const containerStyle = computed(() => {
   <div
     class="flex items-center px-3 py-0 gap-2.5 rounded font-dm-sans hover:bg-white hover:border-slate-600 border"
     :class="containerStyle"
+    :id="props.lineNumber + ':' + props.startStation + '-' + props.endStation"
   >
     <div class="flex flex-col justify-center items-start pt-3 pr-3 pb-3 pl-0">
       <div class="flex items-center px-0.5 py-0 gap-1 rounded">

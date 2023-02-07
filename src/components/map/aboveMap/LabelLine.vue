@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { getColorLine } from '@/services/color'
-import router from '@/router'
+import { useRouter } from 'vue-router'
 import { useLineViewsStore } from '@/stores/views'
 import type { LineNumber } from '@/model/lines.model'
 
@@ -12,6 +12,7 @@ const props = defineProps<{
 }>()
 
 const lineViewStore = useLineViewsStore()
+const router = useRouter()
 
 const positionStyle = computed(() => {
   let style: string = ''

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, onMounted } from 'vue'
-import router from '@/router'
+import { useRouter } from 'vue-router'
 
 import { apiClientService } from '@/services/api.client'
 import type { LineModel } from '@/model/lines.model'
@@ -9,6 +9,7 @@ import UiLineDescription from '@/components/ui/UiLineDescription.vue'
 const state = reactive({
   lineDescription: null as null | LineModel[],
 })
+const router = useRouter()
 
 onMounted(async () => {
   state.lineDescription = await apiClientService.fetchLineDescriptions()
