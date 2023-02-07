@@ -6,7 +6,7 @@ import IconHome from '@/components/ui/icons/IconHome.vue'
 import UiIconButton from '@/components/ui/UiIconButton.vue'
 import CompassComponent from '@/components/map/CompassComponent.vue'
 
-import { useMapStore } from '@/stores/map'
+import { useMap3dStore } from '@/stores/map'
 import { useViewsStore } from '@/stores/views'
 import { viewList } from '@/model/views.model'
 import type { RennesApp } from '@/services/RennesApp'
@@ -14,12 +14,12 @@ import { useRouter } from 'vue-router'
 
 const rennesApp = inject('rennesApp') as RennesApp
 
-const mapStore = useMapStore()
+const map3dStore = useMap3dStore()
 const viewStore = useViewsStore()
 const router = useRouter()
 
 async function toggle3DMap() {
-  mapStore.toggle3D()
+  map3dStore.toggle3D()
   // TODO: if the layer store is merged into map store, we can do the following
   // line in pinia
 }
@@ -46,7 +46,7 @@ const shouldDisplayHomeButton = () => {
 
 <template>
   <div
-    v-bind:class="{ 'h-[23rem]': mapStore.is3D() }"
+    v-bind:class="{ 'h-[23rem]': map3dStore.is3D() }"
     class="h-90 transition-[height] absolute right-2 bottom-10 flex flex-col [&>*]:m-2 text-gray-dark items-center overflow-hidden w-32 select-none"
   >
     <UiIconButton
@@ -64,8 +64,8 @@ const shouldDisplayHomeButton = () => {
       >
     </div>
     <UiIconButton class="font-semibold rounded-lg" @click="toggle3DMap">{{
-      mapStore.is3D() ? '2D' : '3D'
+      map3dStore.is3D() ? '2D' : '3D'
     }}</UiIconButton>
-    <CompassComponent v-if="mapStore.is3D()" />
+    <CompassComponent v-if="map3dStore.is3D()" />
   </div>
 </template>

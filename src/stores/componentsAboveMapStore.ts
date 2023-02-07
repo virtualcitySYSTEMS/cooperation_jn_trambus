@@ -68,10 +68,6 @@ export const useComponentAboveMapStore = defineStore(
       )
     }
 
-    function setCartesian(new_cartesian: Cartesian2 | null) {
-      cartesian.value = new_cartesian
-    }
-
     function updatePositionsComponents(rennesApp: RennesApp) {
       //Update position of stations labels
       labelsStationsList.value.map((label) => {
@@ -122,8 +118,6 @@ export const useComponentAboveMapStore = defineStore(
     return {
       cartesian,
       labelsStationsList,
-      setCartesian,
-      updatePositionsComponents,
       updateListLabelsStations,
       addListenerForUpdatePositions,
     }

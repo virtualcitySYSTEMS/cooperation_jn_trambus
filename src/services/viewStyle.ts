@@ -8,7 +8,7 @@ import {
   trambusLineTravelTimesViewStyleFunction,
 } from '@/styles/line'
 
-import { useMapStore } from '@/stores/map'
+import { useMap3dStore } from '@/stores/map'
 import { useLineViewsStore } from '@/stores/views'
 import {
   trambusStopLineViewStyleFunction,
@@ -17,7 +17,7 @@ import {
   trambusStopOutlineLineViewStyleFunction,
 } from '@/styles/trambusStop'
 import { isTrambusStopBelongsToLine } from '@/services/station'
-import { parkingStyle, poiStyle } from '@/styles/common'
+import { parkingStyle } from '@/styles/common'
 import { useTraveltimeInteractionStore } from '@/stores/interactionMap'
 import { updateTraveltimeArrow } from '@/services/arrow'
 
@@ -34,7 +34,7 @@ export function clearLayerAndApplyStyle(
 }
 
 export async function updateLineViewStyle(rennesApp: RennesApp) {
-  const mapStore = useMapStore()
+  const mapStore = useMap3dStore()
   const lineViewStore = useLineViewsStore()
   clearLayerAndApplyStyle(rennesApp, RENNES_LAYER.trambusLines, (feature) =>
     trambusLineViewStyleFunction(
@@ -68,7 +68,7 @@ export async function updateLineViewStyle(rennesApp: RennesApp) {
 }
 
 export async function updateTravelTimesViewStyle(rennesApp: RennesApp) {
-  const mapStore = useMapStore()
+  const mapStore = useMap3dStore()
   const traveltimeInteractionStore = useTraveltimeInteractionStore()
   clearLayerAndApplyStyle(rennesApp, RENNES_LAYER.trambusLines, (feature) =>
     trambusLineTravelTimesViewStyleFunction(
@@ -98,7 +98,7 @@ export async function updateTravelTimesViewStyle(rennesApp: RennesApp) {
 }
 
 export async function updateStationViewStyle(rennesApp: RennesApp) {
-  const mapStore = useMapStore()
+  const mapStore = useMap3dStore()
   const lineViewStore = useLineViewsStore()
   clearLayerAndApplyStyle(rennesApp, RENNES_LAYER.trambusLines, (feature) =>
     trambusLineViewStyleFunction(
@@ -127,7 +127,6 @@ export async function updateStationViewStyle(rennesApp: RennesApp) {
         mapStore.is3D()
       )
   )
-  clearLayerAndApplyStyle(rennesApp, RENNES_LAYER.poi, poiStyle)
 }
 
 export function updateHomeViewStyle(rennesApp: RennesApp) {

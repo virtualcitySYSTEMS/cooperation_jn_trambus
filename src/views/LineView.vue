@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onBeforeMount, reactive, onMounted, ref, inject } from 'vue'
 
-import type { LineModel } from '@/model/lines.model'
+import type { LineModel, SelectedTrambusLine } from '@/model/lines.model'
 import type { TravelTimeModel } from '@/model/travel-time.model'
 import type { PhotoModel } from '@/model/photos.model'
 import { apiClientService } from '@/services/api.client'
@@ -11,11 +11,10 @@ import ThermometerStations from '@/components/line/ThermometerStations.vue'
 import ParkingsInformations from '@/components/line/ParkingsInformations.vue'
 import FooterArea from '@/components/home/FooterArea.vue'
 import { useRoute } from 'vue-router'
-import { useMapStore } from '@/stores/map'
+import { useMap3dStore } from '@/stores/map'
 import { useViewsStore } from '@/stores/views'
 import { useLayersStore } from '@/stores/layers'
 import { useLineViewsStore } from '@/stores/views'
-import { useStationsStore } from '@/stores/stations'
 import UiLineHeader from '@/components/ui/UiLineHeader.vue'
 import { viewList } from '@/model/views.model'
 import BackButton from '@/components/home/BackButton.vue'
@@ -25,16 +24,13 @@ import { fetchParkingsByStations } from '@/services/parking'
 import type { ParkingModel } from '@/model/parkings.model'
 import type { StationModel } from '@/model/stations.model'
 import { fetchStationsByLine, completeStationsData } from '@/services/station'
-import { usePoiStore } from '@/stores/poi'
 import { useLineInteractionStore } from '@/stores/interactionMap'
 
-const mapStore = useMapStore()
+const map3dStore = useMap3dStore()
 const viewStore = useViewsStore()
 const layerStore = useLayersStore()
 const lineStore = useLineViewsStore()
-const stationsStore = useStationsStore()
 const traveltimeInteractionStore = useTraveltimeInteractionStore()
-const poiStore = usePoiStore()
 const lineInteractionStore = useLineInteractionStore()
 
 const rennesApp = inject('rennesApp') as RennesApp
@@ -47,16 +43,17 @@ const state = reactive({
   stations: null as null | StationModel[],
 })
 
+let currentLine: SelectedTrambusLine
+
 onBeforeMount(async () => {
   const { params } = useRoute()
   const routeParams = ref(params)
-
-  lineStore.selectLine(Number(routeParams.value.id))
+  currentLine = Number(routeParams.value.id) as SelectedTrambusLine
+  viewStore.setCurrentView(viewList.line, currentLine, null)
 
   state.lineDescription = await apiClientService.fetchLineDescription(
     lineStore.selectedLine
   )
-  stationsStore.lineViewSetUpStationsToDisplay(state.lineDescription.id)
   state.travelTimes = await apiClientService.fetchTravelTimeByLine(
     lineStore.selectedLine
   )
@@ -74,18 +71,14 @@ onBeforeMount(async () => {
 })
 
 onMounted(async () => {
-  viewStore.currentView = viewList.line
-  mapStore.updateViewpoint(`line${lineStore.selectedLine}`, true)
   lineInteractionStore.resetLinesLabels()
-  layerStore.setVisibilities(mapStore.is3D(), {
+  layerStore.setVisibilities(map3dStore.is3D(), {
     trambusLines: true,
     trambusStops: true,
     parking: true,
     poi: true,
     _traveltimeArrow: true,
   })
-  poiStore.activeLineProfile()
-  stationsStore.clearAllStations()
 })
 
 function onTravelTimesClicked(travelTime: TravelTimeModel) {

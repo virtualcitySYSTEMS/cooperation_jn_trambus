@@ -3,13 +3,13 @@ import { useComponentAboveMapStore } from '@/stores/componentsAboveMapStore'
 import LabelStation from '@/components/map/aboveMap/LabelStation.vue'
 import LabelLine from '@/components/map/aboveMap/LabelLine.vue'
 import { useLineInteractionStore } from '@/stores/interactionMap'
-const componentAboveMapStore = useComponentAboveMapStore()
+const componentAbovemap3dStore = useComponentAboveMapStore()
 const lineInteractionStore = useLineInteractionStore()
 </script>
 
 <template>
   <LabelStation
-    v-for="label in componentAboveMapStore.labelsStationsList"
+    v-for="label in componentAbovemap3dStore.labelsStationsList"
     :key="label.stationName"
     :stationName="label.stationName"
     :topPosition="label.cartesian.y"

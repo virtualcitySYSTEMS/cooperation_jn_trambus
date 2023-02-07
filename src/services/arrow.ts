@@ -5,7 +5,7 @@ import {
 } from '@/styles/arrow'
 import type { RennesApp } from '@/services/RennesApp'
 import { RENNES_LAYER } from '@/stores/layers'
-import { useMapStore } from '@/stores/map'
+import { useMap3dStore } from '@/stores/map'
 import type { LineString } from 'ol/geom'
 import { useTraveltimeInteractionStore } from '@/stores/interactionMap'
 import { lineStringsFromTraveltimes } from '@/helpers/traveltimesHelper'
@@ -19,7 +19,7 @@ export async function updateTraveltimeArrow(rennesApp: RennesApp) {
   const traveltimeInteractionStore = useTraveltimeInteractionStore()
   const viewStore = useViewsStore()
   const lineViewStore = useLineViewsStore()
-  const mapStore = useMapStore()
+  const mapStore = useMap3dStore()
 
   // Arrow style for travel time
   const arrowLayer = getScratchLayer(rennesApp, RENNES_LAYER._traveltimeArrow)

@@ -12,7 +12,7 @@ import {
   RENNES_LAYERNAMES,
   RENNES_LAYER,
 } from '@/stores/layers'
-import { useMapStore } from '@/stores/map'
+import { useMap3dStore, useMapViewPointStore } from '@/stores/map'
 import {
   useLineViewsStore,
   useTravelTimesViewStore,
@@ -37,7 +37,7 @@ import { updateTraveltimeArrow } from '@/services/arrow'
 import { View, viewList } from '@/model/views.model'
 import { shorterName } from '@/services/poi'
 import { setDistanceDisplayConditionFeature } from '@/services/setDistanceDisplayCondition'
-import { usePoiStore } from '@/stores/poi'
+import { usePoiParkingStore } from '@/stores/poiParking'
 import {
   filterFeatureByParkingAndLine,
   filterFeatureByPoiAndStation,
@@ -50,19 +50,20 @@ import { fixGeometryOfPoi } from '@/services/poi'
 const rennesApp = inject('rennesApp') as RennesApp
 
 const layerStore = useLayersStore()
-const poiStore = usePoiStore()
-const mapStore = useMapStore()
+const poiStore = usePoiParkingStore()
+const map3dStore = useMap3dStore()
+const mapViewPointStore = useMapViewPointStore()
 const lineViewStore = useLineViewsStore()
 const stationsStore = useStationsStore()
 const travelTimesViewStore = useTravelTimesViewStore()
 const viewStore = useViewsStore()
-const componentAboveMapStore = useComponentAboveMapStore()
+const componentAbovemap3dStore = useComponentAboveMapStore()
 const traveltimeInteractionStore = useTraveltimeInteractionStore()
 
 onMounted(async () => {
   await rennesApp.initializeMap()
   await updateLayersVisibility()
-  updateMapStyle()
+  await updateMapStyle()
 })
 
 // The following code is needed to cleanup resources we created
@@ -80,7 +81,7 @@ async function resetStyleOfPoi(view: View) {
       styleItem = generatePoiStyle(
         shorterName(f.getProperties()['site_nom']),
         f.getProperties()['distance'],
-        mapStore.is3D()
+        map3dStore.is3D()
       )
     } else {
       styleItem = generatePoiStyleWithoutLabel()
@@ -108,24 +109,21 @@ async function updateLayersVisibility() {
   }
 }
 
-async function updateViewPoint() {
+async function updateViewPoint(viewPoint: string) {
   const activeMap = rennesApp.maps.activeMap
-  if (viewStore.currentView == viewList.station) {
-    const stationName = stationsStore.currentStationView
-    let layer = await rennesApp.getLayerByKey(RENNES_LAYER.trambusStops)
-    let viewpoint: Viewpoint | null = null
-    layer.getFeatures().forEach((f) => {
-      const properties = f.getProperties()
-      if (stationName == properties.nom) {
-        viewpoint = getViewpointFromFeature(f)
-      }
-    })
+  if (viewPoint === viewList.station) {
+    let featureStation = await rennesApp.getFeatureByAttributeFromLayer(
+      RENNES_LAYER.trambusStops,
+      'nom',
+      stationsStore.currentStationView!
+    )
+    let viewpoint: Viewpoint | null = getViewpointFromFeature(featureStation)
     if (viewpoint !== null) {
       const newVp = cloneViewPointAndResetCameraPosition(viewpoint, null)
       await activeMap.gotoViewpoint(newVp)
     }
   } else {
-    const selectedViewPoint = rennesApp.viewpoints.getByKey(mapStore.viewPoint)
+    const selectedViewPoint = rennesApp.viewpoints.getByKey(viewPoint)
 
     if (selectedViewPoint) {
       await activeMap.gotoViewpoint(selectedViewPoint)
@@ -138,8 +136,7 @@ async function updateViewPoint() {
 }
 
 async function updateActiveMap() {
-  await rennesApp.maps.setActiveMap(mapStore.activeMap)
-  componentAboveMapStore.addListenerForUpdatePositions(rennesApp)
+  await rennesApp.maps.setActiveMap(map3dStore.activeMap)
 }
 
 async function updateMapStyle() {
@@ -148,10 +145,10 @@ async function updateMapStyle() {
       updateHomeViewStyle(rennesApp)
       break
     case viewList.line:
-      updateLineViewStyle(rennesApp)
+      await updateLineViewStyle(rennesApp)
       break
     case viewList.traveltimes:
-      updateTravelTimesViewStyle(rennesApp)
+      await updateTravelTimesViewStyle(rennesApp)
       break
     case viewList.station:
       await updateStationViewStyle(rennesApp)
@@ -163,14 +160,14 @@ layerStore.$subscribe(async () => {
   await updateLayersVisibility()
 })
 
-mapStore.$subscribe(async () => {
-  // Update map
+map3dStore.$subscribe(async () => {
   await updateActiveMap()
-  await updateViewPoint()
-  // if (poiStore.currentDisplay) {
-  //   await resetStyleOfPoi(poiStore.currentDisplay)
-  // }
   await updateTraveltimeArrow(rennesApp)
+  componentAbovemap3dStore.addListenerForUpdatePositions(rennesApp)
+})
+
+mapViewPointStore.$subscribe(async () => {
+  await updateViewPoint(mapViewPointStore.viewPoint)
 })
 
 viewStore.$subscribe(async () => {
@@ -182,19 +179,20 @@ travelTimesViewStore.$subscribe(async () => {
 })
 
 stationsStore.$subscribe(async () => {
-  await updateMapStyle()
-  await componentAboveMapStore.updateListLabelsStations(rennesApp)
+  await updateTraveltimeArrow(rennesApp)
+  await componentAbovemap3dStore.updateListLabelsStations(rennesApp)
+  componentAbovemap3dStore.addListenerForUpdatePositions(rennesApp)
 })
 
 async function filterFeaturesOnLine() {
-  await fixGeometryOfPoi(rennesApp)
   await filterFeatureByParkingAndLine(rennesApp, lineViewStore.selectedLine)
 }
 
 poiStore.$subscribe(async () => {
   await removeFiltersOnPoiAndParking(rennesApp)
+  await fixGeometryOfPoi(rennesApp)
   if (
-    poiStore.currentDisplay === viewList.station &&
+    poiStore.currentProfile === viewList.station &&
     stationsStore.currentStationView
   ) {
     await filterFeaturesOnLine()
@@ -202,15 +200,14 @@ poiStore.$subscribe(async () => {
       rennesApp,
       stationsStore.currentStationView
     )
-    await resetStyleOfPoi(viewList.station)
   } else if (
-    poiStore.currentDisplay === viewList.line &&
+    poiStore.currentProfile === viewList.line &&
     lineViewStore.selectedLine
   ) {
     await filterFeaturesOnLine()
     await filterFeatureByPoiAndLine(rennesApp, lineViewStore.selectedLine)
-    await resetStyleOfPoi(viewList.line)
   }
+  await resetStyleOfPoi(poiStore.currentProfile!)
 })
 traveltimeInteractionStore.$subscribe(async () => {
   await updateMapStyle()
