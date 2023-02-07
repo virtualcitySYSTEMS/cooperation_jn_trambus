@@ -17,8 +17,8 @@ function getCircleStyle(
 
   // TODO: change to use disk style
   if (is3D) {
-    fillColor = lineColors[lineNumber]
-    strokeColor = ol_color.fromString('#FFFFFF')
+    fillColor = ol_color.fromString('#FFFFFF')
+    strokeColor = lineColors[lineNumber]
   }
 
   const fill = new Fill({
@@ -64,6 +64,38 @@ export function trambusStopStyle(
   return [circleStyle]
 }
 
+export function trambusStopOutlineStyle(
+  lineNumber: LineNumber,
+  isShown: boolean,
+  is3D: boolean,
+  isSelectedStation: boolean
+) {
+  if (!is3D || !isShown) {
+    return []
+  }
+  let radius = 6
+  if (isSelectedStation) {
+    radius = 6
+  }
+  const outline_style = new Style({
+    image: new Circle({
+      fill: new Fill({ color: lineColors[lineNumber] }),
+      stroke: new Stroke({
+        color: lineColors[lineNumber],
+        width: 0,
+      }),
+      radius: radius,
+    }),
+    fill: new Fill({ color: lineColors[lineNumber] }),
+    stroke: new Stroke({
+      color: lineColors[lineNumber],
+      width: 0,
+    }),
+    zIndex: 5,
+  })
+  return [outline_style]
+}
+
 export function trambusStopTravelTimesViewStyleFunction(
   feature: FeatureLike,
   selectedTravelTime: TravelTimeModel,
@@ -83,6 +115,31 @@ export function trambusStopTravelTimesViewStyleFunction(
   const isShown = shownStations.indexOf(stationName) > -1
 
   return trambusStopStyle(
+    lineNumber,
+    isShown,
+    is3D,
+    isStationLabelDisplayed(stationName)
+  )
+}
+
+export function trambusStopOutlineTravelTimesViewStyleFunction(
+  feature: FeatureLike,
+  selectedTravelTime: TravelTimeModel,
+  is3D: boolean
+) {
+  let lineNumber = getTrambusLineNumber(feature) as LineNumber
+
+  // no travel time selected, only show the start and end stations
+  let shownStations = getAllStartEndStations()
+  // There is a travel time selected, show only the selected station from
+  // the selected travel time
+  if (selectedTravelTime != null) {
+    shownStations = [selectedTravelTime.start, selectedTravelTime.end]
+    lineNumber = selectedTravelTime?.line
+  }
+  const stationName = feature.get('nom')
+  const isShown = shownStations.indexOf(stationName) > -1
+  return trambusStopOutlineStyle(
     lineNumber,
     isShown,
     is3D,
