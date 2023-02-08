@@ -90,7 +90,7 @@ export const useStationsStore = defineStore('stations', () => {
   }
 
   function homeViewSetUpStationsToDisplay() {
-    //clearAllStations()
+    clearAllStations()
   }
 
   function updateStationsToDisplayFromTravelTimes(travelTime: TravelTimeModel) {

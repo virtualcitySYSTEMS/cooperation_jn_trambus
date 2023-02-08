@@ -57,13 +57,14 @@ const lineViewStore = useLineViewsStore()
 const stationsStore = useStationsStore()
 const travelTimesViewStore = useTravelTimesViewStore()
 const viewStore = useViewsStore()
-const componentAbovemap3dStore = useComponentAboveMapStore()
+const componentAboveMapStore = useComponentAboveMapStore()
 const traveltimeInteractionStore = useTraveltimeInteractionStore()
 
 onMounted(async () => {
   await rennesApp.initializeMap()
   await updateLayersVisibility()
   await updateMapStyle()
+  componentAboveMapStore.addListenerForUpdatePositions(rennesApp)
 })
 
 // The following code is needed to cleanup resources we created
@@ -163,7 +164,7 @@ layerStore.$subscribe(async () => {
 map3dStore.$subscribe(async () => {
   await updateActiveMap()
   await updateTraveltimeArrow(rennesApp)
-  componentAbovemap3dStore.addListenerForUpdatePositions(rennesApp)
+  componentAboveMapStore.addListenerForUpdatePositions(rennesApp)
 })
 
 mapViewPointStore.$subscribe(async () => {
@@ -180,8 +181,7 @@ travelTimesViewStore.$subscribe(async () => {
 
 stationsStore.$subscribe(async () => {
   await updateTraveltimeArrow(rennesApp)
-  await componentAbovemap3dStore.updateListLabelsStations(rennesApp)
-  componentAbovemap3dStore.addListenerForUpdatePositions(rennesApp)
+  await componentAboveMapStore.updateListLabelsStations(rennesApp)
 })
 
 async function filterFeaturesOnLine() {
