@@ -3,13 +3,18 @@ import type { StyleFunction } from 'ol/style/Style'
 import type { Style } from 'ol/style'
 import type { FeatureLayer } from '@vcmap/core'
 import type { RennesApp } from '@/services/RennesApp'
-import { trambusLineViewStyleFunction } from '@/styles/line'
+import {
+  trambusLineViewStyleFunction,
+  trambusLineTravelTimesViewStyleFunction,
+} from '@/styles/line'
+
 import { useMapStore } from '@/stores/map'
 import { useLineViewsStore } from '@/stores/views'
 import {
-  trambusLineTravelTimesViewStyleFunction,
   trambusStopLineViewStyleFunction,
+  trambusStopOutlineTravelTimesViewStyleFunction,
   trambusStopTravelTimesViewStyleFunction,
+  trambusStopOutlineLineViewStyleFunction,
 } from '@/styles/trambusStop'
 import { isTrambusStopBelongsToLine } from '@/services/station'
 import { parkingStyle, poiStyle } from '@/styles/common'
@@ -47,6 +52,17 @@ export async function updateLineViewStyle(rennesApp: RennesApp) {
       mapStore.is3D()
     )
   )
+  clearLayerAndApplyStyle(
+    rennesApp,
+    RENNES_LAYER._trambusStopsOutline,
+    (feature) =>
+      trambusStopOutlineLineViewStyleFunction(
+        feature,
+        lineViewStore.selectedLine,
+        isTrambusStopBelongsToLine(feature, lineViewStore.selectedLine),
+        mapStore.is3D()
+      )
+  )
   clearLayerAndApplyStyle(rennesApp, RENNES_LAYER.parking, parkingStyle)
   await updateTraveltimeArrow(rennesApp)
 }
@@ -67,6 +83,16 @@ export async function updateTravelTimesViewStyle(rennesApp: RennesApp) {
       traveltimeInteractionStore.selectedTraveltime!,
       mapStore.is3D()
     )
+  )
+  clearLayerAndApplyStyle(
+    rennesApp,
+    RENNES_LAYER._trambusStopsOutline,
+    (feature) =>
+      trambusStopOutlineTravelTimesViewStyleFunction(
+        feature,
+        traveltimeInteractionStore.selectedTraveltime!,
+        mapStore.is3D()
+      )
   )
   await updateTraveltimeArrow(rennesApp)
 }
@@ -89,6 +115,17 @@ export async function updateStationViewStyle(rennesApp: RennesApp) {
       isTrambusStopBelongsToLine(feature, lineViewStore.selectedLine),
       mapStore.is3D()
     )
+  )
+  clearLayerAndApplyStyle(
+    rennesApp,
+    RENNES_LAYER._trambusStopsOutline,
+    (feature) =>
+      trambusStopOutlineLineViewStyleFunction(
+        feature,
+        lineViewStore.selectedLine,
+        isTrambusStopBelongsToLine(feature, lineViewStore.selectedLine),
+        mapStore.is3D()
+      )
   )
   clearLayerAndApplyStyle(rennesApp, RENNES_LAYER.poi, poiStyle)
 }

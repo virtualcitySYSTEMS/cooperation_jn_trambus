@@ -3,8 +3,6 @@ import { Circle, Fill, Stroke, Style } from 'ol/style'
 import { getTrambusLineNumber, lineColors } from './common'
 import * as ol_color from 'ol/color'
 import type { FeatureLike } from 'ol/Feature'
-import type { LineState } from '@/styles/line'
-import { trambusLineStyle } from '@/styles/line'
 import { getAllStartEndStations } from '@/model/lines.fixtures'
 import type { TravelTimeModel } from '@/model/travel-time.model'
 import { isStationLabelDisplayed } from '@/services/station'
@@ -17,10 +15,11 @@ function getCircleStyle(
   let fillColor = ol_color.fromString('#FFFFFF')
   let strokeColor = lineColors[lineNumber]
 
-  // TODO: change to use disk style
+  // Only handle the color of the 3D style here, disk is configured by
+  // vector properties of the layer
   if (is3D) {
-    fillColor = lineColors[lineNumber]
-    strokeColor = ol_color.fromString('#FFFFFF')
+    fillColor = ol_color.fromString('#FFFFFF')
+    strokeColor = lineColors[lineNumber]
   }
 
   const fill = new Fill({
@@ -66,22 +65,40 @@ export function trambusStopStyle(
   return [circleStyle]
 }
 
-export function trambusLineTravelTimesViewStyleFunction(
-  feature: FeatureLike,
-  selectedTravelTime: TravelTimeModel,
-  is3D: boolean
-): Style[] {
-  const lineNumber = getTrambusLineNumber(feature) as LineNumber
-  let lineState: LineState = 'normal'
-
-  if (selectedTravelTime == null) {
-    lineState = 'normal'
-  } else if (getTrambusLineNumber(feature) == selectedTravelTime.line) {
-    lineState = 'selected'
-  } else {
-    lineState = 'unselected'
+// The only way until now to created a disk with a proper border, we render the same trambus layer
+//  but using the same color as the stroke color
+export function trambusStopOutlineStyle(
+  lineNumber: LineNumber,
+  isShown: boolean,
+  is3D: boolean,
+  isSelectedStation: boolean
+) {
+  if (!is3D || !isShown) {
+    return []
   }
-  return trambusLineStyle(lineNumber, lineState, is3D)
+  let radius = 6
+  // TODO: it seems this radius is not used if we user vector properties, need to remove it or
+  // somehow set a new value for the vector properties of the layer
+  if (isSelectedStation) {
+    radius = 8
+  }
+  const outline_style = new Style({
+    image: new Circle({
+      fill: new Fill({ color: lineColors[lineNumber] }),
+      stroke: new Stroke({
+        color: lineColors[lineNumber],
+        width: 0,
+      }),
+      radius: radius,
+    }),
+    fill: new Fill({ color: lineColors[lineNumber] }),
+    stroke: new Stroke({
+      color: lineColors[lineNumber],
+      width: 0,
+    }),
+    zIndex: 5,
+  })
+  return [outline_style]
 }
 
 export function trambusStopTravelTimesViewStyleFunction(
@@ -110,6 +127,31 @@ export function trambusStopTravelTimesViewStyleFunction(
   )
 }
 
+export function trambusStopOutlineTravelTimesViewStyleFunction(
+  feature: FeatureLike,
+  selectedTravelTime: TravelTimeModel,
+  is3D: boolean
+) {
+  let lineNumber = getTrambusLineNumber(feature) as LineNumber
+
+  // no travel time selected, only show the start and end stations
+  let shownStations = getAllStartEndStations()
+  // There is a travel time selected, show only the selected station from
+  // the selected travel time
+  if (selectedTravelTime != null) {
+    shownStations = [selectedTravelTime.start, selectedTravelTime.end]
+    lineNumber = selectedTravelTime?.line
+  }
+  const stationName = feature.get('nom')
+  const isShown = shownStations.indexOf(stationName) > -1
+  return trambusStopOutlineStyle(
+    lineNumber,
+    isShown,
+    is3D,
+    isStationLabelDisplayed(stationName)
+  )
+}
+
 export function trambusStopLineViewStyleFunction(
   feature: FeatureLike,
   selectedLine: number,
@@ -120,6 +162,23 @@ export function trambusStopLineViewStyleFunction(
   const stationName = feature.get('nom')
 
   return trambusStopStyle(
+    selectedTrambusLine,
+    isShown,
+    is3D,
+    isStationLabelDisplayed(stationName)
+  )
+}
+
+export function trambusStopOutlineLineViewStyleFunction(
+  feature: FeatureLike,
+  selectedLine: number,
+  isShown: boolean,
+  is3D: boolean
+): Style[] {
+  const selectedTrambusLine = Number(selectedLine) as LineNumber
+  const stationName = feature.get('nom')
+
+  return trambusStopOutlineStyle(
     selectedTrambusLine,
     isShown,
     is3D,

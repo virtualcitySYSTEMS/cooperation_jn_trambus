@@ -195,6 +195,55 @@
           }
         }
       },
+      "vectorProperties": {
+        "primitiveOptions": {
+          "type": "cylinder",
+          "geometryOptions": {
+            "length": 1.0,
+            "topRadius": 5.0,
+            "bottomRadius": 5.0,
+            "outline": false,
+            "material": "Cesium.Color.GREEN"
+          },
+          "offset": [0, 0, 0.1]
+        },
+        "modelAutoScale": true
+      },
+      "activeOnStartup": false,
+      "zIndex": 5
+    },
+    {
+      "name": "_trambusStopsOutline",
+      "url": "https://public.sig.rennesmetropole.fr/geoserver/ows?service=WFS&request=getFeature&typename=trp_coll:trambus_arrets&outputFormat=application/json&srsName=EPSG:4326",
+      "type": "GeoJSONLayer",
+      "style": {
+        "name": "trambusStopOutlineStyle",
+        "type": "VectorStyleItem",
+        "image": {
+          "radius": 3,
+          "fill": {
+            "color": "#fff"
+          },
+          "stroke": {
+            "color": "#000",
+            "width": "1.5"
+          }
+        }
+      },
+      "vectorProperties": {
+        "primitiveOptions": {
+          "type": "cylinder",
+          "geometryOptions": {
+            "length": 0.99,
+            "topRadius": 6.5,
+            "bottomRadius": 6.5,
+            "outline": false,
+            "material": "Cesium.Color.WHITE"
+          },
+          "offset": [0, 0, 0.1]
+        },
+        "modelAutoScale": true
+      },
       "activeOnStartup": false,
       "zIndex": 5
     },
