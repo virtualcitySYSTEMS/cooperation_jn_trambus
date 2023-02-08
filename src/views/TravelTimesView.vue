@@ -8,7 +8,7 @@ import { apiClientService } from '@/services/api.client'
 import type { TravelTimeModel } from '@/model/travel-time.model'
 import BackButton from '@/components/home/BackButton.vue'
 import UiTravelTime from '@/components/ui/UiTravelTime.vue'
-import { useMapStore } from '@/stores/map'
+import { useMap3dStore, useMapViewPointStore } from '@/stores/map'
 import { viewList } from '@/model/views.model'
 import {
   useTraveltimeInteractionStore,
@@ -18,7 +18,9 @@ import {
 const viewStore = useViewsStore()
 const layerStore = useLayersStore()
 const traveltimeInteractionStore = useTraveltimeInteractionStore()
-const mapStore = useMapStore()
+const map3dStore = useMap3dStore()
+const mapViewPointStore = useMapViewPointStore()
+
 const stationsStore = useStationsStore()
 const lineInteractionStore = useLineInteractionStore()
 
@@ -28,10 +30,10 @@ const state = reactive({
 
 onMounted(async () => {
   viewStore.currentView = viewList.traveltimes
-  mapStore.updateViewpoint(`home`, true)
+  mapViewPointStore.updateViewpoint(`home`, true)
   stationsStore.traveltimesViewSetUpStationsToDisplay()
   lineInteractionStore.resetLinesLabels()
-  layerStore.setVisibilities(mapStore.is3D(), {
+  layerStore.setVisibilities(map3dStore.is3D(), {
     trambusLines: true,
     trambusStops: true,
     parking: false,

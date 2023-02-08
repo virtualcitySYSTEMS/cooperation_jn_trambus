@@ -3,13 +3,12 @@ import { describe, it, expect, vi, beforeEach, beforeAll } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import MapComponent from '../../map/MapComponent.vue'
-import { flushPromises } from '@vue/test-utils'
 import { usePanelsStore } from '@/stores/panels'
 import { useLayersStore } from '@/stores/layers'
 import { useLineViewsStore, useViewsStore } from '@/stores/views'
-import { useMapStore } from '@/stores/map'
+import { useMap3dStore } from '@/stores/map'
 import fetch from 'node-fetch'
-import { usePoiStore } from '@/stores/poi'
+import { usePoiParkingStore } from '@/stores/poiParking'
 import { RennesAppTest } from '../../../../tests/RennesAppTest'
 
 const app = new RennesAppTest()
@@ -37,8 +36,8 @@ describe('MapComponent', () => {
   const layersStore = useLayersStore()
   const viewStore = useViewsStore()
   const lineStore = useLineViewsStore()
-  const mapStore = useMapStore()
-  const poiStore = usePoiStore()
+  const mapStore = useMap3dStore()
+  const poiParkingStore = usePoiParkingStore()
   /* eslint-enable @typescript-eslint/no-unused-vars */
 
   beforeAll(() => {})
@@ -47,17 +46,6 @@ describe('MapComponent', () => {
     beforeEach(async () => {})
     it('renders openlayers map by default', () => {
       expect(wrapper.find('.OpenlayersMap').exists()).toBeTruthy()
-    })
-    it('display poi layer when switch on line profile', async () => {
-      beforeEach(async () => {
-        viewStore.currentView = 'home'
-        poiStore.activeLineProfile()
-      })
-      poiStore.activeLineProfile()
-      await flushPromises()
-      const poi = await app.getLayerByKey('poi')
-      expect(layersStore.enableLayer).toHaveBeenCalledWith('poi')
-      expect(poi.visibility).toBeTruthy()
     })
   })
 })

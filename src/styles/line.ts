@@ -1,8 +1,7 @@
-import type { LineNumber } from '@/model/lines.model'
+import type { LineNumber, SelectedTrambusLine } from '@/model/lines.model'
 import { Stroke, Style } from 'ol/style'
 import { getTrambusLineNumber, lineColors, lineDimmedColors } from './common'
 import type { FeatureLike } from 'ol/Feature'
-import { SelectedTrambusLine } from '@/model/selected-line.model'
 import type { TravelTimeModel } from '@/model/travel-time.model'
 
 export type LineState = 'selected' | 'normal' | 'unselected' | 'hidden'
@@ -66,7 +65,7 @@ export function trambusLineViewStyleFunction(
   const lineNumber = getTrambusLineNumber(feature) as LineNumber
   let lineState: LineState = 'normal'
 
-  if (selectedLine == SelectedTrambusLine.NONE) {
+  if (selectedLine == 0) {
     lineState = 'normal'
   } else if (getTrambusLineNumber(feature) == selectedLine) {
     lineState = 'selected'
