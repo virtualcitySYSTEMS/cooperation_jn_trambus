@@ -10,8 +10,8 @@ const compass = ref<HTMLDivElement | null>(null)
 const arrow = ref<HTMLDivElement | null>(null)
 
 onMounted(() => {
-  if (rennesApp?.maps?.activeMap) {
-    syncCompass(rennesApp.maps.activeMap)
+  if (rennesApp.get3DMap()) {
+    syncCompass(rennesApp.get3DMap())
   }
 })
 
