@@ -4,8 +4,8 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 
-import './assets/main.css'
 import 'cooperation_jn_common_ui/dist/style.css'
+import './assets/main.css'
 
 declare global {
   interface Window {
