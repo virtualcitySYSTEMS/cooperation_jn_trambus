@@ -17,7 +17,7 @@ npm run story
 
 ### Demo
 
-- [histoires](https://sigrennesmetropole.github.io/cooperation_jn_app/main/)
+- [histoires](https://sigrennesmetropole.github.io/cooperation_jn_trambus/main/)
 
 ## Docker
 
@@ -38,7 +38,7 @@ docker run -p 8080:80 rennes3d-front:latest
 ### 1) Image creation
 
 Through Github pipeline, an image is created on every push on 'main' branch, and on each pull request.
-The repository for this image can be found here: https://github.com/sigrennesmetropole/cooperation_jn_app/pkgs/container/cooperation_jn_app/versions
+The repository for this image can be found here: https://github.com/sigrennesmetropole/cooperation_jn_trambus/pkgs/container/cooperation_jn_trambus/versions
 
 #### On _pull request_
 
@@ -68,7 +68,7 @@ To deploy a new or a different image on the server, you must change the tag of t
 There are currently three ways of doing it:
 
 1. Manually: change the value in 'apps/dev/vcmap-demo/values.yaml' in the repo, and commit/push the change ;
-2. On demand: With [this pipeline](https://github.com/sigrennesmetropole/cooperation_jn_app/actions/workflows/deploy-argocd.yml). Choose the env (currently only dev) and the tag of the image, and let the pipeline change the argocd project ;
+2. On demand: With [this pipeline](https://github.com/sigrennesmetropole/cooperation_jn_trambus/actions/workflows/deploy-argocd.yml). Choose the env (currently only dev) and the tag of the image, and let the pipeline change the argocd project ;
 3. Automatically: On each merge on main, the pipeline is triggered with the last generated image.
 
 ### 3) Deploy on ArgoCD
