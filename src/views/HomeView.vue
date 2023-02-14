@@ -26,7 +26,6 @@ onMounted(() => {
     poi: true,
     _traveltimeArrow: false,
   })
-  document.documentElement.setAttribute('lang', 'fr')
 })
 </script>
 
