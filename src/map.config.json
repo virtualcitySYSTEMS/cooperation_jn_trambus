@@ -162,7 +162,7 @@
         "name": "trambusLineStyle",
         "type": "DeclarativeStyleItem",
         "declarativeStyle": {
-          "strokeWidth": "6",
+          "strokeWidth": "3",
           "color": {
             "conditions": [
               ["${li_code} === 'T1'", "color('#4338ca')"],
