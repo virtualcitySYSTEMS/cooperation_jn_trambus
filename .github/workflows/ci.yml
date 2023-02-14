@@ -58,7 +58,7 @@ jobs:
 
       - name: Set HISTOIRE_BASE ENV
         shell: bash
-        run: echo "HISTOIRE_BASE=$(echo /cooperation_jn_app/${BRANCH_NAME}/)" >> $GITHUB_ENV
+        run: echo "HISTOIRE_BASE=$(echo /cooperation_jn_trambus/${BRANCH_NAME}/)" >> $GITHUB_ENV
 
       - run: npm run story:build
 
@@ -75,6 +75,6 @@ jobs:
         with:
           message: 'GitHub Pages links:
 
-            * Histoires: https://sigrennesmetropole.github.io/cooperation_jn_app/${{env.BRANCH_NAME}}/'
+            * Histoires: https://sigrennesmetropole.github.io/cooperation_jn_trambus/${{env.BRANCH_NAME}}/'
           comment_includes: 'GitHub Pages links:'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
