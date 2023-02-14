@@ -28,6 +28,7 @@ const lineInteractionStore = useLineInteractionStore()
 
 const { params } = useRoute()
 const routeParams = ref(params)
+console.log('station view in setup')
 const stationId = ref(Number(routeParams.value.id))
 const lineNumber = ref(Number(routeParams.value.lineid) as SelectedTrambusLine)
 
@@ -37,6 +38,7 @@ const state = reactive({
 })
 
 onBeforeMount(async () => {
+  lineStore.selectLine(lineNumber.value)
   state.lineDescription = await apiClientService.fetchLineDescription(
     lineStore.selectedLine
   )
