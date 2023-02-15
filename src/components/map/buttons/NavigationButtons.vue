@@ -48,7 +48,7 @@ const shouldDisplayHomeButton = () => {
 
 <template>
   <div
-    v-bind:class="{ 'h-[23rem]': map3dStore.is3D() }"
+    v-bind:class="{ 'h-[22rem]': map3dStore.is3D() }"
     class="h-90 transition-[height] absolute right-2 bottom-10 flex flex-col [&>*]:m-2 text-gray-dark items-center overflow-hidden w-32 select-none"
   >
     <UiIconButton
