@@ -15,7 +15,7 @@ export function trambusLineStyle(
   const basicLineStyle = new Style({
     stroke: new Stroke({
       color: lineColors[lineNumber],
-      width: 4,
+      width: 3,
     }),
     zIndex: 1,
   })
@@ -29,7 +29,7 @@ export function trambusLineStyle(
   const lineBorderStyle = new Style({
     stroke: new Stroke({
       color: '#FFFFFF',
-      width: 3,
+      width: 5,
     }),
     zIndex: 0,
   })
