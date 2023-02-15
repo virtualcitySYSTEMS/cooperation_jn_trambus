@@ -4,7 +4,6 @@ import { useRoute } from 'vue-router'
 import { useMap3dStore } from '@/stores/map'
 import { useViewsStore } from '@/stores/views'
 import { useLayersStore } from '@/stores/layers'
-import { useLineViewsStore } from '@/stores/views'
 import { useStationsStore } from '@/stores/stations'
 import UiStationHeader from '@/components/ui/UiStationHeader.vue'
 import { apiClientService } from '@/services/api.client'
@@ -21,7 +20,6 @@ import { useLineInteractionStore } from '@/stores/interactionMap'
 const map3dStore = useMap3dStore()
 const viewStore = useViewsStore()
 const layerStore = useLayersStore()
-const lineStore = useLineViewsStore()
 const stationsStore = useStationsStore()
 const poiStore = usePoiParkingStore()
 const lineInteractionStore = useLineInteractionStore()
@@ -38,7 +36,7 @@ const state = reactive({
 
 onBeforeMount(async () => {
   state.lineDescription = await apiClientService.fetchLineDescription(
-    lineStore.selectedLine
+    lineNumber.value as number
   )
 
   await apiClientService

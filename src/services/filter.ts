@@ -4,8 +4,8 @@ import type { SelectedTrambusLine } from '@/model/lines.model'
 import { isStationOnLine } from '@/services/station'
 import { stationsFixtures } from '@/model/stations.fixtures'
 import type { LineNumber } from '@/model/lines.model'
-import type { Feature } from 'ol'
 import { GlobalHider } from '@vcmap/core'
+import { fetchStationsByLine } from '@/services/station'
 
 async function removeFilterOnLayers(rennesApp: RennesApp, layerName: string) {
   const lyr = await rennesApp.getLayerByKey(layerName)
@@ -24,12 +24,27 @@ export async function filterFeatureByParkingAndLine(
   rennesApp: RennesApp,
   line: SelectedTrambusLine
 ) {
-  await filterFeatureByLayerAndKeyAndValue(
-    rennesApp,
-    RENNES_LAYER.parking,
-    'li_code',
-    `T${line.valueOf()}`
+  const stations = await fetchStationsByLine(rennesApp, line)
+  const parkingsFeatures = await rennesApp.getFeaturesFromLayer(
+    RENNES_LAYER.parking
   )
+  const featuresToHide: string[] = []
+  parkingsFeatures.forEach((featureParking) => {
+    const station_with_parking = stations.filter(
+      (station) => station['nom'] === featureParking.getProperty('arret_nom')
+    )
+    if (station_with_parking.length == 0) {
+      let id: string | number = featureParking.getId()!
+      if (typeof id === 'number') {
+        id = id.toString()
+      }
+      featuresToHide.push(id)
+    }
+  })
+
+  const layer = await rennesApp.getLayerByKey(RENNES_LAYER.parking)
+  layer.setGlobalHider(new GlobalHider())
+  layer.featureVisibility.hideObjects(featuresToHide)
 }
 
 export async function filterFeatureByPoiAndLine(
@@ -61,23 +76,6 @@ export async function filterFeatureByPoiAndStation(
   const featuresToHide = layer
     .getFeatures()
     .filter((f) => f.getProperties()['station_nom'] !== station)
-    .map((f) => f.getId()!)
-  layer.featureVisibility.hideObjects(featuresToHide)
-}
-
-async function filterFeatureByLayerAndKeyAndValue(
-  rennesApp: RennesApp,
-  layerName: string,
-  featureKey: string,
-  featureValue: string
-) {
-  const layer = await rennesApp.getLayerByKey(layerName)
-  layer.setGlobalHider(new GlobalHider())
-  const featuresToHide = layer
-    .getFeatures()
-    .filter((feature: Feature) => {
-      return feature.getProperties()[featureKey] !== featureValue
-    })
     .map((f) => f.getId()!)
   layer.featureVisibility.hideObjects(featuresToHide)
 }

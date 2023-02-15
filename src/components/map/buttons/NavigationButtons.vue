@@ -3,6 +3,8 @@ import { inject } from 'vue'
 import { cloneViewPointAndResetCameraPosition } from '@/helpers/viewpointHelper'
 
 import IconHome from '@/components/ui/icons/IconHome.vue'
+import IconPlus from '@/components/ui/icons/IconPlus.vue'
+import IconMinus from '@/components/ui/icons/IconMinus.vue'
 import UiIconButton from '@/components/ui/UiIconButton.vue'
 import CompassComponent from '@/components/map/CompassComponent.vue'
 
@@ -46,22 +48,22 @@ const shouldDisplayHomeButton = () => {
 
 <template>
   <div
-    v-bind:class="{ 'h-[23rem]': map3dStore.is3D() }"
+    v-bind:class="{ 'h-[22rem]': map3dStore.is3D() }"
     class="h-90 transition-[height] absolute right-2 bottom-10 flex flex-col [&>*]:m-2 text-gray-dark items-center overflow-hidden w-32 select-none"
   >
     <UiIconButton
-      class="rounded-lg px-3 py-3"
+      class="rounded-lg"
       @click="router.push('/home')"
       v-show="shouldDisplayHomeButton()"
       ><IconHome
     /></UiIconButton>
     <div class="flex flex-col zoom-buttons text-2xl [&>*]:p-2" role="group">
-      <UiIconButton class="rounded-t-lg" @click="() => zoom(false)"
-        >+</UiIconButton
-      >
-      <UiIconButton class="rounded-b-lg" @click="() => zoom(true)"
-        >-</UiIconButton
-      >
+      <UiIconButton class="rounded-t-lg" @click="() => zoom(false)">
+        <IconPlus />
+      </UiIconButton>
+      <UiIconButton class="rounded-b-lg" @click="() => zoom(true)">
+        <IconMinus />
+      </UiIconButton>
     </div>
     <UiIconButton class="font-semibold rounded-lg" @click="toggle3DMap">{{
       map3dStore.is3D() ? '2D' : '3D'

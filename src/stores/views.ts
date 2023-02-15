@@ -41,6 +41,7 @@ export const useViewsStore = defineStore('views', () => {
     lineViewsStore.selectLine(0)
     stationsStore.homeViewSetUpStationsToDisplay()
     mapViewpointStore.updateViewpoint('home', true)
+    currentView.value = viewList.home
   }
 
   return { currentView, setCurrentView, setHomeAsCurrentView }

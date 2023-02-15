@@ -12,25 +12,24 @@ export function trambusLineStyle(
   is3DStyle: boolean
 ): Style[] {
   const lineStyles = []
-
   const basicLineStyle = new Style({
     stroke: new Stroke({
       color: lineColors[lineNumber],
-      width: 4,
+      width: 3,
     }),
     zIndex: 1,
   })
   const unselectedLineStyle = new Style({
     stroke: new Stroke({
       color: lineDimmedColors[lineNumber],
-      width: 4,
+      width: 2,
     }),
     zIndex: 1,
   })
   const lineBorderStyle = new Style({
     stroke: new Stroke({
       color: '#FFFFFF',
-      width: 6,
+      width: 5,
     }),
     zIndex: 0,
   })

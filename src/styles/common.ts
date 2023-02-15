@@ -4,7 +4,7 @@ import type { LineNumber } from '@/model/lines.model'
 import * as ol_color from 'ol/color'
 import type { FeatureLike } from 'ol/Feature'
 import { Icon, Style } from 'ol/style'
-import parkingIcon from '../assets/icons/parkingRelais.png'
+import parkingIcon from '../assets/icons/parkingRelaisMin.png'
 import pinIcon from '../assets/icons/pin.png'
 import { VectorStyleItem } from '@vcmap/core'
 
