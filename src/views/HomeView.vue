@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 
-import FooterArea from '@/components/home/FooterArea.vue'
 import LineDescriptions from '@/components/home/LineDescriptions.vue'
 import TravelTimes from '@/components/home/TravelTimes.vue'
 import UiTrambusTitle from '@/components/ui/UiTrambusTitle.vue'
@@ -10,6 +9,7 @@ import { useLayersStore } from '@/stores/layers'
 import { useViewsStore } from '@/stores/views'
 import { useMap3dStore } from '@/stores/map'
 import { useLineInteractionStore } from '@/stores/interactionMap'
+import { FooterArea } from 'cooperation_jn_common_ui'
 
 const layerStore = useLayersStore()
 const viewStore = useViewsStore()
