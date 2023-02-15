@@ -50,10 +50,6 @@ const getDate = (index: number): Date | undefined => {
   return undefined
 }
 
-const toString = (timelineItem: TimeLineItem) => {
-  return `Semestre ${timelineItem.semester} ${timelineItem.year}`
-}
-
 const setselectedIndex = (index: number) => {
   selectedIndexRef.value = index
   translateCircle(index)
@@ -62,23 +58,19 @@ const setselectedIndex = (index: number) => {
 </script>
 
 <template>
-  <div
-    class="max-w-[86rem] h-32 bg-white relative flex text-black"
-    ref="container"
-  >
+  <div class="h-32 bg-white relative flex text-black" ref="container">
     <div
       v-bind:key="index"
       v-for="(item, index) of items"
-      class="flex-1 flex justify-center items-center relative pb-4 hover:font-medium w-28"
+      class="flex-1 flex justify-center items-center relative pb-4 hover:font-medium w-24"
     >
-      <div>
-        <div
-          class="text-center cursor-pointer"
-          v-bind:class="[selectedIndex === index ? 'font-bold' : ' ']"
-          @click="() => setselectedIndex(index)"
-        >
-          <p>{{ toString(item) }}</p>
-        </div>
+      <div
+        class="text-center cursor-pointer text-sm leading-5 color-black"
+        v-bind:class="[selectedIndex === index ? 'font-bold' : 'font-normal']"
+        @click="() => setselectedIndex(index)"
+      >
+        Semestre {{ item.semester }} <br />
+        {{ item.year }}
       </div>
       <div
         class="h-[0.05rem] w-full mt-4 bg-gray-400 flex items-center absolute bottom-8"
