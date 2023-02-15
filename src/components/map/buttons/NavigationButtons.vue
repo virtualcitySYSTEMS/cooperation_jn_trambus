@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { inject } from 'vue'
+import { inject, computed } from 'vue'
 import { cloneViewPointAndResetCameraPosition } from '@/helpers/viewpointHelper'
 
 import IconHome from '@/components/ui/icons/IconHome.vue'
@@ -44,12 +44,21 @@ async function zoom(out = false, zoomFactor = 2): Promise<void> {
 const shouldDisplayHomeButton = () => {
   return ![viewList.traveltimes, viewList.home].includes(viewStore.currentView)
 }
+
+const heightClass = computed(() => {
+  if (viewStore.currentView == viewList.home && map3dStore.is3D()) {
+    return ['h-[18rem]']
+  } else if (map3dStore.is3D()) {
+    return ['h-[22rem]']
+  }
+  return ['h-90']
+})
 </script>
 
 <template>
   <div
-    v-bind:class="{ 'h-[22rem]': map3dStore.is3D() }"
-    class="h-90 transition-[height] absolute right-2 bottom-10 flex flex-col [&>*]:m-2 text-gray-dark items-center overflow-hidden w-32 select-none"
+    :class="heightClass"
+    class="transition-[height] absolute right-2 bottom-10 flex flex-col [&>*]:m-2 text-gray-dark items-center overflow-hidden w-32 select-none"
   >
     <UiIconButton
       class="rounded-lg"
