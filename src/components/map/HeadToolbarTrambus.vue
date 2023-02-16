@@ -99,7 +99,9 @@ function activeAllTrambusLine() {
       :disabled="false"
       v-show="isPlanningButtonVisible"
     >
-      Planning du projet
+      <span class="font-dm-sans font-medium text-base">
+        Planning du projet
+      </span>
     </UiButton>
     <LoginButtons> </LoginButtons>
   </div>
