@@ -37,16 +37,16 @@ onMounted(async () => {
         </UiTravelTime>
       </div>
     </UiOverflowContainer>
-  </div>
 
-  <UiLinkPrimary
-    :url="'/traveltimes'"
-    :arrowStrokeColor="'stroke-red-600'"
-    :underlineColor="'bg-red-600'"
-    :title="'Voir plus de futurs temps de parcours'"
-  >
-    Voir plus
-  </UiLinkPrimary>
+    <UiLinkPrimary
+      :url="'/traveltimes'"
+      :arrowStrokeColor="'stroke-red-600'"
+      :underlineColor="'bg-red-600'"
+      :title="'Voir plus de futurs temps de parcours'"
+    >
+      Voir plus
+    </UiLinkPrimary>
+  </div>
 
   <div class="border-b border-neutral-300 mb-3"></div>
 </template>
