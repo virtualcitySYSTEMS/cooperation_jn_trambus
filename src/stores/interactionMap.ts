@@ -5,6 +5,8 @@ import type { TravelTimeModel } from '@/model/travel-time.model'
 import type { Cartesian2 } from '@vcmap/cesium'
 import type { Feature } from 'ol'
 import type { Geometry } from 'ol/geom'
+import type { RennesApp } from '@/services/RennesApp'
+import { getCartesianPositionFromFeature } from '@/helpers/featureHelper'
 
 export const useTraveltimeInteractionStore = defineStore(
   'traveltime-interaction-map',
@@ -18,6 +20,40 @@ export const useTraveltimeInteractionStore = defineStore(
     return {
       selectedTraveltime,
       selectTraveltime,
+    }
+  }
+)
+
+export const useTravelTimeBoxesStore = defineStore(
+  'travelTime-boxes-map',
+  () => {
+    const travelTimeBoxes: Ref<
+      {
+        travelTimeFeature: TravelTimeModel
+        cartesian: Cartesian2
+      }[]
+    > = ref([])
+
+    function addTravelTimeBox(
+      rennesApp: RennesApp,
+      travelTime: TravelTimeModel,
+      feature: Feature<Geometry>
+    ) {
+      const cartesian = getCartesianPositionFromFeature(rennesApp, feature)
+      console.log('Cartesian', cartesian)
+      if (cartesian !== undefined) {
+        travelTimeBoxes.value = [
+          {
+            travelTimeFeature: travelTime,
+            cartesian: cartesian,
+          },
+        ]
+      }
+    }
+
+    return {
+      travelTimeBoxes,
+      addTravelTimeBox,
     }
   }
 )

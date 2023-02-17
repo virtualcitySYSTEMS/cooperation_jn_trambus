@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, inject } from 'vue'
-import { Layer, Viewpoint, vectorStyleSymbol, StyleItem } from '@vcmap/core'
+import {
+  Layer,
+  Viewpoint,
+  vectorStyleSymbol,
+  StyleItem,
+  getMidPoint,
+  cartesian2DDistance,
+} from '@vcmap/core'
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
 import ComponentsAboveMap from '@/components/map/aboveMap/ComponentsAboveMap.vue'
@@ -20,7 +27,10 @@ import {
 } from '@/stores/views'
 import { useStationsStore } from '@/stores/stations'
 import { useComponentAboveMapStore } from '@/stores/componentsAboveMapStore'
-import { useTraveltimeInteractionStore } from '@/stores/interactionMap'
+import {
+  useTravelTimeBoxesStore,
+  useTraveltimeInteractionStore,
+} from '@/stores/interactionMap'
 
 import {
   tiltViewpoint,
@@ -47,6 +57,12 @@ import {
 } from '@/services/filter'
 
 import { fixGeometryOfPoi } from '@/services/poi'
+import type { TravelTimeModel } from '@/model/travel-time.model'
+import { lineStringsFromTraveltimes } from '@/helpers/traveltimesHelper'
+import { LineString, Point } from 'ol/geom'
+import { Feature } from 'ol'
+import { Cartesian2 } from '@vcmap-cesium/engine'
+import type { Coordinate } from 'ol/coordinate'
 
 const rennesApp = inject('rennesApp') as RennesApp
 
@@ -60,6 +76,7 @@ const travelTimesViewStore = useTravelTimesViewStore()
 const viewStore = useViewsStore()
 const componentAboveMapStore = useComponentAboveMapStore()
 const traveltimeInteractionStore = useTraveltimeInteractionStore()
+const travelTimeBoxesStore = useTravelTimeBoxesStore()
 
 onMounted(async () => {
   await rennesApp.initializeMap()
@@ -104,6 +121,21 @@ async function setLayerVisible(layerName: string, visible: boolean) {
   } else {
     layer?.deactivate()
   }
+}
+
+function determineArcHeight(p1, p2, factor) {
+  const distance = cartesian2DDistance(p1, p2)
+  return distance * factor
+}
+function getMidPointOnArc(p1: Coordinate, p2: Coordinate, arcHeight) {
+  const lineVector = new Cartesian2(p2[0] - p1[0], p2[1] - p1[1])
+  let perp = Cartesian2.normalize(lineVector, new Cartesian2())
+  const { x, y } = perp
+  perp = new Cartesian2(y, -x)
+  Cartesian2.multiplyByScalar(perp, arcHeight, perp)
+  const midPoint = getMidPoint(p1, p2)
+  Cartesian2.add(perp, new Cartesian2(midPoint[0], midPoint[1]), perp)
+  return [perp.x, perp.y]
 }
 
 async function updateLayersVisibility() {
@@ -162,6 +194,34 @@ async function updateActiveMap() {
     newViewpoint = untiltViewpoint(oldViewpoint!)
   }
   rennesApp.maps.activeMap.gotoViewpoint(newViewpoint)
+}
+
+async function getCenterOfArrow(selectedTraveltime: TravelTimeModel | null) {
+  let lineStrings: LineString[] = []
+  console.log('travelTime', selectedTraveltime)
+  lineStrings = await lineStringsFromTraveltimes(
+    [selectedTraveltime!],
+    rennesApp,
+    map3dStore.is3D()
+  )
+  let feature = new Feature()
+  // feature.setGeometry(new Point(lineStrings[0].getFlatMidpoint()))
+  let midPoint = getMidPointOnArc(
+    lineStrings[0].getFirstCoordinate(),
+    lineStrings[0].getLastCoordinate(),
+    determineArcHeight(
+      lineStrings[0].getFirstCoordinate(),
+      lineStrings[0].getLastCoordinate(),
+      0.15
+    )
+  )
+  feature.setGeometry(new Point(midPoint))
+  console.log('Feature', feature)
+  return feature
+}
+async function addTravelTimeBox(selectedTraveltime: TravelTimeModel | null) {
+  let feature = await getCenterOfArrow(selectedTraveltime)
+  travelTimeBoxesStore.addTravelTimeBox(rennesApp, selectedTraveltime!, feature)
 }
 
 async function updateMapStyle() {
@@ -235,6 +295,7 @@ poiStore.$subscribe(async () => {
 })
 traveltimeInteractionStore.$subscribe(async () => {
   await updateMapStyle()
+  await addTravelTimeBox(traveltimeInteractionStore.selectedTraveltime)
 })
 </script>
 
