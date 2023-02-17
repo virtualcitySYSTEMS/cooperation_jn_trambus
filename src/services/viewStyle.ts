@@ -6,6 +6,7 @@ import type { RennesApp } from '@/services/RennesApp'
 import {
   trambusLineViewStyleFunction,
   trambusLineTravelTimesViewStyleFunction,
+  homeViewStyleFunction,
 } from '@/styles/line'
 
 import { useMap3dStore } from '@/stores/map'
@@ -130,6 +131,9 @@ export async function updateStationViewStyle(rennesApp: RennesApp) {
 }
 
 export function updateHomeViewStyle(rennesApp: RennesApp) {
-  clearLayerAndApplyStyle(rennesApp, RENNES_LAYER.trambusLines, undefined)
+  const mapStore = useMap3dStore()
+  clearLayerAndApplyStyle(rennesApp, RENNES_LAYER.trambusLines, (feature) =>
+    homeViewStyleFunction(feature, mapStore.is3D())
+  )
   clearLayerAndApplyStyle(rennesApp, RENNES_LAYER.parking, parkingStyle)
 }
