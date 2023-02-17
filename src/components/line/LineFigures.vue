@@ -67,7 +67,7 @@ function getLength(networkFigures: null | LineFigureModel[]): Number {
           :unit="networkFigure.unit"
           :icon="networkFigure.icon"
           :moreInformation="networkFigure.moreInformation"
-          class="w-28 h-20"
+          class="w-28"
         >
         </UiNetworkFigure>
       </article>
