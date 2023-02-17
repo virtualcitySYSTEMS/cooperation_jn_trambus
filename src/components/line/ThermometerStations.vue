@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import type { LineNumber } from '@/model/lines.model'
 import { useRouter } from 'vue-router'
 import ItemThermometerStations from '@/components/line/ItemThermometerStations.vue'
@@ -14,8 +15,13 @@ const props = defineProps<{
 
 const stationsStore = useStationsStore()
 const router = useRouter()
+const idStationAfterSelectStation = ref<number>(0)
 
-function mouseOverAndLeaveItem(action: actionItem, stationName: string) {
+function mouseOverAndLeaveItem(
+  action: actionItem,
+  stationName: string,
+  index: number
+) {
   if (
     action == 'leave' &&
     stationsStore.stationIsInStationsToDisplay(stationName)
@@ -26,6 +32,10 @@ function mouseOverAndLeaveItem(action: actionItem, stationName: string) {
     !stationsStore.stationIsInStationsToDisplay(stationName)
   ) {
     stationsStore.addStationToDisplay(stationName)
+  }
+
+  if (index + 1 < props.stations.length) {
+    idStationAfterSelectStation.value = props.stations[index + 1].id
   }
 }
 
@@ -46,8 +56,8 @@ function goToStationPage(stationId: number) {
       <ItemThermometerStations
         v-for="(station, index) in props.stations"
         :key="index"
-        @mouseover="mouseOverAndLeaveItem('over', station.nom)"
-        @mouseleave="mouseOverAndLeaveItem('leave', station.nom)"
+        @mouseover="mouseOverAndLeaveItem('over', station.nom, index)"
+        @mouseleave="mouseOverAndLeaveItem('leave', station.nom, index)"
         @click="goToStationPage(station.id)"
         :index="index + 1"
         :line="props.line"
@@ -56,6 +66,7 @@ function goToStationPage(stationId: number) {
         :desserte="station.desserte"
         :li_code="station.li_code"
         :is_last_elem="index + 1 === props.stations.length"
+        :is_station_after_select="station.id === idStationAfterSelectStation"
       />
     </ul>
   </div>
