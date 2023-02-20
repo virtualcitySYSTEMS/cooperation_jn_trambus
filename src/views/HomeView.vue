@@ -34,7 +34,7 @@ onMounted(() => {
 
 <template>
   <UiTrambusTitle></UiTrambusTitle>
-  <TravelTimes class="border-b border-neutral-300 pb-2"></TravelTimes>
+  <TravelTimes></TravelTimes>
   <LineDescriptions class="grow border-b border-neutral-300"></LineDescriptions>
   <FooterArea></FooterArea>
 </template>

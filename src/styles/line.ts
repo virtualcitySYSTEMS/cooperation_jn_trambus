@@ -91,3 +91,12 @@ export function trambusLineTravelTimesViewStyleFunction(
   }
   return trambusLineStyle(lineNumber, lineState, is3D)
 }
+
+export function homeViewStyleFunction(
+  feature: FeatureLike,
+  is3D: boolean
+): Style[] {
+  const lineNumber = getTrambusLineNumber(feature) as LineNumber
+  const lineState: LineState = 'normal'
+  return trambusLineStyle(lineNumber, lineState, is3D)
+}

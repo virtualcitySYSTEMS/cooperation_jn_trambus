@@ -40,6 +40,11 @@ const props = defineProps({
     required: true,
     default: false,
   },
+  is_station_after_select: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 })
 const stationActive = ref<Boolean>(false)
 const stationInteractionOnMap = ref<Boolean>(false)
@@ -86,7 +91,7 @@ function getClassCircle() {
       'h-4',
       'border-black',
       marginLeftNegative,
-      border2px,
+      'border-[3px]',
     ]
   }
   if (props.index == 1 || props.is_last_elem) {
@@ -114,15 +119,18 @@ function getClassBeforeCircle() {
   ]
   let ml = 'before:ml-px'
   let bottom = 'before:bottom-[65%]'
-  let height = 'before:h-[95%]'
+  let height = 'before:h-[91%]'
   if (stationActive.value || stationInteractionOnMap.value) {
-    ml = 'before:ml-1.5'
+    ml = 'before:ml-[5px]'
     bottom = 'before:bottom-[75%]'
-    height = 'before:h-[70%]'
+    height = 'before:h-[90%]'
   } else if (props.is_last_elem) {
-    ml = 'before:ml-1'
-    height = 'before:h-[85%]'
+    ml = 'before:ml-[3px]'
+    height = 'before:h-[95%]'
+  } else if (props.is_station_after_select) {
+    height = 'before:h-[80%]'
   }
+
   return classBefore.concat([ml, bottom, height])
 }
 
@@ -136,7 +144,7 @@ const classCircle = computed(() => {
 
 <template>
   <li
-    class="flex items-center mb-1 cursor-pointer"
+    class="flex items-center mb-1 cursor-pointer h-7"
     :class="stationActive || stationInteractionOnMap ? 'bg-slate-100' : ''"
     @mouseover="stationActive = true"
     @mouseleave="stationActive = false"

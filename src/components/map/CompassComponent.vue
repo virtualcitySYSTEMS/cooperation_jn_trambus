@@ -127,10 +127,10 @@ const transformArrow = (tilt: number) => {
 <template>
   <div
     ref="compass"
-    class="orbit h-20 w-20 border-4 border-gray-300 rounded-full flex justify-center items-center absolute bottom-0 shadow-lg"
+    class="orbit h-[75px] w-[75px] border-4 border-white rounded-full flex justify-center items-center absolute bottom-0 shadow-lg"
   >
     <div
-      class="h-3 w-3 flex justify-center items-center text-[8px] bg-black text-white absolute bottom-[70px] cursor-pointer rounded"
+      class="h-3 w-3 flex justify-center items-center text-[8px] bg-black text-white absolute bottom-[65px] cursor-pointer rounded"
       @mousedown="onNorthPointClick"
     >
       N

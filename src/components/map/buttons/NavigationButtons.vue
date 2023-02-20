@@ -45,10 +45,10 @@ const shouldDisplayHomeButton = () => {
 }
 
 const heightClass = computed(() => {
-  if (viewStore.currentView == viewList.home && map3dStore.is3D()) {
-    return ['h-[18rem]']
+  if (!shouldDisplayHomeButton() && map3dStore.is3D()) {
+    return ['h-[17rem]']
   } else if (map3dStore.is3D()) {
-    return ['h-[22rem]']
+    return ['h-[21rem]']
   }
   return ['h-90']
 })
