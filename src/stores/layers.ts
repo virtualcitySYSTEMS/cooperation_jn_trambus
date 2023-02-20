@@ -84,6 +84,9 @@ export const useLayersStore = defineStore('layers', () => {
       trambusStops: boolean
       parking: boolean
       poi: boolean
+      metro: boolean
+      bus: boolean
+      bike: boolean
       _traveltimeArrow: boolean
     }
   ) {
@@ -94,6 +97,9 @@ export const useLayersStore = defineStore('layers', () => {
     visibilities.value._trambusStopsOutline = newVisibilities.trambusStops
     visibilities.value.parking = newVisibilities.parking
     visibilities.value.poi = newVisibilities.poi
+    visibilities.value.metro = newVisibilities.metro
+    visibilities.value.bus = newVisibilities.bus
+    visibilities.value.bike = newVisibilities.bike
     visibilities.value._traveltimeArrow = newVisibilities._traveltimeArrow
   }
 
