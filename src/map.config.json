@@ -280,26 +280,7 @@
   "viewpoints": [
     {
       "name": "rennes",
-      "cameraPosition": [-1.7219, 48.09, 30000],
-      "groundPosition": [-1.7219, 48.09, 30000],
-      "distance": 20,
-      "pitch": -90,
-      "roll": 0,
-      "heading": 0,
-      "animate": true,
-      "type": "Viewpoint",
-      "duration": 0.5,
-      "properties": {
-        "title": {
-          "en": "Rennes",
-          "fr": "Rennes"
-        }
-      }
-    },
-    {
-      "name": "home",
-      "cameraPosition": [-1.7219, 48.09, 30000],
-      "groundPosition": [-1.7219, 48.09, 30000],
+      "groundPosition": [-1.7219, 48.09],
       "distance": 37039,
       "pitch": -90,
       "roll": 0,
@@ -316,8 +297,7 @@
     },
     {
       "name": "line1",
-      "cameraPosition": [-1.6836920667543744, 48.12714651441834, 9652],
-      "groundPosition": [-1.6836920667543744, 48.12714651441834, 0],
+      "groundPosition": [-1.6802953819335829, 48.121836135404635],
       "distance": 9652,
       "pitch": -90,
       "roll": 0,
@@ -334,9 +314,8 @@
     },
     {
       "name": "line2",
-      "cameraPosition": [-1.6902479380229805, 48.10739914218232, 16046],
-      "groundPosition": [-1.6902479380229805, 48.10739914218232, 0],
-      "distance": 16046,
+      "groundPosition": [-1.6924589110760557, 48.10213546508655],
+      "distance": 22952,
       "pitch": -90,
       "roll": 0,
       "heading": 0,
@@ -352,9 +331,8 @@
     },
     {
       "name": "line3",
-      "cameraPosition": [-1.6832020074769098, 48.12109567778313, 18810],
-      "groundPosition": [-1.6832020074769098, 48.12109567778313, 0],
-      "distance": 18810,
+      "groundPosition": [-1.665713596771401, 48.114309878105075],
+      "distance": 18807,
       "pitch": -90,
       "roll": 0,
       "heading": 0,
@@ -370,9 +348,8 @@
     },
     {
       "name": "line4",
-      "cameraPosition": [-1.7383279234462135, 48.05845827060446, 16000],
-      "groundPosition": [-1.7383279234462135, 48.05845827060446, 0],
-      "distance": 16000,
+      "groundPosition": [-1.7405572281528614, 48.05385678187881],
+      "distance": 16021,
       "pitch": -90,
       "roll": 0,
       "heading": 0,
