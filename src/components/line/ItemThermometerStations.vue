@@ -144,7 +144,7 @@ const classCircle = computed(() => {
 
 <template>
   <li
-    class="flex items-center mb-1 cursor-pointer h-[28px]"
+    class="flex items-center mb-1 cursor-pointer h-7"
     :class="stationActive || stationInteractionOnMap ? 'bg-slate-100' : ''"
     @mouseover="stationActive = true"
     @mouseleave="stationActive = false"
