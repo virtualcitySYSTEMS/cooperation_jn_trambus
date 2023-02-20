@@ -2,6 +2,37 @@
 
 ## Quick start
 
+### Package common_ui from github registry
+
+#### Installation
+
+This app install the [@sigrennesmetropole/cooperation_jn_common_ui](https://github.com/sigrennesmetropole/cooperation_jn_common_ui/pkgs/npm/cooperation_jn_common_ui) package.
+Although this package is public, you still need a Private Access Token (PAT) from github to download it.
+
+In order to do that you need to follow [this instructions](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+
+Then, in your personnal ~/.npmrc you need to add this line:
+
+```shell
+//npm.pkg.github.com/:_authToken=<YOUR PAT>
+```
+
+Or, in the project ./npmrc file, you can replace NPM_TOKEN by your PAT.
+
+**Careful!** If you change the project npmrc file, you must be careful and not commit the change. The docker image in the CI is build by replacing the ${NPM_TOKEN} by the GITHUB_TOKEN of the repository.
+If you commit your own PAT, it will be invalidated by Github.
+
+The easiest way is probably to change the project npmrc file, and ignore it in your git index:
+
+```shell
+git update-index --skip-worktree .npmrc
+```
+
+#### Upgrade
+
+The [@sigrennesmetropole/cooperation_jn_common_ui](https://github.com/sigrennesmetropole/cooperation_jn_common_ui/pkgs/npm/cooperation_jn_common_ui) package is frequently patch.
+Try to keep it up-to-date.
+
 ### Run the app in dev mode
 
 ```shell
@@ -24,7 +55,7 @@ npm run story
 ### Build locally the image
 
 ```shell
-docker build -t rennes3d-front:latest .
+docker build -t rennes3d-front:latest  --build-arg NPM_TOKEN=<YOUR_GITHUB_NPM_TOKEN> .
 ```
 
 ### Run the image
