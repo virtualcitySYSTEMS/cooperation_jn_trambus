@@ -126,13 +126,19 @@ async function updateViewPoint(viewPoint: string) {
       await activeMap.gotoViewpoint(newVp)
     }
   } else {
-    const selectedViewPoint = rennesApp.viewpoints.getByKey(viewPoint)
+    let selectedViewPoint = rennesApp.viewpoints.getByKey(viewPoint)
 
     if (selectedViewPoint) {
+      if (map3dStore.is3D()) {
+        selectedViewPoint = tiltViewpoint(selectedViewPoint!)
+      }
       await activeMap.gotoViewpoint(selectedViewPoint)
     } else {
       // go to home
-      const homeViewPoint = rennesApp.viewpoints.getByKey('rennes')
+      let homeViewPoint = rennesApp.viewpoints.getByKey('rennes')
+      if (map3dStore.is3D()) {
+        homeViewPoint = tiltViewpoint(homeViewPoint!)
+      }
       await activeMap.gotoViewpoint(homeViewPoint!)
     }
   }
@@ -145,13 +151,11 @@ async function updateActiveMap() {
 
   await rennesApp.maps.setActiveMap(map3dStore.activeMap)
 
-  // Update tilt
-  const tiltDegree = 45
   let newViewpoint
   if (map3dStore.is3D()) {
-    newViewpoint = tiltViewpoint(oldViewpoint!, tiltDegree)
+    newViewpoint = tiltViewpoint(oldViewpoint!)
   } else {
-    newViewpoint = untiltViewpoint(oldViewpoint!, tiltDegree)
+    newViewpoint = untiltViewpoint(oldViewpoint!)
   }
   rennesApp.maps.activeMap.gotoViewpoint(newViewpoint)
 }

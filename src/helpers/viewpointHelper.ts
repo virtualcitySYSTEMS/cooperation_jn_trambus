@@ -42,7 +42,7 @@ const degreeToRadian = (degree: number): number => {
 }
 
 // Tilt the view point (e.g. when switch from 2D to 3D)
-export function tiltViewpoint(viewpoint: Viewpoint, tiltDegree: number) {
+export function tiltViewpoint(viewpoint: Viewpoint, tiltDegree: number = 45) {
   const vpJson: ViewpointOptions = viewpoint?.toJSON() as ViewpointOptions
   vpJson.cameraPosition = undefined
   vpJson.animate = true
@@ -56,7 +56,10 @@ export function tiltViewpoint(viewpoint: Viewpoint, tiltDegree: number) {
 }
 
 // Reset the tilt the view point (e.g. when switch from 3D to 2D)
-export function untiltViewpoint(viewpoint: Viewpoint, untiltDegree: number) {
+export function untiltViewpoint(
+  viewpoint: Viewpoint,
+  untiltDegree: number = 45
+) {
   const vpJson: ViewpointOptions = viewpoint?.toJSON() as ViewpointOptions
   vpJson.cameraPosition = undefined
   vpJson.animate = true
