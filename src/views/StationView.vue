@@ -63,6 +63,9 @@ onMounted(async () => {
     trambusStops: true,
     parking: true,
     poi: true,
+    metro: false,
+    bus: false,
+    bike: false,
     _traveltimeArrow: false,
   })
 })
