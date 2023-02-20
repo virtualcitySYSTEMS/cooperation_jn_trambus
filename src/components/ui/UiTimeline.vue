@@ -83,7 +83,11 @@ const setselectedIndex = (index: number) => {
             : 'justify-center',
         ]"
       >
-        <div class="h-2 w-2 bg-gray-400 rounded-full"></div>
+        <div
+          role="button"
+          class="h-2 w-2 bg-gray-400 rounded-full"
+          @click="() => setselectedIndex(index)"
+        ></div>
       </div>
     </div>
     <div
