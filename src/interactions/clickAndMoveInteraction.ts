@@ -11,7 +11,10 @@ import {
 } from '@vcmap/core'
 import { useStationsStore } from '@/stores/stations'
 import { useLineViewsStore, useViewsStore } from '@/stores/views'
-import { useLineInteractionStore } from '@/stores/interactionMap'
+import {
+  useLineInteractionStore,
+  usePoiInteractionStore,
+} from '@/stores/interactionMap'
 import router from '@/router'
 import { viewList } from '@/model/views.model'
 import type { RennesApp } from '@/services/RennesApp'
@@ -19,6 +22,11 @@ import { RENNES_LAYER } from '@/stores/layers'
 import { Feature } from 'ol'
 import { Point } from 'ol/geom'
 import { Style } from 'ol/style'
+import {
+  displayNameOfSelectedPoi,
+  undisplayPoiExpectCurrent,
+  undisplayCurrentPoi,
+} from '@/services/poi'
 
 class mapClickAndMoveInteraction extends AbstractInteraction {
   private _rennesApp: RennesApp
@@ -120,21 +128,42 @@ class mapClickAndMoveInteraction extends AbstractInteraction {
     }
   }
 
+  _interactionPoi(event: InteractionEvent) {
+    const viewStore = useViewsStore()
+    if ([viewList.home, viewList.line].includes(viewStore.currentView)) {
+      document.body.style.cursor = 'auto'
+      const poiInteractionStore = usePoiInteractionStore()
+      const feature: Feature<Point> = event.feature as Feature<Point>
+      poiInteractionStore.selectCurrentFeaturePoi(feature)
+      poiInteractionStore.addPreviousFeaturePoi(feature)
+      undisplayPoiExpectCurrent()
+      displayNameOfSelectedPoi(feature)
+    }
+  }
+
   async pipe(event: InteractionEvent): Promise<InteractionEvent> {
     const isFeatureTrambusStpos =
       event.feature?.[vcsLayerName] === RENNES_LAYER.trambusStops
     const isFeatureLine =
       event.feature?.[vcsLayerName] === RENNES_LAYER.trambusLines
+    const isFeaturePOI = event.feature?.[vcsLayerName] === RENNES_LAYER.poi
 
     if (isFeatureTrambusStpos) {
       this._interactionStation(event)
     } else if (isFeatureLine) {
       await this._interactionLine(event)
+    } else if (isFeaturePOI) {
+      this._interactionPoi(event)
     } else {
       const stationsStore = useStationsStore()
       if (stationsStore.flagClearStationsExceptPermanently) {
         stationsStore.clearStationsExceptPermanently()
         stationsStore.flagClearStationsExceptPermanently = false
+      }
+
+      const viewStore = useViewsStore()
+      if ([viewList.home, viewList.line].includes(viewStore.currentView)) {
+        undisplayCurrentPoi()
       }
 
       document.body.style.cursor = 'auto'

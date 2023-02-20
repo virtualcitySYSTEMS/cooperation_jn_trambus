@@ -47,8 +47,13 @@ export const parkingStyle: Style = new Style({
 export function generatePoiStyle(
   label: string,
   distance: string,
-  is3D: boolean
+  is3D: boolean,
+  displayDistance: boolean
 ) {
+  if (displayDistance) {
+    label = label + '\n' + distance + 'm'
+  }
+  label = label.replace("'", ' ')
   // @ts-ignore
   return new VectorStyleItem({
     text: {
@@ -65,8 +70,7 @@ export function generatePoiStyle(
       textAlign: 'left',
       justify: 'left',
     },
-
-    label: label + '\n' + distance + 'm',
+    label: label,
     image: {
       src: pinIcon,
       scale: 0.75,
