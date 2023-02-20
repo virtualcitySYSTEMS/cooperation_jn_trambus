@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UiIconButton } from 'cooperation_jn_common_ui'
+import { UiIconButton } from '@sigrennesmetropole/cooperation_jn_common_ui'
 
 import type { RennesLayer } from '@/stores/layers'
 import { useLayersStore } from '@/stores/layers'
