@@ -40,7 +40,7 @@ export const useViewsStore = defineStore('views', () => {
     poiStore.activeHomeProfile()
     lineViewsStore.selectLine(0)
     stationsStore.homeViewSetUpStationsToDisplay()
-    mapViewpointStore.updateViewpoint('home', true)
+    mapViewpointStore.updateViewpoint('rennes', true)
     currentView.value = viewList.home
   }
 

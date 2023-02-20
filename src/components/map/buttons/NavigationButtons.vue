@@ -2,10 +2,11 @@
 import { inject, computed } from 'vue'
 import { cloneViewPointAndResetCameraPosition } from '@/helpers/viewpointHelper'
 
-import IconHome from '@/components/ui/icons/IconHome.vue'
-import IconPlus from '@/components/ui/icons/IconPlus.vue'
-import IconMinus from '@/components/ui/icons/IconMinus.vue'
-import UiIconButton from '@/components/ui/UiIconButton.vue'
+import { IconHome } from 'cooperation_jn_common_ui'
+import { IconPlus } from 'cooperation_jn_common_ui'
+import { IconMinus } from 'cooperation_jn_common_ui'
+import { UiIconButton } from 'cooperation_jn_common_ui'
+
 import CompassComponent from '@/components/map/CompassComponent.vue'
 
 import { useMap3dStore } from '@/stores/map'
@@ -22,8 +23,6 @@ const router = useRouter()
 
 async function toggle3DMap() {
   map3dStore.toggle3D()
-  // TODO: if the layer store is merged into map store, we can do the following
-  // line in pinia
 }
 
 async function zoom(out = false, zoomFactor = 2): Promise<void> {
