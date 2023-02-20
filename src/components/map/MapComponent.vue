@@ -25,6 +25,8 @@ import { useTraveltimeInteractionStore } from '@/stores/interactionMap'
 import {
   getViewpointFromFeature,
   cloneViewPointAndResetCameraPosition,
+  tiltViewpoint,
+  untiltViewpoint,
 } from '@/helpers/viewpointHelper'
 import type { RennesApp } from '@/services/RennesApp'
 import {
@@ -137,7 +139,21 @@ async function updateViewPoint(viewPoint: string) {
 }
 
 async function updateActiveMap() {
+  // Notes(IS): Currently there is no way to set custom tilt when switch active map
+  // Get current tilt
+  const oldViewpoint = await rennesApp.maps.activeMap.getViewpoint()
+
   await rennesApp.maps.setActiveMap(map3dStore.activeMap)
+
+  // Update tilt
+  const tiltDegree = 45
+  let newViewpoint
+  if (map3dStore.is3D()) {
+    newViewpoint = tiltViewpoint(oldViewpoint!, tiltDegree)
+  } else {
+    newViewpoint = untiltViewpoint(oldViewpoint!, tiltDegree)
+  }
+  rennesApp.maps.activeMap.gotoViewpoint(newViewpoint)
 }
 
 async function updateMapStyle() {

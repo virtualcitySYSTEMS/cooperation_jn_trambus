@@ -22,8 +22,6 @@ const router = useRouter()
 
 async function toggle3DMap() {
   map3dStore.toggle3D()
-  // TODO: if the layer store is merged into map store, we can do the following
-  // line in pinia
 }
 
 async function zoom(out = false, zoomFactor = 2): Promise<void> {
