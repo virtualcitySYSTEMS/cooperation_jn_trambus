@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type Map from 'ol/Map'
 import { inject } from 'vue'
-import UiIconButton from '../../ui/UiIconButton.vue'
+import { UiIconButton } from 'cooperation_jn_common_ui'
 
 const olMap = inject('map') as Map
 

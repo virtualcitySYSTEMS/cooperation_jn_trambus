@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import UiIconButton from '@/components/ui/UiIconButton.vue'
+import { UiIconButton } from 'cooperation_jn_common_ui'
 import IconUser from '@/components/ui/icons/IconUser.vue'
 function getUserLog() {
   return null
