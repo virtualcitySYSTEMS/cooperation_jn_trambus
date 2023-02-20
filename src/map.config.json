@@ -280,26 +280,7 @@
   "viewpoints": [
     {
       "name": "rennes",
-      "cameraPosition": [-1.7219, 48.09, 30000],
-      "groundPosition": [-1.7219, 48.09, 30000],
-      "distance": 20,
-      "pitch": -90,
-      "roll": 0,
-      "heading": 0,
-      "animate": true,
-      "type": "Viewpoint",
-      "duration": 0.5,
-      "properties": {
-        "title": {
-          "en": "Rennes",
-          "fr": "Rennes"
-        }
-      }
-    },
-    {
-      "name": "home",
-      "cameraPosition": [-1.7219, 48.09, 30000],
-      "groundPosition": [-1.7219, 48.09, 30000],
+      "groundPosition": [-1.7219, 48.09, 0],
       "distance": 37039,
       "pitch": -90,
       "roll": 0,
@@ -316,7 +297,6 @@
     },
     {
       "name": "line1",
-      "cameraPosition": [-1.6836920667543744, 48.12714651441834, 9652],
       "groundPosition": [-1.6836920667543744, 48.12714651441834, 0],
       "distance": 9652,
       "pitch": -90,
@@ -334,7 +314,6 @@
     },
     {
       "name": "line2",
-      "cameraPosition": [-1.6902479380229805, 48.10739914218232, 16046],
       "groundPosition": [-1.6902479380229805, 48.10739914218232, 0],
       "distance": 16046,
       "pitch": -90,
@@ -352,7 +331,6 @@
     },
     {
       "name": "line3",
-      "cameraPosition": [-1.6832020074769098, 48.12109567778313, 18810],
       "groundPosition": [-1.6832020074769098, 48.12109567778313, 0],
       "distance": 18810,
       "pitch": -90,
@@ -370,7 +348,6 @@
     },
     {
       "name": "line4",
-      "cameraPosition": [-1.7383279234462135, 48.05845827060446, 16000],
       "groundPosition": [-1.7383279234462135, 48.05845827060446, 0],
       "distance": 16000,
       "pitch": -90,
