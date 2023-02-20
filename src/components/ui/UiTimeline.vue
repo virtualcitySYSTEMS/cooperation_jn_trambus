@@ -64,14 +64,14 @@ const setselectedIndex = (index: number) => {
       v-for="(item, index) of items"
       class="flex-1 flex justify-center items-center relative pb-4 hover:font-medium w-24"
     >
-      <div
-        class="text-center cursor-pointer text-sm leading-5 color-black"
+      <button
+        class="text-center text-sm leading-5 color-black"
         v-bind:class="[selectedIndex === index ? 'font-bold' : 'font-normal']"
         @click="() => setselectedIndex(index)"
       >
         Semestre {{ item.semester }} <br />
         {{ item.year }}
-      </div>
+      </button>
       <div
         class="h-[0.05rem] w-full mt-4 bg-gray-400 flex items-center absolute bottom-8"
         v-bind:class="[
@@ -83,11 +83,11 @@ const setselectedIndex = (index: number) => {
             : 'justify-center',
         ]"
       >
-        <div
+        <button
           role="button"
           class="h-2 w-2 bg-gray-400 rounded-full"
           @click="() => setselectedIndex(index)"
-        ></div>
+        ></button>
       </div>
     </div>
     <div
