@@ -4,7 +4,7 @@ import { defineStore } from 'pinia'
 import type { LinePlanningStateTypes } from '@/model/line-planning-state.model'
 
 export const usePlanningStore = defineStore('planning', () => {
-  const selectedYear: Ref<number> = ref(2029)
+  const selectedYear: Ref<number> = ref(2025)
   const selectedSemester: Ref<number> = ref(1)
   const selectedLineState: Ref<LinePlanningStateTypes | null> = ref(null)
   const selectedLine: Ref<number> = ref(0)
