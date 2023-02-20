@@ -49,7 +49,6 @@ onMounted(async () => {
 function onTravelTimesClicked(travelTime: TravelTimeModel) {
   if (travelTime == traveltimeInteractionStore.selectedTraveltime) {
     traveltimeInteractionStore.selectTraveltime(null)
-    stationsStore.traveltimesViewSetUpStationsToDisplay()
   } else {
     stationsStore.updateStationsToDisplayFromTravelTimes(travelTime)
     traveltimeInteractionStore.selectTraveltime(travelTime)

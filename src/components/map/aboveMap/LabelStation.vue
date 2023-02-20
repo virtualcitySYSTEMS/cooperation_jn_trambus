@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useLineViewsStore, useViewsStore } from '@/stores/views'
+import {
+  useLineViewsStore,
+  useTravelTimesViewStore,
+  useViewsStore,
+} from '@/stores/views'
 import { getColorLine } from '@/services/color'
 import type { LineNumber } from '@/model/lines.model'
 import { getLinesNumberFromLiCode } from '@/services/station'
 import { viewList } from '@/model/views.model'
-import { useTraveltimeInteractionStore } from '@/stores/interactionMap'
 
 const props = defineProps<{
   stationName: string
@@ -15,7 +18,7 @@ const props = defineProps<{
 }>()
 
 const lineViewStore = useLineViewsStore()
-const traveltimeInteractionStore = useTraveltimeInteractionStore()
+const travelTimeViewStore = useTravelTimesViewStore()
 const viewStore = useViewsStore()
 
 const positionStyle = computed(() => {
@@ -38,11 +41,11 @@ const positionStyle = computed(() => {
 const colorClass = computed(() => {
   let lineNumber: LineNumber | null = null
   if (
-    traveltimeInteractionStore.selectedTraveltime &&
-    traveltimeInteractionStore.selectedTraveltime != null &&
+    travelTimeViewStore.selectedTravelTime &&
+    travelTimeViewStore.selectedTravelTime !== null &&
     viewStore.currentView == viewList.traveltimes
   ) {
-    lineNumber = traveltimeInteractionStore.selectedTraveltime.line
+    lineNumber = travelTimeViewStore.selectedTravelTime.line
   } else if (lineViewStore.selectedLine) {
     lineNumber = lineViewStore.selectedLine
   } else if (props.liCode) {
