@@ -23,8 +23,8 @@ import { Feature } from 'ol'
 import { Point } from 'ol/geom'
 import { Style } from 'ol/style'
 import {
-  displayNameOfSelectedPoi,
-  undisplayPoiExpectCurrent,
+  displayCurrentPoi,
+  undisplayPreviousPoiExpectCurrent,
   undisplayCurrentPoi,
 } from '@/services/poi'
 
@@ -136,8 +136,8 @@ class mapClickAndMoveInteraction extends AbstractInteraction {
       const feature: Feature<Point> = event.feature as Feature<Point>
       poiInteractionStore.selectCurrentFeaturePoi(feature)
       poiInteractionStore.addPreviousFeaturePoi(feature)
-      undisplayPoiExpectCurrent()
-      displayNameOfSelectedPoi(feature)
+      undisplayPreviousPoiExpectCurrent()
+      displayCurrentPoi(feature)
     }
   }
 
