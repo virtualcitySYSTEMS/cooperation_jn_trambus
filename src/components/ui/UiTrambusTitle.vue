@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import UiTrambusLogo from './UiTrambusLogo.vue'
 import NetworkFigures from '@/components/home/NetworkFigures.vue'
-import { UiAbstractTitle } from 'cooperation_jn_common_ui'
+import { UiAbstractTitle } from '@sigrennesmetropole/cooperation_jn_common_ui'
 
 const title = 'Réseau Trambus'
 const abstract =

@@ -9,7 +9,7 @@ import { useLayersStore } from '@/stores/layers'
 import { useViewsStore } from '@/stores/views'
 import { useMap3dStore } from '@/stores/map'
 import { useLineInteractionStore } from '@/stores/interactionMap'
-import { FooterArea } from 'cooperation_jn_common_ui'
+import { FooterArea } from '@sigrennesmetropole/cooperation_jn_common_ui'
 
 const layerStore = useLayersStore()
 const viewStore = useViewsStore()

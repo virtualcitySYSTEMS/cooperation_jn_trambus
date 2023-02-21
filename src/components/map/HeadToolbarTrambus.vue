@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 
 import UiButton from '@/components/ui/UiButton.vue'
-import { UiIconButton } from 'cooperation_jn_common_ui'
+import { UiIconButton } from '@sigrennesmetropole/cooperation_jn_common_ui'
 import IconCalendar from '@/components/ui/icons/IconCalendar.vue'
 import IconVelo from '@/components/ui/icons/logo-transports-icons/IconVelo.vue'
 import IconBus from '@/components/ui/icons/logo-transports-icons/IconBus.vue'
