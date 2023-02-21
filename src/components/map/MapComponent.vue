@@ -84,7 +84,8 @@ async function resetStyleOfPoi(view: View) {
       styleItem = generatePoiStyle(
         shorterName(f.getProperties()['site_nom']),
         f.getProperties()['distance'],
-        map3dStore.is3D()
+        map3dStore.is3D(),
+        true
       )
     } else {
       styleItem = generatePoiStyleWithoutLabel()

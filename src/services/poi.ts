@@ -3,6 +3,11 @@ import { RENNES_LAYER } from '@/stores/layers'
 import { Point } from 'ol/geom'
 import { transform } from 'ol/proj'
 import { NearFarScalar } from '@vcmap/cesium'
+import type { Feature } from 'ol'
+import { generatePoiStyle, generatePoiStyleWithoutLabel } from '@/styles/common'
+import { useMap3dStore } from '@/stores/map'
+import { usePoiInteractionStore } from '@/stores/interactionMap'
+import type { Geometry } from 'ol/geom'
 
 const CHAR_MAX = 25
 export function shorterName(poiName: string) {
@@ -28,4 +33,46 @@ export async function fixGeometryOfPoi(rennesApp: RennesApp) {
       new NearFarScalar(echelleMax - 1, 1, echelleMax, 0)
     )
   })
+}
+
+export function displayCurrentPoi(feature: Feature<Geometry>) {
+  const map3dStore = useMap3dStore()
+  if (feature === null) return
+  const full_name = feature.getProperties()['site_nom']
+  let name = full_name.slice(0, CHAR_MAX)
+  if (full_name.length > CHAR_MAX) {
+    name += '\n' + full_name.slice(CHAR_MAX, full_name.length)
+  }
+
+  const styleItem = generatePoiStyle(
+    name,
+    feature.getProperties()['distance'],
+    map3dStore.is3D(),
+    false
+  )
+  feature.setStyle(styleItem.style)
+}
+
+/**
+ * Normally the name of one poi should be displayed at once
+ * It happens that the name of the previous poi are still displayed when displaying the name of a new poi
+ * To correct this, we call this function to hide the name of all previous poi and only display the name of the current poi
+ */
+export function undisplayPreviousPoiExpectCurrent() {
+  const poiInteractionStore = usePoiInteractionStore()
+  if (poiInteractionStore.previousFeaturesPoi.length === 0) return
+  poiInteractionStore.previousFeaturesPoi.forEach((feature) => {
+    const styleItem = generatePoiStyleWithoutLabel()
+    feature.setStyle(styleItem.style)
+  })
+}
+
+export function undisplayCurrentPoi() {
+  const poiInteractionStore = usePoiInteractionStore()
+  if (poiInteractionStore.currentFeaturePoi === null) return
+
+  const styleItem = generatePoiStyleWithoutLabel()
+  poiInteractionStore.currentFeaturePoi.setStyle(styleItem.style)
+  poiInteractionStore.currentFeaturePoi = null
+  undisplayPreviousPoiExpectCurrent()
 }

@@ -58,3 +58,24 @@ export const useLineInteractionStore = defineStore(
     }
   }
 )
+
+export const usePoiInteractionStore = defineStore('poi-interaction-map', () => {
+  const currentFeaturePoi: Ref<Feature<Geometry> | null> = ref(null)
+  const previousFeaturesPoi: Ref<Feature<Geometry>[]> = ref([])
+
+  function selectCurrentFeaturePoi(feature: Feature<Geometry> | null) {
+    currentFeaturePoi.value = feature
+  }
+
+  function addPreviousFeaturePoi(feature: Feature<Geometry>) {
+    if (!previousFeaturesPoi.value.includes(feature))
+      previousFeaturesPoi.value.push(feature)
+  }
+
+  return {
+    currentFeaturePoi,
+    previousFeaturesPoi,
+    selectCurrentFeaturePoi,
+    addPreviousFeaturePoi,
+  }
+})
