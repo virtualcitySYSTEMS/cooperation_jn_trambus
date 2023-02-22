@@ -23,10 +23,9 @@ import { useComponentAboveMapStore } from '@/stores/componentsAboveMapStore'
 import { useTraveltimeInteractionStore } from '@/stores/interactionMap'
 
 import {
-  getViewpointFromFeature,
-  cloneViewPointAndResetCameraPosition,
   tiltViewpoint,
   untiltViewpoint,
+  getViewpointFromFeatureDistance,
 } from '@/helpers/viewpointHelper'
 import type { RennesApp } from '@/services/RennesApp'
 import {
@@ -121,11 +120,15 @@ async function updateViewPoint(viewPoint: string) {
       'nom',
       stationsStore.currentStationView!
     )
-    let viewpoint: Viewpoint | null = getViewpointFromFeature(featureStation)
-    if (viewpoint !== null) {
-      const newVp = cloneViewPointAndResetCameraPosition(viewpoint, null)
-      await activeMap.gotoViewpoint(newVp)
+    // 2000 is the distance where the view of the station looks good
+    let viewpoint: Viewpoint | null = getViewpointFromFeatureDistance(
+      featureStation,
+      2000
+    )
+    if (map3dStore.is3D()) {
+      viewpoint = tiltViewpoint(viewpoint!)
     }
+    await activeMap.gotoViewpoint(viewpoint!)
   } else {
     let selectedViewPoint = rennesApp.viewpoints.getByKey(viewPoint)
 

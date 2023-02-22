@@ -21,6 +21,22 @@ export function getViewpointFromFeature(
   return Viewpoint.createViewpointFromExtent(extent)
 }
 
+export function getViewpointFromFeatureDistance(
+  feature: Feature<Geometry>,
+  distance: number
+): Viewpoint | null {
+  const viewpoint = getViewpointFromFeature(feature)
+
+  if (viewpoint) {
+    const distanceViewpoint = cloneViewPointAndResetCameraPosition(
+      viewpoint,
+      distance
+    )
+    return distanceViewpoint
+  }
+  return viewpoint
+}
+
 export function cloneViewPointAndResetCameraPosition(
   viewpoint: Viewpoint,
   distance: number | null
