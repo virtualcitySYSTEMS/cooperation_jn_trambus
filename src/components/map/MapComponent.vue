@@ -120,6 +120,7 @@ async function updateViewPoint(viewPoint: string) {
       'nom',
       stationsStore.currentStationView!
     )
+    // 2000 is the distance where the view of the station looks good
     let viewpoint: Viewpoint | null = getViewpointFromFeatureDistance(
       featureStation,
       2000
