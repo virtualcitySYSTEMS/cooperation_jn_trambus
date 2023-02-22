@@ -88,13 +88,14 @@ class ApiClientService {
       resolve(stationsFixtures().find((station) => station.id == stationId)!)
     })
   }
-
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   async fetchServicesByStation(stationId: number) {
     //TODO: when RENNES send data of services, filter services by stationId
     return new Promise<ServiceModel[]>((resolve) => {
       resolve(servicesFixtures())
     })
   }
+  /* eslint-enable @typescript-eslint/no-unused-vars */
 }
 
 export const apiClientService = new ApiClientService()
