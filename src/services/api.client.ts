@@ -90,7 +90,6 @@ class ApiClientService {
   }
 
   async fetchServicesByStation(stationId: number) {
-    console.log(stationId)
     //TODO: when RENNES send data of services, filter services by stationId
     return new Promise<ServiceModel[]>((resolve) => {
       resolve(servicesFixtures())
