@@ -21,9 +21,11 @@ import { usePlanningStore } from '@/stores/planning'
 import UiPlanningLegend from '@/components/map/planning/PlanningLegend.vue'
 import { Overlay } from 'ol'
 import UiLineButton from '@/components/map/buttons/UiLineButton.vue'
+import type { Corner } from '@/components/map/buttons/UiLineButton.vue'
 import OlNavigationButtons from '@/components/map/buttons/OlNavigationButtons.vue'
 import type { LineNumber } from '@/model/lines.model'
 import { LinePlanningStateTypes } from '@/model/line-planning-state.model'
+import type { Positioning } from 'ol/Overlay'
 
 const planningStore = usePlanningStore()
 
@@ -208,9 +210,17 @@ function addOverlay(
   lat: number,
   lineButtonComponent: typeof UiLineButton | null
 ) {
+  const anchor: Corner = lineButtonComponent?.$props.corner ?? 'tl'
+  const positioning: Record<Corner, Positioning> = {
+    br: 'bottom-right',
+    bl: 'bottom-left',
+    tr: 'top-right',
+    tl: 'top-left',
+  }
   const overlay = new Overlay({
     element: lineButtonComponent?.$el,
     position: fromLonLat([lng, lat]),
+    positioning: positioning[anchor],
   })
   olMap.addOverlay(overlay)
 }
@@ -226,10 +236,10 @@ function setupMap() {
     })
   )
   map.setLayers([rennesBaseMap, planningLayer])
-  addOverlay(map, -1.71743759, 48.12378729, line1.value)
-  addOverlay(map, -1.58409953, 48.11926538, line2.value)
+  addOverlay(map, -1.69963979, 48.13097969, line1.value)
+  addOverlay(map, -1.59290358, 48.11698771, line2.value)
   addOverlay(map, -1.59973872, 48.08178725, line3.value)
-  addOverlay(map, -1.72991575, 48.08664826, line4.value)
+  addOverlay(map, -1.71701545, 48.07001307, line4.value)
 
   mapLoaded.value = true
 }
