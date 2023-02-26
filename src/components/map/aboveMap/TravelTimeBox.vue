@@ -2,11 +2,13 @@
 import { computed } from 'vue'
 import { useViewsStore } from '@/stores/views'
 import { viewList } from '@/model/views.model'
+import Clock from '@/assets/icons/clock.svg'
 
 const props = defineProps<{
-  travelTime: string
+  travelTime: number
   topPosition: number
   leftPosition: number
+  isHighlighted: boolean
 }>()
 
 const viewStore = useViewsStore()
@@ -27,20 +29,19 @@ const positionStyle = computed(() => {
   }
   return style
 })
-
-const colorClass = computed(() => {
-  return ['bg-orange-600']
-})
 </script>
 
 <template>
   <div
-    class="absolute items-center rounded-3xl py-0.5 px-2 h-6"
-    :class="colorClass"
+    class="absolute items-center flex gap-0.5 rounded-sm px-1 p-0.5 h-6 bg-white w-[72px]"
     :style="positionStyle"
+    :class="props.isHighlighted ? 'border-2 border-black' : ''"
   >
-    <p class="font-dm-sans font-bold text-sm h-5 text-white">
-      {{ props.travelTime }}
+    <div class="flex-auto">
+      <img :src="Clock" alt="" />
+    </div>
+    <p class="flex-auto font-dm-sans font-bold text-sm">
+      {{ props.travelTime }} min
     </p>
   </div>
 </template>

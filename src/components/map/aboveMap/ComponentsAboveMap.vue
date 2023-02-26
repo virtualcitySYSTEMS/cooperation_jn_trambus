@@ -5,11 +5,13 @@ import LabelLine from '@/components/map/aboveMap/LabelLine.vue'
 import {
   useLineInteractionStore,
   useTravelTimeBoxesStore,
+  useTraveltimeInteractionStore,
 } from '@/stores/interactionMap'
 import TravelTimeBox from '@/components/map/aboveMap/TravelTimeBox.vue'
 const componentAboveMapStore = useComponentAboveMapStore()
 const lineInteractionStore = useLineInteractionStore()
 const travelTimeBoxesStore = useTravelTimeBoxesStore()
+const traveltimeInteractionStore = useTraveltimeInteractionStore()
 </script>
 
 <template>
@@ -30,9 +32,13 @@ const travelTimeBoxesStore = useTravelTimeBoxesStore()
   />
   <TravelTimeBox
     v-for="ttbox in travelTimeBoxesStore.travelTimeBoxes"
-    :key="ttbox.travelTimeFeature"
+    :key="ttbox.travelTimeFeature.id"
     :topPosition="ttbox.cartesian.y"
     :leftPosition="ttbox.cartesian.x"
-    travel-time="50"
+    :travel-time="ttbox.travelTimeFeature.new"
+    :isHighlighted="
+      ttbox.travelTimeFeature.id ===
+      traveltimeInteractionStore.selectedTraveltime?.id
+    "
   ></TravelTimeBox>
 </template>
