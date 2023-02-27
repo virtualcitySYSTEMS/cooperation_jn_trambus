@@ -6,6 +6,7 @@ import UiTravelTime from '../ui/UiTravelTime.vue'
 import type { TravelTimeModel } from '@/model/travel-time.model'
 import UiOverflowContainer from '../ui/UiOverflowContainer.vue'
 import UiLinkPrimary from '../ui/UiLinkPrimary.vue'
+import { UiButtonWithTooltip } from '@sigrennesmetropole/cooperation_jn_common_ui'
 
 const state = reactive({
   travelTimes: null as null | TravelTimeModel[],
@@ -17,9 +18,21 @@ onMounted(async () => {
 </script>
 
 <template>
-  <h2 class="font-dm-sans font-bold text-lg leading-6">
-    Vos futurs temps de parcours
-  </h2>
+  <div class="relative">
+    <h2 class="font-dm-sans font-bold text-lg leading-6">
+      Temps de parcours théorique
+    </h2>
+    <div class="ml-2">
+      <UiButtonWithTooltip
+        widthButton="4"
+        heightButton="4"
+        positionRight="130px"
+        positionTop="5px"
+        text="Ces temps de parcours sont calculés à l’heure de pointe du matin en direction Rennes. Ils sont comparés au temps actuel de trajet en transport en commun."
+        widthBoxText="w-[230px]"
+      ></UiButtonWithTooltip>
+    </div>
+  </div>
 
   <div class="flex flex-col items-start gap-3 pt-0 pr-9 pb-0 pl-0">
     <UiOverflowContainer class="w-[450px] -mx-6">
