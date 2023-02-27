@@ -2,7 +2,6 @@ import type { PhotoModel } from './photos.model'
 import photo1 from '@/assets/photos/samples/photo1.png'
 import photo2 from '@/assets/photos/samples/photo2.png'
 import photo3 from '@/assets/photos/samples/photo3.png'
-import photo4 from '@/assets/photos/samples/photo4.png'
 
 export const photoFixtures = (): PhotoModel[] => [
   {
@@ -16,9 +15,5 @@ export const photoFixtures = (): PhotoModel[] => [
   {
     url: photo3,
     line: 3,
-  },
-  {
-    url: photo4,
-    line: 4,
   },
 ]
