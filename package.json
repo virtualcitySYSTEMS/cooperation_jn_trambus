@@ -29,7 +29,7 @@
   "dependencies": {
     "@pinia/testing": "^0.0.14",
     "@vcmap/core": "^5.0.0-rc.25",
-    "@sigrennesmetropole/cooperation_jn_common_ui": "0.0.7",
+    "@sigrennesmetropole/cooperation_jn_common_ui": "0.0.8",
     "node-fetch": "^3.3.0",
     "ol": "^7.1.0",
     "pinia": "^2.0.21",
