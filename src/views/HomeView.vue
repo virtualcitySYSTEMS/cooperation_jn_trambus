@@ -10,11 +10,13 @@ import { useViewsStore } from '@/stores/views'
 import { useMap3dStore } from '@/stores/map'
 import { useLineInteractionStore } from '@/stores/interactionMap'
 import { FooterArea } from '@sigrennesmetropole/cooperation_jn_common_ui'
+import { usePanelsStore } from '@/stores/panels'
 
 const layerStore = useLayersStore()
 const viewStore = useViewsStore()
 const map3dStore = useMap3dStore()
 const lineInteractionStore = useLineInteractionStore()
+const panelsStore = usePanelsStore()
 
 onMounted(() => {
   viewStore.setHomeAsCurrentView()
@@ -29,6 +31,7 @@ onMounted(() => {
     bike: false,
     _traveltimeArrow: false,
   })
+  panelsStore.toggleGallery()
 })
 </script>
 
