@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, inject } from 'vue'
-import { Layer, Viewpoint, vectorStyleSymbol, StyleItem } from '@vcmap/core'
+import type { Layer, Viewpoint } from '@vcmap/core'
 import UiMap from '@/components/ui/UiMap.vue'
 import NavigationButtons from '@/components/map/buttons/NavigationButtons.vue'
 import ComponentsAboveMap from '@/components/map/aboveMap/ComponentsAboveMap.vue'
-
-import { generatePoiStyle, generatePoiStyleWithoutLabel } from '@/styles/common'
-
 import {
   useLayersStore,
   RENNES_LAYERNAMES,
@@ -14,7 +11,6 @@ import {
 } from '@/stores/layers'
 import { useMap3dStore, useMapViewPointStore } from '@/stores/map'
 import {
-  useLineViewsStore,
   useHomeViewsStore,
   useTravelTimesViewStore,
   useViewsStore,
@@ -36,18 +32,9 @@ import {
   updateHomeViewStyle,
 } from '@/services/viewStyle'
 import { updateTraveltimeArrow } from '@/services/arrow'
-import { View, viewList } from '@/model/views.model'
-import { shorterName } from '@/services/poi'
-import { setDistanceDisplayConditionFeature } from '@/services/setDistanceDisplayCondition'
+import { viewList } from '@/model/views.model'
+import { poiStoreSubcribe } from '@/services/poi'
 import { usePoiParkingStore } from '@/stores/poiParking'
-import {
-  filterFeatureByParkingAndLine,
-  filterFeatureByPoiAndStation,
-  filterFeatureByPoiAndLine,
-  removeFiltersOnPoiAndParking,
-} from '@/services/filter'
-
-import { fixGeometryOfPoi } from '@/services/poi'
 
 const rennesApp = inject('rennesApp') as RennesApp
 
@@ -55,7 +42,6 @@ const layerStore = useLayersStore()
 const poiStore = usePoiParkingStore()
 const map3dStore = useMap3dStore()
 const mapViewPointStore = useMapViewPointStore()
-const lineViewStore = useLineViewsStore()
 const homeViewStore = useHomeViewsStore()
 const stationsStore = useStationsStore()
 const travelTimesViewStore = useTravelTimesViewStore()
@@ -76,28 +62,6 @@ onMounted(async () => {
 onUnmounted(() => {
   rennesApp.destroy()
 })
-
-async function resetStyleOfPoi(view: View) {
-  let layer = await rennesApp.getLayerByKey(RENNES_LAYER.poi)
-  layer.getFeatures().forEach((f) => {
-    let styleItem: StyleItem
-    if (view === viewList.station) {
-      styleItem = generatePoiStyle(
-        shorterName(f.getProperties()['site_nom']),
-        f.getProperties()['distance'],
-        map3dStore.is3D(),
-        true
-      )
-    } else {
-      styleItem = generatePoiStyleWithoutLabel()
-      setDistanceDisplayConditionFeature(styleItem, rennesApp.get2DMap())
-    }
-
-    //@ts-expect-error
-    f[vectorStyleSymbol] = styleItem
-    f.setStyle(styleItem.style)
-  })
-}
 
 async function setLayerVisible(layerName: string, visible: boolean) {
   const layer: Layer = rennesApp.maps.layerCollection.getByKey(layerName)
@@ -210,35 +174,14 @@ stationsStore.$subscribe(async () => {
   await componentAboveMapStore.updateListLabelsStations(rennesApp)
 })
 
-async function filterFeaturesOnLine() {
-  await filterFeatureByParkingAndLine(rennesApp, lineViewStore.selectedLine)
-}
-
 homeViewStore.$subscribe(async () => {
   await updateHomeViewStyle(rennesApp)
 })
 
 poiStore.$subscribe(async () => {
-  await removeFiltersOnPoiAndParking(rennesApp)
-  await fixGeometryOfPoi(rennesApp)
-  if (
-    poiStore.currentProfile === viewList.station &&
-    stationsStore.currentStationView
-  ) {
-    await filterFeaturesOnLine()
-    await filterFeatureByPoiAndStation(
-      rennesApp,
-      stationsStore.currentStationView
-    )
-  } else if (
-    poiStore.currentProfile === viewList.line &&
-    lineViewStore.selectedLine
-  ) {
-    await filterFeaturesOnLine()
-    await filterFeatureByPoiAndLine(rennesApp, lineViewStore.selectedLine)
-  }
-  await resetStyleOfPoi(poiStore.currentProfile!)
+  poiStoreSubcribe(rennesApp)
 })
+
 traveltimeInteractionStore.$subscribe(async () => {
   await updateMapStyle()
 })

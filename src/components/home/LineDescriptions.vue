@@ -5,17 +5,20 @@ import { useRouter } from 'vue-router'
 import { apiClientService } from '@/services/api.client'
 import type { LineModel } from '@/model/lines.model'
 import UiLineDescription from '@/components/ui/UiLineDescription.vue'
+import { useHomeViewsStore } from '@/stores/views'
 
 const state = reactive({
   lineDescription: null as null | LineModel[],
 })
 const router = useRouter()
+const homeViewStore = useHomeViewsStore()
 
 onMounted(async () => {
   state.lineDescription = await apiClientService.fetchLineDescriptions()
 })
 
 function goToLinePage(line: number) {
+  homeViewStore.selectedLineOnHomePage = null
   router.push(`/line/${line}`)
 }
 </script>

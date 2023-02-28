@@ -8,6 +8,19 @@ import { generatePoiStyle, generatePoiStyleWithoutLabel } from '@/styles/common'
 import { useMap3dStore } from '@/stores/map'
 import { usePoiInteractionStore } from '@/stores/interactionMap'
 import type { Geometry } from 'ol/geom'
+import {
+  filterFeatureByParkingAndLine,
+  filterFeatureByPoiAndStation,
+  filterFeatureByPoiAndLine,
+  removeFiltersOnPoiAndParking,
+} from '@/services/filter'
+import { viewList } from '@/model/views.model'
+import type { View } from '@/model/views.model'
+import { vectorStyleSymbol, StyleItem } from '@vcmap/core'
+import { setDistanceDisplayConditionFeature } from '@/services/setDistanceDisplayCondition'
+import { usePoiParkingStore } from '@/stores/poiParking'
+import { useStationsStore } from '@/stores/stations'
+import { useLineViewsStore } from '@/stores/views'
 
 const CHAR_MAX = 25
 export function shorterName(poiName: string) {
@@ -75,4 +88,57 @@ export function undisplayCurrentPoi() {
   poiInteractionStore.currentFeaturePoi.setStyle(styleItem.style)
   poiInteractionStore.currentFeaturePoi = null
   undisplayPreviousPoiExpectCurrent()
+}
+
+async function resetStyleOfPoi(view: View, rennesApp: RennesApp) {
+  const map3dStore = useMap3dStore()
+  const layer = await rennesApp.getLayerByKey(RENNES_LAYER.poi)
+  layer.getFeatures().forEach((f) => {
+    let styleItem: StyleItem
+    if (view === viewList.station) {
+      styleItem = generatePoiStyle(
+        shorterName(f.getProperties()['site_nom']),
+        f.getProperties()['distance'],
+        map3dStore.is3D(),
+        true
+      )
+    } else {
+      styleItem = generatePoiStyleWithoutLabel()
+      setDistanceDisplayConditionFeature(styleItem, rennesApp.get2DMap())
+    }
+
+    //@ts-expect-error
+    f[vectorStyleSymbol] = styleItem
+    f.setStyle(styleItem.style)
+  })
+}
+
+async function filterFeaturesOnLine(rennesApp: RennesApp) {
+  const lineViewStore = useLineViewsStore()
+  await filterFeatureByParkingAndLine(rennesApp, lineViewStore.selectedLine)
+}
+
+export async function poiStoreSubcribe(rennesApp: RennesApp) {
+  const poiStore = usePoiParkingStore()
+  const stationsStore = useStationsStore()
+  const lineViewStore = useLineViewsStore()
+  await removeFiltersOnPoiAndParking(rennesApp)
+  await fixGeometryOfPoi(rennesApp)
+  if (
+    poiStore.currentProfile === viewList.station &&
+    stationsStore.currentStationView
+  ) {
+    await filterFeaturesOnLine(rennesApp)
+    await filterFeatureByPoiAndStation(
+      rennesApp,
+      stationsStore.currentStationView
+    )
+  } else if (
+    poiStore.currentProfile === viewList.line &&
+    lineViewStore.selectedLine
+  ) {
+    await filterFeaturesOnLine(rennesApp)
+    await filterFeatureByPoiAndLine(rennesApp, lineViewStore.selectedLine)
+  }
+  await resetStyleOfPoi(poiStore.currentProfile!, rennesApp)
 }
