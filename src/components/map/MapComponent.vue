@@ -15,6 +15,7 @@ import {
 import { useMap3dStore, useMapViewPointStore } from '@/stores/map'
 import {
   useLineViewsStore,
+  useHomeViewsStore,
   useTravelTimesViewStore,
   useViewsStore,
 } from '@/stores/views'
@@ -55,6 +56,7 @@ const poiStore = usePoiParkingStore()
 const map3dStore = useMap3dStore()
 const mapViewPointStore = useMapViewPointStore()
 const lineViewStore = useLineViewsStore()
+const homeViewStore = useHomeViewsStore()
 const stationsStore = useStationsStore()
 const travelTimesViewStore = useTravelTimesViewStore()
 const viewStore = useViewsStore()
@@ -211,6 +213,10 @@ stationsStore.$subscribe(async () => {
 async function filterFeaturesOnLine() {
   await filterFeatureByParkingAndLine(rennesApp, lineViewStore.selectedLine)
 }
+
+homeViewStore.$subscribe(async () => {
+  await updateHomeViewStyle(rennesApp)
+})
 
 poiStore.$subscribe(async () => {
   await removeFiltersOnPoiAndParking(rennesApp)

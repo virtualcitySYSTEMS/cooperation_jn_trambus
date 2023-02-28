@@ -3,6 +3,7 @@ import { Stroke, Style } from 'ol/style'
 import { getTrambusLineNumber, lineColors, lineDimmedColors } from './common'
 import type { FeatureLike } from 'ol/Feature'
 import type { TravelTimeModel } from '@/model/travel-time.model'
+import { useHomeViewsStore } from '@/stores/views'
 
 export type LineState = 'selected' | 'normal' | 'unselected' | 'hidden'
 
@@ -45,6 +46,7 @@ export function trambusLineStyle(
   if (lineState == 'selected') {
     const selectedLineStyle = basicLineStyle.clone()
     selectedLineStyle.setZIndex(2)
+    selectedLineStyle.getStroke().setWidth(4)
     lineStyles.push(selectedLineStyle)
   } else if (lineState == 'normal') {
     lineStyles.push(basicLineStyle)
@@ -97,6 +99,10 @@ export function homeViewStyleFunction(
   is3D: boolean
 ): Style[] {
   const lineNumber = getTrambusLineNumber(feature) as LineNumber
-  const lineState: LineState = 'normal'
+  const homeViewStore = useHomeViewsStore()
+  let lineState: LineState = 'normal'
+  if (homeViewStore.selectedLineOnHomePage == lineNumber) {
+    lineState = 'selected'
+  }
   return trambusLineStyle(lineNumber, lineState, is3D)
 }
