@@ -15,11 +15,11 @@ const viewStore = useViewsStore()
 
 const positionStyle = computed(() => {
   let style: string = ''
-  const size_text = 18
+  const box_width = 72
   const label_height = 24
   if (
     props.topPosition + label_height > window.innerHeight ||
-    props.leftPosition + size_text > window.innerWidth ||
+    props.leftPosition + box_width > window.innerWidth ||
     viewStore.currentView == viewList.home
   ) {
     style = 'display: none;'

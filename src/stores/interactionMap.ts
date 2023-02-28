@@ -7,9 +7,12 @@ import type { Feature } from 'ol'
 import type { Geometry } from 'ol/geom'
 import type { RennesApp } from '@/services/RennesApp'
 import { getCartesianPositionFromFeature } from '@/helpers/featureHelper'
-import { CesiumMap, OpenlayersMap, Viewpoint } from '@vcmap/core'
-import { Math as CesiumMath } from '@vcmap/cesium'
+import type { Viewpoint } from '@vcmap/core'
 import { getCenterOfArrow } from '@/helpers/arcHelpers'
+import {
+  addGenericListenerForUpdatePositions,
+  updateCartesianPositions,
+} from '@/services/aboveMapService'
 
 export const useTraveltimeInteractionStore = defineStore(
   'traveltime-interaction-map',
@@ -56,8 +59,8 @@ export const useTravelTimeBoxesStore = defineStore(
     const travelTimeBoxes: Ref<
       {
         travelTimeFeature: TravelTimeModel
-        cartesian: Cartesian2
         feature: Feature
+        cartesian: Cartesian2
       }[]
     > = ref([])
     const previousViewPoint: Ref<Viewpoint | null> = ref(null)
@@ -89,39 +92,15 @@ export const useTravelTimeBoxesStore = defineStore(
     }
 
     function updatePositionsTravelTimeBoxes(rennesApp: RennesApp) {
-      //Update position of travelTimeBoxes
-      travelTimeBoxes.value.map((label) => {
-        const cartesian = getCartesianPositionFromFeature(
-          rennesApp,
-          label.feature
-        )
-        // console.log("New compute cartesian", cartesian)
-        if (cartesian !== undefined) {
-          label.cartesian = cartesian
-        }
-        return label
-      })
+      updateCartesianPositions(rennesApp, travelTimeBoxes.value)
     }
 
     function addListenerForUpdatePositions(rennesApp: RennesApp) {
-      const map = rennesApp.maps.activeMap
-      if (map instanceof CesiumMap) {
-        map.getScene().postRender.addEventListener(() => {
-          const vp = map.getViewpointSync()
-          if (
-            previousViewPoint.value === null ||
-            (vp !== null &&
-              !vp.equals(previousViewPoint.value, CesiumMath.EPSILON5))
-          ) {
-            updatePositionsTravelTimeBoxes(rennesApp)
-            previousViewPoint.value = vp
-          }
-        })
-      } else if (map instanceof OpenlayersMap) {
-        map.postRender.addEventListener(() => {
-          updatePositionsTravelTimeBoxes(rennesApp)
-        })
-      }
+      addGenericListenerForUpdatePositions(
+        rennesApp,
+        previousViewPoint.value,
+        updatePositionsTravelTimeBoxes
+      )
     }
 
     return {

@@ -217,7 +217,6 @@ travelTimesViewStore.$subscribe(async () => {
 })
 
 stationsStore.$subscribe(async () => {
-  await updateTraveltimeArrow(rennesApp)
   await componentAboveMapStore.updateListLabelsStations(rennesApp)
 })
 

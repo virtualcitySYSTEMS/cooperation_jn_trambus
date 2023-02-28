@@ -36,7 +36,6 @@ export async function lineStringsFromTraveltimes(
           mercatorProjection
         )
 
-      console.log('Start coordinate', startCoordinate)
       const geom = new LineString([startCoordinate, endCoordinate])
       const feature = new Feature(geom)
       feature.setProperties({ ...traveltime })

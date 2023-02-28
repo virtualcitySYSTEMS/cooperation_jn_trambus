@@ -39,7 +39,7 @@ export function getBalloonPosition(
       Cartographic.fromDegrees(
         wgs84Position[0],
         wgs84Position[1],
-        position[2] ?? 0
+        position[2] ?? 50
       )
     )
     cartesian = getBalloonPositionCesium(map.getScene(), cartesian)

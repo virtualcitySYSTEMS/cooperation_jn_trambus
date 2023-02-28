@@ -69,6 +69,7 @@ export async function updateLineViewStyle(rennesApp: RennesApp) {
 }
 
 export async function updateTravelTimesViewStyle(rennesApp: RennesApp) {
+  console.log('Update tt view style')
   const mapStore = useMap3dStore()
   const traveltimeInteractionStore = useTraveltimeInteractionStore()
   traveltimeInteractionStore.displayedTravelTimes.forEach(

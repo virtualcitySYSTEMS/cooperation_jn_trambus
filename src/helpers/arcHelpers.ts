@@ -9,6 +9,12 @@ import type { RennesApp } from '@/services/RennesApp'
 import { Cartesian2 } from '@vcmap-cesium/engine'
 
 export const arcFactor = 0.15
+export const arcNumber = 64
+
+/*
+Content of this helper is largely inspired from arc: https://github.com/virtualcitySYSTEMS/map-core/blob/af4bcd93fd8574728e10840b4cf93d438768f761/src/style/arcStyle.js
+Waiting for the methods there to be exported. Then a big part of this file could be deleted/rewritten
+ */
 
 function getArcCoordinates(
   p1: Coordinate,
@@ -83,7 +89,7 @@ export async function getCenterOfArrow(
         lineString.getLastCoordinate(),
         arcFactor
       ),
-      64,
+      arcNumber,
       arcFactor
     )
     midPoint = arc[32]
