@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { reactive, onMounted, computed } from 'vue'
+import { reactive, onMounted, computed, ref } from 'vue'
 
 import { apiClientService } from '@/services/api.client'
 import type { PhotoModel } from '@/model/photos.model'
 import UiPhotoGalery from '../ui/UiPhotoGalery.vue'
+import UiPhotoCaroussel from '../ui/UiPhotoCaroussel.vue'
 import { usePanelsStore } from '@/stores/panels'
 
 const state = reactive({
@@ -20,6 +21,7 @@ onMounted(async () => {
 })
 
 const panelsStore = usePanelsStore()
+const imageToDisplayInCaroussel = ref<string | null>(null)
 
 function toggleGallery() {
   panelsStore.toggleGallery()
@@ -27,10 +29,19 @@ function toggleGallery() {
 </script>
 
 <template>
-  <UiPhotoGalery
-    :photos="photoUrls"
-    :galleryShown="panelsStore.isGalleryShown"
-    @toggleEvent="toggleGallery"
-  >
-  </UiPhotoGalery>
+  <div>
+    <UiPhotoCaroussel
+      v-if="imageToDisplayInCaroussel !== null"
+      :photos="photoUrls"
+      :currentImage="imageToDisplayInCaroussel"
+      @closeCaroussel="imageToDisplayInCaroussel = null"
+    />
+    <UiPhotoGalery
+      :photos="photoUrls"
+      :galleryShown="panelsStore.isGalleryShown"
+      @toggleEvent="toggleGallery"
+      @clickImage="imageToDisplayInCaroussel = $event"
+    >
+    </UiPhotoGalery>
+  </div>
 </template>

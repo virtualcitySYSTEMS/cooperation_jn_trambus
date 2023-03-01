@@ -2,6 +2,7 @@ import type { TravelTimeModel } from './travel-time.model'
 
 export const travelTimeFixtures = (): TravelTimeModel[] => [
   {
+    id: 1,
     line: 1,
     new: 23,
     old: 31,
@@ -9,6 +10,7 @@ export const travelTimeFixtures = (): TravelTimeModel[] => [
     end: 'Grand Quartier',
   },
   {
+    id: 2,
     line: 1,
     new: 20,
     old: 24,
@@ -16,6 +18,7 @@ export const travelTimeFixtures = (): TravelTimeModel[] => [
     end: 'République',
   },
   {
+    id: 3,
     line: 2,
     new: 15,
     old: 15,
@@ -23,6 +26,7 @@ export const travelTimeFixtures = (): TravelTimeModel[] => [
     end: 'République',
   },
   {
+    id: 4,
     line: 2,
     new: 31,
     old: 35,
@@ -30,6 +34,7 @@ export const travelTimeFixtures = (): TravelTimeModel[] => [
     end: 'République',
   },
   {
+    id: 5,
     line: 2,
     new: 25,
     old: 29,
@@ -37,6 +42,7 @@ export const travelTimeFixtures = (): TravelTimeModel[] => [
     end: 'République',
   },
   {
+    id: 6,
     line: 3,
     new: 20,
     old: 25,
@@ -44,6 +50,7 @@ export const travelTimeFixtures = (): TravelTimeModel[] => [
     end: 'République',
   },
   {
+    id: 7,
     line: 3,
     new: 22,
     old: 36,
@@ -51,6 +58,7 @@ export const travelTimeFixtures = (): TravelTimeModel[] => [
     end: 'République',
   },
   {
+    id: 8,
     line: 3,
     new: 17,
     old: 25,
@@ -58,6 +66,7 @@ export const travelTimeFixtures = (): TravelTimeModel[] => [
     end: 'République',
   },
   {
+    id: 9,
     line: 4,
     new: 20,
     old: 31,
@@ -66,6 +75,7 @@ export const travelTimeFixtures = (): TravelTimeModel[] => [
   },
 
   {
+    id: 10,
     line: 4,
     new: 30,
     old: 32,

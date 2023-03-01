@@ -49,6 +49,7 @@ describe('BackButton', () => {
     it('reset travel time', async () => {
       const traveltimeInteractionStore = useTraveltimeInteractionStore()
       const travelTime: TravelTimeModel = {
+        id: 1,
         line: 1,
         new: 23,
         old: 31,

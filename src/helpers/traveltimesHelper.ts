@@ -3,12 +3,13 @@ import { RENNES_LAYER } from '@/stores/layers'
 import { LineString } from 'ol/geom'
 import type { RennesApp } from '@/services/RennesApp'
 import { getHeightFromTerrainProvider, mercatorProjection } from '@vcmap/core'
+import { Feature } from 'ol'
 
 export async function lineStringsFromTraveltimes(
   traveltimes: TravelTimeModel[],
   rennesApp: RennesApp,
   is3D: boolean
-): Promise<LineString[]> {
+): Promise<Feature[]> {
   const promises = traveltimes.map(async (traveltime) => {
     const startTrambusStop = await rennesApp.getFeatureByAttributeFromLayer(
       RENNES_LAYER.trambusStops,
@@ -35,14 +36,19 @@ export async function lineStringsFromTraveltimes(
           mercatorProjection
         )
 
-      return new LineString([startCoordinate, endCoordinate])
+      const geom = new LineString([startCoordinate, endCoordinate])
+      const feature = new Feature(geom)
+      feature.setProperties({ ...traveltime })
+      return feature
     } else {
-      return new LineString([
+      const geom = new LineString([
         startTrambusStop?.getGeometry()?.getCoordinates(),
         endTrambusStop?.getGeometry()?.getCoordinates(),
       ])
+      const feature = new Feature(geom)
+      feature.setProperties({ ...traveltime })
+      return feature
     }
   })
-  const lineStrings = await Promise.all(promises)
-  return lineStrings
+  return await Promise.all(promises)
 }

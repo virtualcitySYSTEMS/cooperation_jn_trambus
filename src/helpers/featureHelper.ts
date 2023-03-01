@@ -8,9 +8,5 @@ export function getCartesianPositionFromFeature(
   rennesApp: RennesApp,
   feature: Feature<Geometry>
 ): Cartesian2 | undefined {
-  const cartesian = getBalloonPosition(
-    rennesApp,
-    feature.getGeometry()!.getCoordinates()
-  )
-  return cartesian
+  return getBalloonPosition(rennesApp, feature.getGeometry()!.getCoordinates())
 }
