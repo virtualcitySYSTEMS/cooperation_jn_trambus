@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { reactive, onMounted } from 'vue'
+import { reactive, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-
 import { apiClientService } from '@/services/api.client'
 import type { LineModel } from '@/model/lines.model'
 import UiLineDescription from '@/components/ui/UiLineDescription.vue'
 import { useHomeViewsStore } from '@/stores/views'
+import type { LineNumber } from '@/model/lines.model'
 
 const state = reactive({
   lineDescription: null as null | LineModel[],
@@ -21,6 +21,22 @@ function goToLinePage(line: number) {
   homeViewStore.selectedLineOnHomePage = null
   router.push(`/line/${line}`)
 }
+
+const lineActive = ref<number | null>(null)
+
+function overLine(line: number) {
+  if (lineActive.value === null) {
+    lineActive.value = line
+  } else {
+    return
+  }
+  homeViewStore.selectedLineOnHomePage = line as LineNumber
+}
+
+function leaveLine() {
+  lineActive.value = null
+  homeViewStore.selectedLineOnHomePage = null
+}
 </script>
 
 <template>
@@ -33,6 +49,9 @@ function goToLinePage(line: number) {
         v-for="lineDescription in state.lineDescription"
         role="button"
         @click="goToLinePage(lineDescription.id)"
+        @mouseover="overLine(lineDescription.id)"
+        @mouseleave="leaveLine()"
+        :class="lineActive === lineDescription.id ? 'bg-slate-100' : ''"
         :key="lineDescription.id"
         :line="lineDescription.id"
         :name="lineDescription.name"
