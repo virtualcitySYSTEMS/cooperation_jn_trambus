@@ -7,6 +7,7 @@ import type { SelectedTrambusLine } from '@/model/lines.model'
 import { useMapViewPointStore } from '@/stores/map'
 import { usePoiParkingStore } from '@/stores/poiParking'
 import { useStationsStore } from '@/stores/stations'
+import type { LineNumber } from '@/model/lines.model'
 import {
   useTravelTimeBoxesStore,
   useTraveltimeInteractionStore,
@@ -61,6 +62,12 @@ export const useTravelTimesViewStore = defineStore('traveltimes-views', () => {
   const selectedTravelTime: Ref<TravelTimeModel | null> = ref(null)
 
   return { selectedTravelTime }
+})
+
+export const useHomeViewsStore = defineStore('home-views', () => {
+  const selectedLineOnHomePage: Ref<LineNumber | null> = ref(null)
+
+  return { selectedLineOnHomePage }
 })
 
 export const useLineViewsStore = defineStore('line-views', () => {

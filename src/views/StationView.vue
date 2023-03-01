@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, onMounted, ref, reactive } from 'vue'
+import { onBeforeMount, onMounted, ref, reactive, inject } from 'vue'
 import { useRoute } from 'vue-router'
 import { useMap3dStore } from '@/stores/map'
 import { useViewsStore } from '@/stores/views'
@@ -16,6 +16,8 @@ import PointsOfInterestsStation from '@/components/station/PointsOfInterestsStat
 import BackButton from '@/components/home/BackButton.vue'
 import { usePoiParkingStore } from '@/stores/poiParking'
 import { useLineInteractionStore } from '@/stores/interactionMap'
+import type { RennesApp } from '@/services/RennesApp'
+import { poiStoreSubcribe } from '@/services/poi'
 
 const map3dStore = useMap3dStore()
 const viewStore = useViewsStore()
@@ -33,6 +35,7 @@ const state = reactive({
   lineDescription: null as null | LineModel,
   stationDescription: null as null | StationModel,
 })
+const rennesApp = inject('rennesApp') as RennesApp
 
 onBeforeMount(async () => {
   state.lineDescription = await apiClientService.fetchLineDescription(
@@ -46,6 +49,12 @@ onBeforeMount(async () => {
         station.nom,
         state.lineDescription!.id
       )
+      let isFromStationToStation = false
+      //For some reason, when we go to station page from another station page, the poiStore.subscribe is not called
+      //So we need to call it manually
+      if (viewStore.currentView === viewList.station) {
+        isFromStationToStation = true
+      }
       viewStore.setCurrentView(
         viewList.station,
         lineNumber.value,
@@ -53,6 +62,9 @@ onBeforeMount(async () => {
       )
       poiStore.activeStationProfile(station.nom)
       state.stationDescription = station
+      if (isFromStationToStation) {
+        poiStoreSubcribe(rennesApp)
+      }
     })
 })
 
