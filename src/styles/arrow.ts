@@ -5,9 +5,11 @@ import {
   mercatorProjection,
   VectorLayer,
 } from '@vcmap/core'
-import type { LineString } from 'ol/geom'
-import { Feature } from 'ol'
+import type { Feature } from 'ol'
 import type { RennesApp } from '@/services/RennesApp'
+import type { TravelTimeModel } from '@/model/travel-time.model'
+import type { FeatureLike } from 'ol/Feature'
+import { arcFactor } from '@/helpers/arcHelpers'
 
 export function getScratchLayer(
   app: RennesApp,
@@ -33,20 +35,31 @@ export function getScratchLayer(
 }
 
 export function updateArrowFeatures(
-  linestrings: LineString[],
+  travelTimeFeatures: Feature[],
   arrowLayer: VectorLayer
 ) {
   arrowLayer.removeAllFeatures()
-  const features: Feature[] = []
-  linestrings.forEach((linestring) => {
-    features.push(new Feature(linestring))
+  arrowLayer.addFeatures(travelTimeFeatures)
+}
+
+function arrowStyleFunction(
+  feature: FeatureLike,
+  selected: TravelTimeModel,
+  arrowColor: string,
+  end: ArrowEnd
+) {
+  return new ArcStyle({
+    width: selected?.id === feature.get('id') ? 3 : 1.5,
+    arcFactor: arcFactor,
+    color: arrowColor,
+    end: end,
   })
-  arrowLayer.addFeatures(features)
 }
 
 export function updateArrowLayerStyle(
   arrowLayer: VectorLayer,
   is3D: boolean,
+  selected: TravelTimeModel,
   // False negative: Property 'END' does not exist on type 'typeof ArrowEnd'
   // @ts-ignore
   end: ArrowEnd = ArrowEnd.END
@@ -56,12 +69,6 @@ export function updateArrowLayerStyle(
   if (is3D) {
     arrowColor = '#FFFFFF'
   }
-  arrowLayer.setStyle(
-    new ArcStyle({
-      width: 1.5,
-      arcFactor: 0.15,
-      color: arrowColor,
-      end: end,
-    })
-  )
+
+  arrowLayer.setStyle((f) => arrowStyleFunction(f, selected, arrowColor, end))
 }

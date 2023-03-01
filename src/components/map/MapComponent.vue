@@ -17,7 +17,10 @@ import {
 } from '@/stores/views'
 import { useStationsStore } from '@/stores/stations'
 import { useComponentAboveMapStore } from '@/stores/componentsAboveMapStore'
-import { useTraveltimeInteractionStore } from '@/stores/interactionMap'
+import {
+  useTravelTimeBoxesStore,
+  useTraveltimeInteractionStore,
+} from '@/stores/interactionMap'
 
 import {
   tiltViewpoint,
@@ -48,12 +51,14 @@ const travelTimesViewStore = useTravelTimesViewStore()
 const viewStore = useViewsStore()
 const componentAboveMapStore = useComponentAboveMapStore()
 const traveltimeInteractionStore = useTraveltimeInteractionStore()
+const travelTimeBoxesStore = useTravelTimeBoxesStore()
 
 onMounted(async () => {
   await rennesApp.initializeMap()
   await updateLayersVisibility()
   await updateMapStyle()
   componentAboveMapStore.addListenerForUpdatePositions(rennesApp)
+  travelTimeBoxesStore.addListenerForUpdatePositions(rennesApp)
 })
 
 // The following code is needed to cleanup resources we created
@@ -127,7 +132,7 @@ async function updateActiveMap() {
   } else {
     newViewpoint = untiltViewpoint(oldViewpoint!)
   }
-  rennesApp.maps.activeMap.gotoViewpoint(newViewpoint)
+  await rennesApp.maps.activeMap.gotoViewpoint(newViewpoint)
 }
 
 async function updateMapStyle() {
@@ -155,6 +160,14 @@ map3dStore.$subscribe(async () => {
   await updateActiveMap()
   await updateTraveltimeArrow(rennesApp)
   componentAboveMapStore.addListenerForUpdatePositions(rennesApp)
+  if (traveltimeInteractionStore.displayedTravelTimes) {
+    await travelTimeBoxesStore.setTravelTimeBoxes(
+      rennesApp,
+      traveltimeInteractionStore.displayedTravelTimes,
+      map3dStore.is3D()
+    )
+  }
+  travelTimeBoxesStore.addListenerForUpdatePositions(rennesApp)
 })
 
 mapViewPointStore.$subscribe(async () => {
@@ -170,7 +183,6 @@ travelTimesViewStore.$subscribe(async () => {
 })
 
 stationsStore.$subscribe(async () => {
-  await updateTraveltimeArrow(rennesApp)
   await componentAboveMapStore.updateListLabelsStations(rennesApp)
 })
 
@@ -184,6 +196,13 @@ poiStore.$subscribe(async () => {
 
 traveltimeInteractionStore.$subscribe(async () => {
   await updateMapStyle()
+  if (traveltimeInteractionStore.displayedTravelTimes) {
+    await travelTimeBoxesStore.setTravelTimeBoxes(
+      rennesApp,
+      traveltimeInteractionStore.displayedTravelTimes,
+      map3dStore.is3D()
+    )
+  }
 })
 </script>
 

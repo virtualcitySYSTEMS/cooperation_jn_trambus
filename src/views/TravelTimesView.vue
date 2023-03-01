@@ -33,6 +33,7 @@ onMounted(async () => {
   mapViewPointStore.updateViewpoint(`home`, true)
   stationsStore.traveltimesViewSetUpStationsToDisplay()
   lineInteractionStore.resetLinesLabels()
+
   layerStore.setVisibilities(map3dStore.is3D(), {
     trambusLines: true,
     trambusStops: true,
@@ -49,10 +50,13 @@ onMounted(async () => {
 function onTravelTimesClicked(travelTime: TravelTimeModel) {
   if (travelTime == traveltimeInteractionStore.selectedTraveltime) {
     traveltimeInteractionStore.selectTraveltime(null)
+    traveltimeInteractionStore.removeDisplayTravelTime()
     stationsStore.traveltimesViewSetUpStationsToDisplay()
   } else {
     stationsStore.updateStationsToDisplayFromTravelTimes(travelTime)
-    traveltimeInteractionStore.selectTraveltime(travelTime)
+    traveltimeInteractionStore.removeDisplayTravelTime()
+    traveltimeInteractionStore.selectTraveltime(null)
+    traveltimeInteractionStore.addDisplayTravelTime(travelTime)
   }
 }
 </script>
@@ -90,7 +94,7 @@ function onTravelTimesClicked(travelTime: TravelTimeModel) {
       :lineNumber="travelTime.line"
       :startStation="travelTime.start"
       :endStation="travelTime.end"
-      :colored="travelTime == traveltimeInteractionStore.selectedTraveltime"
+      :colored="traveltimeInteractionStore.isOnlySelected(travelTime)"
     >
     </UiTravelTime>
   </div>

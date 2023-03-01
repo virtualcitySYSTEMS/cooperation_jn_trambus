@@ -51,6 +51,9 @@ onBeforeMount(async () => {
   currentLine = Number(routeParams.value.id) as SelectedTrambusLine
   viewStore.setCurrentView(viewList.line, currentLine, null)
 
+  const travelTimes = await apiClientService.fetchTravelTimeByLine(currentLine)
+  traveltimeInteractionStore.setDisplayTravelTimes(travelTimes)
+
   state.lineDescription = await apiClientService.fetchLineDescription(
     lineStore.selectedLine
   )
