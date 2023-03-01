@@ -7,6 +7,10 @@ import type { SelectedTrambusLine } from '@/model/lines.model'
 import { useMapViewPointStore } from '@/stores/map'
 import { usePoiParkingStore } from '@/stores/poiParking'
 import { useStationsStore } from '@/stores/stations'
+import {
+  useTravelTimeBoxesStore,
+  useTraveltimeInteractionStore,
+} from '@/stores/interactionMap'
 
 export const useViewsStore = defineStore('views', () => {
   // TODO: use union string for list of view
@@ -15,6 +19,8 @@ export const useViewsStore = defineStore('views', () => {
   const poiStore = usePoiParkingStore()
   const stationsStore = useStationsStore()
   const lineViewsStore = useLineViewsStore()
+  const travelTimeBoxesStore = useTravelTimeBoxesStore()
+  const traveltimeInteractionStore = useTraveltimeInteractionStore()
 
   function setCurrentView(
     view: View,
@@ -26,6 +32,7 @@ export const useViewsStore = defineStore('views', () => {
       poiStore.activeLineProfile(selectedLine.toString())
       lineViewsStore.selectLine(selectedLine)
       stationsStore.lineViewSetUpStationsToDisplay(selectedLine)
+
       mapViewpointStore.updateViewpoint(`line${selectedLine}`, true)
     } else if (view === viewList.station && selectedLine && selectedStation) {
       poiStore.activeStationProfile(selectedStation)
@@ -41,6 +48,9 @@ export const useViewsStore = defineStore('views', () => {
     lineViewsStore.selectLine(0)
     stationsStore.homeViewSetUpStationsToDisplay()
     mapViewpointStore.updateViewpoint('rennes', true)
+    travelTimeBoxesStore.cleanTravelTimesBoxes()
+    traveltimeInteractionStore.removeDisplayTravelTime()
+
     currentView.value = viewList.home
   }
 

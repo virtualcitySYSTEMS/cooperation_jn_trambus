@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { Cartesian2 } from '@vcmap/cesium'
-import { CesiumMap, OpenlayersMap, Viewpoint } from '@vcmap/core'
+import type { Viewpoint } from '@vcmap/core'
 import { RENNES_LAYER } from '@/stores/layers'
 import type { Feature } from 'ol'
 import type { Geometry } from 'ol/geom'
@@ -10,7 +10,10 @@ import { getCartesianPositionFromFeature } from '@/helpers/featureHelper'
 import { useStationsStore } from '@/stores/stations'
 import type { RennesApp } from '@/services/RennesApp'
 import { useLineInteractionStore } from '@/stores/interactionMap'
-import { Math as CesiumMath } from '@vcmap/cesium'
+import {
+  addGenericListenerForUpdatePositions,
+  updateCartesianPositions,
+} from '@/services/aboveMapService'
 
 export const useComponentAboveMapStore = defineStore(
   'component-above-map',
@@ -69,17 +72,7 @@ export const useComponentAboveMapStore = defineStore(
     }
 
     function updatePositionsComponents(rennesApp: RennesApp) {
-      //Update position of stations labels
-      labelsStationsList.value.map((label) => {
-        const cartesian = getCartesianPositionFromFeature(
-          rennesApp,
-          label.feature
-        )
-        if (cartesian !== undefined) {
-          label.cartesian = cartesian
-        }
-        return label
-      })
+      updateCartesianPositions(rennesApp, labelsStationsList.value)
 
       //Update position of line label
       const lineInteractionStore = useLineInteractionStore()
@@ -95,24 +88,11 @@ export const useComponentAboveMapStore = defineStore(
     }
 
     function addListenerForUpdatePositions(rennesApp: RennesApp) {
-      const map = rennesApp.maps.activeMap
-      if (map instanceof CesiumMap) {
-        map.getScene().postRender.addEventListener(() => {
-          const vp = map.getViewpointSync()
-          if (
-            previousViewPoint.value === null ||
-            (vp !== null &&
-              !vp.equals(previousViewPoint.value, CesiumMath.EPSILON5))
-          ) {
-            updatePositionsComponents(rennesApp)
-            previousViewPoint.value = vp
-          }
-        })
-      } else if (map instanceof OpenlayersMap) {
-        map.postRender.addEventListener(() => {
-          updatePositionsComponents(rennesApp)
-        })
-      }
+      addGenericListenerForUpdatePositions(
+        rennesApp,
+        previousViewPoint.value,
+        updatePositionsComponents
+      )
     }
 
     return {
