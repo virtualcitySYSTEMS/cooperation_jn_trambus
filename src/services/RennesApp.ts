@@ -5,6 +5,7 @@ import {
   EventType,
   GeoJSONLayer,
   OpenlayersMap,
+  Viewpoint,
 } from '@vcmap/core'
 import mapClickAndMoveInteraction from '@/interactions/clickAndMoveInteraction'
 import type { RennesLayer } from '@/stores/layers'
@@ -22,10 +23,16 @@ export class RennesApp extends VcsApp {
 
     const cesiumMap = this.get3DMap()
     await cesiumMap?.initialize()
-    if (cesiumMap && cesiumMap instanceof CesiumMap) {
+    if (cesiumMap) {
       cesiumMap.getScene().globe.maximumScreenSpaceError = 1
+      const homeViewPoint = this.viewpoints.getByKey('rennes') as Viewpoint
+      cesiumMap.getScene().screenSpaceCameraController.maximumZoomDistance =
+        homeViewPoint.distance
     }
 
+    // block max zoom level to initial one
+    const olMap = this.get2DMap().olMap
+    olMap.getView().setMinZoom(olMap.getView().getZoom())
     this.maps.eventHandler.featureInteraction.setActive(EventType.CLICKMOVE)
     this.maps.eventHandler.addPersistentInteraction(
       new mapClickAndMoveInteraction(this)
