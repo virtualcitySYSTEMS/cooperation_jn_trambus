@@ -22,11 +22,7 @@ import { RENNES_LAYER } from '@/stores/layers'
 import { Feature } from 'ol'
 import { Point } from 'ol/geom'
 import { Style } from 'ol/style'
-import {
-  displayCurrentPoi,
-  undisplayPreviousPoiExpectCurrent,
-  undisplayCurrentPoi,
-} from '@/services/poi'
+import { displayCurrentPoi, undisplayCurrentPoi } from '@/services/poi'
 
 class mapClickAndMoveInteraction extends AbstractInteraction {
   private _rennesApp: RennesApp
@@ -134,10 +130,18 @@ class mapClickAndMoveInteraction extends AbstractInteraction {
       document.body.style.cursor = 'auto'
       const poiInteractionStore = usePoiInteractionStore()
       const feature: Feature<Point> = event.feature as Feature<Point>
-      poiInteractionStore.selectCurrentFeaturePoi(feature)
-      poiInteractionStore.addPreviousFeaturePoi(feature)
-      undisplayPreviousPoiExpectCurrent()
-      displayCurrentPoi(feature)
+      if (feature.getId() !== poiInteractionStore.currentFeaturePoi?.getId()) {
+        console.log('move')
+        undisplayCurrentPoi()
+        poiInteractionStore.selectCurrentFeaturePoi(feature)
+        if (poiInteractionStore.currentFeaturePoi) {
+          // @ts-ignore
+          displayCurrentPoi(poiInteractionStore.currentFeaturePoi)
+        }
+      }
+      //poiInteractionStore.addPreviousFeaturePoi(feature)
+      //undisplayPreviousPoiExpectCurrent()
+      //displayCurrentPoi(feature)
     }
   }
 
@@ -163,7 +167,11 @@ class mapClickAndMoveInteraction extends AbstractInteraction {
 
       const viewStore = useViewsStore()
       if ([viewList.home, viewList.line].includes(viewStore.currentView)) {
-        undisplayCurrentPoi()
+        const poiInteractionStore = usePoiInteractionStore()
+        if (poiInteractionStore.currentFeaturePoi) {
+          console.log('out')
+          undisplayCurrentPoi()
+        }
       }
 
       document.body.style.cursor = 'auto'
